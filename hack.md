@@ -53,7 +53,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 4:** Push to `main` and cold-clone verify from GitHub (`git clone && pip install -e . && magnet demo`).
+**Slice 4 (shipped):** Stranger pass verified — `git clone https://github.com/Morkeeth/agents-for-humans.git && pip install -e . && magnet demo` → exit 0 on commit `e798729`.
 
 ## LOG
 
@@ -63,3 +63,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-08-29 · Demo enhanced: 1-reading embarrassing case (naive `helped` vs magnet `baseline`) · `python3 -m pytest -q` → 17 passed · `magnet demo` → exit 0.
 - 2026-08-29 · `test_check_docs_drift.py` added · drift on fake `99 tools` claim exits 1.
 - 2026-08-29 · Strands Bedrock agent loop not run — no AWS credentials in cloud VM.
+- 2026-08-29 · `git push origin main` → `e798729` · GitHub cold clone `/tmp/magnet-github-cold` → `magnet demo` exit 0 · `pytest -q` → 17 passed.

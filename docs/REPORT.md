@@ -32,4 +32,4 @@
 - **Naive and MAGNET agree on the 2-reading demo** (both `helped`). The divergence is shown only after the first reading; the demo output now surfaces that case explicitly.
 - **`check_docs` is repo-specific**, not a general doc-drift port of helicon.docdrift's full COUNT/LIST/EVAL suite. It checks tool count + tool name presence only.
 - **Demo probe is synthetic** (`skill_bonus` in SQLite), not a real eval harness. It proves the ledger loop, not that a skill helped in production.
-- **GitHub cold clone not re-verified post-push in this doc** — push gate verified separately with `git push origin main`.
+- **GitHub cold clone verified post-push:** `git clone https://github.com/Morkeeth/agents-for-humans.git /tmp/magnet-github-cold && pip install -e ".[dev]" && magnet demo && pytest -q` → exit 0 at `e798729`.
