@@ -25,7 +25,12 @@ whether it helped — or prints **`baseline`** instead of inventing a trend.
 ## CONSTRAINT
 
 No number without the command that produced it, the population it is out of, and when it was read.
-(`2/16`, never `2`.)
+(`3/5`, never `3`.)
+
+## OPEN QUESTIONS
+
+- Which real eval probes ship for Devpost demo beyond `demo-pass-rate`? (blocking for production, not for cold path)
+- Bedrock model ID for live Strands agent run? (Oscar click — not resolved here)
 
 ## CONSTITUTION
 
@@ -38,18 +43,22 @@ No number without the command that produced it, the population it is out of, and
 
 ## PLAN (risk-first)
 
-| # | Slice | Done when |
-|---|-------|-----------|
-| 0 | Repo + README + architecture diagram | clone works |
-| 1 | Strands agent · tools: `run_probe`, `record_week`, `adopt_change`, `check_docs` | `magnet demo` cold-runs |
-| 2 | Port kernel from measurement-bench/magnet.py | tests green |
-| 3 | Core loop: adopt → re-run → delta receipt | demo script end-to-end |
-| 4 | Stranger pass doc | STRANGER-PASS.md with command output |
+| # | Slice | Done when | Status |
+|---|-------|-----------|--------|
+| 0 | Repo + README + architecture diagram | clone works | ✅ `docs/architecture.md` |
+| 1 | Strands agent · 4 tools | `magnet demo` cold-runs | ✅ exit 0 |
+| 2 | Port kernel from measurement-bench/magnet.py | tests green | ✅ 14 pytest (via helicon.measure science) |
+| 3 | Core loop: adopt → re-run → delta receipt | demo end-to-end | ✅ helped ↑ +1 |
+| 4 | Stranger pass doc | STRANGER-PASS.md with command output | ✅ |
 
 ## NOW
 
-**Slice 0–2:** Strands scaffold + SQLite ledger + port magnet reporter logic.
+**Slice 4 (done):** Stranger pass — `docs/STRANGER-PASS.md` filled from cold run.
 
 ## LOG
 
 - 2026-08-29 · Repo created · cloud ambitious lane launched.
+- 2026-08-29 · `fleet-ops/plans/agents-for-humans-hack.md` not accessible (404) · used mountain-of-helicon `helicon/measure.py` for reporter science instead of `measurement-bench/magnet.py`.
+- 2026-08-29 · First `tools.py` edit corrupted import line · fixed before commit.
+- 2026-08-29 · `pytest -q` → 15 passed · `magnet demo` → exit 0 · cold copy in `/tmp/magnet-cold` → exit 0.
+- 2026-08-29 · Strands Bedrock agent loop not run — no AWS credentials in cloud VM.
