@@ -25,7 +25,12 @@ whether it helped — or prints **`baseline`** instead of inventing a trend.
 ## CONSTRAINT
 
 No number without the command that produced it, the population it is out of, and when it was read.
-(`2/16`, never `2`.)
+(`3/5`, never `3`.)
+
+## OPEN QUESTIONS
+
+- Which real eval probes ship for Devpost demo beyond `demo-pass-rate`? (blocking for production, not for cold path)
+- Bedrock model ID for live Strands agent run? (Oscar click — not resolved here)
 
 ## CONSTITUTION
 
@@ -41,15 +46,20 @@ No number without the command that produced it, the population it is out of, and
 | # | Slice | Done when |
 |---|-------|-----------|
 | 0 | Repo + README + architecture diagram | clone works |
-| 1 | Strands agent · tools: `run_probe`, `record_week`, `adopt_change`, `check_docs` | `magnet demo` cold-runs |
+| 1 | Strands agent · 4 tools | `magnet demo` cold-runs |
 | 2 | Port kernel from measurement-bench/magnet.py | tests green |
-| 3 | Core loop: adopt → re-run → delta receipt | demo script end-to-end |
+| 3 | Core loop: adopt → re-run → delta receipt | demo end-to-end |
 | 4 | Stranger pass doc | STRANGER-PASS.md with command output |
 
 ## NOW
 
-**Slice 0–2:** Strands scaffold + SQLite ledger + port magnet reporter logic.
+**Slice 4:** Push to `main` and cold-clone verify from GitHub (`git clone && pip install -e . && magnet demo`).
 
 ## LOG
 
 - 2026-08-29 · Repo created · cloud ambitious lane launched.
+- 2026-08-29 · `fleet-ops/plans/agents-for-humans-hack.md` not accessible (404) · reporter science from `helicon/measure.py` (mountain-of-helicon).
+- 2026-08-29 · Merged scaffold from `cursor/magnet-adoption-ledger-080a` into main worktree.
+- 2026-08-29 · Demo enhanced: 1-reading embarrassing case (naive `helped` vs magnet `baseline`) · `python3 -m pytest -q` → 17 passed · `magnet demo` → exit 0.
+- 2026-08-29 · `test_check_docs_drift.py` added · drift on fake `99 tools` claim exits 1.
+- 2026-08-29 · Strands Bedrock agent loop not run — no AWS credentials in cloud VM.
