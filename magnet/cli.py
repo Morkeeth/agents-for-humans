@@ -5,7 +5,9 @@ import argparse
 import os
 import sys
 
+from magnet.agent_run import run_agent_loop
 from magnet.demo import run_demo
+from magnet.eval import run_eval
 from magnet.ledger import connect, default_ledger_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
@@ -43,6 +45,16 @@ def cmd_record(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_eval(args: argparse.Namespace) -> int:
+    print(run_eval())
+    return 0
+
+
+def cmd_agent_run(args: argparse.Namespace) -> int:
+    print(run_agent_loop(ledger_path=args.ledger, repo_root=args.repo))
+    return 0
+
+
 def cmd_check_docs(args: argparse.Namespace) -> int:
     out = tool_check_docs(repo_root=args.repo, ledger_path=args.ledger)
     for row in out["results"]:
@@ -70,6 +82,12 @@ def main(argv: list[str] | None = None) -> int:
 
     p_demo = sub.add_parser("demo", help="Cold demo: baseline → adopt → receipt")
     p_demo.set_defaults(func=cmd_demo)
+
+    p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
+    p_eval.set_defaults(func=cmd_eval)
+
+    p_agent = sub.add_parser("agent-run", help="Deterministic 4-tool chain (no Bedrock)")
+    p_agent.set_defaults(func=cmd_agent_run)
 
     p_probe = sub.add_parser("probe", help="Run one probe")
     p_probe.add_argument("name", help="Probe name (e.g. demo-pass-rate)")

@@ -53,6 +53,17 @@ def run_check_docs_probe(repo_root: str) -> dict:
     }
 
 
+def _count_pytest_tests(tests_dir: Path) -> int:
+    """Re-derive test count from tests/*.py — never carry a number from docs."""
+    count = 0
+    if not tests_dir.is_dir():
+        return 0
+    for path in sorted(tests_dir.glob("test_*.py")):
+        text = path.read_text(encoding="utf-8")
+        count += len(re.findall(r"^\s*def test_", text, re.M))
+    return count
+
+
 def check_docs(repo_root: str) -> list[dict]:
     """Doc-drift for THIS repo — re-derive README numbers from source."""
     root = Path(repo_root)
@@ -72,6 +83,26 @@ def check_docs(repo_root: str) -> list[dict]:
             f"README claims {claimed_tools} tools, source has {tool_count}",
         )
     )
+
+    # Claim: pytest test count in STRANGER-PASS / REPORT vs actual def test_ count
+    actual_tests = _count_pytest_tests(root / "tests")
+    for doc_name in ("docs/STRANGER-PASS.md", "docs/REPORT.md"):
+        doc_path = root / doc_name
+        if not doc_path.is_file():
+            continue
+        doc_text = doc_path.read_text(encoding="utf-8")
+        claimed_tests = _first_int(doc_text, r"(\d+)\s+passed")
+        if claimed_tests is not None:
+            results.append(
+                _result(
+                    f"pytest count ({doc_name})",
+                    doc_name,
+                    claimed_tests,
+                    actual_tests,
+                    claimed_tests == actual_tests,
+                    f"{doc_name} claims {claimed_tests} passed, source has {actual_tests} tests",
+                )
+            )
 
     # Claim: probe names listed in README
     for name in ("run_probe", "record_week", "adopt_change", "check_docs"):

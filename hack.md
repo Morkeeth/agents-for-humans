@@ -50,10 +50,12 @@ No number without the command that produced it, the population it is out of, and
 | 2 | Port kernel from measurement-bench/magnet.py | tests green |
 | 3 | Core loop: adopt → re-run → delta receipt | demo end-to-end |
 | 4 | Stranger pass doc | STRANGER-PASS.md with command output |
+| 5 | Eval harness + agent-run + check_docs pytest drift | `magnet eval` + `magnet agent-run` exit 0 |
 
 ## NOW
 
-**Slice 4 (shipped):** Stranger pass verified — `git clone https://github.com/Morkeeth/agents-for-humans.git && pip install -e . && magnet demo` → exit 0 on commit `e798729`.
+**Slice 5:** Eval harness + deterministic agent-run + check_docs pytest count re-derivation.
+Done when: `python3 -m pytest -q` → 26 passed · `python -m magnet.cli eval` → magnet 5/5 · `python -m magnet.cli agent-run` → exit 0 · `python -m magnet.cli check-docs` → exit 0 · `git push origin main`.
 
 ## LOG
 
@@ -64,3 +66,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-08-29 · `test_check_docs_drift.py` added · drift on fake `99 tools` claim exits 1.
 - 2026-08-29 · Strands Bedrock agent loop not run — no AWS credentials in cloud VM.
 - 2026-08-29 · `git push origin main` → `e798729` · GitHub cold clone `/tmp/magnet-github-cold` → `magnet demo` exit 0 · `pytest -q` → 17 passed.
+- 2026-08-30 · Slice 5: `magnet/eval.py` (naive 3/5, magnet 5/5, silent_null 1/5) · `magnet/agent_run.py` (4-tool chain no Bedrock) · check_docs re-derives pytest count from `tests/test_*.py` · `python3 -m pytest -q` → 26 passed · `python -m magnet.cli eval` → exit 0 · `python -m magnet.cli agent-run` → exit 0 · `python -m magnet.cli check-docs` → exit 0 (after doc counts updated).

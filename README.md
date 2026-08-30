@@ -40,6 +40,8 @@ Ledger lives in-repo at `.magnet/ledger.db` — not Helicon-only.
 ```bash
 pytest
 magnet check-docs
+magnet eval          # naive vs magnet vs silent_null on 5 scenarios
+magnet agent-run     # 4-tool chain without Bedrock
 ```
 
 See `hack.md` for the build contract and `docs/architecture.md` for the flow diagram.
