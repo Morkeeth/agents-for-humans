@@ -14,7 +14,7 @@ def run_demo_probe(conn, *, command: str | None = None) -> dict:
 
     Base score 3/5; adopting the demo skill adds +1 via demo_state.skill_bonus.
     """
-    from magnet.ledger import get_demo_bonus
+    from magnet.log import get_demo_bonus
 
     bonus = get_demo_bonus(conn)
     value = 3 + bonus

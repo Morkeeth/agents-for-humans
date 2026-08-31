@@ -3,23 +3,24 @@ from __future__ import annotations
 
 import os
 
-from magnet.ledger import connect, latest_adoption, list_readings, reset_demo
+from magnet.log import connect, latest_adoption, list_readings, reset_demo
 from magnet.probes import DEMO_PROBE
 from magnet.reporter import naive_verdict, render_receipt, verdict
+from magnet.constants import SIMULATED_WEEK_OFFSET_DAYS
 from magnet.tools import tool_adopt_change, tool_record_week
 
 
-def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) -> str:
+def run_demo(*, log_path: str | None = None, repo_root: str | None = None) -> str:
     """init empty → baseline → adopt fake skill → re-run → receipt."""
     root = repo_root or os.getcwd()
-    path = ledger_path or os.path.join(root, ".magnet", "ledger.db")
+    path = log_path or os.path.join(root, ".magnet", "log.db")
     os.makedirs(os.path.dirname(path), exist_ok=True)
 
     conn = connect(path)
     reset_demo(conn)
 
     # Week 1 — baseline reading (one measured point: naive lies, MAGNET does not)
-    tool_record_week(DEMO_PROBE, ledger_path=path)
+    tool_record_week(DEMO_PROBE, log_path=path)
     readings_after_one = list_readings(conn, DEMO_PROBE)
     one_label, _ = verdict(readings_after_one, direction="up")
     naive_one = naive_verdict(readings_after_one)
@@ -30,14 +31,16 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
         "demo-verification-skill",
         "pass rate rises by 1/5",
         DEMO_PROBE,
-        ledger_path=path,
+        log_path=path,
         apply_demo_bonus=True,
     )
 
-    # Week 2 — post-adoption reading (next ISO week simulated via new connection read)
+    # Week 2 — SIMULATED. The clock is advanced 8 days so the reading lands in the
+    # next ISO week and a helped/hurt verdict is possible from a single demo run.
+    # The row is flagged `simulated` so no surface prints it as a real read time.
     from datetime import datetime, timedelta
 
-    from magnet.ledger import record_reading
+    from magnet.log import record_reading
     from magnet.probes import run_demo_probe
 
     probe = run_demo_probe(conn)
@@ -48,7 +51,8 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
         probe["command"],
         population=probe["population"],
         change_id=adoption["id"],
-        now=datetime.now() + timedelta(days=8),
+        now=datetime.now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS),
+        simulated=True,
     )
 
     readings = list_readings(conn, DEMO_PROBE)
@@ -66,6 +70,9 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
     naive = naive_verdict(readings)
     lines = [
         receipt,
+        "",
+        f"  NOTE: week 2 is SIMULATED (clock advanced {SIMULATED_WEEK_OFFSET_DAYS} days) so one run can",
+        "        show a helped/hurt verdict. Week 1 is a real reading.",
         "",
         "  after 1 reading (embarrassing case):",
         f"    naive verdict      {naive_one}  ← invents optimism",

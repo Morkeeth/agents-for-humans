@@ -14,7 +14,7 @@ ruling: Option A · MAGNET · Oscar 29 Aug 2026
 
 ## ⭐ NORTH STAR
 
-The field has too many skills and no memory of what they did. MAGNET is the adoption ledger +
+The field has too many skills and no memory of what they did. MAGNET is the adoption log +
 eval runner for **your** agent stack.
 
 ## PROMISE LINE
