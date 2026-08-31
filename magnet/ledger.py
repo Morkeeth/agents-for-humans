@@ -80,9 +80,19 @@ def record_reading(
     change_id: int | None = None,
     detail: dict | None = None,
     now: datetime | None = None,
+    simulated: bool = False,
 ) -> dict:
-    """Store one probe reading. Same-week re-record replaces prior row."""
+    """Store one probe reading. Same-week re-record replaces prior row.
+
+    `simulated=True` marks a row whose `now` is a made-up clock (the demo
+    advances a week so a helped/hurt verdict is possible in one run). The flag
+    is persisted in `detail` so every surface can refuse to print it as a real
+    read time. See tests/test_no_fabricated_clock.py.
+    """
     now = now or _now()
+    detail = dict(detail or {})
+    if simulated:
+        detail['simulated'] = True
     week = _week(now)
     stamp = now.isoformat(timespec="seconds")
     conn.execute(
@@ -116,6 +126,7 @@ def record_reading(
         "command": command,
         "unmeasured": unmeasured,
         "change_id": change_id,
+        "simulated": bool(simulated),
     }
 
 

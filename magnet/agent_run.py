@@ -9,6 +9,7 @@ import os
 from datetime import datetime, timedelta
 
 from magnet.ledger import connect, latest_adoption, list_readings, record_reading, reset_demo
+from magnet.demo import SIMULATED_WEEK_OFFSET_DAYS
 from magnet.probes import DEMO_PROBE, run_demo_probe
 from magnet.reporter import render_receipt, verdict
 from magnet.tools import tool_adopt_change, tool_check_docs, tool_record_week, tool_run_probe
@@ -57,11 +58,16 @@ def run_agent_loop(
         post["command"],
         population=post["population"],
         change_id=adoption["id"],
-        now=datetime.now() + timedelta(days=8),
+        # SIMULATED next week — flagged so it never prints as a real read time.
+        now=datetime.now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS),
+        simulated=True,
     )
     readings = list_readings(conn, probe_name)
     label, _ = verdict(readings, direction="up")
-    steps.append(f"  [record_week]   verdict={label}  readings={len(readings)}")
+    steps.append(
+        f"  [record_week]   verdict={label}  readings={len(readings)}  "
+        f"(week 2 SIMULATED, +{SIMULATED_WEEK_OFFSET_DAYS}d)"
+    )
 
     # 5. check_docs
     docs = tool_check_docs(repo_root=root, ledger_path=path)
@@ -76,4 +82,5 @@ def run_agent_loop(
         repro_command="magnet agent-run",
     )
 
-    return "\n".join(steps + ["", receipt, "", "  repro      magnet agent-run"])
+    # render_receipt already emits the repro line; do not print it twice.
+    return "\n".join(steps + ["", receipt])

@@ -8,6 +8,10 @@ from magnet.probes import DEMO_PROBE
 from magnet.reporter import naive_verdict, render_receipt, verdict
 from magnet.tools import tool_adopt_change, tool_record_week
 
+# Days the demo advances its clock to reach the next ISO week. Every reading
+# written with this offset is flagged `simulated=True`.
+SIMULATED_WEEK_OFFSET_DAYS = 8
+
 
 def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) -> str:
     """init empty → baseline → adopt fake skill → re-run → receipt."""
@@ -34,7 +38,9 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
         apply_demo_bonus=True,
     )
 
-    # Week 2 — post-adoption reading (next ISO week simulated via new connection read)
+    # Week 2 — SIMULATED. The clock is advanced 8 days so the reading lands in the
+    # next ISO week and a helped/hurt verdict is possible from a single demo run.
+    # The row is flagged `simulated` so no surface prints it as a real read time.
     from datetime import datetime, timedelta
 
     from magnet.ledger import record_reading
@@ -48,7 +54,8 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
         probe["command"],
         population=probe["population"],
         change_id=adoption["id"],
-        now=datetime.now() + timedelta(days=8),
+        now=datetime.now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS),
+        simulated=True,
     )
 
     readings = list_readings(conn, DEMO_PROBE)
@@ -66,6 +73,9 @@ def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) ->
     naive = naive_verdict(readings)
     lines = [
         receipt,
+        "",
+        f"  NOTE: week 2 is SIMULATED (clock advanced {SIMULATED_WEEK_OFFSET_DAYS} days) so one run can",
+        "        show a helped/hurt verdict. Week 1 is a real reading.",
         "",
         "  after 1 reading (embarrassing case):",
         f"    naive verdict      {naive_one}  ← invents optimism",

@@ -5,6 +5,8 @@ Rules carried forward:
   - baseline when len(measured) < 2 — a first reading is not a trend
   - helped/hurt only when two real readings exist and direction is known
   - unmeasured is NULL, never zero
+  - a reading flagged `detail.simulated` NEVER prints in a `read_at` field;
+    it prints as `simulated ... (SIMULATED week - not a real read time)`
 """
 from __future__ import annotations
 
@@ -77,11 +79,16 @@ def render_receipt(
     value_txt = format_value_pop(latest.get("value"), latest.get("population"))
     cmd = latest.get("command") or repro_command
     read_at = latest.get("recorded_at") or latest.get("read_at") or ""
+    simulated = bool((latest.get("detail") or {}).get("simulated"))
 
     lines.append(f"  probe      {probe_name}")
     lines.append(f"  latest     {value_txt}  ({cmd})")
     if read_at:
-        lines.append(f"  read_at    {read_at}")
+        if simulated:
+            # A made-up clock must never be printed in a field called read_at.
+            lines.append(f"  simulated  {read_at}  (SIMULATED week — not a real read time)")
+        else:
+            lines.append(f"  read_at    {read_at}")
 
     if label == "baseline":
         lines.append("  verdict    baseline — need two measured readings for helped/hurt")
