@@ -6,11 +6,8 @@ import os
 from magnet.ledger import connect, latest_adoption, list_readings, reset_demo
 from magnet.probes import DEMO_PROBE
 from magnet.reporter import naive_verdict, render_receipt, verdict
+from magnet.constants import SIMULATED_WEEK_OFFSET_DAYS
 from magnet.tools import tool_adopt_change, tool_record_week
-
-# Days the demo advances its clock to reach the next ISO week. Every reading
-# written with this offset is flagged `simulated=True`.
-SIMULATED_WEEK_OFFSET_DAYS = 8
 
 
 def run_demo(*, ledger_path: str | None = None, repo_root: str | None = None) -> str:

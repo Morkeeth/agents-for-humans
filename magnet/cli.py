@@ -5,7 +5,7 @@ import argparse
 import os
 import sys
 
-from magnet.agent_run import run_agent_loop
+from magnet.agent_run import MODES, run_agent_loop
 from magnet.demo import run_demo
 from magnet.eval import run_eval
 from magnet.ledger import connect, default_ledger_path, reset_demo
@@ -51,7 +51,7 @@ def cmd_eval(args: argparse.Namespace) -> int:
 
 
 def cmd_agent_run(args: argparse.Namespace) -> int:
-    print(run_agent_loop(ledger_path=args.ledger, repo_root=args.repo))
+    print(run_agent_loop(ledger_path=args.ledger, repo_root=args.repo, mode=args.model))
     return 0
 
 
@@ -86,7 +86,22 @@ def main(argv: list[str] | None = None) -> int:
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
     p_eval.set_defaults(func=cmd_eval)
 
-    p_agent = sub.add_parser("agent-run", help="Deterministic 4-tool chain (no Bedrock)")
+    p_agent = sub.add_parser(
+        "agent-run",
+        help="Drive the 4 tools with a real Strands agent loop (default: local, no spend)",
+    )
+    p_agent.add_argument(
+        "--model",
+        choices=MODES,
+        default="local",
+        help=(
+            "local = real Strands agent loop with a local scripted model "
+            "(no network, no spend; the default). "
+            "bedrock = real Strands agent loop with Amazon Bedrock "
+            "(REQUIRES AWS CREDENTIALS AND COSTS MONEY). "
+            "none = deterministic chain, no agent."
+        ),
+    )
     p_agent.set_defaults(func=cmd_agent_run)
 
     p_probe = sub.add_parser("probe", help="Run one probe")
