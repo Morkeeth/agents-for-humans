@@ -6,13 +6,13 @@ from datetime import datetime, timedelta
 from typing import Any
 
 from magnet.constants import SIMULATED_WEEK_OFFSET_DAYS, TOOL_NAMES
-from magnet.ledger import connect, list_readings, record_reading
+from magnet.log import connect, list_readings, record_reading
 from magnet.probes import check_docs, check_docs_exit_code, run_probe
 from magnet.reporter import verdict
 
 
-def tool_run_probe(probe_name: str, *, ledger_path: str | None = None) -> dict:
-    conn = connect(ledger_path)
+def tool_run_probe(probe_name: str, *, log_path: str | None = None) -> dict:
+    conn = connect(log_path)
     result = run_probe(conn, probe_name)
     return result
 
@@ -20,7 +20,7 @@ def tool_run_probe(probe_name: str, *, ledger_path: str | None = None) -> dict:
 def tool_record_week(
     probe_name: str,
     *,
-    ledger_path: str | None = None,
+    log_path: str | None = None,
     change_id: int | None = None,
     simulate_next_week: bool = False,
 ) -> dict:
@@ -32,7 +32,7 @@ def tool_record_week(
     flagged `simulated` in the database and every surface prints it as SIMULATED
     rather than as a real read time.
     """
-    conn = connect(ledger_path)
+    conn = connect(log_path)
     probe = run_probe(conn, probe_name)
     now = None
     if simulate_next_week:
@@ -64,12 +64,12 @@ def tool_adopt_change(
     prediction: str,
     probe_name: str,
     *,
-    ledger_path: str | None = None,
+    log_path: str | None = None,
     apply_demo_bonus: bool = False,
 ) -> dict:
-    from magnet.ledger import adopt_change, set_demo_bonus
+    from magnet.log import adopt_change, set_demo_bonus
 
-    conn = connect(ledger_path)
+    conn = connect(log_path)
     if apply_demo_bonus or probe_name in ("demo-pass-rate", "demo"):
         set_demo_bonus(conn, 1)
     adoption = adopt_change(
@@ -82,7 +82,7 @@ def tool_adopt_change(
     return adoption
 
 
-def tool_check_docs(*, repo_root: str | None = None, ledger_path: str | None = None) -> dict:
+def tool_check_docs(*, repo_root: str | None = None, log_path: str | None = None) -> dict:
     root = repo_root or "."
     results = check_docs(root)
     drifted = [r for r in results if not r["ok"]]
@@ -107,10 +107,10 @@ SYSTEM_PROMPT = (
 )
 
 
-def build_strands_tools(*, ledger_path: str | None = None, repo_root: str | None = None):
+def build_strands_tools(*, log_path: str | None = None, repo_root: str | None = None):
     """Return @tool-decorated callables for a Strands Agent.
 
-    `ledger_path`/`repo_root` are bound into the closures so an Agent run writes
+    `log_path`/`repo_root` are bound into the closures so an Agent run writes
     to the same database the caller is reading, instead of whatever the process
     working directory happens to be.
     """
@@ -122,7 +122,7 @@ def build_strands_tools(*, ledger_path: str | None = None, repo_root: str | None
     @tool
     def run_probe_tool(probe_name: str) -> dict:
         """Run an eval probe and return value/pop with the repro command."""
-        return tool_run_probe(probe_name, ledger_path=ledger_path)
+        return tool_run_probe(probe_name, log_path=log_path)
 
     @tool
     def record_week_tool(probe_name: str, simulate_next_week: bool = False) -> dict:
@@ -133,7 +133,7 @@ def build_strands_tools(*, ledger_path: str | None = None, repo_root: str | None
         marked SIMULATED everywhere it is shown.
         """
         return tool_record_week(
-            probe_name, ledger_path=ledger_path, simulate_next_week=simulate_next_week
+            probe_name, log_path=log_path, simulate_next_week=simulate_next_week
         )
 
     @tool
@@ -145,13 +145,13 @@ def build_strands_tools(*, ledger_path: str | None = None, repo_root: str | None
     ) -> dict:
         """Record a stack change and its testable prediction."""
         return tool_adopt_change(
-            change_type, description, prediction, probe_name, ledger_path=ledger_path
+            change_type, description, prediction, probe_name, log_path=log_path
         )
 
     @tool
     def check_docs_tool() -> dict:
         """Re-derive README numbers from source; non-zero exit on drift."""
-        return tool_check_docs(repo_root=repo_root, ledger_path=ledger_path)
+        return tool_check_docs(repo_root=repo_root, log_path=log_path)
 
     return [run_probe_tool, record_week_tool, adopt_change_tool, check_docs_tool]
 
@@ -160,7 +160,7 @@ def create_agent(
     system_prompt: str | None = None,
     *,
     model=None,
-    ledger_path: str | None = None,
+    log_path: str | None = None,
     repo_root: str | None = None,
 ):
     """Construct a Strands Agent wired to the four MAGNET tools.
@@ -173,7 +173,7 @@ def create_agent(
     from strands import Agent
 
     return Agent(
-        tools=build_strands_tools(ledger_path=ledger_path, repo_root=repo_root),
+        tools=build_strands_tools(log_path=log_path, repo_root=repo_root),
         system_prompt=system_prompt or SYSTEM_PROMPT,
         # Silence the SDK's default stdout printer: agent_run reports the tools it
         # dispatched by reading them back out of agent.messages instead.

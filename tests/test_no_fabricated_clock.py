@@ -16,7 +16,7 @@ from pathlib import Path
 
 from magnet.agent_run import run_agent_loop
 from magnet.demo import run_demo
-from magnet.ledger import connect, list_readings, record_reading, reset_demo
+from magnet.log import connect, list_readings, record_reading, reset_demo
 
 ROOT = Path(__file__).resolve().parents[1]
 

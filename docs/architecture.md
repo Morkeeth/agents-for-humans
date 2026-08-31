@@ -1,6 +1,6 @@
 # Architecture
 
-MAGNET wires a **Strands agent** to an **in-repo SQLite adoption ledger** and **deterministic probes**.
+MAGNET wires a **Strands agent** to an **in-repo SQLite adoption log** and **deterministic probes**.
 After you change a prompt, model, or skill, the agent re-runs your eval and prints
 `helped`, `hurt`, or **`baseline`** — never a trend from one reading.
 
@@ -12,7 +12,7 @@ flowchart LR
     A --> AC[adopt_change]
     A --> CD[check_docs]
     RP --> PR[Probe runner<br/>value/pop + command]
-    RW --> DB[(SQLite ledger<br/>.magnet/ledger.db)]
+    RW --> DB[(SQLite log<br/>.magnet/log.db)]
     AC --> DB
     PR --> DB
     DB --> DS[Decision surface<br/>helped / hurt / baseline]
@@ -36,7 +36,7 @@ flowchart LR
 | Module | Role |
 |--------|------|
 | `magnet/tools.py` | Strands `@tool` wrappers |
-| `magnet/ledger.py` | SQLite schema + round-trip |
+| `magnet/log.py` | SQLite schema + round-trip |
 | `magnet/reporter.py` | value/pop, baseline, helped/hurt (ported from measurement-bench science) |
 | `magnet/probes.py` | `demo-pass-rate`, `check-docs` |
 | `magnet/demo.py` | One-command cold demo |

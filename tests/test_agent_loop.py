@@ -37,7 +37,7 @@ def test_create_agent_returns_a_real_strands_agent():
 def test_agent_loop_dispatches_all_four_tools_through_strands(tmp_path):
     """The SDK's event loop -- not our code -- must call the four tools."""
     model = ScriptedLocalModel()
-    agent = create_agent(model=model, ledger_path=_db(tmp_path), repo_root=str(ROOT))
+    agent = create_agent(model=model, log_path=_db(tmp_path), repo_root=str(ROOT))
     agent("Measure the stack change.")
 
     dispatched = [
@@ -62,7 +62,7 @@ def test_agent_loop_dispatches_all_four_tools_through_strands(tmp_path):
 
 
 def test_agent_run_local_mode_uses_the_agent_and_says_so(tmp_path):
-    out = run_agent_loop(ledger_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
+    out = run_agent_loop(log_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
     assert "strands agent loop" in out
     assert "local scripted model" in out
     assert "tools dispatched     5" in out
@@ -74,10 +74,10 @@ def test_agent_run_local_mode_uses_the_agent_and_says_so(tmp_path):
 
 def test_agent_run_writes_readings_the_receipt_can_use(tmp_path):
     """The loop must really move data, not just emit step lines."""
-    from magnet.ledger import connect, list_readings
+    from magnet.log import connect, list_readings
 
     path = _db(tmp_path)
-    run_agent_loop(ledger_path=path, repo_root=str(ROOT), mode="local")
+    run_agent_loop(log_path=path, repo_root=str(ROOT), mode="local")
     readings = list_readings(connect(path), "demo-pass-rate")
     assert len(readings) == 2, readings
     assert [r["value"] for r in readings] == [3, 4]
@@ -86,7 +86,7 @@ def test_agent_run_writes_readings_the_receipt_can_use(tmp_path):
 
 # -- the mode is never silently swapped -----------------------------------
 def test_deterministic_mode_is_labelled_as_not_an_agent(tmp_path):
-    out = run_agent_loop(ledger_path=_db(tmp_path), repo_root=str(ROOT), mode="none")
+    out = run_agent_loop(log_path=_db(tmp_path), repo_root=str(ROOT), mode="none")
     assert "deterministic fallback" in out
     assert "no agent, no model" in out
     assert "strands agent loop" not in out
@@ -100,7 +100,7 @@ def test_a_failing_agent_mode_shouts_instead_of_degrading_quietly(tmp_path, monk
         raise RuntimeError("no credentials")
 
     monkeypatch.setattr(ar, "run_strands_agent", boom)
-    out = ar.run_agent_loop(ledger_path=_db(tmp_path), repo_root=str(ROOT), mode="bedrock")
+    out = ar.run_agent_loop(log_path=_db(tmp_path), repo_root=str(ROOT), mode="bedrock")
     assert "FAILED" in out and "DEGRADED" in out
     assert "RuntimeError: no credentials" in out
     assert "deterministic fallback" in out
@@ -130,7 +130,7 @@ def test_local_mode_never_constructs_a_bedrock_model(tmp_path, monkeypatch):
         raise AssertionError("local mode constructed a BedrockModel -- possible spend")
 
     monkeypatch.setattr(strands.models, "BedrockModel", boom)
-    out = run_agent_loop(ledger_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
+    out = run_agent_loop(log_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
     assert "tools dispatched     5" in out
     assert "DEGRADED" not in out
 
@@ -140,7 +140,7 @@ def test_local_mode_opens_no_network_socket(tmp_path, monkeypatch):
     measures the RUN, not strands' import-time machinery."""
     import socket
 
-    run_agent_loop(ledger_path=_db(tmp_path, "warm.db"), repo_root=str(ROOT), mode="local")
+    run_agent_loop(log_path=_db(tmp_path, "warm.db"), repo_root=str(ROOT), mode="local")
 
     opened = []
     real = socket.socket
@@ -151,7 +151,7 @@ def test_local_mode_opens_no_network_socket(tmp_path, monkeypatch):
             super().__init__(*a, **k)
 
     monkeypatch.setattr(socket, "socket", Watched)
-    out = run_agent_loop(ledger_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
+    out = run_agent_loop(log_path=_db(tmp_path), repo_root=str(ROOT), mode="local")
     assert "tools dispatched     5" in out
     assert "DEGRADED" not in out
 
