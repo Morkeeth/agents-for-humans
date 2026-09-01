@@ -13,17 +13,17 @@
 - **`magnet history`**: adoption timeline with verdicts from SQLite
 - `check_docs`: re-derives README tool count, tool names, pytest counts in docs
 - `docs/architecture.md`, `docs/STRANGER-PASS.md`
-- 61 pytest tests
+- 63 pytest tests
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 61 passed |
+| Tests green | `python3 -m pytest -q` → 63 passed |
 | Cold demo | `python -m magnet.cli demo` → exit 0, `verdict helped` + 1-reading baseline case |
 | Eval arms | `python -m magnet.cli eval` → magnet 5/5, naive 3/5, silent_null 1/5 |
 | Strands agent loop | `python -m magnet.cli agent-run` → 5 tools dispatched, not DEGRADED |
-| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 61/61 from subprocess |
+| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 63/63 from subprocess |
 | Stranger pass script | `bash scripts/stranger-pass.sh` → exit 0 |
 | `magnet adopt` | `python -m magnet.cli adopt skill … --demo-bonus --reset` → receipt |
 | Probe registry | `python -m magnet.cli list-probes` → 3 built-ins |

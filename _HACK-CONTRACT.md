@@ -1,6 +1,6 @@
-# Hack contract pointer · MAGNET
+# _HACK-CONTRACT.md · MAGNET
 
-The build contract lives in **`hack.md`**. This file is the night-run index.
+Canonical contract lives in **`hack.md`**. This file is the portable summary for judges and agents.
 
 ---
 
@@ -16,29 +16,37 @@ The build contract lives in **`hack.md`**. This file is the night-run index.
 | NOW | Exactly one slice |
 | LOG | What happened, including what failed |
 
-**Rule:** A box is truth only when its done-when was **RUN**. If ticked, say the command.
+**Rule:** A box is truth only when its done-when was **RUN**. If you tick it, say the command.
 
 ---
 
-## Four failures to avoid
+## NORTH STAR
 
-1. Run it, do not read it.
-2. A control not watched going RED is not a control (`grep -qv` on empty = false green).
-3. Never carry a number from a prompt — re-derive at the object.
-4. Never rank by title or name — open the object.
+The field has too many skills and no memory of what they did. MAGNET is the adoption log + eval runner for **your** agent stack.
 
----
+## PROMISE LINE
 
-## Report format (mandatory third section)
+After you change a prompt, model, or skill, a background agent re-runs your eval and tells you whether it helped — or prints **`baseline`** instead of inventing a trend.
+
+**Constraint:** No number without the command, population, and timestamp (`3/5`, never `3`).
+
+## FOUR FAILURES TO AVOID
+
+1. **Run it, don't read it** — defects found by executing, not reading.
+2. **Controls must go RED** — `grep -qv` on empty input returns 1; green on outage is a lie.
+3. **Re-derive numbers** — never carry figures from prompts or stale docs.
+4. **Open the object** — never rank by title/name; open the real artifact.
+
+## REPORT FORMAT (mandatory third section)
 
 - **SHIPPED** — what exists now
 - **VERIFIED** — each claim + command at its object
-- **WRONG** — what failed, unverified, left broken
+- **WRONG** — what failed, unverified, or left broken (required)
 
----
+## ONE COMMAND FOR JUDGES
 
-## Tonight's slice
+```bash
+bash scripts/judge-demo.sh
+```
 
-**Bedrock live receipt** — see `_NIGHT-SCOPE.md` and `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`.
-
-**Oscar gates (not agent):** film video · Devpost paste · submit Sep 14 · AWS secrets for Bedrock retry.
+Scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock live: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`

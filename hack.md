@@ -58,9 +58,9 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 10 (shipped):** Cloud judge path verified · Bedrock live on Oscar local (5 tools) · cloud VM BLOCKED (`NoCredentialsError`) · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md` · Technical 5/5.
+**Slice 10 (shipped):** Judge path verified · `judge-demo.sh` PATH fix for cold clone · `test_judge_demo.py` regression · Bedrock live on Oscar local (5 tools) · cloud VM Bedrock BLOCKED (`NoCredentialsError`) · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md` · 63 pytest · Technical 5/5.
 
-**Oscar gates:** AWS secrets for Bedrock retry · film video (lifts Presentation to 5) · Devpost paste · submit Sep 14.
+**Oscar gates:** film video (lifts Presentation to 5) · Devpost paste · submit Sep 14.
 
 ## LOG
 
@@ -77,4 +77,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 8: Devpost pack (EYES ruling: MAGNET submits, Grinder product) · `bash scripts/stranger-pass.sh` → OK · docs/DEVPOST-READY, FILM-SCOUT, OSCAR-CLICK-LIST, BUILDER-AWS-DRAFT, MOONSHOT-MEMO · architecture AWS section.
 - 2026-09-02 · Slice 9: Judge path · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · JUDGE-SCORECARD (4.0/5 honest) · DEVPOST-DESCRIPTION paste · BEDROCK-JUDGE-GUIDE · pushed main.
 - 2026-09-02 · **Live Bedrock (local)** · `magnet agent-run --model bedrock` exit 0 · 5 tools dispatched · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · Technical 5/5.
-- 2026-09-02 · Slice 10: Cloud VM · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 61 passed · STS → `NoCredentialsError` · cloud Bedrock BLOCKED · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md`.
+- 2026-09-02 · Slice 10: Cloud VM · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 63 passed · STS → `NoCredentialsError` · cloud Bedrock BLOCKED.
+- 2026-09-02 · Slice 10 fix: `judge-demo.sh` PATH (`~/.local/bin`) — cold clone was failing `magnet: command not found` · `tests/test_judge_demo.py` (2 tests) · cold clone `/tmp/magnet-cold-judge-post-push` → JUDGE DEMO OK.

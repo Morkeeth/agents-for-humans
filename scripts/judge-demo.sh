@@ -5,30 +5,45 @@ cd "$(dirname "$0")/.."
 
 echo "MAGNET judge demo — installing..."
 pip install -e ".[dev]" -q
+export PATH="${HOME}/.local/bin:${PATH}"
 
-echo ""
-echo "=== 1/6 · Design + Impact: embarrassing case (naive helped vs magnet baseline) ==="
-magnet demo
+# Subprocess may inherit PYTEST_CURRENT_TEST when this script is tested from pytest.
+unset PYTEST_CURRENT_TEST
 
-echo ""
-echo "=== 2/6 · Creativity: eval arms (silent_null vs naive vs magnet) ==="
-magnet eval
+if [ -n "${MAGNET_JUDGE_QUICK:-}" ]; then
+  echo "(quick mode — magnet steps skipped; used from pytest)"
+  echo ""
+  echo "=== 4/6 · Technical: docs drift gate ==="
+  magnet check-docs
+else
+  echo ""
+  echo "=== 1/6 · Design + Impact: embarrassing case (naive helped vs magnet baseline) ==="
+  magnet demo
 
-echo ""
-echo "=== 3/6 · Technical: Strands agent loop (4 tools dispatched) ==="
-magnet agent-run
+  echo ""
+  echo "=== 2/6 · Creativity: eval arms (silent_null vs naive vs magnet) ==="
+  magnet eval
 
-echo ""
-echo "=== 4/6 · Technical: docs drift gate ==="
-magnet check-docs
+  echo ""
+  echo "=== 3/6 · Technical: Strands agent loop (4 tools dispatched) ==="
+  magnet agent-run
 
-echo ""
-echo "=== 5/6 · Design: adoption timeline ==="
-magnet history | head -25
+  echo ""
+  echo "=== 4/6 · Technical: docs drift gate ==="
+  magnet check-docs
+
+  echo ""
+  echo "=== 5/6 · Design: adoption timeline ==="
+  magnet history | head -25
+fi
 
 echo ""
 echo "=== 6/6 · Technical: test suite ==="
-python3 -m pytest -q --tb=no
+if [ -n "${MAGNET_JUDGE_QUICK:-}" ]; then
+  python3 -m pytest -q --tb=no tests/test_reporter.py tests/test_demo.py
+else
+  python3 -m pytest -q --tb=no
+fi
 
 echo ""
 echo "JUDGE DEMO OK — see docs/JUDGE-SCORECARD-2026-09-02.md for criterion mapping"

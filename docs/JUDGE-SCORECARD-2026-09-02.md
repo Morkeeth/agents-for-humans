@@ -17,7 +17,7 @@ Honest self-score against [Devpost criteria](https://agentsforhumans.devpost.com
 | Presentation | 3 | 3 | video Oscar films · `docs/FILM-SCOUT-COMMANDS.md` |
 | **Weighted avg** | **4.2** | **4.2** | |
 
-Presentation is 3 until 5-min video exists.
+Presentation is 3 until 5-min video exists. Live Bedrock demonstrated locally — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`.
 
 ---
 
@@ -29,7 +29,7 @@ Presentation is 3 until 5-min video exists.
 |----------|---------|
 | Real `strands.Agent` event loop | `magnet agent-run` → `MODE: strands agent loop` |
 | 4 `@tool` functions registered | `magnet check-docs` → tool count 4 |
-| 61 automated tests | `python3 -m pytest -q` |
+| 63 automated tests | `python3 -m pytest -q` |
 | Bedrock path (live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` |
 | Stranger verification | `bash scripts/stranger-pass.sh` |
 

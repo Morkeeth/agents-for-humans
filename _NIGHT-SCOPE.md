@@ -1,15 +1,27 @@
-# Night scope · MAGNET · Bedrock live + judge proof · 2026-09-02
+# _NIGHT-SCOPE.md · MAGNET judge-winning night · 2026-09-02
 
 **Repo:** Morkeeth/agents-for-humans · **branch:** main  
 **Contract:** `hack.md` · `_HACK-CONTRACT.md`
 
+**EYES ruling:** MAGNET submits. Agent Grinder is a separate product — do not touch agentgrinder repo.
+
 ---
 
-## Mission
+## Kill bar
 
-Run the full judge path on cloud, then attempt **live Amazon Bedrock** Strands loop. Push proof to main.
+```bash
+git clone https://github.com/Morkeeth/agents-for-humans.git
+cd agents-for-humans
+bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
+```
 
-**Done when:** `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` exists with real `magnet agent-run --model bedrock` output — or honest BLOCKED with exact error.
+If this fails on cold clone, the night failed.
+
+---
+
+## Repetitive task (say everywhere)
+
+> After every prompt, model, or skill change, developers manually re-run evals and guess if it helped — MAGNET's Strands agent automates that loop and refuses to lie with one reading.
 
 ---
 
@@ -22,7 +34,7 @@ bash scripts/judge-demo.sh
 python3 -m pytest -q
 ```
 
-All must exit 0.
+All must exit 0. Cold clone required after push.
 
 ---
 
@@ -30,29 +42,38 @@ All must exit 0.
 
 ```bash
 python3 -c "import boto3; print(boto3.client('sts').get_caller_identity()['Account'])"
+magnet agent-run --model bedrock
 ```
 
-- **Creds work:** `export AWS_REGION=us-east-1` · `magnet agent-run --model bedrock`
-- **No creds:** BLOCKED receipt · do not fake output
+- **Creds work:** receipt in `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
+- **No creds (cloud VM):** BLOCKED — do not fake output
 
 ---
 
-## Phase 3 · Film-ready capture
+## Judging criteria → proof command
 
-- `docs/FILM-SCOUT-COMMANDS.md` — Bedrock B-roll block if Phase 2 succeeded
-- `docs/SCREENSHOTS.md` — optional screenshot #5 from bedrock run
-- README For Judges — link bedrock receipt
+| Criterion | Judge asks | Proof |
+|-----------|------------|-------|
+| Technical | Real Strands? AWS? | `magnet agent-run` · `pytest -q` · Bedrock receipt |
+| Design | Complete product? | `magnet demo` · `magnet history` |
+| Impact | Real problem? | DEVPOST problem paragraph · `magnet adopt` |
+| Creativity | Non-obvious use? | `magnet eval` (silent_null arm) |
+| Presentation | Video + pitch? | `docs/FILM-SCOUT-COMMANDS.md` (Oscar films) |
+
+---
+
+## Do NOT
+
+- Submit Devpost · publish builder.aws · fake Bedrock output
+- Touch agentgrinder · score 5/5 without evidence
 
 ---
 
-## Do not
+## Oscar gates (outward acts)
 
-- Devpost submit · builder.aws publish · AgentCore deploy
-- Fake Bedrock transcript
-- Spend beyond one bedrock attempt (+ one retry if transient)
-- Touch agentgrinder repo
-
----
+- Film 5-min video (+ Bedrock B-roll if creds)
+- Paste DEVPOST-DESCRIPTION
+- Submit before Sep 14 5pm PDT
 
 ## Ship gate
 
