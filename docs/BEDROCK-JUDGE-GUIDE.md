@@ -38,6 +38,12 @@ magnet agent-run --model bedrock
 
 ---
 
+## Verified live (2026-09-02)
+
+Oscar ran `magnet agent-run --model bedrock` on local machine — exit 0, 5 tools dispatched via Strands event loop. Full output: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`.
+
+---
+
 ## If Bedrock fails
 
 The CLI prints the failure loudly and does not fake success. Fall back to:

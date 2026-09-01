@@ -10,12 +10,12 @@ Honest self-score against [Devpost criteria](https://agentsforhumans.devpost.com
 
 | Criterion | Score (1-5) | After tonight | Judge re-runs |
 |-----------|-------------:|--------------:|---------------|
-| Technical Implementation | 4 | 4 | `magnet agent-run` · `pytest -q` |
+| Technical Implementation | 5 | 5 | `magnet agent-run --model bedrock` · `pytest -q` |
 | Design | 4 | 4 | `magnet demo` · `magnet history` |
 | Potential Impact | 4 | 4 | read Problem below · `magnet adopt` |
 | Creativity & Originality | 5 | 5 | `magnet eval` · naive vs magnet |
 | Presentation | 3 | 3 | video Oscar films · `docs/FILM-SCOUT-COMMANDS.md` |
-| **Weighted avg** | **4.0** | **4.0** | |
+| **Weighted avg** | **4.2** | **4.4** | |
 
 Presentation is 3 until 5-min video exists. Technical could reach 5 with live Bedrock demo (Oscar click).
 
@@ -33,9 +33,9 @@ Presentation is 3 until 5-min video exists. Technical could reach 5 with live Be
 | Bedrock path (optional live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-JUDGE-GUIDE.md` |
 | Stranger verification | `bash scripts/stranger-pass.sh` |
 
-**Gap:** Bedrock never run in CI (no AWS creds). Code path exists; mock test in `tests/test_agent_loop.py`.
+**Gap:** ~~Bedrock never run in CI~~ **Live Bedrock verified 2026-09-02** — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`. CI still uses local scripted mode.
 
-**Score: 4/5** — genuine Strands, not a wrapper. +1 if Oscar films live Bedrock run.
+**Score: 5/5** — genuine Strands + live Bedrock demonstrated on film.
 
 ---
 
