@@ -15,9 +15,9 @@ Honest self-score against [Devpost criteria](https://agentsforhumans.devpost.com
 | Potential Impact | 4 | 4 | read Problem below · `magnet adopt` |
 | Creativity & Originality | 5 | 5 | `magnet eval` · naive vs magnet |
 | Presentation | 3 | 3 | video Oscar films · `docs/FILM-SCOUT-COMMANDS.md` |
-| **Weighted avg** | **4.2** | **4.4** | |
+| **Weighted avg** | **4.2** | **4.2** | |
 
-Presentation is 3 until 5-min video exists. Technical could reach 5 with live Bedrock demo (Oscar click).
+Presentation is 3 until 5-min video exists.
 
 ---
 
@@ -30,12 +30,12 @@ Presentation is 3 until 5-min video exists. Technical could reach 5 with live Be
 | Real `strands.Agent` event loop | `magnet agent-run` → `MODE: strands agent loop` |
 | 4 `@tool` functions registered | `magnet check-docs` → tool count 4 |
 | 61 automated tests | `python3 -m pytest -q` |
-| Bedrock path (optional live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-JUDGE-GUIDE.md` |
+| Bedrock path (live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` |
 | Stranger verification | `bash scripts/stranger-pass.sh` |
 
-**Gap:** ~~Bedrock never run in CI~~ **Live Bedrock verified 2026-09-02** — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`. CI still uses local scripted mode.
+**Gap:** Live Bedrock verified 2026-09-02 on Oscar local machine — see receipt. CI and cloud VM still use local scripted mode (`NoCredentialsError` on cloud STS check).
 
-**Score: 5/5** — genuine Strands + live Bedrock demonstrated on film.
+**Score: 5/5** — genuine Strands + live Bedrock demonstrated (local). Judges without AWS creds use `magnet agent-run` default.
 
 ---
 
@@ -108,6 +108,6 @@ Presentation is 3 until 5-min video exists. Technical could reach 5 with live Be
 ## Morning path to 4.5+ average
 
 1. Oscar films `bash scripts/judge-demo.sh` + narration from FILM-SCOUT
-2. Optional: `magnet agent-run --model bedrock` on camera
+2. `magnet agent-run --model bedrock` on camera (local receipt proves path works)
 3. Paste `docs/DEVPOST-DESCRIPTION.md` into Devpost
 4. Publish `docs/BUILDER-AWS-DRAFT.md` on builder.aws (+0.6 bonus)

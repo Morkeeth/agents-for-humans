@@ -1,13 +1,17 @@
-# BEDROCK LIVE RECEIPT · 2026-09-02
+# Bedrock live receipt · 2026-09-02
+
+Two environments, two outcomes — both documented honestly.
+
+---
+
+## LOCAL · SUCCESS (Oscar machine)
 
 **Run by:** Oscar local machine (authorized)  
 **Account:** …8869 · **Region:** us-east-1  
 **Command:** `magnet agent-run --model bedrock`  
 **Exit:** 0 · **Duration:** ~15s
 
----
-
-## SHIPPED
+### SHIPPED
 
 Live Amazon Bedrock Strands agent loop — language model chose tools, not scripted replay.
 
@@ -30,9 +34,7 @@ Receipt footer:
   repro      magnet agent-run --model bedrock
 ```
 
----
-
-## VERIFIED
+### VERIFIED (local)
 
 | Claim | Evidence |
 |-------|----------|
@@ -43,22 +45,44 @@ Receipt footer:
 
 ---
 
-## WRONG / notes
+## CLOUD VM · BLOCKED (Cursor cloud agent)
 
-1. **Minor:** `check_docs_tool` logged `failed to parse tool input json` — run still completed.
+Cloud agent run on Cursor VM. Oscar authorized AWS spend lane; credentials were **not** present in the cloud environment.
+
+### VERIFIED (cloud)
+
+| Claim | Command | Result |
+|-------|---------|--------|
+| Judge path | `bash scripts/judge-demo.sh` | exit 0 · `JUDGE DEMO OK` |
+| Stranger pass | `bash scripts/stranger-pass.sh` | exit 0 · `stranger pass OK` |
+| Test suite | `python3 -m pytest -q` | 61 passed |
+| AWS creds absent | `python3 -c "import boto3; print(boto3.client('sts').get_caller_identity()['Account'])"` | `botocore.exceptions.NoCredentialsError: Unable to locate credentials` |
+| No AWS env vars | `env \| grep -i aws` | `NO_AWS_ENV_VARS` |
+
+**Not run on cloud:** `magnet agent-run --model bedrock` — would fail immediately without credentials; no spend attempted.
+
+**To unblock cloud:** add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` to Cursor cloud agent secrets.
+
+---
+
+## WRONG
+
+1. **Minor (local run):** `check_docs_tool` logged `failed to parse tool input json` — run still completed.
 2. **Simulated week** in demo path — receipt marks SIMULATED; honest for judges.
-3. **Cloud agent** may still be BLOCKED unless AWS secrets added to Cursor cloud env — this receipt is **local** proof.
+3. **Cloud agent could not re-verify local Bedrock** — this VM has no AWS creds; local proof is Oscar's terminal capture above, not re-run here.
+4. **Bedrock model ID** still OPEN in `hack.md` (Oscar click).
+5. `_NIGHT-SCOPE.md` / `_HACK-CONTRACT.md` added by cloud agent this session.
 
 ---
 
 ## For film
 
-B-roll: run `magnet agent-run --model bedrock` and capture MODE line + tool dispatch + receipt.  
+B-roll: run `magnet agent-run --model bedrock` on a machine with AWS creds and capture MODE line + tool dispatch + receipt.  
 Say: "Same Strands loop — local scripted for CI, Bedrock when you want a real model choosing tools."
 
 ---
 
 ## Scorecard impact
 
-Technical Implementation: **5/5** (live Bedrock demonstrated).  
+Technical Implementation: **5/5** (live Bedrock demonstrated on Oscar local). Cloud CI/judge path remains local scripted.  
 Full paste: `docs/JUDGE-SCORECARD-2026-09-02.md`

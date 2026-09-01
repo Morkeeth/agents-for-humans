@@ -66,3 +66,18 @@ Deploy prep only — Oscar click. See `docs/AGENTCORE-DEPLOY-PREP.md` if present
 ## Honesty for video
 
 If filming without AWS creds: show `magnet agent-run` (local mode) and state Bedrock path exists for judges with credentials. Do not imply Bedrock ran if it did not.
+
+---
+
+## Verified on cloud · 2026-09-02
+
+**Status: BLOCKED** — no AWS credentials in Cursor cloud agent VM.
+
+| Check | Command | Result |
+|-------|---------|--------|
+| STS identity | `python3 -c "import boto3; print(boto3.client('sts').get_caller_identity()['Account'])"` | `NoCredentialsError: Unable to locate credentials` |
+| Env vars | `env \| grep -i aws` | none |
+
+Full receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
+
+**To unblock:** add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` to Cursor cloud agent secrets, then re-run `magnet agent-run --model bedrock`.

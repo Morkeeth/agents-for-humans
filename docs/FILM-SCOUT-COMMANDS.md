@@ -77,3 +77,19 @@ magnet history
 bash scripts/stranger-pass.sh   # must exit 0 before filming
 python3 -m pytest -q            # 61 passed
 ```
+
+---
+
+## Bedrock B-roll (Oscar · verified local 2026-09-02)
+
+Live run succeeded on Oscar machine — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`. Cloud VM has no AWS creds; film on a machine with secrets.
+
+```bash
+export AWS_REGION=us-east-1
+magnet agent-run --model bedrock
+```
+
+**Point at:** `MODE: strands agent loop · Amazon Bedrock` + tools dispatched by the model (not scripted).  
+**Say:** "Same four tools — this time a language model on Bedrock chose the sequence."
+
+If filming without AWS creds, use local mode in section 2:30–3:30 and cite the receipt for honest status.

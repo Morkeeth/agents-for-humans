@@ -58,9 +58,9 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 9 (shipped):** Judge path — `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `docs/JUDGE-SCORECARD-2026-09-02.md` (avg 4.0/5) · DEVPOST-DESCRIPTION · BEDROCK-JUDGE-GUIDE · SCREENSHOTS · README For Judges.
+**Slice 10 (shipped):** Cloud judge path verified · Bedrock live on Oscar local (5 tools) · cloud VM BLOCKED (`NoCredentialsError`) · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md` · Technical 5/5.
 
-**Oscar gates:** film video (lifts Presentation to 5) · optional Bedrock on camera · Devpost paste · submit Sep 14.
+**Oscar gates:** AWS secrets for Bedrock retry · film video (lifts Presentation to 5) · Devpost paste · submit Sep 14.
 
 ## LOG
 
@@ -76,4 +76,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-01 · Slice 6-7 shipped · `git push origin main` → `2d38525` · cold clone `/tmp/magnet-cold-final` → 61 passed · `bash scripts/stranger-pass.sh` → exit 0 · `magnet demo` → helped receipt.
 - 2026-09-02 · Slice 8: Devpost pack (EYES ruling: MAGNET submits, Grinder product) · `bash scripts/stranger-pass.sh` → OK · docs/DEVPOST-READY, FILM-SCOUT, OSCAR-CLICK-LIST, BUILDER-AWS-DRAFT, MOONSHOT-MEMO · architecture AWS section.
 - 2026-09-02 · Slice 9: Judge path · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · JUDGE-SCORECARD (4.0/5 honest) · DEVPOST-DESCRIPTION paste · BEDROCK-JUDGE-GUIDE · pushed main.
-- 2026-09-02 · **Live Bedrock** · `magnet agent-run --model bedrock` exit 0 · 5 tools dispatched · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · Technical 5/5.
+- 2026-09-02 · **Live Bedrock (local)** · `magnet agent-run --model bedrock` exit 0 · 5 tools dispatched · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · Technical 5/5.
+- 2026-09-02 · Slice 10: Cloud VM · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 61 passed · STS → `NoCredentialsError` · cloud Bedrock BLOCKED · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md`.
