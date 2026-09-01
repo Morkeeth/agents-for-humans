@@ -1,0 +1,10 @@
+{
+  "probes": {
+    "check-docs-exit": {
+      "command": "python -m magnet.check_docs",
+      "parser": "exit_code",
+      "direction": "up",
+      "description": "Example registry probe: 1/1 when docs match source"
+    }
+  }
+}

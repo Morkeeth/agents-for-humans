@@ -36,7 +36,7 @@ magnet history
 | `check-docs` | README claims vs source (re-derived at read time) |
 | `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
 
-Add your own via `.magnet/probes.json` (see `.magnet/probes.json.example`):
+Add your own via `.magnet/probes.json` (copy from `docs/probes.json.example`):
 
 ```bash
 magnet probe my-custom-eval
