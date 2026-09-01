@@ -1,5 +1,8 @@
 # FILM-SCOUT-COMMANDS · MAGNET · 5 min Devpost video
 
+**Open with the repetitive task (judges require this):**  
+*"Every time you change a prompt, model, or skill, you re-run evals and guess if it helped. MAGNET automates that loop — and refuses to lie with one reading."*
+
 Record terminal + optional slides. No camera required.
 
 ---

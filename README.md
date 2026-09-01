@@ -2,6 +2,8 @@
 
 **Professional Agents track · AWS Strands · Devpost Sep 14 2026**
 
+> **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md`
+
 > After you change a prompt, model, or skill, a background agent re-runs your eval and tells you
 > whether it helped — or prints **`baseline`** instead of inventing a trend.
 

@@ -54,12 +54,13 @@ No number without the command that produced it, the population it is out of, and
 | 6 | Real pytest probe + registry + history | `magnet probe pytest-pass-rate` + `magnet list-probes` + `magnet history` exit 0 |
 | 7 | `magnet adopt` + stranger-pass script | `bash scripts/stranger-pass.sh` exit 0 |
 | 8 | Devpost pack + film scout | DEVPOST-READY + FILM-SCOUT + OSCAR-CLICK-LIST on disk |
+| 9 | Judge-winning path | `scripts/judge-demo.sh` + JUDGE-SCORECARD + DEVPOST-DESCRIPTION |
 
 ## NOW
 
-**Slice 8 (shipped):** Devpost pack — `docs/DEVPOST-READY.md` · `FILM-SCOUT-COMMANDS.md` · `OSCAR-CLICK-LIST-2026-09-02.md` · `BUILDER-AWS-DRAFT.md` · `MOONSHOT-MEMO-2026-09-02.md` · architecture AWS path.
+**Slice 9 (shipped):** Judge path — `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `docs/JUDGE-SCORECARD-2026-09-02.md` (avg 4.0/5) · DEVPOST-DESCRIPTION · BEDROCK-JUDGE-GUIDE · SCREENSHOTS · README For Judges.
 
-**Oscar gates:** film 5min video · Builder ID · Devpost submit · optional `magnet agent-run --model bedrock`.
+**Oscar gates:** film video (lifts Presentation to 5) · optional Bedrock on camera · Devpost paste · submit Sep 14.
 
 ## LOG
 
@@ -74,3 +75,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-08-30 · `git push origin main` → `f74799d` · GitHub cold clone `/tmp/magnet-cold-post` → 26 passed · demo/eval/agent-run/check-docs exit 0.
 - 2026-09-01 · Slice 6-7 shipped · `git push origin main` → `2d38525` · cold clone `/tmp/magnet-cold-final` → 61 passed · `bash scripts/stranger-pass.sh` → exit 0 · `magnet demo` → helped receipt.
 - 2026-09-02 · Slice 8: Devpost pack (EYES ruling: MAGNET submits, Grinder product) · `bash scripts/stranger-pass.sh` → OK · docs/DEVPOST-READY, FILM-SCOUT, OSCAR-CLICK-LIST, BUILDER-AWS-DRAFT, MOONSHOT-MEMO · architecture AWS section.
+- 2026-09-02 · Slice 9: Judge path · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · JUDGE-SCORECARD (4.0/5 honest) · DEVPOST-DESCRIPTION paste · BEDROCK-JUDGE-GUIDE · pushed main.
