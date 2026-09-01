@@ -53,10 +53,13 @@ No number without the command that produced it, the population it is out of, and
 | 5 | Eval harness + agent-run + check_docs pytest drift | `magnet eval` + `magnet agent-run` exit 0 |
 | 6 | Real pytest probe + registry + history | `magnet probe pytest-pass-rate` + `magnet list-probes` + `magnet history` exit 0 |
 | 7 | `magnet adopt` + stranger-pass script | `bash scripts/stranger-pass.sh` exit 0 |
+| 8 | Devpost pack + film scout | DEVPOST-READY + FILM-SCOUT + OSCAR-CLICK-LIST on disk |
 
 ## NOW
 
-**Slice 7 (shipped):** `magnet adopt` core loop + `scripts/stranger-pass.sh` — `python3 -m pytest -q` → 61 passed · `bash scripts/stranger-pass.sh` (full, no QUICK) · cold clone post-push.
+**Slice 8 (shipped):** Devpost pack — `docs/DEVPOST-READY.md` · `FILM-SCOUT-COMMANDS.md` · `OSCAR-CLICK-LIST-2026-09-02.md` · `BUILDER-AWS-DRAFT.md` · `MOONSHOT-MEMO-2026-09-02.md` · architecture AWS path.
+
+**Oscar gates:** film 5min video · Builder ID · Devpost submit · optional `magnet agent-run --model bedrock`.
 
 ## LOG
 
@@ -70,3 +73,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-08-30 · Slice 5: `magnet/eval.py` (naive 3/5, magnet 5/5, silent_null 1/5) · `magnet/agent_run.py` (4-tool chain no Bedrock) · check_docs re-derives pytest count from `tests/test_*.py` · `python3 -m pytest -q` → 26 passed · `python3 -m magnet.cli eval` → exit 0 · `python3 -m magnet.cli agent-run` → exit 0 · `python3 -m magnet.cli check-docs` → exit 0 (after doc counts updated).
 - 2026-08-30 · `git push origin main` → `f74799d` · GitHub cold clone `/tmp/magnet-cold-post` → 26 passed · demo/eval/agent-run/check-docs exit 0.
 - 2026-09-01 · Slice 6-7 shipped · `git push origin main` → `2d38525` · cold clone `/tmp/magnet-cold-final` → 61 passed · `bash scripts/stranger-pass.sh` → exit 0 · `magnet demo` → helped receipt.
+- 2026-09-02 · Slice 8: Devpost pack (EYES ruling: MAGNET submits, Grinder product) · `bash scripts/stranger-pass.sh` → OK · docs/DEVPOST-READY, FILM-SCOUT, OSCAR-CLICK-LIST, BUILDER-AWS-DRAFT, MOONSHOT-MEMO · architecture AWS section.

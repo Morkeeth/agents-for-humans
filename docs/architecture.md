@@ -46,3 +46,26 @@ flowchart LR
 ## Naive baseline arm
 
 `reporter.naive_verdict()` always returns `helped` on fewer than two readings — the two-hour team bug MAGNET exists to catch. The demo prints both verdicts side by side.
+
+## AWS path (optional · Oscar click)
+
+| Mode | Command | AWS services | Cost |
+|------|---------|--------------|------|
+| **Local scripted** *(default, CI)* | `magnet agent-run --model local` | none | $0 |
+| **Bedrock** *(live LLM chooses tools)* | `magnet agent-run --model bedrock` | Amazon Bedrock | yes |
+| **Deterministic fallback** | `magnet agent-run --model none` | none | $0 |
+
+The Strands agent loop is identical in all modes — only the model provider changes. Bedrock has **never** been run in CI; document honestly on Devpost if only local mode is demonstrated in the video.
+
+```mermaid
+flowchart TB
+    subgraph local [Default · no AWS]
+        LA[Strands Agent] --> LT[ScriptedLocalModel]
+    end
+    subgraph aws [Optional · Oscar creds]
+        BA[Strands Agent] --> BR[Amazon Bedrock]
+    end
+    LA --> Tools[4 tools → SQLite log]
+    BA --> Tools
+```
+
