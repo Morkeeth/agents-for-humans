@@ -13,6 +13,8 @@
 pip install -e .
 magnet init
 magnet demo
+magnet list-probes    # built-in + your .magnet/probes.json
+magnet history        # adoption timeline from SQLite
 ```
 
 Cold path — no keys, no network:
@@ -22,6 +24,23 @@ git clone https://github.com/Morkeeth/agents-for-humans.git
 cd agents-for-humans
 pip install -e .
 magnet demo
+magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
+magnet history
+```
+
+## Probes
+
+| Probe | What it measures |
+|-------|------------------|
+| `demo-pass-rate` | Synthetic 3/5→4/5 demo (skill_bonus in SQLite) |
+| `check-docs` | README claims vs source (re-derived at read time) |
+| `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
+
+Add your own via `.magnet/probes.json` (see `.magnet/probes.json.example`):
+
+```bash
+magnet probe my-custom-eval
+magnet list-probes
 ```
 
 ## Strands agent · 4 tools
@@ -47,6 +66,9 @@ pytest
 magnet check-docs
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
+magnet list-probes   # built-in + registry probes
+magnet history       # adoption timeline from .magnet/log.db
+magnet probe pytest-pass-rate   # real eval (run from CLI, not inside pytest)
 ```
 
 ### Which model runs the agent

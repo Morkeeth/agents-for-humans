@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -11,9 +12,9 @@ from magnet.probes import check_docs, check_docs_exit_code, run_probe
 from magnet.reporter import verdict
 
 
-def tool_run_probe(probe_name: str, *, log_path: str | None = None) -> dict:
+def tool_run_probe(probe_name: str, *, log_path: str | None = None, repo_root: str | None = None) -> dict:
     conn = connect(log_path)
-    result = run_probe(conn, probe_name)
+    result = run_probe(conn, probe_name, repo_root=repo_root or os.getcwd())
     return result
 
 

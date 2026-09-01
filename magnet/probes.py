@@ -3,10 +3,34 @@ from __future__ import annotations
 
 import os
 import re
+import subprocess
+import sys
 from pathlib import Path
 
 DEMO_PROBE = "demo-pass-rate"
 CHECK_DOCS_PROBE = "check-docs"
+PYTEST_PROBE = "pytest-pass-rate"
+
+BUILTIN_PROBES = (
+    {
+        "name": DEMO_PROBE,
+        "command": "magnet probe demo-pass-rate",
+        "direction": "up",
+        "description": "Synthetic pass-rate for cold demo (skill_bonus in SQLite)",
+    },
+    {
+        "name": CHECK_DOCS_PROBE,
+        "command": "python -m magnet.check_docs",
+        "direction": "up",
+        "description": "Re-derive README claims; value=passing/total",
+    },
+    {
+        "name": PYTEST_PROBE,
+        "command": f"{sys.executable} -m pytest -q --tb=no",
+        "direction": "up",
+        "description": "Real eval: run pytest and count passed/total",
+    },
+)
 
 
 def run_demo_probe(conn, *, command: str | None = None) -> dict:
@@ -29,11 +53,54 @@ def run_demo_probe(conn, *, command: str | None = None) -> dict:
     }
 
 
+def run_pytest_probe(*, repo_root: str | None = None, command: str | None = None) -> dict:
+    """Run actual pytest — value/pop re-derived from subprocess output, not docs."""
+    import os
+
+    from magnet.registry import parse_pytest_summary
+
+    if os.environ.get("PYTEST_CURRENT_TEST") and command is None:
+        raise RuntimeError(
+            "pytest-pass-rate refuses to run the full suite inside pytest "
+            "(recursive). Run `magnet probe pytest-pass-rate` from the CLI, "
+            "or pass an explicit command= for a scoped eval."
+        )
+
+    root = repo_root or os.getcwd()
+    cmd = command or f"{sys.executable} -m pytest -q --tb=no"
+    argv = cmd if isinstance(cmd, list) else cmd.split()
+    proc = subprocess.run(
+        argv,
+        cwd=root,
+        capture_output=True,
+        text=True,
+        timeout=300,
+    )
+    combined = (proc.stdout or "") + (proc.stderr or "")
+    value, population = parse_pytest_summary(combined)
+    return {
+        "probe_name": PYTEST_PROBE,
+        "value": value,
+        "population": population,
+        "command": cmd,
+        "direction": "up",
+        "detail": {"exit_code": proc.returncode, "real_eval": True},
+    }
+
+
 def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
-    if probe_name in (DEMO_PROBE, "demo-pass-rate"):
+    root = repo_root or os.getcwd()
+    if probe_name in (DEMO_PROBE, "demo-pass-rate", "demo"):
         return run_demo_probe(conn)
     if probe_name in (CHECK_DOCS_PROBE, "check-docs"):
-        return run_check_docs_probe(repo_root or os.getcwd())
+        return run_check_docs_probe(root)
+    if probe_name in (PYTEST_PROBE, "pytest-pass-rate"):
+        return run_pytest_probe(repo_root=root)
+    from magnet.registry import load_registry, run_registry_probe
+
+    registry = load_registry(root)
+    if probe_name in registry:
+        return run_registry_probe(probe_name, registry[probe_name], repo_root=root)
     raise ValueError(f"unknown probe: {probe_name}")
 
 

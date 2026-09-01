@@ -38,7 +38,9 @@ flowchart LR
 | `magnet/tools.py` | Strands `@tool` wrappers |
 | `magnet/log.py` | SQLite schema + round-trip |
 | `magnet/reporter.py` | value/pop, baseline, helped/hurt (ported from measurement-bench science) |
-| `magnet/probes.py` | `demo-pass-rate`, `check-docs` |
+| `magnet/probes.py` | `demo-pass-rate`, `check-docs`, **`pytest-pass-rate`** (real eval) |
+| `magnet/registry.py` | Load YOUR probes from `.magnet/probes.json` |
+| `magnet/history.py` | Adoption timeline / decision surface |
 | `magnet/demo.py` | One-command cold demo |
 
 ## Naive baseline arm

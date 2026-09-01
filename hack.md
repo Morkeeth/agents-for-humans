@@ -51,10 +51,12 @@ No number without the command that produced it, the population it is out of, and
 | 3 | Core loop: adopt → re-run → delta receipt | demo end-to-end |
 | 4 | Stranger pass doc | STRANGER-PASS.md with command output |
 | 5 | Eval harness + agent-run + check_docs pytest drift | `magnet eval` + `magnet agent-run` exit 0 |
+| 6 | Real pytest probe + registry + history | `magnet probe pytest-pass-rate` + `magnet list-probes` + `magnet history` exit 0 |
+| 7 | `magnet adopt` + stranger-pass script | `bash scripts/stranger-pass.sh` exit 0 |
 
 ## NOW
 
-**Slice 5 (shipped):** Eval harness + agent-run + check_docs pytest drift — `python3 -m pytest -q` → 26 passed · `python3 -m magnet.cli eval` → magnet 5/5 · `python3 -m magnet.cli agent-run` → exit 0 · cold clone post-push `f74799d` → all exit 0.
+**Slice 7 (shipped):** `magnet adopt` core loop + `scripts/stranger-pass.sh` — `python3 -m pytest -q` → 61 passed · `bash scripts/stranger-pass.sh` (full, no QUICK) · cold clone post-push.
 
 ## LOG
 
@@ -67,3 +69,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-08-29 · `git push origin main` → `e798729` · GitHub cold clone `/tmp/magnet-github-cold` → `magnet demo` exit 0 · `pytest -q` → 17 passed.
 - 2026-08-30 · Slice 5: `magnet/eval.py` (naive 3/5, magnet 5/5, silent_null 1/5) · `magnet/agent_run.py` (4-tool chain no Bedrock) · check_docs re-derives pytest count from `tests/test_*.py` · `python3 -m pytest -q` → 26 passed · `python3 -m magnet.cli eval` → exit 0 · `python3 -m magnet.cli agent-run` → exit 0 · `python3 -m magnet.cli check-docs` → exit 0 (after doc counts updated).
 - 2026-08-30 · `git push origin main` → `f74799d` · GitHub cold clone `/tmp/magnet-cold-post` → 26 passed · demo/eval/agent-run/check-docs exit 0.
+- 2026-09-01 · Slice 6: `pytest-pass-rate` real probe · `.magnet/probes.json` registry · `magnet list-probes` · `magnet history` · `magnet/registry.py` · `magnet/adopt.py` · `scripts/stranger-pass.sh` · `python3 -m pytest -q` → 61 passed · `magnet check-docs` → exit 0.

@@ -11,8 +11,17 @@ pip install -e ".[dev]"
 magnet demo
 magnet eval
 magnet agent-run
+magnet list-probes
+magnet history
 pytest -q
 magnet check-docs
+magnet probe pytest-pass-rate   # real eval — run from CLI only
+```
+
+Alternative one-liner:
+
+```bash
+bash scripts/stranger-pass.sh
 ```
 
 Alternative if `magnet` is not on PATH after install:
@@ -69,10 +78,47 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-48 passed in 0.96s
+61 passed in 4.0s
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q`)
+
+## `magnet list-probes` output
+
+```
+MAGNET probes  (built-in + .magnet/probes.json)
+
+  demo-pass-rate       [builtin]  magnet probe demo-pass-rate
+  check-docs           [builtin]  python -m magnet.check_docs
+  pytest-pass-rate     [builtin]  python3 -m pytest -q --tb=no
+
+  total      3
+```
+
+Exit code: **0** (verified: `python -m magnet.cli list-probes`)
+
+## `magnet probe pytest-pass-rate` output
+
+```
+pytest-pass-rate: 61/61
+  command: python3 -m pytest -q --tb=no
+```
+
+Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)
+
+## `magnet history` output (after demo)
+
+```
+MAGNET history
+
+  #N  ...
+    change     [skill] demo-verification-skill
+    probe      demo-pass-rate
+    verdict    helped  (Δ 1)
+    readings   2
+```
+
+Exit code: **0** (verified: `python -m magnet.cli history`)
 
 ## `magnet check-docs` output
 
