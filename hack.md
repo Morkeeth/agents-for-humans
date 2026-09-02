@@ -29,7 +29,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## OPEN QUESTIONS
 
-- Which real eval probes ship for Devpost demo beyond `demo-pass-rate`? (blocking for production, not for cold path)
+- Which real eval probes ship for Devpost demo beyond `demo-pass-rate` + `pytest-pass-rate` + stack/bakeoff? (blocking for production, not for cold path)
 - Bedrock model ID for live Strands agent run? (Oscar click — not resolved here)
 
 ## CONSTITUTION
@@ -58,10 +58,11 @@ No number without the command that produced it, the population it is out of, and
 | 10 | Judge path verified + Bedrock local receipt | `judge-demo.sh` cold clone · cloud Bedrock BLOCKED |
 | 11 | CI + production adopt + cold-clone verify | `.github/workflows/judge-demo.yml` green · `cold-clone-verify.sh` exit 0 |
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
+| 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 
 ## NOW
 
-**Slice 12:** `magnet drift-demo` (Qwen lesson live) · check_docs scans all judge/devpost docs · doc drift 63→73 caught and fixed · CI cold-clone step · `docs/FUNDABLE-WEDGE.md` · 73 pytest.
+**Slice 13:** Port helicon `magnet.py` inventory/gaps/rank science into this repo · `magnet stack` inventories YOUR agent surfaces (fixture cold path) · `magnet fit` ranks a local candidates file against YOUR gaps (not a marketplace crawl) · `magnet bakeoff` scores magnet vs naive-stars vs naive-name vs silent_null on planted fixtures and can report we lost · wire into judge-demo · tests re-derived.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -86,3 +87,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 11 verified: CI green (run 33575676849) · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 69 passed.
 - 2026-09-02 · Slice 12: check_docs scans 6 judge/devpost docs · found 63→69 drift in 4 files · `magnet drift-demo` · CI cold-clone step · `docs/FUNDABLE-WEDGE.md` · `python3 -m pytest -q` → 73 passed · `magnet check-docs` → 11 claims PASS · `magnet drift-demo` → fake exit 1, real exit 0.
 - 2026-09-02 · CI FAIL run 33610787132: `test_log.py` banned word `ledger` in FUNDABLE-WEDGE.md · fixed · `git push origin main` → `024d611`.
+- 2026-09-02 · Slice 13 START · opened real object `Morkeeth/mountain-of-helicon` `helicon/magnet.py` (previously cited measurement-bench 404) · EXP-MAGNET-01: name-tiebreak invented 0.875 recall; synonym arm fails; claims must not buy score.
+- 2026-09-02 · Slice 13 FAIL then FIX · first `magnet bakeoff` → magnet recall 0.0 (planning/design uncovered; noise "plan a wedding" / "colour palette" filled top-20) · covered those caps on fixtures/stack · `reproduce` stemmed to debug `repro` — rewritten · re-run: magnet 0.5 recall p@3=1.0 noise=0; naive_stars 0.375 with dupes+liar; synonym primary 0/3 claims 3/3 · `python3 -m pytest -q` → 90 passed · check-docs 11 PASS.

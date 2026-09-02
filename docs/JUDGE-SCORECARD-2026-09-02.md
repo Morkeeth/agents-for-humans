@@ -29,7 +29,7 @@ Presentation is 3 until 5-min video exists. Live Bedrock demonstrated locally �
 |----------|---------|
 | Real `strands.Agent` event loop | `magnet agent-run` → `MODE: strands agent loop` |
 | 4 `@tool` functions registered | `magnet check-docs` → tool count 4 |
-| 82 automated tests | `python3 -m pytest -q` |
+| 90 automated tests | `python3 -m pytest -q` |
 | Bedrock path (live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` |
 | Stranger verification | `bash scripts/stranger-pass.sh` |
 | CI on every push | `.github/workflows/judge-demo.yml` |
