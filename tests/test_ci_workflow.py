@@ -13,4 +13,5 @@ def test_ci_workflow_runs_judge_demo():
     text = WORKFLOW.read_text()
     assert "judge-demo.sh" in text
     assert "stranger-pass.sh" in text
+    assert "cold-clone-verify.sh" in text
     assert "ubuntu-latest" in text

@@ -8,6 +8,7 @@ import sys
 from magnet.adopt import run_adopt
 from magnet.agent_run import MODES, run_agent_loop
 from magnet.demo import run_demo
+from magnet.drift_demo import run_drift_demo
 from magnet.eval import run_eval
 from magnet.history import render_history
 from magnet.log import connect, default_log_path, reset_demo
@@ -29,6 +30,11 @@ def cmd_init(args: argparse.Namespace) -> int:
 
 def cmd_demo(args: argparse.Namespace) -> int:
     print(run_demo(log_path=args.log, repo_root=args.repo))
+    return 0
+
+
+def cmd_drift_demo(args: argparse.Namespace) -> int:
+    print(run_drift_demo(repo_root=args.repo))
     return 0
 
 
@@ -129,6 +135,12 @@ def main(argv: list[str] | None = None) -> int:
 
     p_demo = sub.add_parser("demo", help="Cold demo: baseline → adopt → receipt")
     p_demo.set_defaults(func=cmd_demo)
+
+    p_drift = sub.add_parser(
+        "drift-demo",
+        help="Show check_docs catching fabricated numbers (Qwen lesson)",
+    )
+    p_drift.set_defaults(func=cmd_drift_demo)
 
     p_adopt = sub.add_parser("adopt", help="Adopt a change, re-probe, print receipt")
     p_adopt.add_argument("change_type", choices=["skill", "prompt", "model"])

@@ -66,6 +66,7 @@ The log lives in-repo at `.magnet/log.db` — not Helicon-only.
 ```bash
 pytest
 magnet check-docs
+magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes

@@ -11,28 +11,31 @@
 - **`pytest-pass-rate` probe**: runs real `pytest -q`, parses passed/total from subprocess output (not docs)
 - **`.magnet/probes.json` registry**: add YOUR eval commands without code changes (see `.magnet/probes.json.example`)
 - **`magnet history`**: adoption timeline with verdicts from SQLite
-- `check_docs`: re-derives README tool count, tool names, pytest counts in docs
+- `check_docs`: re-derives README tool count, tool names, pytest counts in **all judge/devpost docs**
+- **`magnet drift-demo`**: live Qwen lesson — fake repo fails, real repo passes
+- `docs/FUNDABLE-WEDGE.md` — investor one-pager for Sep 14
 - `docs/architecture.md`, `docs/STRANGER-PASS.md`
-- 69 pytest tests
-- **GitHub Actions** `.github/workflows/judge-demo.yml` — judge-demo + stranger-pass on every push
+- 73 pytest tests
+- **GitHub Actions** `.github/workflows/judge-demo.yml` — judge-demo + stranger-pass + cold-clone on every push
 - **`scripts/cold-clone-verify.sh`** — post-push GitHub clone kill-bar
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 69 passed |
+| Tests green | `python3 -m pytest -q` → 73 passed |
 | CI workflow | `.github/workflows/judge-demo.yml` runs `bash scripts/judge-demo.sh` |
 | Cold clone verify | `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK |
 | Cold demo | `python -m magnet.cli demo` → exit 0, `verdict helped` + 1-reading baseline case |
 | Eval arms | `python -m magnet.cli eval` → magnet 5/5, naive 3/5, silent_null 1/5 |
 | Strands agent loop | `python -m magnet.cli agent-run` → 5 tools dispatched, not DEGRADED |
-| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 69/69 from subprocess |
+| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 73/73 from subprocess |
 | Stranger pass script | `bash scripts/stranger-pass.sh` → exit 0 |
 | `magnet adopt` | `python -m magnet.cli adopt skill … --demo-bonus --reset` → receipt |
 | Probe registry | `python -m magnet.cli list-probes` → 3 built-ins |
 | History | `python -m magnet.cli history` → adoption + verdict after demo |
-| check_docs clean | `python -m magnet.cli check-docs` → all PASS |
+| check_docs clean | `python -m magnet.cli check-docs` → all PASS (11 claims incl. judge docs) |
+| Drift demo | `python -m magnet.cli drift-demo` → fake FAIL, real PASS |
 | Cold clone | `git clone … && pip install -e ".[dev]" && magnet demo` → exit 0 |
 
 ## WRONG

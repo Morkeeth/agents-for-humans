@@ -24,3 +24,6 @@ jobs:
 
       - name: Stranger pass
         run: bash scripts/stranger-pass.sh
+
+      - name: Cold clone verify (file:// kill-bar)
+        run: MAGNET_JUDGE_QUICK=1 bash scripts/cold-clone-verify.sh "file://${{ github.workspace }}"

@@ -13,37 +13,41 @@ unset PYTEST_CURRENT_TEST
 if [ -n "${MAGNET_JUDGE_QUICK:-}" ]; then
   echo "(quick mode — magnet steps skipped; used from pytest)"
   echo ""
-  echo "=== 4/7 · Technical: docs drift gate ==="
+  echo "=== 4/8 · Technical: docs drift gate ==="
   magnet check-docs
 else
   echo ""
-  echo "=== 1/7 · Design + Impact: embarrassing case (naive helped vs magnet baseline) ==="
+  echo "=== 1/8 · Design + Impact: embarrassing case (naive helped vs magnet baseline) ==="
   magnet demo
 
   echo ""
-  echo "=== 2/7 · Creativity: eval arms (silent_null vs naive vs magnet) ==="
+  echo "=== 2/8 · Creativity: eval arms (silent_null vs naive vs magnet) ==="
   magnet eval
 
   echo ""
-  echo "=== 3/7 · Technical: Strands agent loop (4 tools dispatched) ==="
+  echo "=== 3/8 · Technical: Strands agent loop (4 tools dispatched) ==="
   magnet agent-run
 
   echo ""
-  echo "=== 4/7 · Technical: docs drift gate ==="
+  echo "=== 4/8 · Technical: docs drift gate ==="
   magnet check-docs
 
   echo ""
-  echo "=== 5/7 · Impact: production probe (pytest-pass-rate adopt) ==="
+  echo "=== 4b/8 · Technical: drift demo (Qwen lesson) ==="
+  magnet drift-demo
+
+  echo ""
+  echo "=== 5/8 · Impact: production probe (pytest-pass-rate adopt) ==="
   magnet adopt skill production-eval-demo "all tests still pass" \
     --probe pytest-pass-rate --reset --no-simulate
 
   echo ""
-  echo "=== 6/7 · Design: adoption timeline ==="
+  echo "=== 6/8 · Design: adoption timeline ==="
   magnet history | head -25
 fi
 
 echo ""
-echo "=== 7/7 · Technical: test suite ==="
+echo "=== 8/8 · Technical: test suite ==="
 if [ -n "${MAGNET_JUDGE_QUICK:-}" ]; then
   python3 -m pytest -q --tb=no tests/test_reporter.py tests/test_demo.py
 else

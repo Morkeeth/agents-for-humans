@@ -7,7 +7,7 @@
 - **`scripts/judge-demo.sh` PATH fix** — `export PATH="${HOME}/.local/bin:${PATH}"` after pip install (was failing cold clone with `magnet: command not found`)
 - **`tests/test_judge_demo.py`** — structural + quick-mode integration (2 tests)
 - **`_NIGHT-SCOPE.md`** + **`_HACK-CONTRACT.md`** — scope and contract summaries
-- Doc counts re-derived: **63 pytest** (was 61, drift caught by `magnet check-docs`)
+- Doc counts re-derived: **73 pytest** (was 61, drift caught by `magnet check-docs`)
 - `MAGNET_JUDGE_QUICK` mode for pytest-safe nested runs (no recursion)
 
 Prior night artifacts (already on main): JUDGE-SCORECARD, DEVPOST-DESCRIPTION, BEDROCK-JUDGE-GUIDE, SCREENSHOTS, FILM-SCOUT, README For Judges.
@@ -17,7 +17,7 @@ Prior night artifacts (already on main): JUDGE-SCORECARD, DEVPOST-DESCRIPTION, B
 ## VERIFIED
 
 ```bash
-python3 -m pytest -q                    # → 63 passed
+python3 -m pytest -q                    # → 73 passed
 bash scripts/judge-demo.sh              # → JUDGE DEMO OK
 bash scripts/stranger-pass.sh           # → stranger pass OK
 magnet check-docs                       # → 7 claims, all match

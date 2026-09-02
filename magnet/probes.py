@@ -11,6 +11,22 @@ DEMO_PROBE = "demo-pass-rate"
 CHECK_DOCS_PROBE = "check-docs"
 PYTEST_PROBE = "pytest-pass-rate"
 
+# Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
+DOCS_WITH_PYTEST_COUNTS = (
+    "docs/STRANGER-PASS.md",
+    "docs/REPORT.md",
+    "docs/JUDGE-SCORECARD-2026-09-02.md",
+    "docs/DEVPOST-READY.md",
+    "docs/DEVPOST-DESCRIPTION.md",
+    "docs/FILM-SCOUT-COMMANDS.md",
+)
+
+_PYTEST_COUNT_PATTERNS = (
+    r"(\d+)\s+passed",
+    r"(\d+)\s+pytest",
+    r"(\d+)\s+automated tests",
+)
+
 BUILTIN_PROBES = (
     {
         "name": DEMO_PROBE,
@@ -151,14 +167,14 @@ def check_docs(repo_root: str) -> list[dict]:
         )
     )
 
-    # Claim: pytest test count in STRANGER-PASS / REPORT vs actual def test_ count
+    # Claim: pytest test count in judge/devpost docs vs actual def test_ count
     actual_tests = _count_pytest_tests(root / "tests")
-    for doc_name in ("docs/STRANGER-PASS.md", "docs/REPORT.md"):
+    for doc_name in DOCS_WITH_PYTEST_COUNTS:
         doc_path = root / doc_name
         if not doc_path.is_file():
             continue
         doc_text = doc_path.read_text(encoding="utf-8")
-        claimed_tests = _first_int(doc_text, r"(\d+)\s+passed")
+        claimed_tests = _first_int_any(doc_text, _PYTEST_COUNT_PATTERNS)
         if claimed_tests is not None:
             results.append(
                 _result(
@@ -167,7 +183,7 @@ def check_docs(repo_root: str) -> list[dict]:
                     claimed_tests,
                     actual_tests,
                     claimed_tests == actual_tests,
-                    f"{doc_name} claims {claimed_tests} passed, source has {actual_tests} tests",
+                    f"{doc_name} claims {claimed_tests} tests, source has {actual_tests} tests",
                 )
             )
 
@@ -197,6 +213,14 @@ def _count_strands_tools() -> int:
 def _first_int(text: str, pattern: str) -> int | None:
     m = re.search(pattern, text, re.I)
     return int(m.group(1)) if m else None
+
+
+def _first_int_any(text: str, patterns: tuple[str, ...]) -> int | None:
+    for pattern in patterns:
+        val = _first_int(text, pattern)
+        if val is not None:
+            return val
+    return None
 
 
 def _result(claim: str, doc: str, doc_value, source, ok: bool, why: str) -> dict:
