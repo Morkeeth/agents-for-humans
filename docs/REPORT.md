@@ -25,8 +25,10 @@
 | Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
 | Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
 | Adopt+fit | `magnet adopt skill pdb-navigator … --fit` → label fills-gap, fills debug |
+| Noise adopt honesty | `magnet adopt skill wine-pairing … --fit` → verdict unchanged + fit no-signal |
 | Stack coverage | `magnet probe stack-coverage` → 8/12 |
-| Cold clone (s13) | clone branch → demo/stack/bakeoff/pytest all exit 0 |
+| Demo bonus opt-in | `tests/test_adopt_fit.py::test_demo_bonus_is_opt_in_only` |
+| Cold clone (s13/s14) | clone branch → demo/stack/bakeoff/pytest exit 0 |
 
 ## WRONG
 
