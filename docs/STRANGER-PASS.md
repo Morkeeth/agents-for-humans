@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-98 passed in 25.32s
+100 passed in 25.32s
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -145,7 +145,7 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 98/98
+pytest-pass-rate: 100/100
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 

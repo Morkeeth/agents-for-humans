@@ -103,6 +103,49 @@ def test_cli_probe_stack_coverage():
     assert "/" in proc.stdout
 
 
+def test_demo_bonus_is_opt_in_only(tmp_path):
+    """Regression: demo-pass-rate must NOT invent +1/5 unless --demo-bonus."""
+    from magnet.log import connect, get_demo_bonus, list_readings, reset_demo
+    from magnet.tools import tool_adopt_change, tool_record_week
+
+    log = str(tmp_path / "log.db")
+    conn = connect(log)
+    reset_demo(conn)
+    tool_record_week("demo-pass-rate", log_path=log)
+    tool_adopt_change(
+        "skill",
+        "wine-pairing",
+        "noise",
+        "demo-pass-rate",
+        log_path=log,
+        apply_demo_bonus=False,
+    )
+    assert get_demo_bonus(connect(log)) == 0
+    tool_record_week("demo-pass-rate", log_path=log, simulate_next_week=True)
+    values = [r["value"] for r in list_readings(connect(log), "demo-pass-rate")]
+    assert values == [3, 3], values
+
+
+def test_demo_bonus_opt_in_raises_score(tmp_path):
+    from magnet.log import connect, list_readings, reset_demo
+    from magnet.tools import tool_adopt_change, tool_record_week
+
+    log = str(tmp_path / "log.db")
+    reset_demo(connect(log))
+    tool_record_week("demo-pass-rate", log_path=log)
+    tool_adopt_change(
+        "skill",
+        "pdb",
+        "up",
+        "demo-pass-rate",
+        log_path=log,
+        apply_demo_bonus=True,
+    )
+    tool_record_week("demo-pass-rate", log_path=log, simulate_next_week=True)
+    values = [r["value"] for r in list_readings(connect(log), "demo-pass-rate")]
+    assert values == [3, 4], values
+
+
 def test_list_probes_includes_stack_coverage():
     proc = subprocess.run(
         [sys.executable, "-m", "magnet.cli", "list-probes"],

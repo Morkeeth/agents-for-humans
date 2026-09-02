@@ -14,13 +14,13 @@
 - `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
 - `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
 - `fit_one` / `render_fit` / `stack_coverage` helpers
-- 98 pytest tests (re-derived from `tests/test_*.py`)
+- 100 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 98 passed |
+| Tests green | `python3 -m pytest -q` → 100 passed |
 | check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
 | Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
 | Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
@@ -35,9 +35,12 @@
 - **`reproduce` stemmed to debug `repro`** — verify-receipt wording fixed.
 - **Surface arm 1/2** — reviewer-agent demoted by overlap with owned critique.
 - **Synonym primary still 0/3** — EXP-MAGNET-01 re-derived; claims tier 3/3.
+- **Demo-bonus always-on bug** — `tool_adopt_change` applied +1/5 on every
+  `demo-pass-rate` adopt regardless of `--demo-bonus`. Found by running
+  `magnet adopt … --fit` on wine-pairing (probe said helped, fit said
+  no-signal). Fixed; regression tests added.
 - **Bedrock cloud still BLOCKED** — NoCredentialsError.
 - **fleet-ops plan still 404**.
-- **PR create requires user approval** in this environment — branch pushed;
-  ManagePullRequest registered draft; merge to main is Oscar/user click.
+- **PR create requires user approval** — branch pushed; merge is Oscar/user click.
 - **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature
-  branch + PR instead; commit is on `cursor/stack-magnet-bakeoff-5608`.
+  branch + PR; commits on `cursor/stack-magnet-bakeoff-5608`.
