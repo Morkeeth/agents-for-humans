@@ -1,6 +1,6 @@
 # Fundable wedge · MAGNET · Sep 14 2026
 
-**One sentence:** MAGNET is the adoption ledger + eval runner that tells professional developers whether their last agent change actually helped — or prints `baseline` instead of inventing a trend.
+**One sentence:** MAGNET is the adoption log + eval runner that tells professional developers whether their last agent change actually helped — or prints `baseline` instead of inventing a trend.
 
 ---
 
@@ -18,7 +18,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 
 | Layer | What | Proof |
 |-------|------|-------|
-| **Ledger** | In-repo SQLite (`.magnet/log.db`) — probe readings + adoptions | `magnet history` |
+| **Log** | In-repo SQLite (`.magnet/log.db`) — probe readings + adoptions | `magnet history` |
 | **Agent** | Strands `@tool` loop: run_probe, record_week, adopt_change, check_docs | `magnet agent-run` |
 | **Eval** | Real probes (`pytest-pass-rate`) + registry (`.magnet/probes.json`) | `magnet probe pytest-pass-rate` |
 | **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
@@ -38,8 +38,8 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 
 ## Business model (post-hackathon sketch)
 
-- **Open core:** MIT CLI + SQLite ledger + 3 built-in probes.
-- **Paid:** hosted ledger sync, team adoption timeline, custom probe templates, Bedrock agent-run in CI.
+- **Open core:** MIT CLI + SQLite log + 3 built-in probes.
+- **Paid:** hosted log sync, team adoption timeline, custom probe templates, Bedrock agent-run in CI.
 - **Companion:** Agent Grinder for public receipts (separate repo — not this submission).
 
 ---
