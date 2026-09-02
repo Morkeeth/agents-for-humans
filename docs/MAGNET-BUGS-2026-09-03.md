@@ -69,6 +69,33 @@ The demo still uses the simulated week and says so. `--no-simulate` on `adopt` i
 
 **`bash scripts/stranger-pass.sh`** (full, not quick): `11 claims checked. All match source.` → `== stranger pass OK ==`.
 
+## Defects 5 and 6 — found recording the demo, fixed 00:2x
+
+| # | Defect | Test (red first) | Fix |
+|---|---|---|---|
+| 5 | `magnet history` judged every adoption row on the probe's LATEST reading, so "drop the rule" (its own reading 80/81, hurt) printed `helped (Δ 1)` once the next adoption recovered | `test_history_row_binds_to_its_own_reading`, `test_history_row_shows_its_own_latest_value` | `history.readings_for_adoption()` cuts the series at the reading carrying the row's `change_id`; a row with no bound reading keeps the old whole-series verdict |
+| 6 | the suite ran `pip install -e ".[dev]"` (stranger-pass.sh, judge-demo.sh) and repointed the machine's editable `magnet` to whichever checkout ran the eval; judge-demo's quick mode also called the `magnet` console script, i.e. whatever install was current | `test_stranger_pass_under_test_does_not_pip_install`, `test_judge_demo_under_test_does_not_pip_install` (run with `PIP_REQUIRE_VIRTUALENV=1`, which makes any surviving `pip install` exit 3) | both scripts skip the install and print `install skipped` under their QUICK variable; judge-demo shadows `magnet` with `python3 -m magnet.cli` in quick mode |
+
+Before, `magnet history` on the demo log:
+```
+  #1  change [prompt] drop the never-invent rule from SYSTEM_PROMPT
+    latest     81/81  (pytest)
+    verdict    helped  (Δ 1)
+    readings   3
+```
+After:
+```
+  #1  change [prompt] drop the never-invent rule from SYSTEM_PROMPT
+    latest     80/81  (pytest)
+    verdict    hurt  (Δ -1)
+    readings   2
+  #2  change [prompt] restore the never-invent rule
+    latest     81/81  (pytest)
+    verdict    helped  (Δ 1)
+    readings   3
+```
+Before, the scripts under test with `PIP_REQUIRE_VIRTUALENV=1`: `MAGNET judge demo — installing...` / `ERROR: Could not find an activated virtualenv (required).` exit 3. After: `(quick mode — install skipped; magnet imported from this checkout)` … `== stranger pass OK ==`, and `pip show` reports the same editable location before and after the suite. Suite 82 → 86, six judge docs re-derived.
+
 ## Left open, on purpose
-- `tools.py` `tool_adopt_change` sets the demo bonus whenever the probe is `demo-pass-rate`, with or without `--demo-bonus`. So a hook adoption measured on the demo probe prints `helped` by construction (see the after-output of #1). The new `measures repo only` line sits under it, but the verdict line is still a lie for a stack change. Product ruling: either make the bonus opt-in only, or refuse `demo-pass-rate` for `hook`/`setting`.
+- (Closed by Cursor's `cursor/stack-magnet-bakeoff-5608`, commit "Fix demo-bonus always-on", once merged.) `tools.py` `tool_adopt_change` sets the demo bonus whenever the probe is `demo-pass-rate`, with or without `--demo-bonus`. So a hook adoption measured on the demo probe prints `helped` by construction (see the after-output of #1). The new `measures repo only` line sits under it, but the verdict line is still a lie for a stack change. Product ruling: either make the bonus opt-in only, or refuse `demo-pass-rate` for `hook`/`setting`.
 - `adopt` still simulates the next week by default. Now that same-day reads survive, the default fabricates a week for no reason. Flipping the default changes the recorded demo; Oscar's call.

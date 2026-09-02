@@ -91,6 +91,6 @@ The three rows in the log, straight from SQLite (`select id, recorded_at, value,
 - The numbers to say once: `81/81 → 80/81 → 81/81`. Never say a percentage.
 - Do not show `magnet demo`. It uses a labelled simulated week; this workflow needs none.
 
-## Known, left open (product rulings)
-- `magnet history` prints, on every adoption row, the verdict of the probe's *latest* reading, not the reading that adoption produced: row #1 above ("drop the rule") shows `helped (Δ 1)` in `history` while its own receipt said `hurt`. Bind the history verdict to the adoption's own reading (`change_id`).
-- Running the eval mutates the tool: `tests/test_adopt.py::test_stranger_pass_script_exits_zero` executes `scripts/stranger-pass.sh`, whose first line is `pip install -e .` — so a probe run from any checkout repoints the machine's editable `magnet` to that checkout. The first attempt at this demo recorded its baseline with the previous checkout's code for exactly this reason. Quick mode should skip the install.
+## Fixed the same night (see `docs/MAGNET-BUGS-2026-09-03.md`, defects 5 and 6)
+- `magnet history` now binds each row to the reading recorded for its own adoption: row #1 ("drop the rule") prints `hurt (Δ -1)`, row #2 `helped (Δ 1)`.
+- `scripts/stranger-pass.sh` and `scripts/judge-demo.sh` no longer run `pip install -e .` under test, so running the eval never repoints the machine's `magnet`. The `python3 -m magnet.cli` form above stays the right one for a live demo from an edited checkout.

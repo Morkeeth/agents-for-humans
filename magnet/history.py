@@ -22,6 +22,19 @@ def list_adoptions(conn: sqlite3.Connection, probe_name: str | None = None) -> l
     return [dict(r) for r in rows]
 
 
+def readings_for_adoption(readings: list[dict], change_id: int) -> list[dict]:
+    """The readings a history row is judged on: up to and including the one
+    recorded for this adoption (its change_id). Until 2026-09-03 every row was
+    judged on the probe's LATEST reading, so an adoption that hurt printed
+    `helped` once a later adoption recovered. An adoption with no bound reading
+    falls back to the whole series (the old behaviour) so it still shows a verdict.
+    """
+    for i, r in enumerate(readings):
+        if r.get("change_id") == change_id:
+            return readings[: i + 1]
+    return readings
+
+
 def render_history(
     conn: sqlite3.Connection,
     *,
@@ -40,7 +53,7 @@ def render_history(
     for row in adoptions:
         pname = row["probe_name"]
         probes_seen.add(pname)
-        readings = list_readings(conn, pname)
+        readings = readings_for_adoption(list_readings(conn, pname), row["id"])
         label, delta = verdict(readings, direction="up")
         measured = [r for r in readings if r.get("value") is not None]
 

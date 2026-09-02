@@ -10,7 +10,14 @@ echo "== magnet stranger pass =="
 echo "repo: $ROOT"
 echo ""
 
-python3 -m pip install -e ".[dev]" -q
+# Under test (MAGNET_STRANGER_QUICK) never install: `pip install -e .` repoints the
+# machine's editable magnet to whichever checkout ran the eval (found 2026-09-03
+# recording docs/DEMO-ONE-WORKFLOW.md). `python3 -m magnet.cli` imports from cwd.
+if [ -n "${MAGNET_STRANGER_QUICK:-}" ]; then
+  echo "(quick mode — install skipped; magnet imported from this checkout)"
+else
+  python3 -m pip install -e ".[dev]" -q
+fi
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # Subprocess may inherit PYTEST_CURRENT_TEST when this script is tested from pytest.
