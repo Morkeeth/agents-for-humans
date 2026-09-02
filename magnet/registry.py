@@ -14,7 +14,9 @@ from typing import Any
 
 DEFAULT_REGISTRY = ".magnet/probes.json"
 
-BUILTIN_PROBE_NAMES = frozenset({"demo-pass-rate", "demo", "check-docs", "pytest-pass-rate"})
+BUILTIN_PROBE_NAMES = frozenset(
+    {"demo-pass-rate", "demo", "check-docs", "pytest-pass-rate", "stack-coverage"}
+)
 
 
 def registry_path(repo_root: str | None = None) -> Path:

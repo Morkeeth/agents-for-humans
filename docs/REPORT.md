@@ -1,43 +1,43 @@
-# Build report · Slice 13 · 2026-09-02
+# Build report · Slice 13–14 · 2026-09-02
 
 ## SHIPPED
 
-- `magnet/stack.py` — inventory / gaps / rank / verify_declaration ported from
-  the real object `Morkeeth/mountain-of-helicon` `helicon/magnet.py` (previously
-  cited as measurement-bench 404)
-- `magnet/bakeoff.py` — planted flood scored against four arms:
-  magnet · naive_stars · naive_name · silent_null
+### Slice 13
+- `magnet/stack.py` — inventory / gaps / rank / verify_declaration from
+  `Morkeeth/mountain-of-helicon` `helicon/magnet.py`
+- `magnet/bakeoff.py` — magnet vs naive_stars vs naive_name vs silent_null
 - CLI: `magnet stack`, `magnet fit`, `magnet bakeoff`
-- Cold-path fixture stack at `fixtures/stack/` (no `~/.claude` required)
-- Judge-demo step 7/8 runs stack + bakeoff
-- Architecture diagram extended with stack→gaps→rank→bakeoff
-- 90 pytest tests (re-derived from `tests/test_*.py`)
+- Cold-path `fixtures/stack/`
+- Judge-demo step 7 + stranger-pass wired
+
+### Slice 14
+- `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
+- `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
+- `fit_one` / `render_fit` / `stack_coverage` helpers
+- 98 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 90 passed |
+| Tests green | `python3 -m pytest -q` → 98 passed |
 | check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
-| Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents, UNCOVERED listed |
-| Bakeoff | `python3 -m magnet.cli bakeoff --no-write` → magnet best; synonym 0/3 primary; claims 3/3; wine-liar False; naive_stars admits dupes+liar |
-| Liar cannot buy rank | bakeoff + `tests/test_stack_bakeoff.py::test_claims_do_not_buy_score` |
-| Name tie-break defect | `test_no_signal_items_are_not_ranked_by_name` + bakeoff FINDING on naive_name |
-| Word-boundary ui≠guitar | `test_word_boundary_rejects_ui_in_guitar` |
+| Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
+| Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
+| Adopt+fit | `magnet adopt skill pdb-navigator … --fit` → label fills-gap, fills debug |
+| Stack coverage | `magnet probe stack-coverage` → 8/12 |
+| Cold clone (s13) | clone branch → demo/stack/bakeoff/pytest all exit 0 |
 
 ## WRONG
 
-- **First bakeoff run magnet recall was 0.0** — fixture left `planning`/`design`
-  uncovered, so noise domains ("plan a wedding", "colour palette") filled top-20.
-  Fixed by covering those caps on the fixture; the vocabulary-collision finding
-  stays in the LOG.
-- **`reproduce` stemmed to debug `repro`** — verify-receipt skill briefly covered
-  debug by accident; description rewritten.
-- **Surface arm 1/2** — `reviewer-agent` demoted by word-overlap with owned
-  `critique` command (score −2). Not papered over.
-- **Synonym primary still 0/3** — EXP-MAGNET-01 finding re-derived; claims tier
-  recovers 3/3 without letting the wine-liar into primary.
-- **Bedrock in cloud VM still BLOCKED** — no AWS credentials.
-- **fleet-ops plan still 404** — used helicon magnet.py as the source object instead.
-- **`sk-` substring ban is unsafe** — matches `task-inbox`; secrets test now uses
-  `sk-ant-` / `sk_live` shapes.
+- **First bakeoff magnet recall 0.0** — uncovered planning/design let noise
+  ("plan a wedding", "colour palette") fill top-20. Fixed on fixture; logged.
+- **`reproduce` stemmed to debug `repro`** — verify-receipt wording fixed.
+- **Surface arm 1/2** — reviewer-agent demoted by overlap with owned critique.
+- **Synonym primary still 0/3** — EXP-MAGNET-01 re-derived; claims tier 3/3.
+- **Bedrock cloud still BLOCKED** — NoCredentialsError.
+- **fleet-ops plan still 404**.
+- **PR create requires user approval** in this environment — branch pushed;
+  ManagePullRequest registered draft; merge to main is Oscar/user click.
+- **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature
+  branch + PR instead; commit is on `cursor/stack-magnet-bakeoff-5608`.

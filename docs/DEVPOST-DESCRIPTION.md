@@ -63,7 +63,7 @@ cd agents-for-humans
 bash scripts/judge-demo.sh
 ```
 
-90 pytest tests · MIT license · no keys required for cold demo.
+98 pytest tests · MIT license · no keys required for cold demo.
 
 ---
 

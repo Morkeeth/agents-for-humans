@@ -59,10 +59,11 @@ No number without the command that produced it, the population it is out of, and
 | 11 | CI + production adopt + cold-clone verify | `.github/workflows/judge-demo.yml` green · `cold-clone-verify.sh` exit 0 |
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
+| 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 
 ## NOW
 
-**Slice 13:** Port helicon `magnet.py` inventory/gaps/rank science into this repo · `magnet stack` inventories YOUR agent surfaces (fixture cold path) · `magnet fit` ranks a local candidates file against YOUR gaps (not a marketplace crawl) · `magnet bakeoff` scores magnet vs naive-stars vs naive-name vs silent_null on planted fixtures and can report we lost · wire into judge-demo · tests re-derived.
+**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -89,3 +90,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · CI FAIL run 33610787132: `test_log.py` banned word `ledger` in FUNDABLE-WEDGE.md · fixed · `git push origin main` → `024d611`.
 - 2026-09-02 · Slice 13 START · opened real object `Morkeeth/mountain-of-helicon` `helicon/magnet.py` (previously cited measurement-bench 404) · EXP-MAGNET-01: name-tiebreak invented 0.875 recall; synonym arm fails; claims must not buy score.
 - 2026-09-02 · Slice 13 FAIL then FIX · first `magnet bakeoff` → magnet recall 0.0 (planning/design uncovered; noise "plan a wedding" / "colour palette" filled top-20) · covered those caps on fixtures/stack · `reproduce` stemmed to debug `repro` — rewritten · re-run: magnet 0.5 recall p@3=1.0 noise=0; naive_stars 0.375 with dupes+liar; synonym primary 0/3 claims 3/3 · `python3 -m pytest -q` → 90 passed · check-docs 11 PASS.
+- 2026-09-02 · Slice 13 cold clone `/tmp/magnet-cold-s13` (branch) → demo/stack/bakeoff/pytest exit 0 · push `8027d79`.
+- 2026-09-02 · Slice 14: `magnet adopt --fit` · `stack-coverage` probe 8/12 · judge-demo step extended · `python3 -m pytest -q` → 98 passed · check-docs 11 PASS.
