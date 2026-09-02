@@ -10,6 +10,7 @@ from pathlib import Path
 DEMO_PROBE = "demo-pass-rate"
 CHECK_DOCS_PROBE = "check-docs"
 PYTEST_PROBE = "pytest-pass-rate"
+STACK_COVERAGE_PROBE = "stack-coverage"
 
 # Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
 DOCS_WITH_PYTEST_COUNTS = (
@@ -45,6 +46,12 @@ BUILTIN_PROBES = (
         "command": f"{sys.executable} -m pytest -q --tb=no -m \"not slow\"",
         "direction": "up",
         "description": "Real eval: run pytest and count passed/total",
+    },
+    {
+        "name": STACK_COVERAGE_PROBE,
+        "command": "magnet probe stack-coverage",
+        "direction": "up",
+        "description": "YOUR stack: covered/total capabilities (fixtures/stack or --stack)",
     },
 )
 
@@ -112,12 +119,22 @@ def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
         return run_check_docs_probe(root)
     if probe_name in (PYTEST_PROBE, "pytest-pass-rate"):
         return run_pytest_probe(repo_root=root)
+    if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage"):
+        return run_stack_coverage_probe(repo_root=root)
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)
     if probe_name in registry:
         return run_registry_probe(probe_name, registry[probe_name], repo_root=root)
     raise ValueError(f"unknown probe: {probe_name}")
+
+
+def run_stack_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import default_stack_dir, stack_coverage
+
+    root = repo_root or os.getcwd()
+    stack = stack_dir or default_stack_dir(root)
+    return stack_coverage(stack)
 
 
 def run_check_docs_probe(repo_root: str) -> dict:

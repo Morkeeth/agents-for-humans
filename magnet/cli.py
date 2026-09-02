@@ -77,6 +77,9 @@ def cmd_adopt(args: argparse.Namespace) -> int:
             apply_demo_bonus=args.demo_bonus,
             simulate_next_week=not args.no_simulate,
             reset=args.reset,
+            fit=args.fit,
+            stack_dir=args.stack,
+            fit_description=args.fit_text,
         )
     )
     return 0
@@ -187,6 +190,16 @@ def main(argv: list[str] | None = None) -> int:
     p_adopt.add_argument("--demo-bonus", action="store_true", help="Apply demo skill bonus (+1/5)")
     p_adopt.add_argument("--no-simulate", action="store_true", help="Do not simulate next week")
     p_adopt.add_argument("--reset", action="store_true", help="Clear log before adopt")
+    p_adopt.add_argument(
+        "--fit",
+        action="store_true",
+        help="Also score this change against YOUR stack gaps (magnet stack science)",
+    )
+    p_adopt.add_argument(
+        "--fit-text",
+        help="Prose description used for fit matching (default: prediction)",
+    )
+    p_adopt.add_argument("--stack", help="Stack directory for --fit (default: fixtures/stack)")
     p_adopt.set_defaults(func=cmd_adopt)
 
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")

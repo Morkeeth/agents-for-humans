@@ -354,6 +354,105 @@ def magnet_report(
     return {**base, **rank(cands, inv, g, top)}
 
 
+def fit_one(
+    name: str,
+    description: str,
+    stack_dir: str,
+    *,
+    surface: str = "skills",
+    capabilities: list | None = None,
+) -> dict:
+    """Score a single candidate against YOUR stack. Used by adopt --fit."""
+    inv = inventory(stack_dir)
+    g = gaps(inv)
+    cand = {
+        "name": name,
+        "description": description,
+        "surface": surface,
+        "capabilities": capabilities or [],
+    }
+    res = rank([cand], inv, g, top=1)
+    row = (res["all_rows"] or [None])[0]
+    if row is None:
+        return {
+            "name": name,
+            "score": 0,
+            "label": "no-signal",
+            "fills": [],
+            "duplicates": [],
+            "claims": [],
+            "empty_surface": "",
+            "gaps": g,
+        }
+    if row["score"] > 0:
+        label = "fills-gap"
+    elif row["score"] < 0:
+        label = "duplicate"
+    elif row.get("claims"):
+        label = "claimed-unverified"
+    else:
+        label = "no-signal"
+    return {
+        "name": name,
+        "score": row["score"],
+        "label": label,
+        "fills": row["fills"],
+        "duplicates": row["duplicates"],
+        "claims": [c["cap"] for c in row["claims"]],
+        "empty_surface": row.get("empty_surface") or "",
+        "gaps": g,
+    }
+
+
+def stack_coverage(stack_dir: str) -> dict:
+    """covered/total capabilities — re-derived from the live inventory."""
+    inv = inventory(stack_dir)
+    g = gaps(inv)
+    total = len(CAPABILITIES)
+    uncovered = set(g["uncovered"])
+    covered = total - len(uncovered)
+    return {
+        "probe_name": "stack-coverage",
+        "value": covered,
+        "population": total,
+        "command": f"magnet probe stack-coverage --stack {stack_dir}",
+        "direction": "up",
+        "detail": {
+            "covered_caps": sorted(set(CAPABILITIES) - uncovered),
+            "uncovered": g["uncovered"],
+            "empty_surfaces": g["empty_surfaces"],
+            "counts": g["counts"],
+            "stack": stack_dir,
+        },
+    }
+
+
+def render_fit(fit: dict) -> str:
+    lines = [
+        "MAGNET fit (against YOUR stack)",
+        "",
+        f"  candidate  {fit['name']}",
+        f"  label      {fit['label']}  (score {fit['score']})",
+    ]
+    if fit["fills"]:
+        lines.append(f"  fills      {', '.join(fit['fills'])}")
+    if fit["empty_surface"]:
+        lines.append(f"  empty      targets {fit['empty_surface']}")
+    if fit["duplicates"]:
+        d = fit["duplicates"][0]
+        lines.append(
+            f"  overlaps   {d['name']} ({int(d['overlap'] * 100)}% of candidate words)"
+        )
+    if fit["claims"]:
+        lines.append(
+            f"  claims     {', '.join(fit['claims'])}  (unverified — text does not support)"
+        )
+    if fit["label"] == "no-signal":
+        lines.append("  note       no positive signal against current gaps")
+    lines.append("  repro      magnet stack")
+    return "\n".join(lines)
+
+
 def render_stack(report: dict) -> str:
     """Human-readable inventory + gaps (+ optional ranked fit)."""
     inv, g = report["inventory"], report["gaps"]

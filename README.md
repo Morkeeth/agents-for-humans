@@ -41,6 +41,7 @@ magnet history
 | `demo-pass-rate` | Synthetic 3/5→4/5 demo (skill_bonus in SQLite) |
 | `check-docs` | README claims vs source (re-derived at read time) |
 | `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
+| `stack-coverage` | YOUR stack: covered/total capability vocabulary |
 
 Add your own via `.magnet/probes.json` (copy from `docs/probes.json.example`):
 
