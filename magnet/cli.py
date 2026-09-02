@@ -7,6 +7,7 @@ import sys
 
 from magnet.adopt import run_adopt
 from magnet.agent_run import MODES, run_agent_loop
+from magnet.bakeoff import render_bakeoff, run_bakeoff
 from magnet.demo import run_demo
 from magnet.drift_demo import run_drift_demo
 from magnet.eval import run_eval
@@ -14,6 +15,7 @@ from magnet.history import render_history
 from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
+from magnet.stack import default_stack_dir, magnet_report, render_stack
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -115,6 +117,41 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_stack(args: argparse.Namespace) -> int:
+    stack_dir = args.stack or default_stack_dir(args.repo)
+    report = magnet_report(stack_dir, candidates_path=args.candidates or "", top=args.top)
+    print(render_stack(report))
+    return 0 if report["inventory"].get("present") else 1
+
+
+def cmd_fit(args: argparse.Namespace) -> int:
+    stack_dir = args.stack or default_stack_dir(args.repo)
+    if not args.candidates:
+        print("magnet fit requires --candidates <file.jsonl>")
+        return 2
+    report = magnet_report(stack_dir, candidates_path=args.candidates, top=args.top)
+    print(render_stack(report))
+    if not report["inventory"].get("present"):
+        return 1
+    return 0
+
+
+def cmd_bakeoff(args: argparse.Namespace) -> int:
+    result = run_bakeoff(
+        stack_dir=args.stack or default_stack_dir(args.repo),
+        repo_root=args.repo,
+        noise_n=args.noise,
+        write_candidates=not args.no_write,
+    )
+    print(render_bakeoff(result))
+    # Exit 0 even when magnet loses — the finding is the product.
+    # Exit 1 only if the wine-liar bought primary rank (constitution break).
+    if result["wine_liar_in_magnet_primary"]:
+        print("\nCONSTITUTION FAIL: liar bought primary rank")
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -190,6 +227,43 @@ def main(argv: list[str] | None = None) -> int:
     p_hist = sub.add_parser("history", help="Show adoption timeline from the log")
     p_hist.add_argument("--probe", help="Filter to one probe name")
     p_hist.set_defaults(func=cmd_history)
+
+    p_stack = sub.add_parser(
+        "stack",
+        help="Inventory YOUR agent surfaces + gaps (fixture cold path)",
+    )
+    p_stack.add_argument(
+        "--stack",
+        help="Stack directory (default: fixtures/stack or ~/.claude)",
+    )
+    p_stack.add_argument(
+        "--candidates",
+        help="Optional local candidates JSON/JSONL to rank against YOUR gaps",
+    )
+    p_stack.add_argument("--top", type=int, default=10)
+    p_stack.set_defaults(func=cmd_stack)
+
+    p_fit = sub.add_parser(
+        "fit",
+        help="Rank a local candidates file against YOUR stack gaps (no crawl)",
+    )
+    p_fit.add_argument("--candidates", required=True, help="JSON or JSONL candidates")
+    p_fit.add_argument("--stack", help="Stack directory")
+    p_fit.add_argument("--top", type=int, default=10)
+    p_fit.set_defaults(func=cmd_fit)
+
+    p_bake = sub.add_parser(
+        "bakeoff",
+        help="Score magnet vs naive-stars vs naive-name vs silent_null on fixtures",
+    )
+    p_bake.add_argument("--stack", help="Stack directory (default: fixtures/stack)")
+    p_bake.add_argument("--noise", type=int, default=200, help="Noise candidates")
+    p_bake.add_argument(
+        "--no-write",
+        action="store_true",
+        help="Do not write fixtures/candidates-bakeoff.jsonl",
+    )
+    p_bake.set_defaults(func=cmd_bakeoff)
 
     args = parser.parse_args(argv)
     return args.func(args)

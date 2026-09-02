@@ -22,15 +22,16 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Agent** | Strands `@tool` loop: run_probe, record_week, adopt_change, check_docs | `magnet agent-run` |
 | **Eval** | Real probes (`pytest-pass-rate`) + registry (`.magnet/probes.json`) | `magnet probe pytest-pass-rate` |
 | **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
+| **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
 
-**Not the wedge:** skill marketplace, Helicon-only dependency, fabricated metrics.
+**Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
 ---
 
 ## Moat (why this is hard to copy badly)
 
-1. **Science ported from measurement-bench** — value/pop, baseline gate, simulated-week flagging.
-2. **Embarrassment hunt built in** — `magnet eval` ships the naive and silent_null arms that beat us on scenarios.
+1. **Science ported from measurement-bench / helicon.magnet** — value/pop, baseline gate, gap-fit ranking with no name tie-break.
+2. **Embarrassment hunt built in** — `magnet eval` and `magnet bakeoff` ship arms that can beat us (silent_null, naive_stars).
 3. **Doc drift as product** — `check_docs` re-derives README and judge-doc numbers at read time (Qwen lesson).
 4. **Stranger path** — `bash scripts/judge-demo.sh` on cold clone, no keys, CI on every push.
 
@@ -58,6 +59,7 @@ bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
 
 - Bedrock live path verified on Oscar local only — cloud VM has no AWS creds.
 - Demo probe is synthetic; production eval is `pytest-pass-rate` (whole suite, slow on large repos).
+- Bakeoff synonym arm still 0/3 on primary (claims tier recovers) — vocabulary bottleneck, not hidden.
 - Presentation score 3/5 until Oscar films the 5-min video.
 
 ---

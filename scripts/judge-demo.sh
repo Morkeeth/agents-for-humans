@@ -44,6 +44,11 @@ else
   echo ""
   echo "=== 6/8 · Design: adoption timeline ==="
   magnet history | head -25
+
+  echo ""
+  echo "=== 7/8 · Impact: stack inventory + bakeoff vs marketplace proxies ==="
+  magnet stack
+  magnet bakeoff --no-write
 fi
 
 echo ""
