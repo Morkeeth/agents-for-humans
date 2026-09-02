@@ -71,7 +71,11 @@ def tool_adopt_change(
     from magnet.log import adopt_change, set_demo_bonus
 
     conn = connect(log_path)
-    if apply_demo_bonus or probe_name in ("demo-pass-rate", "demo"):
+    # Demo bonus is OPT-IN only. Previously this also fired whenever
+    # probe_name was demo-pass-rate, so every adopt on the synthetic probe
+    # invented a +1/5 "helped" — including wine-pairing noise that fit said
+    # no-signal. Found by running adopt --fit without --demo-bonus.
+    if apply_demo_bonus:
         set_demo_bonus(conn, 1)
     adoption = adopt_change(
         conn,
@@ -143,10 +147,20 @@ def build_strands_tools(*, log_path: str | None = None, repo_root: str | None = 
         description: str,
         prediction: str,
         probe_name: str,
+        apply_demo_bonus: bool = False,
     ) -> dict:
-        """Record a stack change and its testable prediction."""
+        """Record a stack change and its testable prediction.
+
+        apply_demo_bonus=true is ONLY for the synthetic demo-pass-rate probe
+        when a scripted demo needs a +1/5 lift. Real adopts leave it false.
+        """
         return tool_adopt_change(
-            change_type, description, prediction, probe_name, log_path=log_path
+            change_type,
+            description,
+            prediction,
+            probe_name,
+            log_path=log_path,
+            apply_demo_bonus=apply_demo_bonus,
         )
 
     @tool
