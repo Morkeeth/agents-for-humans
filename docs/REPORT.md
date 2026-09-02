@@ -15,7 +15,7 @@
 - **`magnet drift-demo`**: live Qwen lesson — fake repo fails, real repo passes
 - `docs/FUNDABLE-WEDGE.md` — investor one-pager for Sep 14
 - `docs/architecture.md`, `docs/STRANGER-PASS.md`
-- 73 pytest tests
+- 80 pytest tests
 - **GitHub Actions** `.github/workflows/judge-demo.yml` — judge-demo + stranger-pass + cold-clone on every push
 - **`scripts/cold-clone-verify.sh`** — post-push GitHub clone kill-bar
 
@@ -23,7 +23,7 @@
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 73 passed |
+| Tests green | `python3 -m pytest -q` → 80 passed |
 | CI workflow | `.github/workflows/judge-demo.yml` runs `bash scripts/judge-demo.sh` |
 | Cold clone verify | `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK |
 | Cold demo | `python -m magnet.cli demo` → exit 0, `verdict helped` + 1-reading baseline case |

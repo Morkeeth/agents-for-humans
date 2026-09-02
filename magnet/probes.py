@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import re
+import shlex
 import subprocess
 import sys
 from pathlib import Path
@@ -69,13 +70,37 @@ def run_demo_probe(conn, *, command: str | None = None) -> dict:
     }
 
 
-def run_pytest_probe(*, repo_root: str | None = None, command: str | None = None) -> dict:
-    """Run actual pytest — value/pop re-derived from subprocess output, not docs."""
+def builtin_probe_command(name: str) -> str | None:
+    """The command `magnet list-probes` advertises for a built-in probe."""
+    for spec in BUILTIN_PROBES:
+        if spec["name"] == name:
+            return spec["command"]
+    return None
+
+
+def is_builtin_probe(name: str) -> bool:
+    return builtin_probe_command(name) is not None or name in ("demo", "check-docs")
+
+
+def run_pytest_probe(
+    *,
+    repo_root: str | None = None,
+    command: str | None = None,
+    scoped: bool | None = None,
+) -> dict:
+    """Run actual pytest — value/pop re-derived from subprocess output, not docs.
+
+    `scoped` says the command targets a sub-suite and may run inside pytest.
+    Defaults to `command is not None`, the old behaviour. `run_probe` passes the
+    advertised full-suite command with scoped=False so the recursion guard holds.
+    """
     import os
 
     from magnet.registry import parse_pytest_summary
 
-    if os.environ.get("PYTEST_CURRENT_TEST") and command is None:
+    if scoped is None:
+        scoped = command is not None
+    if os.environ.get("PYTEST_CURRENT_TEST") and not scoped:
         raise RuntimeError(
             "pytest-pass-rate refuses to run the full suite inside pytest "
             "(recursive). Run `magnet probe pytest-pass-rate` from the CLI, "
@@ -84,7 +109,7 @@ def run_pytest_probe(*, repo_root: str | None = None, command: str | None = None
 
     root = repo_root or os.getcwd()
     cmd = command or f"{sys.executable} -m pytest -q --tb=no"
-    argv = cmd if isinstance(cmd, list) else cmd.split()
+    argv = cmd if isinstance(cmd, list) else shlex.split(cmd)
     proc = subprocess.run(
         argv,
         cwd=root,
@@ -111,7 +136,11 @@ def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
     if probe_name in (CHECK_DOCS_PROBE, "check-docs"):
         return run_check_docs_probe(root)
     if probe_name in (PYTEST_PROBE, "pytest-pass-rate"):
-        return run_pytest_probe(repo_root=root)
+        # Execute exactly what list-probes advertises (2026-09-03: it silently ran
+        # without -m "not slow" and the receipt disagreed with the catalogue).
+        return run_pytest_probe(
+            repo_root=root, command=builtin_probe_command(PYTEST_PROBE), scoped=False
+        )
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)

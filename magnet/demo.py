@@ -38,9 +38,9 @@ def run_demo(*, log_path: str | None = None, repo_root: str | None = None) -> st
     # Week 2 — SIMULATED. The clock is advanced 8 days so the reading lands in the
     # next ISO week and a helped/hurt verdict is possible from a single demo run.
     # The row is flagged `simulated` so no surface prints it as a real read time.
-    from datetime import datetime, timedelta
+    from datetime import timedelta
 
-    from magnet.log import record_reading
+    from magnet.log import _now, record_reading
     from magnet.probes import run_demo_probe
 
     probe = run_demo_probe(conn)
@@ -51,7 +51,7 @@ def run_demo(*, log_path: str | None = None, repo_root: str | None = None) -> st
         probe["command"],
         population=probe["population"],
         change_id=adoption["id"],
-        now=datetime.now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS),
+        now=_now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS),
         simulated=True,
     )
 

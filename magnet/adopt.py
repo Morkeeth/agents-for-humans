@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import os
 
+from magnet.constants import STACK_CHANGE_TYPES
 from magnet.log import connect, latest_adoption, list_readings, reset_demo
+from magnet.probes import is_builtin_probe
 from magnet.reporter import render_receipt, verdict
 from magnet.tools import tool_adopt_change, tool_record_week
 
@@ -68,4 +70,11 @@ def run_adopt(
         change_label=row["description"] if row else description,
         repro_command=f"magnet adopt {change_type} {description!r} {prediction!r} --probe {probe_name}",
     )
+    if change_type in STACK_CHANGE_TYPES and is_builtin_probe(probe_name):
+        # Say what the probe can see instead of printing a silent 0-delta.
+        receipt += (
+            f"\n  measures   repo only — {probe_name} reads this repo, not the stack; "
+            f"a {change_type} change is invisible to it. Add a registry probe that "
+            f"reads the stack (docs/probes.json.example) to measure this adoption."
+        )
     return "\n".join(lines + [receipt])
