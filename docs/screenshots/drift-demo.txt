@@ -1,0 +1,33 @@
+$ magnet drift-demo
+# run 2026-09-03 00:27:01 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli drift-demo
+MAGNET drift-demo — check_docs catches fabricated numbers
+
+  The Qwen lesson: a doc claimed a number weeks ago; nobody re-ran the command.
+  MAGNET re-derives every claim from source at read time.
+
+  === fake repo (wrong claims) ===
+  [FAIL] tool count: README claims 99 tools, source has 4
+  [FAIL] pytest count (docs/REPORT.md): docs/REPORT.md claims 42 tests, source has 0 tests
+  [PASS] tool run_probe: listed
+  [PASS] tool record_week: listed
+  [PASS] tool adopt_change: listed
+  [PASS] tool check_docs: listed
+  exit code: 1  (2 drift(s))
+
+  === this repo (re-derived from source) ===
+  [PASS] tool count: README claims 4 tools, source has 4
+  [PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 86 tests, source has 86 tests
+  [PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 86 tests, source has 86 tests
+  [PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 86 tests, source has 86 tests
+  [PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 86 tests, source has 86 tests
+  [PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 86 tests, source has 86 tests
+  [PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 86 tests, source has 86 tests
+  [PASS] tool run_probe: listed
+  [PASS] tool record_week: listed
+  [PASS] tool adopt_change: listed
+  [PASS] tool check_docs: listed
+  exit code: 0  (0 drift(s))
+
+  source     86 test functions in tests/test_*.py
+  repro      magnet drift-demo
+# exit=0

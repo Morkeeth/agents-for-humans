@@ -1,0 +1,14 @@
+$ magnet list-probes
+# run 2026-09-03 00:27:01 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli list-probes
+MAGNET probes  (built-in + .magnet/probes.json)
+
+  demo-pass-rate       [builtin]  magnet probe demo-pass-rate
+    Synthetic pass-rate for cold demo (skill_bonus in SQLite)
+  check-docs           [builtin]  python -m magnet.check_docs
+    Re-derive README claims; value=passing/total
+  pytest-pass-rate     [builtin]  /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow"
+    Real eval: run pytest and count passed/total
+
+  total      3
+  repro      magnet list-probes
+# exit=0

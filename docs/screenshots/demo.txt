@@ -1,0 +1,26 @@
+$ magnet demo
+# run 2026-09-03 00:27:00 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli demo
+MAGNET receipt
+
+  change     demo-verification-skill
+  probe      demo-pass-rate
+  latest     4/5  (magnet probe demo-pass-rate)
+  simulated  2026-09-10T22:27:00+00:00  (SIMULATED week — not a real read time)
+  verdict    helped  ↑ +1 vs prior
+  repro      magnet demo
+
+  NOTE: week 2 is SIMULATED (clock advanced 8 days) so one run can
+        show a helped/hurt verdict. Week 1 is a real reading.
+
+  after 1 reading (embarrassing case):
+    naive verdict      helped  ← invents optimism
+    magnet verdict     baseline  ← refuses to trend
+
+  after 2 readings (naive baseline arm):
+    naive verdict      helped
+    magnet verdict     helped
+
+  readings             2
+  first                3/5
+  second               4/5
+# exit=0

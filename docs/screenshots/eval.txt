@@ -1,0 +1,39 @@
+$ magnet eval
+# run 2026-09-03 00:27:00 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli eval
+MAGNET eval — arms scored against explicit ground truth
+
+  scenario       truth      naive   magnet  silent_null
+  ----------------------------------------------------------
+  one_reading    baseline   helped  baseline baseline
+  helped         helped     helped  helped  baseline
+  hurt           hurt       hurt    hurt    baseline
+  unchanged      unchanged  helped  unchanged baseline
+  gap_week       helped     helped  helped  baseline
+
+  arm scores (correct / total):
+
+  naive        3/5
+    ✗ one_reading    truth=baseline   got=helped
+    ✓ helped         truth=helped     got=helped
+    ✓ hurt           truth=hurt       got=hurt
+    ✗ unchanged      truth=unchanged  got=helped
+    ✓ gap_week       truth=helped     got=helped
+
+  magnet       5/5
+    ✓ one_reading    truth=baseline   got=baseline
+    ✓ helped         truth=helped     got=helped
+    ✓ hurt           truth=hurt       got=hurt
+    ✓ unchanged      truth=unchanged  got=unchanged
+    ✓ gap_week       truth=helped     got=helped
+
+  silent_null  1/5
+    ✓ one_reading    truth=baseline   got=baseline
+    ✗ helped         truth=helped     got=baseline
+    ✗ hurt           truth=hurt       got=baseline
+    ✗ unchanged      truth=unchanged  got=baseline
+    ✗ gap_week       truth=helped     got=baseline
+
+  best arm     magnet (5/5)
+
+  repro        magnet eval
+# exit=0

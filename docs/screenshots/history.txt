@@ -1,0 +1,15 @@
+$ magnet history
+# run 2026-09-03 00:27:01 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli history
+MAGNET history
+
+  #2  2026-09-02T22:27:01+00:00
+    change     [skill] agent-run-verification-skill
+    probe      demo-pass-rate
+    predict    pass rate rises by 1/5
+    latest     4/5  (magnet probe demo-pass-rate)
+    verdict    helped  (Δ 1)
+    readings   2
+
+  probes     demo-pass-rate
+  repro      magnet history
+# exit=0
