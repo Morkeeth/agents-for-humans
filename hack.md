@@ -81,4 +81,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · **Live Bedrock (local)** · `magnet agent-run --model bedrock` exit 0 · 5 tools dispatched · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · Technical 5/5.
 - 2026-09-02 · Slice 10: Cloud VM · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 63 passed · STS → `NoCredentialsError` · cloud Bedrock BLOCKED.
 - 2026-09-02 · Slice 10 fix: `judge-demo.sh` PATH (`~/.local/bin`) — cold clone was failing `magnet: command not found` · `tests/test_judge_demo.py` (2 tests) · cold clone `/tmp/magnet-cold-judge-post-push` → JUDGE DEMO OK.
-- 2026-09-02 · Slice 11: `.github/workflows/judge-demo.yml` · `scripts/cold-clone-verify.sh` · judge-demo step 5/7 `magnet adopt --probe pytest-pass-rate` · `python3 -m pytest -q` → 69 passed · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK.
+- 2026-09-02 · Slice 11 fix: pytest-pass-rate excludes `@pytest.mark.slow` · cold-clone test uses `MAGNET_JUDGE_QUICK` · fixes 300s timeout on GitHub cold clone.
