@@ -57,6 +57,10 @@ Suggested fix (not applied, product ruling): key readings on `(probe_name, chang
 
 `log.py:100` stamps `datetime.now(timezone.utc).replace(tzinfo=None)`; the receipt prints `read_at 2026-09-02T21:54:14` while the wall clock at the terminal read 23:54 CEST. For a project with `tests/test_no_fabricated_clock.py`, a read time that is two hours off with no `Z` is a small version of the thing that test exists to stop.
 
+## Product finding 4 — the advertised repro is not the executed command
+
+`magnet list-probes` prints `pytest-pass-rate` as `python3.12 -m pytest -q --tb=no -m "not slow"` (`probes.py`, `BUILTIN_PROBES`). The receipt above shows what actually ran: `python3.12 -m pytest -q --tb=no`, no `-m "not slow"`, because `run_probe` calls `run_pytest_probe(repo_root=root)` without `command=` and the function's own default wins (`probes.py`, `cmd = command or ...`). Hence 73/73 in the receipt while the advertised command gives 72 passed, 1 deselected. For a tool whose constraint is "no number without the command", the command on the receipt and the command in the catalogue differ by one test.
+
 ## Receipts (verbatim, `--log` on a scratch db, `--probe pytest-pass-rate --no-simulate`)
 
 ```
