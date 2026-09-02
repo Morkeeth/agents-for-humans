@@ -32,6 +32,8 @@ Presentation is 3 until 5-min video exists. Live Bedrock demonstrated locally �
 | 63 automated tests | `python3 -m pytest -q` |
 | Bedrock path (live) | `magnet agent-run --model bedrock` — see `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` |
 | Stranger verification | `bash scripts/stranger-pass.sh` |
+| CI on every push | `.github/workflows/judge-demo.yml` |
+| Production adopt | `magnet adopt --probe pytest-pass-rate` in judge-demo step 5/7 |
 
 **Gap:** Live Bedrock verified 2026-09-02 on Oscar local machine — see receipt. CI and cloud VM still use local scripted mode (`NoCredentialsError` on cloud STS check).
 

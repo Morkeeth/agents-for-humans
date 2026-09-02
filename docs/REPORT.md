@@ -13,17 +13,21 @@
 - **`magnet history`**: adoption timeline with verdicts from SQLite
 - `check_docs`: re-derives README tool count, tool names, pytest counts in docs
 - `docs/architecture.md`, `docs/STRANGER-PASS.md`
-- 63 pytest tests
+- 69 pytest tests
+- **GitHub Actions** `.github/workflows/judge-demo.yml` — judge-demo + stranger-pass on every push
+- **`scripts/cold-clone-verify.sh`** — post-push GitHub clone kill-bar
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 63 passed |
+| Tests green | `python3 -m pytest -q` → 69 passed |
+| CI workflow | `.github/workflows/judge-demo.yml` runs `bash scripts/judge-demo.sh` |
+| Cold clone verify | `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK |
 | Cold demo | `python -m magnet.cli demo` → exit 0, `verdict helped` + 1-reading baseline case |
 | Eval arms | `python -m magnet.cli eval` → magnet 5/5, naive 3/5, silent_null 1/5 |
 | Strands agent loop | `python -m magnet.cli agent-run` → 5 tools dispatched, not DEGRADED |
-| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 63/63 from subprocess |
+| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 69/69 from subprocess |
 | Stranger pass script | `bash scripts/stranger-pass.sh` → exit 0 |
 | `magnet adopt` | `python -m magnet.cli adopt skill … --demo-bonus --reset` → receipt |
 | Probe registry | `python -m magnet.cli list-probes` → 3 built-ins |
@@ -34,7 +38,7 @@
 ## WRONG
 
 - **`measurement-bench/magnet.py` still 404** — reporter ported from `helicon/measure.py`, not byte-for-byte from cited file.
-- **Bedrock agent path never run** — no AWS credentials; `--model bedrock` unverified live.
+- **Bedrock in cloud VM BLOCKED** — `NoCredentialsError` on STS; live run verified on Oscar local only (`docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`).
 - **`pytest-pass-rate` refuses to run inside pytest** (detects `PYTEST_CURRENT_TEST`) — must invoke from CLI; this is intentional anti-recursion, not a bug, but strangers may find it surprising.
 - **Registry parsers are minimal** (`pytest_summary`, `value_pop`, `exit_code`, `regex:`) — not a full port of helicon docdrift.
 - **Demo probe remains synthetic** for the cold path; `pytest-pass-rate` is the real eval but runs the whole suite (slow on large repos).

@@ -55,12 +55,14 @@ No number without the command that produced it, the population it is out of, and
 | 7 | `magnet adopt` + stranger-pass script | `bash scripts/stranger-pass.sh` exit 0 |
 | 8 | Devpost pack + film scout | DEVPOST-READY + FILM-SCOUT + OSCAR-CLICK-LIST on disk |
 | 9 | Judge-winning path | `scripts/judge-demo.sh` + JUDGE-SCORECARD + DEVPOST-DESCRIPTION |
+| 10 | Judge path verified + Bedrock local receipt | `judge-demo.sh` cold clone · cloud Bedrock BLOCKED |
+| 11 | CI + production adopt + cold-clone verify | `.github/workflows/judge-demo.yml` green · `cold-clone-verify.sh` exit 0 |
 
 ## NOW
 
-**Slice 10 (shipped):** Judge path verified · `judge-demo.sh` PATH fix for cold clone · `test_judge_demo.py` regression · Bedrock live on Oscar local (5 tools) · cloud VM Bedrock BLOCKED (`NoCredentialsError`) · `_NIGHT-SCOPE.md` · `_HACK-CONTRACT.md` · 63 pytest · Technical 5/5.
+**Slice 11:** GitHub Actions CI (judge-demo + stranger-pass on every push) · production adopt path (`pytest-pass-rate` in judge-demo step 5/7) · `scripts/cold-clone-verify.sh` · 69 pytest.
 
-**Oscar gates:** film video (lifts Presentation to 5) · Devpost paste · submit Sep 14.
+**Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
@@ -79,3 +81,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · **Live Bedrock (local)** · `magnet agent-run --model bedrock` exit 0 · 5 tools dispatched · `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md` · Technical 5/5.
 - 2026-09-02 · Slice 10: Cloud VM · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `python3 -m pytest -q` → 63 passed · STS → `NoCredentialsError` · cloud Bedrock BLOCKED.
 - 2026-09-02 · Slice 10 fix: `judge-demo.sh` PATH (`~/.local/bin`) — cold clone was failing `magnet: command not found` · `tests/test_judge_demo.py` (2 tests) · cold clone `/tmp/magnet-cold-judge-post-push` → JUDGE DEMO OK.
+- 2026-09-02 · Slice 11: `.github/workflows/judge-demo.yml` · `scripts/cold-clone-verify.sh` · judge-demo step 5/7 `magnet adopt --probe pytest-pass-rate` · `python3 -m pytest -q` → 69 passed · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK.

@@ -1,0 +1,26 @@
+# Judge kill-bar — runs on every push to main.
+# A control that has not been watched going RED is not a control.
+name: judge-demo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  judge-demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Judge demo (stranger kill-bar)
+        run: bash scripts/judge-demo.sh
+
+      - name: Stranger pass
+        run: bash scripts/stranger-pass.sh

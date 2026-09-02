@@ -12,6 +12,7 @@ def test_judge_demo_script_has_path_fix():
     text = SCRIPT.read_text()
     assert ".local/bin" in text, "judge-demo.sh must export ~/.local/bin after pip install"
     assert "magnet demo" in text
+    assert "pytest-pass-rate adopt" in text
     assert "JUDGE DEMO OK" in text
 
 
