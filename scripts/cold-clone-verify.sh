@@ -16,3 +16,4 @@ bash scripts/judge-demo.sh
 
 echo ""
 echo "COLD CLONE OK — $REPO_URL"
+echo "  full judge-demo (no quick): unset MAGNET_JUDGE_QUICK && bash scripts/cold-clone-verify.sh"

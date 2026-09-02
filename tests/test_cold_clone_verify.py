@@ -1,6 +1,8 @@
 """scripts/cold-clone-verify.sh — post-push GitHub clone kill-bar."""
 import os
 import subprocess
+
+import pytest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,9 +17,14 @@ def test_cold_clone_script_exists_and_executable():
     assert "COLD CLONE OK" in text
 
 
+@pytest.mark.slow
 def test_cold_clone_local_repo_exits_zero():
-    """Clone this working tree (file://) — no network, proves script wiring."""
-    env = {**dict(os.environ), "PATH": f"{os.environ.get('HOME', '')}/.local/bin:" + os.environ.get("PATH", "")}
+    """Clone this working tree (file://) — quick judge-demo avoids nested full-suite recursion."""
+    env = {
+        **dict(os.environ),
+        "MAGNET_JUDGE_QUICK": "1",
+        "PATH": f"{os.environ.get('HOME', '')}/.local/bin:" + os.environ.get("PATH", ""),
+    }
     proc = subprocess.run(
         ["bash", str(SCRIPT), f"file://{ROOT}"],
         capture_output=True,

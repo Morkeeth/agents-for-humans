@@ -26,7 +26,7 @@ BUILTIN_PROBES = (
     },
     {
         "name": PYTEST_PROBE,
-        "command": f"{sys.executable} -m pytest -q --tb=no",
+        "command": f"{sys.executable} -m pytest -q --tb=no -m \"not slow\"",
         "direction": "up",
         "description": "Real eval: run pytest and count passed/total",
     },

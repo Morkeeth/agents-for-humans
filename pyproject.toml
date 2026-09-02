@@ -26,3 +26,6 @@ include = ["magnet*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "slow: integration tests that spawn full judge-demo (excluded from pytest-pass-rate probe)",
+]
