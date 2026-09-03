@@ -70,6 +70,8 @@ fit can say `fills-gap` while coverage stays flat — adopt only wrote SQLite. C
 | `magnet/history.py` | Adoption timeline / decision surface |
 | `magnet/demo.py` | One-command cold demo |
 | `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
+| `magnet/apply.py` | Write / remove skills into the measured stack |
+| `magnet/stack_demo.py` | Apply filler/noise/liar; magnet vs naive on coverage |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
 
 ## Naive baseline arm

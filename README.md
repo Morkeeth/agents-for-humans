@@ -36,6 +36,12 @@ magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
 
+Independent stack (network once, not our fixture):
+
+```bash
+bash scripts/foreign-stack.sh   # clones anthropics/skills; see docs/FOREIGN-STACK-RECEIPT-2026-09-03.md
+```
+
 ## Probes
 
 | Probe | What it measures |

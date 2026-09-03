@@ -5,7 +5,8 @@ import os
 
 from magnet.apply import apply_skill
 from magnet.constants import STACK_CHANGE_TYPES
-from magnet.log import connect, latest_adoption, list_readings, reset_demo
+from magnet.log import connect, latest_adoption, list_readings, reset_demo, set_adoption_detail
+from magnet.prediction import check_prediction, render_prediction_check
 from magnet.probes import STACK_COVERAGE_PROBE, is_builtin_probe
 from magnet.reporter import render_receipt, verdict
 from magnet.stack import default_stack_dir, fit_one, render_fit
@@ -110,7 +111,7 @@ def run_adopt(
 
     row = latest_adoption(conn, probe_name)
     readings = list_readings(conn, probe_name)
-    label, _ = verdict(readings, direction="up")
+    label, delta = verdict(readings, direction="up")
     receipt = render_receipt(
         probe_name,
         readings,
@@ -138,6 +139,13 @@ def run_adopt(
 
     if fit_result is not None:
         parts += ["", render_fit(fit_result)]
+
+    # Grade the free-text prediction against the measured verdict (helicon S3).
+    pred_check = check_prediction(prediction, label, delta)
+    set_adoption_detail(
+        conn, adoption["id"], {"prediction_check": pred_check}
+    )
+    parts += ["", render_prediction_check(pred_check)]
 
     # Honesty: fit predicted a fill but coverage did not move because nothing
     # was written into the stack the probe opens.

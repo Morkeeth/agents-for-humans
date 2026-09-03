@@ -33,7 +33,7 @@ CAPABILITIES = {
     "writing": ("writing", "draft", "prose", "copy", "email"),
     "data": ("sql", "dataframe", "etl", "schema", "migration"),
     "debug": ("debug", "trace", "stack trace", "repro", "bisect"),
-    "refactor": ("refactor", "rename", "extract", "simplify"),
+    "refactor": ("refactor", "rename", "extract method", "simplify"),
 }
 
 TAG_VOCABULARY = tuple(sorted(CAPABILITIES))

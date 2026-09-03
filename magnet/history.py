@@ -1,6 +1,7 @@
 """Adoption history — the decision surface over the SQLite log."""
 from __future__ import annotations
 
+import json
 import sqlite3
 
 from magnet.log import connect, list_readings
@@ -10,16 +11,21 @@ from magnet.reporter import format_value_pop, verdict
 def list_adoptions(conn: sqlite3.Connection, probe_name: str | None = None) -> list[dict]:
     if probe_name:
         rows = conn.execute(
-            "SELECT id, recorded_at, change_type, description, prediction, probe_name "
+            "SELECT id, recorded_at, change_type, description, prediction, probe_name, detail "
             "FROM adoptions WHERE probe_name = ? ORDER BY recorded_at",
             (probe_name,),
         ).fetchall()
     else:
         rows = conn.execute(
-            "SELECT id, recorded_at, change_type, description, prediction, probe_name "
+            "SELECT id, recorded_at, change_type, description, prediction, probe_name, detail "
             "FROM adoptions ORDER BY recorded_at"
         ).fetchall()
-    return [dict(r) for r in rows]
+    out = []
+    for r in rows:
+        d = dict(r)
+        d["detail"] = json.loads(d.get("detail") or "{}")
+        out.append(d)
+    return out
 
 
 def readings_for_adoption(readings: list[dict], change_id: int) -> list[dict]:
@@ -66,6 +72,12 @@ def render_history(
             vp = format_value_pop(latest.get("value"), latest.get("population"))
             lines.append(f"    latest     {vp}  ({latest.get('command', '')})")
         lines.append(f"    verdict    {label}" + (f"  (Δ {delta})" if delta is not None else ""))
+        pred = (row.get("detail") or {}).get("prediction_check")
+        if pred:
+            lines.append(
+                f"    outcome    {pred.get('outcome')}  "
+                f"(intent={pred.get('intent')})"
+            )
         lines.append(f"    readings   {len(readings)}")
         lines.append("")
 

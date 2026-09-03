@@ -75,7 +75,7 @@ magnet history
 
 ```bash
 bash scripts/stranger-pass.sh   # must exit 0 before filming
-python3 -m pytest -q            # 124 passed
+python3 -m pytest -q            # 133 passed
 ```
 
 ---

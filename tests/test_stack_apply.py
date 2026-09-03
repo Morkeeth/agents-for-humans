@@ -212,3 +212,21 @@ def test_inventory_parses_capabilities_frontmatter(tmp_path):
     row = next(s for s in inv["skills"] if s["name"] == "code-surgeon")
     assert row["capabilities"] == ["refactor"]
     assert row["capability_verdicts"]["refactor"] == "verified"
+
+
+def test_document_extracting_does_not_cover_refactor():
+    """Found opening anthropics/skills: docx description says 'extracting
+    content from .docx' and bare term 'extract' matched via startswith —
+    falsely covering refactor. Term is now 'extract method'."""
+    from magnet.stack import CAPABILITIES, _mentions
+
+    docx_blob = (
+        "docx Use this skill whenever the user wants to create, read, edit, "
+        "or manipulate Word documents. Also use when extracting or "
+        "reorganizing content from .docx files."
+    )
+    assert not _mentions(docx_blob, CAPABILITIES["refactor"])
+    assert _mentions(
+        "Extract a method and rename identifiers until simpler",
+        CAPABILITIES["refactor"],
+    )
