@@ -29,10 +29,15 @@ export AWS_SECRET_ACCESS_KEY=...
 
 ```bash
 pip install -e ".[dev]"
+# Positive-evidence gate (exit 0 LIVE / 2 BLOCKED / 1 control failure):
+bash scripts/bedrock-live-or-blocked.sh
+# Or direct:
 magnet agent-run --model bedrock
 ```
 
-**Expected:** `MODE: strands agent loop · Amazon Bedrock` and tool dispatch from the model (not scripted).
+**Expected LIVE:** `MODE: strands agent loop · Amazon Bedrock` and tool dispatch from the model (not scripted), process exit 0, no `DEGRADED` banner.
+
+**Expected BLOCKED (no creds):** `DEGRADED` banner + process exit **1** (fixed 2026-09-04; previously lied exit 0). The preflight script exits 2 and names exact missing env.
 
 **Costs money.** Not run in CI. Not required for cold demo.
 
@@ -66,6 +71,25 @@ Deploy prep only — Oscar click. See `docs/AGENTCORE-DEPLOY-PREP.md` if present
 ## Honesty for video
 
 If filming without AWS creds: show `magnet agent-run` (local mode) and state Bedrock path exists for judges with credentials. Do not imply Bedrock ran if it did not.
+
+---
+
+## Verified on cloud · 2026-09-04
+
+**Status: BLOCKED** — no AWS credentials in Cursor cloud agent VM.
+
+| Check | Command | Result |
+|-------|---------|--------|
+| Positive env presence | `bash scripts/bedrock-live-or-blocked.sh` | exit 2 · `exact_missing: AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_REGION` |
+| STS identity | `python3 -c "import boto3; print(boto3.client('sts').get_caller_identity())"` | `NoCredentialsError: Unable to locate credentials` |
+| Bedrock attempt | `python3 -m magnet.cli agent-run --model bedrock` | `DEGRADED` + exit **1** (exit was 0 before 2026-09-04 fix) |
+| Judge path | `bash scripts/judge-demo.sh` | exit 0 · `JUDGE DEMO OK` |
+| Stranger path | `bash scripts/stranger-pass.sh` | exit 0 · `stranger pass OK` |
+
+Full receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-04.md`  
+Prior local LIVE (Oscar machine): `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
+
+**To unblock:** add `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` to Cursor cloud agent secrets, then re-run `bash scripts/bedrock-live-or-blocked.sh` until it prints `VERDICT: LIVE`.
 
 ---
 

@@ -63,7 +63,12 @@ def cmd_eval(args: argparse.Namespace) -> int:
 
 
 def cmd_agent_run(args: argparse.Namespace) -> int:
-    print(run_agent_loop(log_path=args.log, repo_root=args.repo, mode=args.model))
+    out = run_agent_loop(log_path=args.log, repo_root=args.repo, mode=args.model)
+    print(out)
+    # Found 2026-09-04 by running: --model bedrock with no AWS creds printed
+    # DEGRADED + exit 0. A control that exits green on failure is not a control.
+    if "DEGRADED" in out:
+        return 1
     return 0
 
 

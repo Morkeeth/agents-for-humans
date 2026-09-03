@@ -9,6 +9,7 @@ Agents?") that was the entry requirement, unmet.
 
 These tests fail if it regresses to decoration.
 """
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -104,6 +105,32 @@ def test_a_failing_agent_mode_shouts_instead_of_degrading_quietly(tmp_path, monk
     assert "FAILED" in out and "DEGRADED" in out
     assert "RuntimeError: no credentials" in out
     assert "deterministic fallback" in out
+
+
+def test_cli_bedrock_degraded_exits_nonzero(tmp_path, monkeypatch):
+    """Found 2026-09-04 by running: no AWS creds → DEGRADED banner + exit 0.
+
+    A control that exits green on Bedrock failure is not a control. CLI must
+    return 1 when the printed receipt contains DEGRADED.
+    """
+    import magnet.agent_run as ar
+    import magnet.cli as cli
+
+    def boom(**_):
+        raise RuntimeError("no credentials")
+
+    monkeypatch.setattr(ar, "run_strands_agent", boom)
+    ns = argparse.Namespace(log=_db(tmp_path), repo=str(ROOT), model="bedrock")
+    code = cli.cmd_agent_run(ns)
+    assert code == 1, code
+
+
+def test_cli_local_agent_run_still_exits_zero(tmp_path):
+    import magnet.cli as cli
+
+    ns = argparse.Namespace(log=_db(tmp_path), repo=str(ROOT), model="local")
+    code = cli.cmd_agent_run(ns)
+    assert code == 0, code
 
 
 def test_unknown_mode_is_rejected():

@@ -14,13 +14,13 @@
 - `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
 - `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
 - `fit_one` / `render_fit` / `stack_coverage` helpers
-- 113 pytest tests (re-derived from `tests/test_*.py`)
+- 118 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 113 passed |
+| Tests green | `python3 -m pytest -q` → 118 passed |
 | check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
 | Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
 | Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
@@ -41,7 +41,7 @@
   `demo-pass-rate` adopt regardless of `--demo-bonus`. Found by running
   `magnet adopt … --fit` on wine-pairing (probe said helped, fit said
   no-signal). Fixed; regression tests added.
-- **Bedrock cloud still BLOCKED** — NoCredentialsError.
+- **Bedrock cloud still BLOCKED** — NoCredentialsError · exact missing env in `docs/BEDROCK-LIVE-RECEIPT-2026-09-04.md` · `bash scripts/bedrock-live-or-blocked.sh` exit 2.
 - **fleet-ops plan still 404**.
 - **PR create requires user approval** — branch pushed; merge is Oscar/user click.
 - **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature

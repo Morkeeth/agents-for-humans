@@ -4,7 +4,7 @@
 
 > **Role in the hackathon:** MAGNET is the engine library for [Agent Grinder](https://github.com/Morkeeth/agentgrinder), the Agents for Humans entry; its Strands agent and four tools run inside that product. This repo is public as the disclosed library and is not itself the submission.
 
-> **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
+> **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock: `docs/BEDROCK-LIVE-RECEIPT-2026-09-04.md` (cloud BLOCKED) · local LIVE: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
 
 > After you change a prompt, model, skill, hook, or setting, a background agent re-runs your eval and tells you
 > whether it helped — or prints **`baseline`** instead of inventing a trend.
