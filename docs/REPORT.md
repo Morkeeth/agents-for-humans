@@ -43,6 +43,6 @@
 - **Bedrock cloud still BLOCKED** — NoCredentialsError.
 - **fleet-ops plan still 404**.
 - **foreign-stack needs network** — not in CI; receipt is the offline proof.
-- **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature branch + PR (`cursor/stack-apply-coverage-2b9b`). Merge is Oscar click.
+- **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature branch + PR (`cursor/stack-apply-coverage-2b9b` @ `cdd5a7a`). Merge is Oscar click.
 - **Screenshot sidecars still say 113** — outside check_docs scan set; left stale.
 - **PR create requires user approval** — branch pushed; ManagePullRequest registered draft.
