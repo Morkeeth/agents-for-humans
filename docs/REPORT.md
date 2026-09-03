@@ -28,7 +28,7 @@
 | Recover win | `magnet recover` → thin LOST, covered 0.625 / 0 noise / WIN |
 | Coverage-delta | pdb on stack-cursor → 2/12→3/12 attributed |
 | Judge demo | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
-| Feature-branch CI | push to `cursor/**` triggers `judge-demo` workflow |
+| Feature-branch CI | run [33715195511](https://github.com/Morkeeth/agents-for-humans/actions/runs/33715195511) → success on `ebb7950` |
 
 ## WRONG
 
@@ -37,6 +37,5 @@
 - **Planted flood still authored** — S4 partial.
 - **Bedrock cloud BLOCKED**.
 - **PR / merge to main is Oscar's click** — branch `cursor/stack-magnet-night-5e60` · PR create needs user approval in this environment.
-- **SHIP GATE asked `git push origin main`** — not done; cloud policy uses feature branch + PR. Head: `c978b18`.
+- **SHIP GATE asked `git push origin main`** — not done; cloud policy uses feature branch + PR. Head: `bc60631`.
 - **Cover skills in recover are synthetic** — they prove the diagnosis; they are not claimed as Oscar's real stack.
-- **CI conclusion for this push still pending** at report write time — subscribed.
