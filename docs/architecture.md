@@ -33,6 +33,18 @@ flowchart LR
     G --> R
     R --> OUT[ranked / demoted / claimed / no-signal]
     OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
+    B --> REP[replicate<br/>author fixture vs stack-cursor]
+    REP -->|independent loss| FIND[FINDING printed<br/>not papered over]
+```
+
+```mermaid
+flowchart LR
+    P[predicted fills] --> CD[coverage-delta]
+    S2[stack copy] --> CD
+    CD --> V{verdict}
+    V -->|predicted caps newly covered| ATT[attributed]
+    V -->|other caps moved| COI[coincident]
+    V -->|nothing moved| NM[nothing-moved]
 ```
 
 ## Data flow
@@ -58,12 +70,16 @@ flowchart LR
 | `magnet/demo.py` | One-command cold demo |
 | `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
+| `magnet/replicate.py` | Author fixture vs independent Cursor stack bakeoff |
+| `magnet/coverage_delta.py` | Prediction vs coverage before/after temp install |
 
 ## Naive baseline arm
 
 `reporter.naive_verdict()` always returns `helped` on fewer than two readings — the two-hour team bug MAGNET exists to catch. The demo prints both verdicts side by side.
 
 `magnet bakeoff` adds marketplace proxies: **naive_stars** (rank by star count) and **naive_name** (alphabetical tie-break of zero-score items — the EXP-MAGNET-01 defect).
+
+`magnet replicate` re-runs that bakeoff on **`fixtures/stack-cursor`** (live Cursor skills, not designed by the filter author). If magnet loses there, the receipt says LOST — that finding is the product.
 
 ## AWS path (optional · Oscar click)
 

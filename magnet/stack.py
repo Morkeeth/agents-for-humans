@@ -175,13 +175,46 @@ def inventory(stack_dir: str) -> dict:
 
 
 def _frontmatter_desc(path: str) -> str:
+    """Name/description only. Empty YAML description falls back to first body paragraph.
+
+    Found by opening a live Cursor skill (`canvas/SKILL.md`) whose frontmatter is
+    `description:` blank followed by `metadata:` — a naive regex returned "metadata:".
+    """
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
-            head = f.read(4000)
+            text = f.read(8000)
     except OSError:
         return ""
-    m = re.search(r"^description:\s*(.+?)\s*$", head, re.M)
-    return (m.group(1).strip().strip("\"'") if m else "")[:400]
+    m = re.search(r"^description:\s*(.*)$", text, re.M)
+    desc = ""
+    if m:
+        raw = m.group(1).strip()
+        if raw and raw not in ("|", ">", ">-", "|+", "|-"):
+            if (raw.startswith('"') and raw.endswith('"')) or (
+                raw.startswith("'") and raw.endswith("'")
+            ):
+                desc = raw[1:-1]
+            elif not raw.endswith(":"):  # reject accidental next-key capture
+                desc = raw
+    if not desc:
+        body = text
+        if text.startswith("---"):
+            parts = text.split("---", 2)
+            body = parts[2] if len(parts) >= 3 else text
+        buf: list[str] = []
+        for line in body.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("#"):
+                if buf:
+                    break
+                continue
+            if not stripped:
+                if buf:
+                    break
+                continue
+            buf.append(stripped)
+        desc = " ".join(buf)
+    return re.sub(r"\s+", " ", desc).strip()[:400]
 
 
 def gaps(inv: dict) -> dict:

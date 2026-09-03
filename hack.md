@@ -60,10 +60,11 @@ No number without the command that produced it, the population it is out of, and
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
+| 15 | Independent-stack replicate + coverage-delta | `magnet replicate` exit 0 · cursor stack loss recorded · `magnet coverage-delta` · CI must-beat on author fixture |
 
 ## NOW
 
-**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
+**Slice 15:** Independent replication (EXP-MAGNET S4 partial) — bakeoff on a stack the filter author did not write (`fixtures/stack-cursor` from live Cursor skills) · ship the loss if magnet loses · `magnet coverage-delta` checks adopt predictions against coverage before/after · author-fixture CI must-beat-naive control that goes RED · frontmatter body fallback for empty YAML descriptions.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -93,3 +94,7 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 13 cold clone `/tmp/magnet-cold-s13` (branch) → demo/stack/bakeoff/pytest exit 0 · push `8027d79`.
 - 2026-09-02 · Slice 14: `magnet adopt --fit` · `stack-coverage` probe 8/12 · judge-demo step extended · `python3 -m pytest -q` → 98 passed · check-docs 11 PASS.
 - 2026-09-02 · **DEFECT found by running:** `tool_adopt_change` applied demo +1/5 whenever probe was `demo-pass-rate`, ignoring `apply_demo_bonus=False` — wine-pairing noise got `helped` while fit said `no-signal`. Fixed: bonus is opt-in only; scripted agent plan passes `apply_demo_bonus=True` explicitly · `python3 -m pytest -q` → 100 passed.
+- 2026-09-03 · Slice 14 closed by RUN: `magnet adopt … --fit` → fills-gap/no-signal · `magnet probe stack-coverage` → 8/12 · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · 100 passed on bakeoff branch tip.
+- 2026-09-03 · Slice 15 START · opened real objects: `helicon/magnet.py` + `bench/magnet-experiment/RESULTS*.md` + live `~/.cursor/skills-cursor` · canvas skill empty YAML `description:` captured as `metadata:` — frontmatter body fallback fixed.
+- 2026-09-03 · Slice 15 FINDING by RUN: `magnet bakeoff --stack fixtures/stack-cursor` → magnet LOST 0.25 vs naive_stars 0.375 (18 noise) · shipped as `magnet replicate` finding, not papered over.
+- 2026-09-03 · Slice 15: `magnet replicate` · `magnet coverage-delta` (pdb → attributed 2/12→3/12 debug; wine → nothing-moved) · author must-beat CI · `python3 -m pytest -q` → 109 passed · `magnet check-docs` → 11 PASS.

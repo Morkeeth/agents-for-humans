@@ -21,8 +21,8 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Log** | In-repo SQLite (`.magnet/log.db`) — probe readings + adoptions | `magnet history` |
 | **Agent** | Strands `@tool` loop: run_probe, record_week, adopt_change, check_docs | `magnet agent-run` |
 | **Eval** | Real probes (`pytest-pass-rate`) + registry (`.magnet/probes.json`) | `magnet probe pytest-pass-rate` |
-| **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
-| **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
+| **Honesty** | baseline when n<2; naive arm; drift gate; replicate can LOSE | `magnet demo` · `magnet eval` · `magnet drift-demo` · `magnet replicate` |
+| **Stack fit** | Inventory YOUR surfaces; rank local candidates; coverage-delta | `magnet stack` · `magnet bakeoff` · `magnet coverage-delta` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
@@ -31,9 +31,10 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 ## Moat (why this is hard to copy badly)
 
 1. **Science ported from measurement-bench / helicon.magnet** — value/pop, baseline gate, gap-fit ranking with no name tie-break.
-2. **Embarrassment hunt built in** — `magnet eval` and `magnet bakeoff` ship arms that can beat us (silent_null, naive_stars).
+2. **Embarrassment hunt built in** — `magnet eval`, `magnet bakeoff`, and `magnet replicate` ship arms/stacks that can beat us.
 3. **Doc drift as product** — `check_docs` re-derives README and judge-doc numbers at read time (Qwen lesson).
 4. **Stranger path** — `bash scripts/judge-demo.sh` on cold clone, no keys, CI on every push.
+5. **Prediction check** — `magnet coverage-delta` reports attributed / coincident / nothing-moved.
 
 ---
 

@@ -28,6 +28,11 @@ python3 -m magnet.cli agent-run
 python3 -m magnet.cli list-probes
 python3 -m magnet.cli stack
 python3 -m magnet.cli bakeoff --no-write
+python3 -m magnet.cli replicate
+python3 -m magnet.cli coverage-delta \
+  --name pdb-navigator \
+  --text "Debug a failing test by driving pdb and bisecting the stack trace" \
+  --stack fixtures/stack-cursor
 python3 -m magnet.cli drift-demo
 python3 -m magnet.cli check-docs
 python3 -m magnet.cli history

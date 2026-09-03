@@ -54,6 +54,14 @@ else
     "Debug failing tests by bisecting the stack trace" \
     --probe demo-pass-rate --demo-bonus --reset --fit \
     --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
+
+  echo ""
+  echo "=== 7b/8 · Impact: independent-stack replicate + coverage-delta ==="
+  magnet replicate
+  magnet coverage-delta \
+    --name pdb-navigator \
+    --text "Debug a failing test by driving pdb and bisecting the stack trace" \
+    --stack fixtures/stack-cursor
 fi
 
 echo ""

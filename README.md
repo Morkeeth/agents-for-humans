@@ -19,6 +19,8 @@ magnet list-probes    # built-in + your .magnet/probes.json
 magnet history        # adoption timeline from SQLite
 magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
 magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
+magnet replicate      # author fixture vs independent Cursor stack (can lose)
+magnet coverage-delta --name pdb-navigator --text "Debug … pdb" --stack fixtures/stack-cursor
 ```
 
 Cold path — no keys, no network:
@@ -30,6 +32,7 @@ pip install -e .
 magnet demo
 magnet stack
 magnet bakeoff
+magnet replicate
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -74,6 +77,8 @@ magnet check-docs
 magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fixtures
+magnet replicate     # author fixture vs independent Cursor stack — loss is a finding
+magnet coverage-delta --name X --text "…"  # prediction vs coverage before/after
 magnet stack         # inventory YOUR surfaces + gaps
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes

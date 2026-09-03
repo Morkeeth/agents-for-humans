@@ -13,6 +13,8 @@ magnet eval
 magnet agent-run
 magnet stack
 magnet bakeoff
+magnet replicate
+magnet coverage-delta --name pdb-navigator --text "Debug a failing test by driving pdb and bisecting the stack trace" --stack fixtures/stack-cursor
 magnet list-probes
 magnet history
 pytest -q
@@ -80,10 +82,10 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-100 passed in 25.32s
+109 passed in <re-derive with: python3 -m pytest -q>
 ```
 
-Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
+Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-03)
 
 ## `magnet stack` output (fixture cold path)
 
@@ -127,6 +129,45 @@ MAGNET bakeoff — gap-fit vs marketplace proxies on a planted flood
 Exit code: **0** (verified: `python3 -m magnet.cli bakeoff --no-write`)
 Numbers above must be re-checked at the object — do not trust a stale paste.
 
+## `magnet replicate` output (author vs independent Cursor stack)
+
+```
+MAGNET replicate — author fixture vs independent Cursor stack
+
+  stack                  magnet  naive_stars  best         noise
+  ------------------------------------------------------------------
+  author/fixture         0.5     0.375        magnet       0
+  independent/cursor     0.25    0.375        naive_stars  18
+
+  FINDINGS
+    · author fixture: magnet 0.5 beats naive_stars 0.375
+    · INDEPENDENT STACK: magnet LOST (0.25 < naive_stars 0.375) …
+    · independent magnet admitted 18 noise into top-k …
+
+  wine-liar quarantined   True
+  author must-beat        True
+```
+
+Exit code: **0** (loss on independent stack is the finding, not a red). Re-derive: `magnet replicate`.
+
+## `magnet coverage-delta` output
+
+```
+MAGNET coverage-delta — prediction checked against stack coverage
+
+  candidate  pdb-navigator
+  fit        fills-gap  (score 3)
+  predict    debug
+  before     2/12  covered capabilities
+  after      3/12  (temp install into stack copy)
+  newly      debug
+  hit        debug
+  miss       (none)
+  verdict    attributed
+```
+
+Exit code: **0** (verified: `magnet coverage-delta --name pdb-navigator --text "Debug a failing test by driving pdb and bisecting the stack trace" --stack fixtures/stack-cursor`)
+
 ## `magnet list-probes` output
 
 ```
@@ -145,7 +186,7 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 100/100
+pytest-pass-rate: 109/109
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 

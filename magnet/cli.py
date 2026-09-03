@@ -8,6 +8,7 @@ import sys
 from magnet.adopt import run_adopt
 from magnet.agent_run import MODES, run_agent_loop
 from magnet.bakeoff import render_bakeoff, run_bakeoff
+from magnet.coverage_delta import render_coverage_delta, run_coverage_delta
 from magnet.demo import run_demo
 from magnet.drift_demo import run_drift_demo
 from magnet.eval import run_eval
@@ -15,6 +16,7 @@ from magnet.history import render_history
 from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
+from magnet.replicate import render_replicate, replicate_exit_code, run_replicate
 from magnet.stack import default_stack_dir, magnet_report, render_stack
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
@@ -155,6 +157,30 @@ def cmd_bakeoff(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_replicate(args: argparse.Namespace) -> int:
+    result = run_replicate(repo_root=args.repo, noise_n=args.noise)
+    print(render_replicate(result))
+    code = replicate_exit_code(result)
+    if code != 0:
+        print("\nREPLICATE RED — author must-beat failed or wine-liar escaped quarantine")
+    return code
+
+
+def cmd_coverage_delta(args: argparse.Namespace) -> int:
+    caps = None
+    if args.predict:
+        caps = [c.strip() for c in args.predict.split(",") if c.strip()]
+    result = run_coverage_delta(
+        args.name,
+        args.text,
+        stack_dir=args.stack,
+        repo_root=args.repo,
+        predicted_caps=caps,
+    )
+    print(render_coverage_delta(result))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -277,6 +303,26 @@ def main(argv: list[str] | None = None) -> int:
         help="Do not write fixtures/candidates-bakeoff.jsonl",
     )
     p_bake.set_defaults(func=cmd_bakeoff)
+
+    p_rep = sub.add_parser(
+        "replicate",
+        help="Bakeoff on author fixture AND independent Cursor stack (S4 partial)",
+    )
+    p_rep.add_argument("--noise", type=int, default=200, help="Noise candidates")
+    p_rep.set_defaults(func=cmd_replicate)
+
+    p_cov = sub.add_parser(
+        "coverage-delta",
+        help="Install a candidate into a temp stack copy; check predicted caps vs coverage",
+    )
+    p_cov.add_argument("--name", required=True, help="Candidate skill name")
+    p_cov.add_argument("--text", required=True, help="Prose description used for fit + install")
+    p_cov.add_argument("--stack", help="Stack directory (default: fixtures/stack)")
+    p_cov.add_argument(
+        "--predict",
+        help="Comma-separated predicted caps (default: fit fills)",
+    )
+    p_cov.set_defaults(func=cmd_coverage_delta)
 
     args = parser.parse_args(argv)
     return args.func(args)
