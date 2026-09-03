@@ -101,3 +101,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-03 · Slice 16 START · prediction check on adopt + history · opened real object `anthropics/skills` via `scripts/foreign-stack.sh`.
 - 2026-09-03 · **DEFECT found by opening foreign stack:** bare capability term `extract` matched docx/pdf "extracting content" via startswith — falsely covered refactor (8/12). Fixed to `extract method`. Foreign coverage re-derived **7/12**. pdb-navigator fills-gap on fixtures but **no-signal** on anthropics/skills (debug already covered by webapp-testing).
 - 2026-09-03 · Slice 16 VERIFIED · `python3 -m pytest -q` → 133 passed · check-docs 11 PASS · foreign-stack exit 0 · prediction-held on filler, prediction-missed on wine+"coverage rises".
+- 2026-09-03 · Slice 16 cold clone `/tmp/magnet-cold-s16` @ 46c3c90 → stack-demo/demo/pytest/check-docs exit 0 · prediction-held on apply filler.
