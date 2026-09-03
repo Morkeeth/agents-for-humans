@@ -13,6 +13,7 @@ magnet eval
 magnet agent-run
 magnet stack
 magnet bakeoff
+magnet stack-demo
 magnet list-probes
 magnet history
 pytest -q
@@ -80,10 +81,42 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-113 passed in 25.32s
+124 passed in 25.32s
 ```
 
-Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
+Exit code: **0** (verified: `python3 -m pytest -q` — count re-derived from `tests/test_*.py`)
+
+## `magnet stack-demo` output (2026-09-03, real run — apply moves coverage)
+
+```
+MAGNET stack-demo — apply skills into a measured stack copy
+
+  baseline   8/12  verdict=baseline
+
+=== A · apply filler that names an uncovered capability ===
+  applied    pdb-navigator
+  fit        fills-gap  fills=debug
+  coverage   8/12 → 9/12
+  magnet     helped
+  naive      helped
+
+=== B · apply noise (embarrassing case for naive) ===
+  applied    wine-pairing
+  fit        no-signal
+  coverage   9/12 → 9/12
+  magnet     unchanged
+  naive      helped  ← invents optimism on noise
+
+=== D · apply liar (capabilities: [security], text is flashcards) ===
+  magnet     unchanged
+  naive      helped
+  claimed    security
+
+FINDING  magnet refuses helped when coverage did not move (B, D).
+FINDING  naive helped on wine-pairing and flashcard-guard — marketplace failure.
+```
+
+Exit code: **0** (verified: `python3 -m magnet.cli stack-demo`)
 
 ## `magnet stack` output (fixture cold path)
 

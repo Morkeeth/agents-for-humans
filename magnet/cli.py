@@ -17,6 +17,7 @@ from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.stack import default_stack_dir, magnet_report, render_stack
+from magnet.stack_demo import run_stack_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -36,13 +37,18 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_stack_demo(args: argparse.Namespace) -> int:
+    print(run_stack_demo(repo_root=args.repo, log_path=args.log))
+    return 0
+
+
 def cmd_drift_demo(args: argparse.Namespace) -> int:
     print(run_drift_demo(repo_root=args.repo))
     return 0
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    result = tool_run_probe(args.name, log_path=args.log)
+    result = tool_run_probe(args.name, log_path=args.log, stack_dir=args.stack)
     pop = result.get("population")
     val = result.get("value")
     shown = f"{val}/{pop}" if pop is not None else val
@@ -52,7 +58,7 @@ def cmd_probe(args: argparse.Namespace) -> int:
 
 
 def cmd_record(args: argparse.Namespace) -> int:
-    out = tool_record_week(args.name, log_path=args.log)
+    out = tool_record_week(args.name, log_path=args.log, stack_dir=args.stack)
     print(f"recorded {args.name}: verdict={out['verdict']} readings={out['readings']}")
     return 0
 
@@ -68,6 +74,9 @@ def cmd_agent_run(args: argparse.Namespace) -> int:
 
 
 def cmd_adopt(args: argparse.Namespace) -> int:
+    caps = None
+    if args.capabilities:
+        caps = [c.strip() for c in args.capabilities.split(",") if c.strip()]
     print(
         run_adopt(
             args.change_type,
@@ -81,6 +90,8 @@ def cmd_adopt(args: argparse.Namespace) -> int:
             fit=args.fit,
             stack_dir=args.stack,
             fit_description=args.fit_text,
+            apply=args.apply,
+            capabilities=caps,
         )
     )
     return 0
@@ -177,6 +188,12 @@ def main(argv: list[str] | None = None) -> int:
     p_demo = sub.add_parser("demo", help="Cold demo: baseline → adopt → receipt")
     p_demo.set_defaults(func=cmd_demo)
 
+    p_stack_demo = sub.add_parser(
+        "stack-demo",
+        help="Apply filler/noise into a stack copy; magnet vs naive on coverage",
+    )
+    p_stack_demo.set_defaults(func=cmd_stack_demo)
+
     p_drift = sub.add_parser(
         "drift-demo",
         help="Show check_docs catching fabricated numbers (Qwen lesson)",
@@ -200,7 +217,19 @@ def main(argv: list[str] | None = None) -> int:
         "--fit-text",
         help="Prose description used for fit matching (default: prediction)",
     )
-    p_adopt.add_argument("--stack", help="Stack directory for --fit (default: fixtures/stack)")
+    p_adopt.add_argument(
+        "--stack",
+        help="Stack directory for --fit/--apply (default: fixtures/stack)",
+    )
+    p_adopt.add_argument(
+        "--apply",
+        action="store_true",
+        help="Write the skill into the measured stack so stack-coverage can move",
+    )
+    p_adopt.add_argument(
+        "--capabilities",
+        help="Comma-separated capability tags written into SKILL.md frontmatter",
+    )
     p_adopt.set_defaults(func=cmd_adopt)
 
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
@@ -226,10 +255,12 @@ def main(argv: list[str] | None = None) -> int:
 
     p_probe = sub.add_parser("probe", help="Run one probe")
     p_probe.add_argument("name", help="Probe name (e.g. demo-pass-rate)")
+    p_probe.add_argument("--stack", help="Stack directory for stack-coverage")
     p_probe.set_defaults(func=cmd_probe)
 
     p_record = sub.add_parser("record", help="Run probe and store this week")
     p_record.add_argument("name", help="Probe name")
+    p_record.add_argument("--stack", help="Stack directory for stack-coverage")
     p_record.set_defaults(func=cmd_record)
 
     p_docs = sub.add_parser("check-docs", help="Re-derive README numbers; exit 1 on drift")

@@ -110,8 +110,17 @@ def inventory(stack_dir: str) -> dict:
         for name in sorted(os.listdir(skills_dir)):
             path = os.path.join(skills_dir, name, "SKILL.md")
             if os.path.isfile(path):
+                meta = _frontmatter(path)
                 inv["skills"].append(
-                    {"name": name, "description": _frontmatter_desc(path)}
+                    {
+                        "name": name,
+                        "description": meta["description"],
+                        "capabilities": meta["capabilities"],
+                        "capability_verdicts": verify_declaration(
+                            meta["capabilities"],
+                            f"{name} {meta['description']}",
+                        ),
+                    }
                 )
 
     cmd_dir = os.path.join(root, "commands")
@@ -175,33 +184,77 @@ def inventory(stack_dir: str) -> dict:
 
 
 def _frontmatter_desc(path: str) -> str:
+    return _frontmatter(path)["description"]
+
+
+def _frontmatter(path: str) -> dict:
+    """Parse description + capabilities from SKILL.md / command frontmatter.
+
+    Capabilities are the S1 declared-tag list. Coverage and ranking VERIFY them
+    against the skill's own text — claimed (unsupported) never buys coverage.
+    """
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
             head = f.read(4000)
     except OSError:
-        return ""
-    m = re.search(r"^description:\s*(.+?)\s*$", head, re.M)
-    return (m.group(1).strip().strip("\"'") if m else "")[:400]
+        return {"description": "", "capabilities": []}
+    desc_m = re.search(r"^description:\s*(.+?)\s*$", head, re.M)
+    desc = (desc_m.group(1).strip().strip("\"'") if desc_m else "")[:400]
+    caps: list[str] = []
+    caps_m = re.search(r"^capabilities:\s*(.+?)\s*$", head, re.M | re.I)
+    if caps_m:
+        raw = caps_m.group(1).strip()
+        if raw.startswith("["):
+            raw = raw.strip("[]")
+        for part in raw.split(","):
+            tag = part.strip().strip("\"'").lower()
+            if tag:
+                caps.append(tag)
+    return {"description": desc, "capabilities": caps}
 
 
 def gaps(inv: dict) -> dict:
-    """Holes as facts about this machine — never recommendations."""
+    """Holes as facts about this machine — never recommendations.
+
+    A capability is covered when YOUR stack's text mentions it OR an owned skill
+    declares it and the declaration VERIFYIES against that skill's text.
+    CLAIMED (declared, text does not support) never buys coverage — same honesty
+    rule as rank(). Found necessary when apply writes a synonym skill: without
+    verified declarations, coverage stays deaf to paraphrase forever.
+    """
     enumerable = set(inv.get("enumerable") or SURFACES)
     empty = [s for s in SURFACES if s in enumerable and not inv.get(s)]
     unseen = [s for s in SURFACES if s not in enumerable]
     owned: set[str] = set()
+    verified_caps: set[str] = set()
+    claimed_only: set[str] = set()
     for s in SURFACES:
         for item in inv.get(s) or []:
             owned |= _words(item.get("name", "")) | _words(item.get("description", ""))
+            verdicts = item.get("capability_verdicts") or {}
+            if not verdicts and item.get("capabilities"):
+                verdicts = verify_declaration(
+                    item.get("capabilities") or [],
+                    f"{item.get('name', '')} {item.get('description', '')}",
+                )
+            for tag, verdict in verdicts.items():
+                if verdict == "verified":
+                    verified_caps.add(tag)
+                elif verdict == "claimed":
+                    claimed_only.add(tag)
     owned_blob = " ".join(sorted(owned))
     uncovered = sorted(
-        cap for cap, terms in CAPABILITIES.items() if not _mentions(owned_blob, terms)
+        cap
+        for cap, terms in CAPABILITIES.items()
+        if not _mentions(owned_blob, terms) and cap not in verified_caps
     )
     return {
         "empty_surfaces": empty,
         "uncovered": uncovered,
         "not_enumerable": unseen,
         "owned_terms": len(owned),
+        "verified_caps": sorted(verified_caps),
+        "claimed_only": sorted(claimed_only - verified_caps),
         "counts": {s: len(inv.get(s) or []) for s in SURFACES},
     }
 
@@ -420,6 +473,8 @@ def stack_coverage(stack_dir: str) -> dict:
         "detail": {
             "covered_caps": sorted(set(CAPABILITIES) - uncovered),
             "uncovered": g["uncovered"],
+            "verified_caps": g.get("verified_caps") or [],
+            "claimed_only": g.get("claimed_only") or [],
             "empty_surfaces": g["empty_surfaces"],
             "counts": g["counts"],
             "stack": stack_dir,

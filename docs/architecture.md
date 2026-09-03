@@ -35,6 +35,19 @@ flowchart LR
     OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
 ```
 
+```mermaid
+flowchart LR
+    AD[magnet adopt --apply] --> W[write skills/slug/SKILL.md<br/>into measured stack]
+    W --> SC[stack-coverage probe<br/>covered/total caps]
+    SC --> DS2[helped / hurt / unchanged]
+    N[naive arm] --> H[always helped after adopt]
+    DS2 --> CMP[magnet vs naive<br/>stack-demo]
+    H --> CMP
+```
+
+A third surface **applies** a skill into the stack the probe opens. Without `--apply`,
+fit can say `fills-gap` while coverage stays flat — adopt only wrote SQLite. Claimed
+(unsupported) `capabilities:` tags never buy coverage.
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.

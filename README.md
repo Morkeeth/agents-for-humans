@@ -19,6 +19,7 @@ magnet list-probes    # built-in + your .magnet/probes.json
 magnet history        # adoption timeline from SQLite
 magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
 magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
+magnet stack-demo     # apply filler→helped, wine noise→unchanged (naive helped)
 ```
 
 Cold path — no keys, no network:
@@ -30,6 +31,7 @@ pip install -e .
 magnet demo
 magnet stack
 magnet bakeoff
+magnet stack-demo
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -76,6 +78,7 @@ magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fixtures
 magnet stack         # inventory YOUR surfaces + gaps
+magnet stack-demo    # apply-to-stack: filler helped, noise unchanged, naive embarrassed
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes
 magnet history       # adoption timeline from .magnet/log.db

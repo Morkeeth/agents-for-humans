@@ -60,10 +60,11 @@ No number without the command that produced it, the population it is out of, and
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
+| 15 | Apply-to-stack adopt moves coverage | `magnet stack-demo` exit 0 · filler → helped · noise → unchanged · naive helped-on-noise |
 
 ## NOW
 
-**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
+**Slice 15:** `magnet adopt --apply` writes the skill into the measured stack so `stack-coverage` can move · inventory counts verified `capabilities:` declarations (claimed never buys coverage) · `magnet stack-demo` cold path: filler helped / wine noise unchanged while naive says helped · judge-demo + stranger-pass run the real object, not demo-pass-rate+bonus for stack skills.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -93,3 +94,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 13 cold clone `/tmp/magnet-cold-s13` (branch) → demo/stack/bakeoff/pytest exit 0 · push `8027d79`.
 - 2026-09-02 · Slice 14: `magnet adopt --fit` · `stack-coverage` probe 8/12 · judge-demo step extended · `python3 -m pytest -q` → 98 passed · check-docs 11 PASS.
 - 2026-09-02 · **DEFECT found by running:** `tool_adopt_change` applied demo +1/5 whenever probe was `demo-pass-rate`, ignoring `apply_demo_bonus=False` — wine-pairing noise got `helped` while fit said `no-signal`. Fixed: bonus is opt-in only; scripted agent plan passes `apply_demo_bonus=True` explicitly · `python3 -m pytest -q` → 100 passed.
+- 2026-09-03 · Slice 15 START · **DEFECT found by running:** `magnet adopt skill pdb-navigator … --fit --probe stack-coverage` → fit `fills-gap` (debug) but coverage `8/12` `unchanged` — adopt only logged to SQLite, never wrote the skill into the stack. Judge-demo step 7 measured stack skills with `demo-pass-rate --demo-bonus` (nearer proxy). Building `--apply` + `stack-demo`.
+- 2026-09-03 · Slice 15 VERIFIED · `python3 -m pytest -q` → 124 passed · `magnet stack-demo` → filler helped 8→9, wine unchanged + naive helped, liar claimed unchanged · `magnet check-docs` → 11 PASS · fixtures/stack still 8/12 after demo · fit-before-apply fix (self-duplicate).

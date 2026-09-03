@@ -136,7 +136,13 @@ def run_pytest_probe(
     }
 
 
-def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
+def run_probe(
+    conn,
+    probe_name: str,
+    *,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+) -> dict:
     root = repo_root or os.getcwd()
     if probe_name in (DEMO_PROBE, "demo-pass-rate", "demo"):
         return run_demo_probe(conn)
@@ -149,7 +155,7 @@ def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
             repo_root=root, command=builtin_probe_command(PYTEST_PROBE), scoped=False
         )
     if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage"):
-        return run_stack_coverage_probe(repo_root=root)
+        return run_stack_coverage_probe(repo_root=root, stack_dir=stack_dir)
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)

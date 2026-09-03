@@ -53,14 +53,20 @@ else
   magnet history | head -25
 
   echo ""
-  echo "=== 7/8 · Impact: stack inventory + bakeoff vs marketplace proxies ==="
+  echo "=== 7/8 · Impact: stack inventory + bakeoff + apply-to-stack coverage ==="
   magnet stack
   magnet bakeoff --no-write
   magnet probe stack-coverage
+  magnet stack-demo
+  # Real object: apply filler into a work copy via adopt --apply (not demo-bonus)
+  WORK="$(mktemp -d)"
+  cp -a fixtures/stack/. "$WORK/"
   magnet adopt skill pdb-navigator \
     "Debug failing tests by bisecting the stack trace" \
-    --probe demo-pass-rate --demo-bonus --reset --fit \
+    --probe stack-coverage --apply --fit --reset \
+    --stack "$WORK" \
     --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
+  rm -rf "$WORK"
 fi
 
 echo ""
