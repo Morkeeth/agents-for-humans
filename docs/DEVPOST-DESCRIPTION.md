@@ -111,6 +111,15 @@ Which commands go through the agent: `magnet agent-run` only. `magnet record`, `
 - The stack inventory (`magnet stack`, `magnet bakeoff`) runs against a fixture stack shipped in the repo, not against a live machine, so a judge sees the same numbers we do.
 - One user so far: the author. The log format and the probe registry are the only surfaces designed for a second team.
 
+## Pre-existing code, disclosed
+
+Two modules carry work from the same author's earlier repo, Morkeeth/mountain-of-helicon (https://github.com/Morkeeth/mountain-of-helicon):
+
+- `magnet/stack.py` is ported from `helicon/magnet.py` there (inventory, gap detection, word-boundary ranking). The fixture stack and the bakeoff arms are new.
+- `magnet/reporter.py` carries that repo's measurement rules forward (value/pop, `baseline` on one reading, unmeasured is NULL). The code is new; the rules are not.
+
+Everything else was written from 29 Aug 2026 onwards for this hackathon. `git log --reverse` in the repo shows the first commit on that date.
+
 ## Try it (no keys, about 60 seconds)
 
 ```bash
