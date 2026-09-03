@@ -1,4 +1,4 @@
-"""Adoption-log round-trip tests, plus the ledger->log migration."""
+"""Adoption-log round-trip tests, plus the migration from the pre-rename database file."""
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -64,8 +64,8 @@ def test_adopt_change_links_to_probe(conn):
     assert row["change_id"] == adoption["id"]
 
 
-# -- the ledger -> log rename must not lose anyone's data ------------------
-def test_existing_ledger_db_is_migrated_to_log_db(tmp_path, capsys):
+# -- the rename to log.db must not lose anyone's data ----------------------
+def test_existing_pre_rename_db_is_migrated_to_log_db(tmp_path, capsys):
     """A user who ran the old build has .magnet/ledger.db. It must survive."""
     from magnet.log import connect, list_readings, record_reading
 
@@ -104,28 +104,23 @@ def test_migration_never_clobbers_an_existing_log_db(tmp_path):
     assert rows[0]["value"] == 9, "existing log.db must win"
 
 
-def test_deprecated_magnet_ledger_import_still_works():
-    """Old imports keep working, with a warning."""
-    import warnings
+def test_old_module_name_is_gone():
+    """The pre-rename module and its alias function no longer exist; magnet.log is the only name."""
+    import importlib
 
-    with warnings.catch_warnings(record=True) as caught:
-        warnings.simplefilter("always")
-        import importlib
+    import pytest
 
-        import magnet.ledger as shim
-        importlib.reload(shim)
+    with pytest.raises(ModuleNotFoundError):
+        importlib.import_module("magnet.ledger")
+    import magnet.log as log
 
-    assert shim.connect is not None
-    assert any(issubclass(w.category, DeprecationWarning) for w in caught), [
-        str(w.message) for w in caught
-    ]
+    assert not hasattr(log, "default_ledger_path")
 
 
 def test_the_word_ledger_is_gone_from_user_facing_surfaces():
     """House ruling: LOG, record or database -- never 'ledger'.
 
-    The only survivors may be the deprecation shim, the migration code that has
-    to name the old file, and the deprecated CLI alias.
+    The only survivor is the migration code, which has to name the old file.
     """
     import subprocess
 
@@ -134,12 +129,9 @@ def test_the_word_ledger_is_gone_from_user_facing_surfaces():
         ["git", "ls-files"], cwd=root, capture_output=True, text=True
     ).stdout.split()
 
-    # these legitimately name the old word: the shim, the migration code, the
-    # deprecated CLI alias, this test file, and hack.md's historical LOG entry
-    allowed = {
-        "magnet/ledger.py", "magnet/log.py", "magnet/cli.py",
-        "tests/test_log.py", "hack.md",
-    }
+    # these legitimately name the old word: the migration code, this test file,
+    # and hack.md's historical LOG entry
+    allowed = {"magnet/log.py", "tests/test_log.py", "hack.md"}
     offenders = {}
     for rel in tracked:
         if rel in allowed or not rel.endswith((".py", ".md", ".toml")):

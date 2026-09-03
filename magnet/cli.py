@@ -163,7 +163,6 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument(
         "--log",
-        "--ledger",  # deprecated alias, kept so existing commands keep working
         dest="log",
         help="Path to the SQLite log (default: .magnet/log.db)",
     )

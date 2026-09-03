@@ -1,8 +1,8 @@
 """In-repo SQLite adoption LOG — NOT Helicon-only.
 
-Named `log`, never "ledger": that word is a standing house ruling. `magnet/ledger.py`
-remains as a deprecated import shim, and an existing `.magnet/ledger.db` is migrated
-in place on first connect so no one loses data. See migrate_legacy_database().
+Named `log` (house ruling: LOG, record, or database). An existing `.magnet/ledger.db`
+file from a pre-rename build is renamed to `log.db` in place on first connect so no
+one loses data. See migrate_legacy_database().
 """
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ def connect(path: str | None = None, *, announce: bool = True) -> sqlite3.Connec
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     migrated = migrate_legacy_database(path)
     if migrated and announce:
-        print(f"MAGNET: migrated {migrated} -> {path} (renamed 'ledger' to 'log')")
+        print(f"MAGNET: migrated {migrated} -> {path}")
     conn = sqlite3.connect(path)
     conn.row_factory = sqlite3.Row
     ensure_schema(conn)
@@ -271,8 +271,3 @@ def reset_demo(conn: sqlite3.Connection) -> None:
         "DELETE FROM probe_readings; DELETE FROM adoptions; DELETE FROM demo_state;"
     )
     conn.commit()
-
-
-def default_ledger_path(cwd: str | None = None) -> str:
-    """Deprecated alias for default_log_path(). Kept so old callers keep working."""
-    return default_log_path(cwd)
