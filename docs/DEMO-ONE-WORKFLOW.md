@@ -1,4 +1,6 @@
 # The one workflow — change a prompt, MAGNET re-runs your eval, reads helped / hurt / baseline
+
+> Current numbers (main @ f690fd0, 2026-09-03): `112/112 → 111/112 hurt → 112/112 helped`, 21 s. Transcript: `docs/screenshots/one-workflow.txt`. The pasted run below is from 2 Sep at 81 tests; the commands are unchanged.
 *For the Sep 14 video. One workflow, nothing else on screen. Recorded run below: 27 seconds wall clock on `fable/magnet-bugs-2026-09-03` @ 4af3757 (+ this commit), 2026-09-03 00:13:50–00:14:17 CEST. Every line of output is pasted from that run, unedited.*
 
 **Your eval** is the repo's test suite. It includes `tests/test_prompt_contract.py`, two lines that pin the one rule MAGNET's system prompt must carry. **The prompt** is `SYSTEM_PROMPT` in `magnet/tools.py`. Drop the rule, the eval drops by one, MAGNET says `hurt`. Put it back, MAGNET says `helped`. Nothing is simulated; `--no-simulate` on every call.

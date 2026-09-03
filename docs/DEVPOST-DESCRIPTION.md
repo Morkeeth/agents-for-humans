@@ -1,6 +1,6 @@
 # Devpost description · paste-ready
 
-Every number below comes from a command run on 2026-09-03 on `main` @ f690fd0. The command is next to the number. Re-derive any of them with the command shown.
+Every number below comes from a command run on 2026-09-03 on `main` @ f690fd0, unless dated otherwise. The command is next to the number. Re-derive any of them with the command shown.
 
 ---
 
@@ -10,7 +10,9 @@ MAGNET
 
 ## Tagline
 
-Change a prompt, model, or skill. MAGNET re-runs your eval and prints helped, hurt, or baseline.
+Change a prompt. MAGNET re-runs your eval: helped or hurt.
+
+(58 characters, under the 60 limit.) Longer form for the description header: Change a prompt, model, or skill. MAGNET re-runs your eval and prints helped, hurt, or baseline.
 
 ## Track
 
@@ -25,7 +27,7 @@ Developers who run agents change their stack every day: a prompt line, a model, 
 Two measured facts from this repo:
 
 1. The naive rule most people apply ("the score went up after my change, so it helped") is wrong on 2 of 5 scored scenarios. Command: `magnet eval`. Naive scores 3/5, MAGNET 5/5, a do-nothing baseline 1/5.
-2. Our own docs drifted within 13 hours. At 00:27 on 3 Sep the screenshot pack said 86 tests. At 13:57 the same day the suite had 113. Command: `magnet check-docs` (11 claims re-derived from source, all match after re-capture).
+2. Our own docs drifted within 13 hours. At 00:27 on 3 Sep the screenshot pack said 86 tests (source: `git show f690fd0:docs/screenshots/README.md`). At 13:57 the same day the suite had 113 (source: `magnet check-docs`, which re-derives the count from `tests/test_*.py`). The drift gate did not catch this one: it scans six named docs and that README is not one of them. It was caught by re-running the capture.
 
 A team lead who changed a prompt and has to justify it needs the before number, the after number, the command that produced both, and the prediction they made before looking. That is the whole product.
 
@@ -89,8 +91,8 @@ Scored against ground truth on five scenarios (`magnet eval`): naive 3/5, MAGNET
 ## How it uses Strands Agents and Amazon Bedrock
 
 - Four tools carry the Strands `@tool` decorator: `run_probe_tool`, `record_week_tool`, `adopt_change_tool`, `check_docs_tool`. File: `magnet/tools.py`, function `build_strands_tools` (lines 115 to 171).
-- The agent is a real `strands.Agent` built in `magnet/tools.py`, function `create_agent` (lines 174 to 196): `Agent(tools=..., system_prompt=SYSTEM_PROMPT, callback_handler=None, model=...)`. The system prompt is the one the demo above edits.
-- `magnet agent-run` drives that agent. File: `magnet/agent_run.py`, function `run_strands_agent` (lines 106 to 160), which calls `create_agent(...)` and then `agent(AGENT_TASK)`. The SDK's own event loop builds the tool specs from the decorators, dispatches the tools, and feeds the results back until the turn ends. Today's run on main: 12 agent turns, 5 tool dispatches (run_probe, record_week, adopt_change, record_week, check_docs). Command: `magnet agent-run`.
+- The agent is a real `strands.Agent` built in `magnet/tools.py`, function `create_agent` (lines 174 to 197): `Agent(tools=..., system_prompt=SYSTEM_PROMPT, callback_handler=None, model=...)`. The system prompt is the one the demo above edits.
+- `magnet agent-run` drives that agent. File: `magnet/agent_run.py`, function `run_strands_agent` (lines 106 to 165), which calls `create_agent(...)` and then `agent(AGENT_TASK)`. The SDK's own event loop builds the tool specs from the decorators, dispatches the tools, and feeds the results back until the turn ends. Today's run on main: 12 agent turns, 5 tool dispatches (run_probe, record_week, adopt_change, record_week, check_docs). Command: `magnet agent-run`.
 - Three model modes, and the mode is printed at the top of every run:
   - `local` (default): a scripted provider, `magnet/local_model.py`, class `ScriptedLocalModel`, a real implementation of the Strands `Model` base class. No network, no credentials, no spend. The loop, tool registry and dispatch are the SDK's; the token generation is a fixed plan, not a language model.
   - `bedrock`: the same agent with the Strands default model provider, Amazon Bedrock. A language model chooses the tools. Run live on 2026-09-02 from a developer machine in us-east-1: exit 0, 6 agent turns, 5 tool dispatches by the Strands event loop. Receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`. The receipt does not record the model id; the code passes none, so the SDK default applies, which in the installed `strands-agents` 1.54.0 is the constant `DEFAULT_BEDROCK_MODEL_ID = "global.anthropic.claude-sonnet-4-6"` (command: `python3 -c "from strands.models.bedrock import DEFAULT_BEDROCK_MODEL_ID; print(DEFAULT_BEDROCK_MODEL_ID)"`). Judge guide: `docs/BEDROCK-JUDGE-GUIDE.md`.
@@ -104,7 +106,7 @@ Which commands go through the agent: `magnet agent-run` only. `magnet record`, `
 - The default agent mode does not prove a language model chose the tool sequence. Only `--model bedrock` does, and that needs AWS credentials and costs money, so it never runs in CI. It was run once, on 2026-09-02, and the receipt is in the repo.
 - In that Bedrock run, `check_docs_tool` logged `failed to parse tool input json` once. The run still completed with exit 0. Recorded in the receipt under "WRONG".
 - `magnet demo` and `magnet agent-run` place their second reading in a simulated following week so a single run can show a two-reading verdict. Every such reading is labelled `SIMULATED` on screen. The six-command workflow above uses no simulation.
-- `pytest` is in the `[dev]` extra. A fresh clone that runs `pip install -e .` and then `pytest` gets 5 failures (the tests that spawn the verification scripts) because the virtualenv has no pytest module; `pip install -e ".[dev]"` fixes it and the suite is green: 113 passed (command: `python3 -m pytest -q`, 2026-09-03, fresh clone in a Python 3.12.5 virtualenv). Found by the stranger pass today; the README now says so.
+- `pytest` is in the `[dev]` extra, not in the base install. A fresh clone that runs `pip install -e .` and then `pytest` has no pytest in its virtualenv: on a clean machine the command is not found, and on a machine with a system pytest on the path the tests that spawn the verification scripts fail. `pip install -e ".[dev]"` first, then the suite is green: 113 passed (command: `python3 -m pytest -q`, 2026-09-03, fresh clone in a Python 3.12.5 virtualenv).
 - If pytest is missing, `magnet probe pytest-pass-rate` prints `pytest-pass-rate: None` and exits 0. It should exit non-zero. Not fixed before submission.
 - The stack inventory (`magnet stack`, `magnet bakeoff`) runs against a fixture stack shipped in the repo, not against a live machine, so a judge sees the same numbers we do.
 - One user so far: the author. The log format and the probe registry are the only surfaces designed for a second team.
@@ -119,7 +121,7 @@ pip install -e ".[dev]"
 bash scripts/judge-demo.sh
 ```
 
-Stranger pass, 2026-09-03, fresh clone of main @ f690fd0 in a Python 3.12.5 virtualenv: 24 commands, 23 exit 0, 1 exit 1 (the `pytest` before the dev extra, above). `bash scripts/judge-demo.sh` printed `JUDGE DEMO OK`.
+Fresh-clone test, 2026-09-03, main @ f690fd0 in a Python 3.12.5 virtualenv: 24 commands, 23 exit 0, 1 exit 1 (the `pytest` before the dev extra, above). `bash scripts/judge-demo.sh` printed `JUDGE DEMO OK`.
 
 ## Built with
 

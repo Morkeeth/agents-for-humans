@@ -1,6 +1,6 @@
 # Screenshots · captured 2026-09-03 13:57 to 13:58 CEST on main @ f690fd0
 
-Every `.png` is rendered from the `.txt` beside it by `scripts/render-screenshot.py` (Menlo 30 px on a dark ground, nothing edited). Each `.txt` opens with the command that produced it and the time, branch and interpreter it ran under, and closes with `# exit=N`. Re-derive any of them: run the first line of the `.txt`, then `python3 scripts/render-screenshot.py <txt> <png>`.
+Every `.png` is rendered from the `.txt` beside it by `scripts/render-screenshot.py` (Menlo 30 px on a dark ground, nothing edited). Each per-command `.txt` opens with the command that produced it and the time, branch and interpreter it ran under, and closes with `# exit=N`; `one-workflow.txt` closes with the wall clock and the three SQLite rows instead. Re-derive any of them: run the first line of the `.txt`, then `python3 scripts/render-screenshot.py <txt> <png>`.
 
 | Devpost slot | file | caption |
 |---|---|---|
