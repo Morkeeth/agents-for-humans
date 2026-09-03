@@ -15,6 +15,7 @@
 - Temp-covers those caps → magnet **0.625** recall, **0 noise**, beats naive_stars
 - Sample noise printed ("plan a wedding", "draft a listing", "colour palette")
 - Judge-demo + stranger-pass wired
+- CI watches `cursor/**` feature branches (not only main) — run 33715162400
 - 113 pytest tests (re-derived)
 
 ## VERIFIED
@@ -27,6 +28,7 @@
 | Recover win | `magnet recover` → thin LOST, covered 0.625 / 0 noise / WIN |
 | Coverage-delta | pdb on stack-cursor → 2/12→3/12 attributed |
 | Judge demo | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
+| Feature-branch CI | push to `cursor/**` triggers `judge-demo` workflow |
 
 ## WRONG
 
@@ -34,5 +36,7 @@
 - **Synonym primary still 0/3** even after recover (claims tier 3/3).
 - **Planted flood still authored** — S4 partial.
 - **Bedrock cloud BLOCKED**.
-- **PR / merge to main is Oscar's click** — branch `cursor/stack-magnet-night-5e60`.
+- **PR / merge to main is Oscar's click** — branch `cursor/stack-magnet-night-5e60` · PR create needs user approval in this environment.
+- **SHIP GATE asked `git push origin main`** — not done; cloud policy uses feature branch + PR. Head: `c978b18`.
 - **Cover skills in recover are synthetic** — they prove the diagnosis; they are not claimed as Oscar's real stack.
+- **CI conclusion for this push still pending** at report write time — subscribed.
