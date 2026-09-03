@@ -1,6 +1,6 @@
 $ bash docs/DEMO-ONE-WORKFLOW.md commands 1-6 (see the doc)
 
-### 0  clock 00:27:34 CEST  git b3af7a1  magnet from /private/tmp/claude-501/-Users-morkeeth/5f1b6eec-c1d9-4f18-8984-07a62dda2210/scratchpad/devpost-wt/magnet
+### 0  clock 00:27:34 CEST  git b3af7a1  magnet from /work/agents-for-humans/magnet
 
 ### 1  $ python3 -m magnet.cli --log .magnet/demo-one.db record pytest-pass-rate
 recorded pytest-pass-rate: verdict=baseline readings=1

@@ -1,5 +1,5 @@
 # MAGNET × the Ultimate Guide — helped / hurt / baseline per recommendation, 2026-09-02
-*Lane morkeeth-5b. The audit itself is in `fleet-ops/audit/ULTIMATE-GUIDE-AUDIT-2026-09-02.md`. This file is what MAGNET printed, verbatim, and what that output proves about MAGNET.*
+*Internal audit, 2026-09-02. This file is what MAGNET printed, verbatim, and what that output proves about MAGNET.*
 
 **Ship line asked for:** "MAGNET prints helped / hurt / baseline for the ultimate guide's recommendations applied to Oscar's real stack — a measured verdict per item, not an opinion."
 **What shipped:** MAGNET printed `baseline` five times. The verdict per item is **cannot-measure**, and the reasons are two product findings, not five opinions.
