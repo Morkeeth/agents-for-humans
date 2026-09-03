@@ -15,13 +15,13 @@
 - Temp-covers those caps → magnet **0.625** recall, **0 noise**, beats naive_stars
 - Sample noise printed ("plan a wedding", "draft a listing", "colour palette")
 - Judge-demo + stranger-pass wired
-- 112 pytest tests (re-derived)
+- 113 pytest tests (re-derived)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 112 passed |
+| Tests green | `python3 -m pytest -q` → 113 passed |
 | check_docs | `magnet check-docs` → 11 PASS |
 | Replicate loss | `magnet replicate` → independent LOST 0.25 < 0.375 |
 | Recover win | `magnet recover` → thin LOST, covered 0.625 / 0 noise / WIN |

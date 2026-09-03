@@ -101,3 +101,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-03 · Slice 15: `magnet replicate` · `magnet coverage-delta` (pdb → attributed 2/12→3/12 debug; wine → nothing-moved) · author must-beat CI · `python3 -m pytest -q` → 109 passed · `magnet check-docs` → 11 PASS.
 - 2026-09-03 · Slice 16 START · opened failure object: magnet top-20 on stack-cursor = 18 noise all filling planning/writing/design only.
 - 2026-09-03 · Slice 16: `magnet recover` thin LOST 0.25 → covered WIN 0.625 with 0 noise · `python3 -m pytest -q` → 112 passed.
+- 2026-09-03 · CI fix: `.github/workflows/judge-demo.yml` now triggers on `cursor/**` pushes — a control that only ran after merge to main was not watching the work · 113 passed.

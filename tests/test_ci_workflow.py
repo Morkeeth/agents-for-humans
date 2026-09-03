@@ -15,3 +15,9 @@ def test_ci_workflow_runs_judge_demo():
     assert "stranger-pass.sh" in text
     assert "cold-clone-verify.sh" in text
     assert "ubuntu-latest" in text
+
+
+def test_ci_workflow_watches_feature_branches():
+    """A control that only runs after merge to main is not watching the work."""
+    text = WORKFLOW.read_text()
+    assert "cursor/**" in text
