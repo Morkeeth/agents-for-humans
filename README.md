@@ -17,6 +17,8 @@ magnet init
 magnet demo
 magnet list-probes    # built-in + your .magnet/probes.json
 magnet history        # adoption timeline from SQLite
+magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
+magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
 ```
 
 Cold path — no keys, no network:
@@ -26,6 +28,8 @@ git clone https://github.com/Morkeeth/agents-for-humans.git
 cd agents-for-humans
 pip install -e .
 magnet demo
+magnet stack
+magnet bakeoff
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -37,6 +41,7 @@ magnet history
 | `demo-pass-rate` | Synthetic 3/5→4/5 demo (skill_bonus in SQLite) |
 | `check-docs` | README claims vs source (re-derived at read time) |
 | `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
+| `stack-coverage` | YOUR stack: covered/total capability vocabulary |
 
 Add your own via `.magnet/probes.json` (copy from `docs/probes.json.example`):
 
@@ -68,6 +73,8 @@ pytest
 magnet check-docs
 magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
+magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fixtures
+magnet stack         # inventory YOUR surfaces + gaps
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes
 magnet history       # adoption timeline from .magnet/log.db

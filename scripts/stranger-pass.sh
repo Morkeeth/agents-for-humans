@@ -33,6 +33,8 @@ python3 -m magnet.cli demo
 python3 -m magnet.cli eval
 python3 -m magnet.cli agent-run
 python3 -m magnet.cli list-probes
+python3 -m magnet.cli stack
+python3 -m magnet.cli bakeoff --no-write
 python3 -m magnet.cli drift-demo
 python3 -m magnet.cli check-docs
 python3 -m magnet.cli history

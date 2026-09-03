@@ -4,6 +4,10 @@ MAGNET wires a **Strands agent** to an **in-repo SQLite adoption log** and **det
 After you change a prompt, model, or skill, the agent re-runs your eval and prints
 `helped`, `hurt`, or **`baseline`** — never a trend from one reading.
 
+A second surface inventories **YOUR** agent stack and ranks a local candidates file
+against YOUR gaps — not a marketplace crawl. Science ported from
+`helicon/magnet.py` (mountain-of-helicon).
+
 ```mermaid
 flowchart LR
     U[User change event<br/>prompt / model / skill] --> A[Strands Agent<br/>4 tools]
@@ -19,6 +23,16 @@ flowchart LR
     CD --> README[README claims]
     README --> SRC[Source truth<br/>re-derived at read time]
     SRC -->|drift| FAIL[exit 1]
+```
+
+```mermaid
+flowchart LR
+    S[YOUR stack dir<br/>fixtures/stack or ~/.claude] --> INV[inventory<br/>names only]
+    INV --> G[gaps<br/>empty surfaces + uncovered caps]
+    C[local candidates.jsonl<br/>no crawl] --> R[rank]
+    G --> R
+    R --> OUT[ranked / demoted / claimed / no-signal]
+    OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
 ```
 
 ## Data flow
@@ -42,10 +56,14 @@ flowchart LR
 | `magnet/registry.py` | Load YOUR probes from `.magnet/probes.json` |
 | `magnet/history.py` | Adoption timeline / decision surface |
 | `magnet/demo.py` | One-command cold demo |
+| `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
+| `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
 
 ## Naive baseline arm
 
 `reporter.naive_verdict()` always returns `helped` on fewer than two readings — the two-hour team bug MAGNET exists to catch. The demo prints both verdicts side by side.
+
+`magnet bakeoff` adds marketplace proxies: **naive_stars** (rank by star count) and **naive_name** (alphabetical tie-break of zero-score items — the EXP-MAGNET-01 defect).
 
 ## AWS path (optional · Oscar click)
 

@@ -51,6 +51,16 @@ else
   echo ""
   echo "=== 6/8 · Design: adoption timeline ==="
   magnet history | head -25
+
+  echo ""
+  echo "=== 7/8 · Impact: stack inventory + bakeoff vs marketplace proxies ==="
+  magnet stack
+  magnet bakeoff --no-write
+  magnet probe stack-coverage
+  magnet adopt skill pdb-navigator \
+    "Debug failing tests by bisecting the stack trace" \
+    --probe demo-pass-rate --demo-bonus --reset --fit \
+    --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
 fi
 
 echo ""

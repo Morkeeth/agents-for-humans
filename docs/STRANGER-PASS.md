@@ -11,6 +11,8 @@ pip install -e ".[dev]"
 magnet demo
 magnet eval
 magnet agent-run
+magnet stack
+magnet bakeoff
 magnet list-probes
 magnet history
 pytest -q
@@ -78,10 +80,52 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-86 passed in 4.0s
+113 passed in 25.32s
 ```
 
-Exit code: **0** (verified: `python3 -m pytest -q`)
+Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
+
+## `magnet stack` output (fixture cold path)
+
+```
+MAGNET stack — what YOUR agent surfaces carry
+
+  INVENTORY   7 skills · 1 commands · 0 agents · 1 hooks · ? mcp
+             fixtures/stack
+
+  EMPTY       agents
+  NOT VISIBLE mcp — not counted as a gap
+  UNCOVERED   data, debug, refactor, security
+
+  repro      magnet stack --stack fixtures/stack
+```
+
+Exit code: **0** (verified: `python3 -m magnet.cli stack`)
+
+## `magnet bakeoff` output (re-derived each run)
+
+```
+MAGNET bakeoff — gap-fit vs marketplace proxies on a planted flood
+
+  arm            recall@k  p@3   noise  liars  dupes
+  ----------------------------------------------------------
+  magnet         0.5      1.0   0      0      0
+  naive_stars    0.375    0.0   14     1      2
+  naive_name     0.25     0.667 18     0      0
+  silent_null    0.0      0.0   0      0      0
+
+  per-kind (magnet): direct 3/3 · synonym 0/3 · surface 1/2
+  synonym claims-tier recovery  3/3
+  wine-liar in magnet primary   False
+  best arm                      magnet
+
+  FINDING  magnet primary misses the synonym arm; claims tier recovers.
+  FINDING  naive_stars promoted duplicates and/or liars by star count.
+  FINDING  naive_name admitted noise via alphabetical tie-break.
+```
+
+Exit code: **0** (verified: `python3 -m magnet.cli bakeoff --no-write`)
+Numbers above must be re-checked at the object — do not trust a stale paste.
 
 ## `magnet list-probes` output
 
@@ -91,8 +135,9 @@ MAGNET probes  (built-in + .magnet/probes.json)
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
   check-docs           [builtin]  python -m magnet.check_docs
   pytest-pass-rate     [builtin]  python3 -m pytest -q --tb=no
+  stack-coverage       [builtin]  magnet probe stack-coverage
 
-  total      3
+  total      4
 ```
 
 Exit code: **0** (verified: `python -m magnet.cli list-probes`)
@@ -100,8 +145,8 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 69/69
-  command: python3 -m pytest -q --tb=no
+pytest-pass-rate: 100/100
+  command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)

@@ -49,6 +49,7 @@ DEFAULT_PLAN: list[tuple[str, dict]] = [
             "description": "agent-run-verification-skill",
             "prediction": "pass rate rises by 1/5",
             "probe_name": "demo-pass-rate",
+            "apply_demo_bonus": True,
         },
     ),
     ("record_week_tool", {"probe_name": "demo-pass-rate", "simulate_next_week": True}),

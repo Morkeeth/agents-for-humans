@@ -1,48 +1,48 @@
-# Build report · 2026-09-01
+# Build report · Slice 13–14 · 2026-09-02
 
 ## SHIPPED
 
-- Python package `magnet-agents-for-humans` with `magnet` CLI (`init`, `demo`, `eval`, `agent-run`, `probe`, `record`, `check-docs`, **`list-probes`**, **`history`**)
-- In-repo SQLite log at `.magnet/log.db` (probe readings + adoptions)
-- Strands agent wiring: 4 tools via real `strands.Agent` event loop + `ScriptedLocalModel` (no spend)
-- Reporter: value/pop, baseline when `<2` readings, helped/hurt with ↑/↓
-- Cold demo + naive vs magnet embarrassing case
-- **`magnet eval`**: naive 3/5, magnet 5/5, silent_null 1/5
-- **`pytest-pass-rate` probe**: runs real `pytest -q`, parses passed/total from subprocess output (not docs)
-- **`.magnet/probes.json` registry**: add YOUR eval commands without code changes (see `.magnet/probes.json.example`)
-- **`magnet history`**: adoption timeline with verdicts from SQLite
-- `check_docs`: re-derives README tool count, tool names, pytest counts in **all judge/devpost docs**
-- **`magnet drift-demo`**: live Qwen lesson — fake repo fails, real repo passes
-- `docs/FUNDABLE-WEDGE.md` — investor one-pager for Sep 14
-- `docs/architecture.md`, `docs/STRANGER-PASS.md`
-- 86 pytest tests
-- **GitHub Actions** `.github/workflows/judge-demo.yml` — judge-demo + stranger-pass + cold-clone on every push
-- **`scripts/cold-clone-verify.sh`** — post-push GitHub clone kill-bar
+### Slice 13
+- `magnet/stack.py` — inventory / gaps / rank / verify_declaration from
+  `Morkeeth/mountain-of-helicon` `helicon/magnet.py`
+- `magnet/bakeoff.py` — magnet vs naive_stars vs naive_name vs silent_null
+- CLI: `magnet stack`, `magnet fit`, `magnet bakeoff`
+- Cold-path `fixtures/stack/`
+- Judge-demo step 7 + stranger-pass wired
+
+### Slice 14
+- `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
+- `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
+- `fit_one` / `render_fit` / `stack_coverage` helpers
+- 113 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 86 passed |
-| CI workflow | `.github/workflows/judge-demo.yml` runs `bash scripts/judge-demo.sh` |
-| Cold clone verify | `bash scripts/cold-clone-verify.sh file://$PWD` → COLD CLONE OK |
-| Cold demo | `python -m magnet.cli demo` → exit 0, `verdict helped` + 1-reading baseline case |
-| Eval arms | `python -m magnet.cli eval` → magnet 5/5, naive 3/5, silent_null 1/5 |
-| Strands agent loop | `python -m magnet.cli agent-run` → 5 tools dispatched, not DEGRADED |
-| Real pytest probe | `python -m magnet.cli probe pytest-pass-rate` → 73/73 from subprocess |
-| Stranger pass script | `bash scripts/stranger-pass.sh` → exit 0 |
-| `magnet adopt` | `python -m magnet.cli adopt skill … --demo-bonus --reset` → receipt |
-| Probe registry | `python -m magnet.cli list-probes` → 3 built-ins |
-| History | `python -m magnet.cli history` → adoption + verdict after demo |
-| check_docs clean | `python -m magnet.cli check-docs` → all PASS (11 claims incl. judge docs) |
-| Drift demo | `python -m magnet.cli drift-demo` → fake FAIL, real PASS |
-| Cold clone | `git clone … && pip install -e ".[dev]" && magnet demo` → exit 0 |
+| Tests green | `python3 -m pytest -q` → 113 passed |
+| check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
+| Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
+| Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
+| Adopt+fit | `magnet adopt skill pdb-navigator … --fit` → label fills-gap, fills debug |
+| Noise adopt honesty | `magnet adopt skill wine-pairing … --fit` → verdict unchanged + fit no-signal |
+| Stack coverage | `magnet probe stack-coverage` → 8/12 |
+| Demo bonus opt-in | `tests/test_adopt_fit.py::test_demo_bonus_is_opt_in_only` |
+| Cold clone (s13/s14) | clone branch → demo/stack/bakeoff/pytest exit 0 |
 
 ## WRONG
 
-- **`measurement-bench/magnet.py` still 404** — reporter ported from `helicon/measure.py`, not byte-for-byte from cited file.
-- **Bedrock in cloud VM BLOCKED** — `NoCredentialsError` on STS; live run verified on Oscar local only (`docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`).
-- **`pytest-pass-rate` refuses to run inside pytest** (detects `PYTEST_CURRENT_TEST`) — must invoke from CLI; this is intentional anti-recursion, not a bug, but strangers may find it surprising.
-- **Registry parsers are minimal** (`pytest_summary`, `value_pop`, `exit_code`, `regex:`) — not a full port of helicon docdrift.
-- **Demo probe remains synthetic** for the cold path; `pytest-pass-rate` is the real eval but runs the whole suite (slow on large repos).
-- **`magnet` CLI may not be on PATH** after install — use `python -m magnet.cli`.
+- **First bakeoff magnet recall 0.0** — uncovered planning/design let noise
+  ("plan a wedding", "colour palette") fill top-20. Fixed on fixture; logged.
+- **`reproduce` stemmed to debug `repro`** — verify-receipt wording fixed.
+- **Surface arm 1/2** — reviewer-agent demoted by overlap with owned critique.
+- **Synonym primary still 0/3** — EXP-MAGNET-01 re-derived; claims tier 3/3.
+- **Demo-bonus always-on bug** — `tool_adopt_change` applied +1/5 on every
+  `demo-pass-rate` adopt regardless of `--demo-bonus`. Found by running
+  `magnet adopt … --fit` on wine-pairing (probe said helped, fit said
+  no-signal). Fixed; regression tests added.
+- **Bedrock cloud still BLOCKED** — NoCredentialsError.
+- **fleet-ops plan still 404**.
+- **PR create requires user approval** — branch pushed; merge is Oscar/user click.
+- **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature
+  branch + PR; commits on `cursor/stack-magnet-bakeoff-5608`.
