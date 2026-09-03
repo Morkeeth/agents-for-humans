@@ -1,40 +1,38 @@
-# Build report · Slice 15 · 2026-09-03
+# Build report · Slice 15–16 · 2026-09-03
 
 ## SHIPPED
 
-### Prior (slices 13–14, this branch lineage)
-- Stack inventory + bakeoff vs marketplace proxies
-- `magnet adopt --fit` + `stack-coverage` probe
+### Slice 15
+- `fixtures/stack-cursor/` — sanitized live Cursor skills (independent stack)
+- `magnet replicate` — author vs independent bakeoff; independent LOST shipped
+- Author must-beat-naive RED control
+- `magnet coverage-delta` — attributed / coincident / nothing-moved
+- Frontmatter body fallback (canvas empty YAML → not `metadata:`)
 
-### Slice 15 (tonight)
-- **`fixtures/stack-cursor/`** — sanitized copy of live Cursor skills (independent stack; filter author did not design it)
-- **`magnet replicate`** — bakeoff on author fixture AND independent Cursor stack side-by-side
-- **Author must-beat CI control** — magnet recall must beat `naive_stars` on `fixtures/stack` or exit RED
-- **Independent-stack loss shipped as finding** — magnet loses to `naive_stars` on the thin Cursor stack; printed, not papered over
-- **`magnet coverage-delta`** — temp-install a candidate; check predicted caps vs newly-covered (attributed / coincident / nothing-moved)
-- **Frontmatter body fallback** — empty YAML `description:` no longer captures the next key (`metadata:`) — found by opening live `canvas/SKILL.md`
-- Judge-demo step 7b + stranger-pass wired
-- 109 pytest tests (re-derived from `tests/test_*.py`)
+### Slice 16
+- **`magnet recover`** — opens the independent-stack loss at its object
+- Diagnosis re-derived: 18 noise in top-20 fill only `{planning, writing, design}`
+- Temp-covers those caps → magnet **0.625** recall, **0 noise**, beats naive_stars
+- Sample noise printed ("plan a wedding", "draft a listing", "colour palette")
+- Judge-demo + stranger-pass wired
+- 112 pytest tests (re-derived)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 109 passed |
-| check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
-| Replicate | `magnet replicate` → author 0.5>0.375; independent LOST 0.25<0.375; wine-liar False |
-| Coverage-delta attributed | `magnet coverage-delta … --stack fixtures/stack-cursor` → 2/12→3/12 debug attributed |
-| Noise coverage | wine-pairing on fixtures/stack → nothing-moved |
-| Frontmatter fix | `tests/test_coverage_delta.py::test_frontmatter_empty_description_falls_back_to_body` |
-| Author must-beat | `tests/test_replicate.py::test_replicate_author_must_beat_naive_stars` |
+| Tests green | `python3 -m pytest -q` → 112 passed |
+| check_docs | `magnet check-docs` → 11 PASS |
+| Replicate loss | `magnet replicate` → independent LOST 0.25 < 0.375 |
+| Recover win | `magnet recover` → thin LOST, covered 0.625 / 0 noise / WIN |
+| Coverage-delta | pdb on stack-cursor → 2/12→3/12 attributed |
 | Judge demo | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
 
 ## WRONG
 
-- **Independent-stack magnet LOST** — recall 0.25 vs naive_stars 0.375 on `fixtures/stack-cursor`. Thin real stacks leave most caps uncovered; noise that mentions planning/design/etc. floods top-k. EXP-MAGNET-01 caveat re-derived on a stack we did not author. Shipped as the finding.
-- **Synonym primary still 0/3** on both stacks — deaf to paraphrase; claims tier 3/3.
-- **Planted flood still authored** — S4 partial only (independent stack, not independent planted set). Stated limit.
-- **Bedrock cloud still BLOCKED** — NoCredentialsError.
-- **fleet-ops plan still 404**.
-- **SHIP GATE asked `git push origin main`** — this cloud agent pushes a feature branch + PR; merge is Oscar's click.
-- **Canvas skill had empty YAML description** — body fallback fixed; live Cursor skills remain unevenly tagged.
+- **Independent thin stack still loses** — that is intentional; recover shows the fix.
+- **Synonym primary still 0/3** even after recover (claims tier 3/3).
+- **Planted flood still authored** — S4 partial.
+- **Bedrock cloud BLOCKED**.
+- **PR / merge to main is Oscar's click** — branch `cursor/stack-magnet-night-5e60`.
+- **Cover skills in recover are synthetic** — they prove the diagnosis; they are not claimed as Oscar's real stack.

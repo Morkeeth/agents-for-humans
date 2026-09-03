@@ -15,6 +15,7 @@ magnet stack
 magnet bakeoff
 magnet replicate
 magnet coverage-delta --name pdb-navigator --text "Debug a failing test by driving pdb and bisecting the stack trace" --stack fixtures/stack-cursor
+magnet recover
 magnet list-probes
 magnet history
 pytest -q
@@ -82,7 +83,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-109 passed in <re-derive with: python3 -m pytest -q>
+112 passed in <re-derive with: python3 -m pytest -q>
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-03)
@@ -168,6 +169,27 @@ MAGNET coverage-delta — prediction checked against stack coverage
 
 Exit code: **0** (verified: `magnet coverage-delta --name pdb-navigator --text "Debug a failing test by driving pdb and bisecting the stack trace" --stack fixtures/stack-cursor`)
 
+## `magnet recover` output (thin LOST → covered WIN)
+
+```
+MAGNET recover — open the independent-stack loss, then cover its cause
+
+  diagnosis    18 noise in magnet top-20 fill: {planning: 6, writing: 6, design: 6}
+  cause caps   planning, writing, design
+
+  phase       magnet  naive_stars  best         noise
+  ----------------------------------------------------------
+  thin       0.25    0.375        naive_stars  18
+  covered    0.625   0.375        magnet       0
+
+  FINDINGS
+    · THIN: magnet LOST
+    · COVERED: magnet WINS with 0 noise after covering planning, writing, design
+```
+
+Exit code: **0** (verified: `magnet recover`)
+Numbers re-derived each run — do not trust a stale paste.
+
 ## `magnet list-probes` output
 
 ```
@@ -186,7 +208,7 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 109/109
+pytest-pass-rate: 112/112
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 

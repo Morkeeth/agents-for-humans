@@ -56,12 +56,13 @@ else
     --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
 
   echo ""
-  echo "=== 7b/8 · Impact: independent-stack replicate + coverage-delta ==="
+  echo "=== 7b/8 · Impact: independent-stack replicate + coverage-delta + recover ==="
   magnet replicate
   magnet coverage-delta \
     --name pdb-navigator \
     --text "Debug a failing test by driving pdb and bisecting the stack trace" \
     --stack fixtures/stack-cursor
+  magnet recover
 fi
 
 echo ""

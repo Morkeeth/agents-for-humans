@@ -33,6 +33,7 @@ python3 -m magnet.cli coverage-delta \
   --name pdb-navigator \
   --text "Debug a failing test by driving pdb and bisecting the stack trace" \
   --stack fixtures/stack-cursor
+python3 -m magnet.cli recover
 python3 -m magnet.cli drift-demo
 python3 -m magnet.cli check-docs
 python3 -m magnet.cli history

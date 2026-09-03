@@ -71,6 +71,7 @@ flowchart LR
 | `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
 | `magnet/replicate.py` | Author fixture vs independent Cursor stack bakeoff |
+| `magnet/recover.py` | Diagnose noise caps on thin stack; cover → WIN receipt |
 | `magnet/coverage_delta.py` | Prediction vs coverage before/after temp install |
 
 ## Naive baseline arm

@@ -61,10 +61,11 @@ No number without the command that produced it, the population it is out of, and
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Independent-stack replicate + coverage-delta | `magnet replicate` exit 0 · cursor stack loss recorded · `magnet coverage-delta` · CI must-beat on author fixture |
+| 16 | Recover demo — cover noise-attracting caps | `magnet recover` shows thin LOST → covered WIN with 0 noise · pytest green |
 
 ## NOW
 
-**Slice 15:** Independent replication (EXP-MAGNET S4 partial) — bakeoff on a stack the filter author did not write (`fixtures/stack-cursor` from live Cursor skills) · ship the loss if magnet loses · `magnet coverage-delta` checks adopt predictions against coverage before/after · author-fixture CI must-beat-naive control that goes RED · frontmatter body fallback for empty YAML descriptions.
+**Slice 16:** Open the independent-stack loss at its object (noise fills planning/writing/design only) · `magnet recover` temp-covers those caps on `fixtures/stack-cursor` · re-runs bakeoff · prints LOST→WIN receipt with 0 noise · must not invent a win on the thin stack.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -98,3 +99,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-03 · Slice 15 START · opened real objects: `helicon/magnet.py` + `bench/magnet-experiment/RESULTS*.md` + live `~/.cursor/skills-cursor` · canvas skill empty YAML `description:` captured as `metadata:` — frontmatter body fallback fixed.
 - 2026-09-03 · Slice 15 FINDING by RUN: `magnet bakeoff --stack fixtures/stack-cursor` → magnet LOST 0.25 vs naive_stars 0.375 (18 noise) · shipped as `magnet replicate` finding, not papered over.
 - 2026-09-03 · Slice 15: `magnet replicate` · `magnet coverage-delta` (pdb → attributed 2/12→3/12 debug; wine → nothing-moved) · author must-beat CI · `python3 -m pytest -q` → 109 passed · `magnet check-docs` → 11 PASS.
+- 2026-09-03 · Slice 16 START · opened failure object: magnet top-20 on stack-cursor = 18 noise all filling planning/writing/design only.
+- 2026-09-03 · Slice 16: `magnet recover` thin LOST 0.25 → covered WIN 0.625 with 0 noise · `python3 -m pytest -q` → 112 passed.

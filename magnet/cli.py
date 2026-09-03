@@ -17,6 +17,7 @@ from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.replicate import render_replicate, replicate_exit_code, run_replicate
+from magnet.recover import recover_exit_code, render_recover, run_recover
 from magnet.stack import default_stack_dir, magnet_report, render_stack
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
@@ -181,6 +182,15 @@ def cmd_coverage_delta(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_recover(args: argparse.Namespace) -> int:
+    result = run_recover(repo_root=args.repo, noise_n=args.noise)
+    print(render_recover(result))
+    code = recover_exit_code(result)
+    if code != 0:
+        print("\nRECOVER RED — covered arm must beat naive with 0 noise")
+    return code
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -323,6 +333,13 @@ def main(argv: list[str] | None = None) -> int:
         help="Comma-separated predicted caps (default: fit fills)",
     )
     p_cov.set_defaults(func=cmd_coverage_delta)
+
+    p_rec = sub.add_parser(
+        "recover",
+        help="Diagnose independent-stack noise caps, cover them, show LOST→WIN",
+    )
+    p_rec.add_argument("--noise", type=int, default=200, help="Noise candidates")
+    p_rec.set_defaults(func=cmd_recover)
 
     args = parser.parse_args(argv)
     return args.func(args)
