@@ -1,0 +1,29 @@
+$ magnet agent-run
+# run 2026-09-03 00:27:00 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli agent-run
+MAGNET agent-run  [MODE: strands agent loop · local scripted model (no network, no spend)]
+
+  agent turns          12
+  tools dispatched     5  (by the Strands event loop)
+    1. run_probe_tool
+    2. record_week_tool
+    3. adopt_change_tool
+    4. record_week_tool
+    5. check_docs_tool
+
+  NOTE: the agent loop, tool registry and tool dispatch above are real
+        Strands. The model is a local scripted provider, not an LLM --
+        it replays a fixed plan. For a model that genuinely chooses the
+        tools, run: magnet agent-run --model bedrock  (needs AWS creds,
+        costs money). This has never been run in CI.
+
+  agent said           Adoption recorded. I ran the probe, stored a reading, adopted the change, re-read the probe and re-checked the docs. The verdict comes from the readings in the log — I did not invent a trend.
+
+MAGNET receipt
+
+  change     agent-run-verification-skill
+  probe      demo-pass-rate
+  latest     4/5  (magnet probe demo-pass-rate)
+  simulated  2026-09-10T22:27:01+00:00  (SIMULATED week — not a real read time)
+  verdict    helped  ↑ +1 vs prior
+  repro      magnet agent-run --model local
+# exit=0
