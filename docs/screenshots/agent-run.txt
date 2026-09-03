@@ -1,5 +1,5 @@
 $ magnet agent-run
-# run 2026-09-03 00:27:00 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli agent-run
+# run 2026-09-03 13:57:35 CEST on main @ f690fd0, via: python3 -m magnet.cli agent-run
 MAGNET agent-run  [MODE: strands agent loop · local scripted model (no network, no spend)]
 
   agent turns          12
@@ -23,7 +23,7 @@ MAGNET receipt
   change     agent-run-verification-skill
   probe      demo-pass-rate
   latest     4/5  (magnet probe demo-pass-rate)
-  simulated  2026-09-10T22:27:01+00:00  (SIMULATED week — not a real read time)
+  simulated  2026-09-11T11:57:35+00:00  (SIMULATED week — not a real read time)
   verdict    helped  ↑ +1 vs prior
   repro      magnet agent-run --model local
 # exit=0

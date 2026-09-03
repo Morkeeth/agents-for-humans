@@ -34,17 +34,11 @@
 
 ---
 
-## What to demonstrate (5 min video)
+## What to demonstrate (video, 2 to 3 min)
 
-1. `magnet demo` — naive says `helped` on 1 reading; MAGNET says `baseline`
-2. `magnet eval` — silent null beats naive arm
-3. `magnet agent-run` — real Strands tool dispatch (4 tools)
-4. `magnet check-docs` — README drift caught
-5. `magnet adopt` + `magnet history` — adoption timeline
+One workflow, nothing else on screen: change a prompt, MAGNET re-runs your eval, reads `hurt` then `helped`. Six commands, 21 s of wall clock on main @ f690fd0 (2026-09-03): `112/112 → 111/112 hurt → 112/112 helped`. Then `magnet agent-run` for the Strands loop.
 
-See `docs/FILM-SCOUT-COMMANDS.md` for copy-paste blocks.
-
----
+Shot list with timestamps, commands and say-lines: `docs/VIDEO-SHOTLIST.md`. Commands and pasted output: `docs/DEMO-ONE-WORKFLOW.md`. Do not show `magnet demo` in the video (it uses a labelled simulated week).
 
 ## Architecture
 

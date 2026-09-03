@@ -1,5 +1,5 @@
 $ magnet probe pytest-pass-rate
-# run 2026-09-03 00:27:01 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli probe pytest-pass-rate
-pytest-pass-rate: 85/85
+# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli probe pytest-pass-rate
+pytest-pass-rate: 112/112
   command: /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow"
 # exit=0

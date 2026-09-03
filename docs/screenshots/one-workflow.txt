@@ -1,6 +1,6 @@
 $ bash docs/DEMO-ONE-WORKFLOW.md commands 1-6 (see the doc)
 
-### 0  clock 00:27:34 CEST  git b3af7a1  magnet from /work/agents-for-humans/magnet
+### 0  clock 13:57:53 CEST  git f690fd0  magnet from ./magnet (this checkout)
 
 ### 1  $ python3 -m magnet.cli --log .magnet/demo-one.db record pytest-pass-rate
 recorded pytest-pass-rate: verdict=baseline readings=1
@@ -20,8 +20,8 @@ MAGNET receipt
 
   change     drop the never-invent rule from SYSTEM_PROMPT
   probe      pytest-pass-rate
-  latest     84/85  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
-  read_at    2026-09-02T22:27:51+00:00
+  latest     111/112  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
+  read_at    2026-09-03T11:58:07+00:00
   verdict    hurt  ↓ -1 vs prior
   repro      magnet adopt prompt 'drop the never-invent rule from SYSTEM_PROMPT' 'pass rate unchanged' --probe pytest-pass-rate
 
@@ -38,34 +38,34 @@ MAGNET receipt
 
   change     restore the never-invent rule
   probe      pytest-pass-rate
-  latest     85/85  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
-  read_at    2026-09-02T22:27:58+00:00
+  latest     112/112  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
+  read_at    2026-09-03T11:58:14+00:00
   verdict    helped  ↑ +1 vs prior
   repro      magnet adopt prompt 'restore the never-invent rule' 'pass rate recovers by 1' --probe pytest-pass-rate
 
 ### 6  $ python3 -m magnet.cli --log .magnet/demo-one.db history
 MAGNET history
 
-  #1  2026-09-02T22:27:44+00:00
+  #1  2026-09-03T11:58:00+00:00
     change     [prompt] drop the never-invent rule from SYSTEM_PROMPT
     probe      pytest-pass-rate
     predict    pass rate unchanged
-    latest     84/85  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     111/112  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    hurt  (Δ -1)
     readings   2
 
-  #2  2026-09-02T22:27:51+00:00
+  #2  2026-09-03T11:58:07+00:00
     change     [prompt] restore the never-invent rule
     probe      pytest-pass-rate
     predict    pass rate recovers by 1
-    latest     85/85  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     112/112  (/Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    helped  (Δ 1)
     readings   3
 
   probes     pytest-pass-rate
   repro      magnet history
 
-### wall clock: baseline 10s · hurt 7s · helped 7s · total 24s · end 00:27:58 CEST
-1|2026-09-02T22:27:44+00:00|85|85|
-2|2026-09-02T22:27:51+00:00|84|85|1
-3|2026-09-02T22:27:58+00:00|85|85|2
+### wall clock: baseline 7s · hurt 7s · helped 7s · total 21s · end 13:58:14 CEST
+1|2026-09-03T11:58:00+00:00|112|112|
+2|2026-09-03T11:58:07+00:00|111|112|1
+3|2026-09-03T11:58:14+00:00|112|112|2

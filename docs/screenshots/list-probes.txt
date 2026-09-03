@@ -1,5 +1,5 @@
 $ magnet list-probes
-# run 2026-09-03 00:27:01 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli list-probes
+# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli list-probes
 MAGNET probes  (built-in + .magnet/probes.json)
 
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
@@ -8,7 +8,9 @@ MAGNET probes  (built-in + .magnet/probes.json)
     Re-derive README claims; value=passing/total
   pytest-pass-rate     [builtin]  /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow"
     Real eval: run pytest and count passed/total
+  stack-coverage       [builtin]  magnet probe stack-coverage
+    YOUR stack: covered/total capabilities (fixtures/stack or --stack)
 
-  total      3
+  total      4
   repro      magnet list-probes
 # exit=0

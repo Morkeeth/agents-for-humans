@@ -7,8 +7,8 @@ Cloud/IDE cannot do these. Check off in order.
 ## Before film
 
 - [ ] `git pull` on `agents-for-humans` · `bash scripts/stranger-pass.sh` → OK
-- [ ] Read `docs/FILM-SCOUT-COMMANDS.md` · terminal font large enough for video
-- [ ] Capture 3 screenshots per `docs/DEVPOST-READY.md` table
+- [ ] Read `docs/VIDEO-SHOTLIST.md` (one workflow, 2 to 3 min) · terminal font large enough for video
+- [ ] Screenshots already captured on main @ f690fd0: `docs/screenshots/` (see its README)
 
 ---
 
@@ -16,7 +16,7 @@ Cloud/IDE cannot do these. Check off in order.
 
 - [ ] [AWS Builder ID](https://builder.aws.com/) — required on Devpost submission
 - [ ] Devpost draft shell: https://agentsforhumans.devpost.com/
-- [ ] Paste from `docs/DEVPOST-READY.md` (tagline, description, architecture)
+- [ ] Paste from `docs/DEVPOST-DESCRIPTION.md` (paste-ready, numbers from 2026-09-03)
 - [ ] Set track: **Professional Agents**
 - [ ] Public repo URL: `https://github.com/Morkeeth/agents-for-humans`
 - [ ] MIT license visible in GitHub About section
@@ -25,7 +25,7 @@ Cloud/IDE cannot do these. Check off in order.
 
 ## Video (≤5 min)
 
-- [ ] Record from `docs/FILM-SCOUT-COMMANDS.md`
+- [ ] Record from `docs/VIDEO-SHOTLIST.md`
 - [ ] Cover: problem · who · why · working demo end-to-end
 - [ ] Upload to Devpost before deadline
 

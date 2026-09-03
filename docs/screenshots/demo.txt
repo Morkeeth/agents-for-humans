@@ -1,11 +1,11 @@
 $ magnet demo
-# run 2026-09-03 00:27:00 CEST on fable/devpost-pack-2026-09-03 @ b3af7a1, via: python3 -m magnet.cli demo
+# run 2026-09-03 13:57:35 CEST on main @ f690fd0, via: python3 -m magnet.cli demo
 MAGNET receipt
 
   change     demo-verification-skill
   probe      demo-pass-rate
   latest     4/5  (magnet probe demo-pass-rate)
-  simulated  2026-09-10T22:27:00+00:00  (SIMULATED week — not a real read time)
+  simulated  2026-09-11T11:57:35+00:00  (SIMULATED week — not a real read time)
   verdict    helped  ↑ +1 vs prior
   repro      magnet demo
 

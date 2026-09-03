@@ -69,6 +69,7 @@ The log lives in-repo at `.magnet/log.db` — not Helicon-only.
 ## Verify
 
 ```bash
+pip install -e ".[dev]"   # pytest lives in the dev extra; without it `pytest` fails 5 tests
 pytest
 magnet check-docs
 magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
