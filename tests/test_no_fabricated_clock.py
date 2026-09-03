@@ -11,7 +11,7 @@ These tests fail if that regresses.
 import re
 import subprocess
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from magnet.agent_run import run_agent_loop
@@ -24,16 +24,21 @@ READ_AT = re.compile(r"^\s*read_at\s+(\S+)", re.MULTILINE)
 
 
 def _read_at_stamps(text: str) -> list[datetime]:
-    return [datetime.fromisoformat(m) for m in READ_AT.findall(text)]
+    out = []
+    for m in READ_AT.findall(text):
+        stamp = datetime.fromisoformat(m)
+        # a stamp without a zone is a defect of its own (see test_magnet_bugs_2026_09_03)
+        out.append(stamp if stamp.tzinfo else stamp.replace(tzinfo=timezone.utc))
+    return out
 
 
 def _assert_no_future_read_at(text: str) -> None:
     """Every `read_at` a surface prints must be a real, already-elapsed clock."""
-    ceiling = datetime.now() + timedelta(minutes=5)  # tolerance for clock skew only
+    ceiling = datetime.now(timezone.utc) + timedelta(minutes=5)  # tolerance for clock skew only
     for stamp in _read_at_stamps(text):
         assert stamp <= ceiling, (
             f"read_at {stamp.isoformat()} is in the future "
-            f"(now={datetime.now().isoformat()}). A field named read_at must never "
+            f"(now={datetime.now(timezone.utc).isoformat()}). A field named read_at must never "
             f"carry a fabricated clock.\n\n{text}"
         )
 

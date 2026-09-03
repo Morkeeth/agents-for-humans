@@ -3,11 +3,11 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import timedelta
 from typing import Any
 
 from magnet.constants import SIMULATED_WEEK_OFFSET_DAYS, TOOL_NAMES
-from magnet.log import connect, list_readings, record_reading
+from magnet.log import _now, connect, list_readings, record_reading
 from magnet.probes import check_docs, check_docs_exit_code, run_probe
 from magnet.reporter import verdict
 
@@ -37,7 +37,7 @@ def tool_record_week(
     probe = run_probe(conn, probe_name)
     now = None
     if simulate_next_week:
-        now = datetime.now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS)
+        now = _now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS)
     row = record_reading(
         conn,
         probe_name,

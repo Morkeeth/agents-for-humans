@@ -97,7 +97,13 @@ def _week(now: datetime) -> str:
 
 
 def _now() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    """Aware UTC. Every stamp this module writes carries its zone (+00:00)."""
+    return datetime.now(timezone.utc)
+
+
+def _aware(now: datetime) -> datetime:
+    """A naive `now` is taken as UTC so no stamp is ever written without a zone."""
+    return now if now.tzinfo is not None else now.replace(tzinfo=timezone.utc)
 
 
 def record_reading(
@@ -113,22 +119,29 @@ def record_reading(
     now: datetime | None = None,
     simulated: bool = False,
 ) -> dict:
-    """Store one probe reading. Same-week re-record replaces prior row.
+    """Store one probe reading.
+
+    A same-week re-record of the SAME run (same change_id, or both baseline)
+    replaces the prior row — weekly cadence. A baseline read and a post-adoption
+    read taken the same day are different runs and both survive, so two real
+    reads in one sitting can yield helped/hurt without a simulated clock.
+    (Until 2026-09-03 the DELETE ignored change_id and the honest path could
+    never print a verdict inside one ISO week.)
 
     `simulated=True` marks a row whose `now` is a made-up clock (the demo
     advances a week so a helped/hurt verdict is possible in one run). The flag
     is persisted in `detail` so every surface can refuse to print it as a real
     read time. See tests/test_no_fabricated_clock.py.
     """
-    now = now or _now()
+    now = _aware(now) if now else _now()
     detail = dict(detail or {})
     if simulated:
         detail['simulated'] = True
     week = _week(now)
     stamp = now.isoformat(timespec="seconds")
     conn.execute(
-        "DELETE FROM probe_readings WHERE week = ? AND probe_name = ?",
-        (week, probe_name),
+        "DELETE FROM probe_readings WHERE week = ? AND probe_name = ? AND change_id IS ?",
+        (week, probe_name, change_id),
     )
     conn.execute(
         "INSERT INTO probe_readings "

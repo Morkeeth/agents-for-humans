@@ -4,7 +4,7 @@
 
 > **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
 
-> After you change a prompt, model, or skill, a background agent re-runs your eval and tells you
+> After you change a prompt, model, skill, hook, or setting, a background agent re-runs your eval and tells you
 > whether it helped — or prints **`baseline`** instead of inventing a trend.
 
 **Constraint:** No number without the command, population, and timestamp (`3/5`, never `3`).
@@ -55,7 +55,7 @@ feeds the results back until the turn ends.
 |------|-----|
 | `run_probe` | Run your eval; return value/pop + repro command |
 | `record_week` | Store this week's reading in the SQLite log |
-| `adopt_change` | Record a prompt/model/skill change + prediction |
+| `adopt_change` | Record a prompt/model/skill/hook/setting change + prediction |
 | `check_docs` | Re-derive README numbers; exit non-zero on drift |
 
 The log lives in-repo at `.magnet/log.db` — not Helicon-only.

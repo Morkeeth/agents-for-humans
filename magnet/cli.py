@@ -6,6 +6,7 @@ import os
 import sys
 
 from magnet.adopt import run_adopt
+from magnet.constants import CHANGE_TYPES
 from magnet.agent_run import MODES, run_agent_loop
 from magnet.demo import run_demo
 from magnet.drift_demo import run_drift_demo
@@ -143,7 +144,7 @@ def main(argv: list[str] | None = None) -> int:
     p_drift.set_defaults(func=cmd_drift_demo)
 
     p_adopt = sub.add_parser("adopt", help="Adopt a change, re-probe, print receipt")
-    p_adopt.add_argument("change_type", choices=["skill", "prompt", "model"])
+    p_adopt.add_argument("change_type", choices=list(CHANGE_TYPES))
     p_adopt.add_argument("description", help="Short label for the change")
     p_adopt.add_argument("prediction", help="Testable prediction (e.g. 'pass rate rises by 1/5')")
     p_adopt.add_argument("--probe", default="demo-pass-rate", help="Probe to measure")

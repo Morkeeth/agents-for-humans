@@ -3,8 +3,15 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-echo "MAGNET judge demo — installing..."
-pip install -e ".[dev]" -q
+# Under test (MAGNET_JUDGE_QUICK) never install: `pip install -e .` repoints the
+# machine's editable magnet to whichever checkout ran the eval (2026-09-03).
+if [ -n "${MAGNET_JUDGE_QUICK:-}" ]; then
+  echo "MAGNET judge demo — quick mode, install skipped"
+  magnet() { python3 -m magnet.cli "$@"; }
+else
+  echo "MAGNET judge demo — installing..."
+  pip install -e ".[dev]" -q
+fi
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # Subprocess may inherit PYTEST_CURRENT_TEST when this script is tested from pytest.
