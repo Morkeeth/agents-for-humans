@@ -31,10 +31,11 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 ## Moat (why this is hard to copy badly)
 
 1. **Science ported from measurement-bench / helicon.magnet** — value/pop, baseline gate, gap-fit ranking with no name tie-break.
-2. **Embarrassment hunt built in** — `magnet eval`, `magnet bakeoff`, and `magnet replicate` ship arms/stacks that can beat us.
+2. **Embarrassment hunt built in** — `magnet eval`, `magnet bakeoff`, `magnet replicate`, and `magnet recover` ship arms/stacks that can beat us — and show the fix when they do.
 3. **Doc drift as product** — `check_docs` re-derives README and judge-doc numbers at read time (Qwen lesson).
 4. **Stranger path** — `bash scripts/judge-demo.sh` on cold clone, no keys, CI on every push.
 5. **Prediction check** — `magnet coverage-delta` reports attributed / coincident / nothing-moved.
+6. **Cause-level recovery** — `magnet recover` opens why a thin stack loses (noise caps) and proves covering them restores precision.
 
 ---
 
