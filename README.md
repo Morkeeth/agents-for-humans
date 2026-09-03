@@ -2,6 +2,8 @@
 
 **Professional Agents track · AWS Strands · Devpost Sep 14 2026**
 
+> **Role in the hackathon:** MAGNET is the engine library for [Agent Grinder](https://github.com/Morkeeth/agentgrinder), the Agents for Humans entry; its Strands agent and four tools run inside that product. This repo is public as the disclosed library and is not itself the submission.
+
 > **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
 
 > After you change a prompt, model, skill, hook, or setting, a background agent re-runs your eval and tells you
@@ -64,7 +66,16 @@ feeds the results back until the turn ends.
 | `check_docs` | Re-derive README numbers; exit non-zero on drift |
 
 The log lives in-repo at `.magnet/log.db` — not Helicon-only.
-(A `.magnet/ledger.db` from an earlier build is migrated in place on first run.)
+(A `.magnet/ledger.db` file from an earlier build is renamed to `log.db` in place on first run.)
+
+## Pre-existing code, disclosed
+
+Two modules carry work from the same author's earlier repo, [Morkeeth/mountain-of-helicon](https://github.com/Morkeeth/mountain-of-helicon):
+
+- `magnet/stack.py` is ported from `helicon/magnet.py` there (inventory, gap detection, word-boundary ranking; the fixture stack and the bakeoff arms are new).
+- `magnet/reporter.py` carries that repo's measurement rules forward (value/pop, `baseline` on one reading, unmeasured is NULL). The code is new; the rules are not.
+
+Everything else in this repo was written from 29 Aug 2026 onwards for this hackathon (`git log --reverse` shows the first commit).
 
 ## Verify
 
