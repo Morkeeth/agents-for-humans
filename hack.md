@@ -97,3 +97,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-04 · **DEFECT found by running:** bedrock DEGRADED path exited **0** (banner shouted, process lied green). Fixed: `cmd_agent_run` returns 1 when output contains `DEGRADED`.
 - 2026-09-04 · `scripts/bedrock-live-or-blocked.sh` — positive-evidence preflight (rejects empty-grep trap) · exit 2 BLOCKED / 0 LIVE · `docs/BEDROCK-LIVE-RECEIPT-2026-09-04.md`.
 - 2026-09-04 · Judge/stranger paths re-run: `bash scripts/judge-demo.sh` → JUDGE DEMO OK · `bash scripts/stranger-pass.sh` → stranger pass OK · `python3 -m pytest -q` → 119 passed · check-docs 11 PASS · model id re-derived `global.anthropic.claude-sonnet-4-6` (strands-agents 1.54.0) · no Devpost submit.
+- 2026-09-04 · **DEFECT found by re-running:** `bedrock-live-or-blocked.sh` appended STS/model logs across runs (double `NoCredentialsError`). Truncate before write · test pins single STS line · suite 119.
