@@ -91,13 +91,13 @@ Logged on this same VM after the Bedrock BLOCKED verdict.
 |------|---------|------|-------------|
 | Judge demo | `bash scripts/judge-demo.sh` | **0** | `JUDGE DEMO OK` |
 | Stranger pass | `bash scripts/stranger-pass.sh` | **0** | `== stranger pass OK ==` |
-| Full suite | `python3 -m pytest -q` | **0** | `118 passed` |
+| Full suite | `python3 -m pytest -q` | **0** | `119 passed` |
 | Doc drift | `python3 -m magnet.cli check-docs` | **0** | `11 claims checked. All match source.` |
 | Bedrock probe | `bash scripts/bedrock-live-or-blocked.sh` | **2** | `VERDICT: BLOCKED` |
 
 Judge demo also printed (re-derived this run, not carried):
 
-- `pytest-pass-rate` adopt reading `117/117` (`-m "not slow"`)
+- `pytest-pass-rate` adopt reading `118/118` (`-m "not slow"`)
 - bakeoff: magnet recall `0.5` p@3=`1.0` noise=`0` · naive_stars `0.375` with dupes+liar · silent_null `0.0`
 - stack-coverage `8/12`
 - eval arms: magnet `5/5`, naive `3/5`, silent_null `1/5`
@@ -150,7 +150,7 @@ Oscar local machine 2026-09-02: `magnet agent-run --model bedrock` exit 0, 5 too
 
 1. **`cmd_agent_run` exits 1 on `DEGRADED`** — found by running bedrock with no creds (was exit 0).
 2. **`scripts/bedrock-live-or-blocked.sh`** — positive-evidence preflight; exit 2 BLOCKED / 0 LIVE / 1 control failure.
-3. **Tests:** `test_cli_bedrock_degraded_exits_nonzero`, `test_cli_local_agent_run_still_exits_zero`, `tests/test_bedrock_preflight.py` (3) · suite **118** `def test_` (was 113).
+3. **Tests:** `test_cli_bedrock_degraded_exits_nonzero`, `test_cli_local_agent_run_still_exits_zero`, `tests/test_bedrock_preflight.py` (4) · suite **119** `def test_` (was 113).
 
 ---
 
@@ -160,8 +160,9 @@ Oscar local machine 2026-09-02: `magnet agent-run --model bedrock` exit 0, 5 too
 2. **Exit-0-on-DEGRADED lived until tonight** — shouted in the banner since 2026-09-02 but the process exit lied green; found only by running, not by reading.
 3. **Prior cloud receipt (2026-09-02) skipped `magnet agent-run --model bedrock` entirely** — said it "would fail"; running it tonight was what exposed the exit-code defect.
 4. **Bedrock model ID still OPEN** in `hack.md` (Oscar click) — we re-derived the SDK default only.
-5. **Screenshot sidecars under `docs/screenshots/` still print 113** — not in `check_docs` scan list; left stale rather than silently rewriting film artifacts. Judge-scanned docs are 118.
+5. **Screenshot sidecars under `docs/screenshots/` still print 113** — not in `check_docs` scan list; left stale rather than silently rewriting film artifacts. Judge-scanned docs are 119.
 6. **No Devpost submit, no film, no builder.aws publish** — Oscar click only (constitution).
+7. **Preflight log append on re-run** — first `bedrock-live-or-blocked.sh` left `/tmp/magnet-bedrock-probe/sts.txt`; second run used `>>` and double-printed STS/model lines. Truncate fixed in follow-up commit. Verdict was still correct (exit 2).
 
 ---
 

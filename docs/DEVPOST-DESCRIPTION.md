@@ -74,7 +74,7 @@ The three rows in the log, straight from SQLite (`select id, recorded_at, value,
 3|2026-09-03T11:58:14+00:00|112|112|2
 ```
 
-112 rather than 113 in the 2026-09-03 film run because one integration test is marked `slow` and the advertised probe command deselects it. As of 2026-09-04 the suite is 118 `def test_` (117 when `-m "not slow"`).
+112 rather than 113 in the 2026-09-03 film run because one integration test is marked `slow` and the advertised probe command deselects it. As of 2026-09-04 the suite is 119 `def test_` (118 when `-m "not slow"`).
 
 ## The A/B: helped, hurt, baseline
 
@@ -106,7 +106,7 @@ Which commands go through the agent: `magnet agent-run` only. `magnet record`, `
 - The default agent mode does not prove a language model chose the tool sequence. Only `--model bedrock` does, and that needs AWS credentials and costs money, so it never runs in CI. It was run once, on 2026-09-02, and the receipt is in the repo.
 - In that Bedrock run, `check_docs_tool` logged `failed to parse tool input json` once. The run still completed with exit 0. Recorded in the receipt under "WRONG".
 - `magnet demo` and `magnet agent-run` place their second reading in a simulated following week so a single run can show a two-reading verdict. Every such reading is labelled `SIMULATED` on screen. The six-command workflow above uses no simulation.
-- `pytest` is in the `[dev]` extra, not in the base install. A fresh clone that runs `pip install -e .` and then `pytest` has no pytest in its virtualenv: on a clean machine the command is not found, and on a machine with a system pytest on the path the tests that spawn the verification scripts fail. `pip install -e ".[dev]"` first, then the suite is green: 118 passed (command: `python3 -m pytest -q`, 2026-09-04, re-derived from `tests/test_*.py`).
+- `pytest` is in the `[dev]` extra, not in the base install. A fresh clone that runs `pip install -e .` and then `pytest` has no pytest in its virtualenv: on a clean machine the command is not found, and on a machine with a system pytest on the path the tests that spawn the verification scripts fail. `pip install -e ".[dev]"` first, then the suite is green: 119 passed (command: `python3 -m pytest -q`, 2026-09-04, re-derived from `tests/test_*.py`).
 - If pytest is missing, `magnet probe pytest-pass-rate` prints `pytest-pass-rate: None` and exits 0. It should exit non-zero. Not fixed before submission.
 - The stack inventory (`magnet stack`, `magnet bakeoff`) runs against a fixture stack shipped in the repo, not against a live machine, so a judge sees the same numbers we do.
 - One user so far: the author. The log format and the probe registry are the only surfaces designed for a second team.

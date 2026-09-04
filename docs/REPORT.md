@@ -14,13 +14,13 @@
 - `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
 - `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
 - `fit_one` / `render_fit` / `stack_coverage` helpers
-- 118 pytest tests (re-derived from `tests/test_*.py`)
+- 119 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 118 passed |
+| Tests green | `python3 -m pytest -q` → 119 passed |
 | check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
 | Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
 | Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |

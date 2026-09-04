@@ -58,3 +58,32 @@ def test_bedrock_script_blocked_without_credentials(tmp_path, monkeypatch):
 def test_bedrock_script_is_executable():
     assert SCRIPT.is_file()
     assert os.access(SCRIPT, os.X_OK), f"{SCRIPT} not executable"
+
+
+def test_bedrock_script_truncates_sts_log_on_rerun(tmp_path):
+    """Found 2026-09-04: second run appended to sts.txt and double-printed.
+
+    Same MAGNET_BEDROCK_OUT twice must not accumulate STS lines.
+    """
+    env = os.environ.copy()
+    for k in list(env):
+        if k.startswith("AWS_") or k.startswith("AMAZON_"):
+            env.pop(k)
+    out = tmp_path / "out"
+    env["MAGNET_BEDROCK_OUT"] = str(out)
+    env["PATH"] = os.environ.get("PATH", "/usr/bin:/bin")
+
+    for _ in range(2):
+        proc = subprocess.run(
+            ["bash", str(SCRIPT)],
+            cwd=str(ROOT),
+            env=env,
+            capture_output=True,
+            text=True,
+        )
+        assert proc.returncode == 2, proc.stdout + proc.stderr
+
+    sts = (out / "sts.txt").read_text()
+    assert sts.count("NoCredentialsError") == 1, sts
+    report = (out / "probe.txt").read_text()
+    assert report.count("sts: NoCredentialsError") == 1, report

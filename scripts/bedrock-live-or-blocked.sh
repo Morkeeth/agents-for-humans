@@ -98,6 +98,7 @@ log ""
 
 # --- 2. STS at the object (botocore credential chain) ---
 STS_OUT="$OUT_DIR/sts.txt"
+: >"$STS_OUT"
 set +e
 python3 - >>"$STS_OUT" 2>&1 <<'PY'
 import sys
@@ -131,6 +132,7 @@ log ""
 
 # --- 3. Re-derive DEFAULT_BEDROCK_MODEL_ID from installed package (never carry) ---
 MODEL_OUT="$OUT_DIR/model.txt"
+: >"$MODEL_OUT"
 set +e
 python3 - >>"$MODEL_OUT" 2>&1 <<'PY'
 import importlib.metadata as m
