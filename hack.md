@@ -62,10 +62,11 @@ No number without the command that produced it, the population it is out of, and
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Apply-to-stack · measured coverage · naive-fit arm | `magnet adopt … --apply --probe stack-coverage` moves coverage · `magnet apply-demo` · `magnet apply-eval` · tests green |
 | 16 | Ruling honesty + pytest-miss exits non-zero | README matches EYES (MAGNET submits) · `check_docs` catches entry drift · probe exit 1 on unmeasured |
+| 17 | Refresh live screenshot sidecars · check_docs scans them | `bash scripts/capture-sidecars.sh` · check-docs includes screenshots/pytest.txt + check-docs.txt · 130/130 probe |
 
 ## NOW
 
-**Slice 16:** Two defects found by opening the objects — (1) README still says Agent Grinder is "the Agents for Humans entry" and MAGNET "is not itself the submission", contradicting EYES / `_NIGHT-SCOPE.md` / `docs/DEVPOST-READY.md` (MAGNET submits; Grinder is companion). (2) `magnet probe pytest-pass-rate` with a dead command returns `None` and exits **0** (DEVPOST-DESCRIPTION already named this). Fix README + add check_docs ruling claim; CLI probe exits 1 when value is None; tests go red first.
+**Slice 17:** Screenshot sidecars still claim 113 tests / 11 claims — check_docs never looked at them, so they stayed green while the suite moved. Re-derive live sidecars (`pytest`, `check-docs`, `drift-demo`, `probe-pytest-pass-rate`, `list-probes`, `apply-eval`) via `scripts/capture-sidecars.sh`. Extend check_docs to scan those two count-bearing sidecars so the control can go RED. Dated film take `one-workflow.txt` stays labelled historical (112 @ f690fd0) — do not pretend it is today's suite.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -99,3 +100,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-05 · Slice 15 SHIP · `magnet adopt --apply` writes working-stack copy · `magnet apply-demo` · `magnet apply-eval` (naive_fit 2/3, magnet 3/3, silent_null 0/3) · wine-pairing apply unchanged · fixture untouched · `python3 -m pytest -q` → 124 passed · check-docs 11 PASS.
 - 2026-09-05 · Slice 16 START · opened README vs `_NIGHT-SCOPE.md`: README named Grinder as the entry; EYES says MAGNET submits. Also re-ran dead `pytest` probe → `None` exit 0 (named in DEVPOST-DESCRIPTION).
 - 2026-09-05 · Slice 16 SHIP · README fixed · `check_docs` `sep14 entry ruling` (RED on planted lie) · `magnet probe` exit 1 on unmeasured · `python3 -m pytest -q` → 131 passed · check-docs 12 PASS.
+- 2026-09-05 · Slice 17 START · opened `docs/screenshots/*.txt`: still claimed 113/11 while suite was 131+; check_docs never scanned them (green on outage). Also found capture redirect truncated the sidecar before check-docs read it.
+- 2026-09-05 · Slice 17 SHIP · `scripts/capture-sidecars.sh` (temp-file then mv) · check_docs scans pytest.txt + check-docs freshness · apply-eval/apply-demo sidecars · `python3 -m pytest -q` → 133 passed · check-docs 14 PASS.

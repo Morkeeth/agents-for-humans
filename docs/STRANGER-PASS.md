@@ -82,7 +82,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-131 passed in 25.32s
+133 passed in 25.32s
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)

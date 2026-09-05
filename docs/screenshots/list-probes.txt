@@ -1,12 +1,13 @@
-$ magnet list-probes
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli list-probes
+$ python3 -m magnet.cli list-probes
+# captured 2026-09-05T00:22:23Z  branch=cursor/apply-stack-coverage-4540  sha=726d049  python=/usr/bin/python3
+#
 MAGNET probes  (built-in + .magnet/probes.json)
 
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
     Synthetic pass-rate for cold demo (skill_bonus in SQLite)
   check-docs           [builtin]  python -m magnet.check_docs
     Re-derive README claims; value=passing/total
-  pytest-pass-rate     [builtin]  /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow"
+  pytest-pass-rate     [builtin]  /usr/bin/python3 -m pytest -q --tb=no -m "not slow"
     Real eval: run pytest and count passed/total
   stack-coverage       [builtin]  magnet probe stack-coverage
     YOUR stack: covered/total capabilities (fixtures/stack or --stack)

@@ -1,0 +1,33 @@
+$ python3 -m magnet.cli apply-eval
+# captured 2026-09-05T00:22:23Z  branch=cursor/apply-stack-coverage-4540  sha=726d049  python=/usr/bin/python3
+#
+MAGNET apply-eval — arms scored on real stack applies
+
+  scenario              truth      naive_fit  magnet   silent_null
+  ------------------------------------------------------------------
+  apply_fills_security   helped     helped     helped   baseline
+  apply_noise_wine       unchanged  unchanged  unchanged baseline
+  fit_without_apply      unchanged  helped     unchanged baseline
+
+  arm scores (correct / total):
+
+  naive_fit    2/3
+    ✓ apply_fills_security   truth=helped     got=helped
+    ✓ apply_noise_wine       truth=unchanged  got=unchanged
+    ✗ fit_without_apply      truth=unchanged  got=helped
+
+  magnet       3/3
+    ✓ apply_fills_security   truth=helped     got=helped
+    ✓ apply_noise_wine       truth=unchanged  got=unchanged
+    ✓ fit_without_apply      truth=unchanged  got=unchanged
+
+  silent_null  0/3
+    ✗ apply_fills_security   truth=helped     got=baseline
+    ✗ apply_noise_wine       truth=unchanged  got=baseline
+    ✗ fit_without_apply      truth=unchanged  got=baseline
+
+  FINDING  fit_without_apply: fit=fills-gap fills=['security'] but coverage 8/12 → 8/12 (naive_fit=helped, magnet=unchanged)
+  best arm     magnet (3/3)
+
+  repro        magnet apply-eval
+# exit=0

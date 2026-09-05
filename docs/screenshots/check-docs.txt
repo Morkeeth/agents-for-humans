@@ -1,16 +1,20 @@
-$ magnet check-docs
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli check-docs
+$ python3 -m magnet.cli check-docs
+# captured 2026-09-05T00:22:23Z  branch=cursor/apply-stack-coverage-4540  sha=726d049  python=/usr/bin/python3
+#
 [PASS] tool count: README claims 4 tools, source has 4
-[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 113 tests, source has 113 tests
+[PASS] sep14 entry ruling: README matches EYES: MAGNET submits; Grinder is companion
+[PASS] screenshot check-docs sidecar: docs/screenshots/check-docs.txt re-derived (no 113/11; has sep14 ruling)
+[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 133 tests, source has 133 tests
+[PASS] pytest count (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 133 tests, source has 133 tests
 [PASS] tool run_probe: listed
 [PASS] tool record_week: listed
 [PASS] tool adopt_change: listed
 [PASS] tool check_docs: listed
 
-11 claims checked. All match source.
+14 claims checked. All match source.
 # exit=0

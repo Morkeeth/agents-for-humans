@@ -19,6 +19,10 @@ FONT_CANDIDATES = (
     "/System/Library/Fonts/Menlo.ttc",
     "/System/Library/Fonts/SFNSMono.ttf",
     "/System/Library/Fonts/Supplemental/Courier New.ttf",
+    "/usr/share/fonts/truetype/cascadia/CascadiaMono.ttf",
+    "/usr/share/fonts/truetype/cascadia/CascadiaCode.ttf",
+    "/usr/share/fonts/truetype/croscore/Cousine-Regular.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
 )
 BG = (24, 24, 27)
 FG = (229, 229, 234)

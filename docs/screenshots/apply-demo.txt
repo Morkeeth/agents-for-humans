@@ -1,0 +1,81 @@
+$ python3 -m magnet.cli apply-demo
+# captured 2026-09-05T00:22:23Z  branch=cursor/apply-stack-coverage-4540  sha=726d049  python=/usr/bin/python3
+#
+MAGNET apply-demo — fit is a prediction; coverage is the measurement
+
+  stack      fixtures/stack
+  baseline   8/12  uncovered=data, debug, refactor, security
+
+  after fit alone (no write — embarrassing case):
+    fit label        fills-gap  fills=['security']
+    naive-fit verdict  helped  ← invents optimism from the ranking label
+    magnet (no --apply) unchanged — skill was not written to the stack
+
+  after --apply secrets-scanner (fills security):
+    coverage   8/12 → 9/12
+    fit        fills-gap
+    receipt    helped (measured)
+
+  after --apply wine-pairing (noise):
+    coverage   8/12 → 8/12
+    fit        no-signal
+    receipt    unchanged (measured) — naive-fit would still be quiet here
+
+  fixture stack left untouched:
+    still      8/12
+
+  --- fill receipt ---
+MAGNET adopt
+
+  baseline   verdict=baseline  readings=1
+  APPLIED    skills/secrets-scanner/SKILL.md → /tmp/magnet-apply-demo-_511ss78/fill
+  source     fixtures/stack  (untouched)
+  recorded   [skill] secrets-scanner  (id=89)
+  predict    blocks leaking .env and finds credential patterns
+  reading    verdict=helped  2 readings
+
+MAGNET receipt
+
+  change     secrets-scanner
+  probe      stack-coverage
+  latest     9/12  (magnet probe stack-coverage --stack /tmp/magnet-apply-demo-_511ss78/fill)
+  read_at    2026-09-05T00:22:39+00:00
+  verdict    helped  ↑ +1 vs prior
+  repro      magnet adopt skill 'secrets-scanner' 'blocks leaking .env and finds credential patterns' --probe stack-coverage --apply --no-simulate
+
+MAGNET fit (against YOUR stack)
+
+  candidate  secrets-scanner
+  label      fills-gap  (score 3)
+  fills      security
+  repro      magnet stack
+
+  --- noise receipt ---
+MAGNET adopt
+
+  baseline   verdict=baseline  readings=1
+  APPLIED    skills/wine-pairing/SKILL.md → /tmp/magnet-apply-demo-_511ss78/noise
+  source     fixtures/stack  (untouched)
+  recorded   [skill] wine-pairing  (id=90)
+  predict    suggest a bottle for dinner
+  reading    verdict=unchanged  2 readings
+
+MAGNET receipt
+
+  change     wine-pairing
+  probe      stack-coverage
+  latest     8/12  (magnet probe stack-coverage --stack /tmp/magnet-apply-demo-_511ss78/noise)
+  read_at    2026-09-05T00:22:39+00:00
+  verdict    unchanged (0 vs prior)
+  repro      magnet adopt skill 'wine-pairing' 'suggest a bottle for dinner' --probe stack-coverage --apply --no-simulate
+
+MAGNET fit (against YOUR stack)
+
+  candidate  wine-pairing
+  label      no-signal  (score 0)
+  note       no positive signal against current gaps
+  repro      magnet stack
+
+  FINDING  naive-fit says helped from the label alone; magnet waits for coverage to move. Wine-pairing apply stays unchanged.
+  repro      magnet apply-demo
+# exit=0

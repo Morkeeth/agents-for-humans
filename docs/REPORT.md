@@ -1,44 +1,44 @@
-# Build report · Slice 15–16 · 2026-09-05
+# Build report · Slice 15–17 · 2026-09-05
 
 ## SHIPPED
 
+### Slice 17 — screenshot sidecars can go RED
+- Sidecars still claimed 113 tests / 11 claims while the suite moved; check_docs
+  never looked at them (green on outage).
+- `scripts/capture-sidecars.sh` re-derives live transcripts (writes via temp+mv —
+  redirect-onto-self was truncating the file before check-docs read it).
+- check_docs now scans `docs/screenshots/pytest.txt` and freshness of
+  `check-docs.txt` (must include sep14 ruling; must not say 113/11).
+- apply-eval / apply-demo sidecars captured.
+
 ### Slice 16 — ruling honesty + unmeasured probe exit
-- README contradicted EYES: named Agent Grinder as "the Agents for Humans entry"
-  and MAGNET as "not itself the submission". Fixed to: MAGNET submits Sep 14;
-  Grinder is companion.
-- `check_docs` claim `sep14 entry ruling` — control goes RED on the old lie
-  (verified in `tests/test_ruling_and_probe_exit.py`).
-- `magnet probe` exits **1** when value is None (DEVPOST-DESCRIPTION defect:
-  dead pytest printed `None` and exited 0).
+- README matched EYES (MAGNET submits; Grinder companion).
+- `sep14 entry ruling` claim; `magnet probe` exits 1 when value is None.
 
 ### Slice 15 — apply-to-stack
-- Defect: adopt --fit on secrets-scanner → fills-gap while coverage stayed 8/12.
 - `magnet adopt --apply` · `apply-demo` · `apply-eval` (naive_fit 2/3, magnet 3/3).
-- 131 pytest tests (re-derived from `tests/test_*.py`).
+- 133 pytest tests (re-derived from `tests/test_*.py`).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 131 passed |
-| check_docs | `magnet check-docs` → 12 claims PASS |
-| Ruling control RED | plant old README lie → `sep14 entry ruling` ok=False |
-| Dead probe exit 1 | `magnet probe dead-eval` (registry `false`) → exit 1 |
-| Apply-demo | `magnet apply-demo` → 8/12→9/12 helped; wine unchanged |
+| Tests green | `python3 -m pytest -q` → 133 passed |
+| check_docs | `magnet check-docs` → 14 claims PASS |
+| Capture | `bash scripts/capture-sidecars.sh` → exit 0; pytest.txt `133 passed` |
+| Probe non-slow | `magnet probe pytest-pass-rate` → 132/132 (1 slow deselected) — re-derive |
 | Apply-eval | `magnet apply-eval` → magnet 3/3 |
-| Fixture untouched | `magnet probe stack-coverage` → 8/12 |
+| Dead probe | registry `false` → exit 1 |
+| Cold clone s16 | `/tmp/magnet-cold-s16` → 131 passed (pre-s17) |
 
 ## WRONG
 
-- **README lied about who submits** for days after EYES — found by opening
-  `_NIGHT-SCOPE.md` against README, not by reading one file.
-- **Synonym bakeoff primary still 0/3** — EXP-MAGNET-01 unchanged.
-- **Bedrock cloud still BLOCKED**.
-- **`--apply` is skill-only**.
-- **Adopt default still simulates week** without `--apply`.
-- **Screenshot sidecars still say 113 / 11 claims** — not in check_docs scan.
-- **SHIP GATE `git push origin main`** — cloud agent pushes feature branch + PR;
-  merge is Oscar's click.
-- **fleet-ops plan still 404**.
-- **Agent Grinder VIDEO-SHOTLIST says never show MAGNET** while MAGNET submits —
-  contradiction lives in the other repo; not touched (EYES: do not touch grinder).
+- **Screenshot control was not a control** until tonight — passed for weeks on
+  stale 113 while the suite moved.
+- **Capture redirect bug** — `> sidecar.txt` truncated the file before the
+  command ran; found by running capture, not by reading the script.
+- **Dated film takes** (`one-workflow` 112 @ f690fd0, demo/agent-run/eval/history
+  PNGs) still stale — Oscar re-films; capture-sidecars deliberately skips them.
+- Synonym bakeoff primary still 0/3; Bedrock cloud BLOCKED; `--apply` skill-only.
+- **SHIP GATE `git push origin main`** — feature branch + PR only; Oscar merges.
+- Agent Grinder VIDEO-SHOTLIST still says never show MAGNET (other repo).

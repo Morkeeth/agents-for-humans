@@ -1,5 +1,6 @@
-$ magnet drift-demo
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli drift-demo
+$ python3 -m magnet.cli drift-demo
+# captured 2026-09-05T00:22:23Z  branch=cursor/apply-stack-coverage-4540  sha=726d049  python=/usr/bin/python3
+#
 MAGNET drift-demo — check_docs catches fabricated numbers
 
   The Qwen lesson: a doc claimed a number weeks ago; nobody re-ran the command.
@@ -7,27 +8,32 @@ MAGNET drift-demo — check_docs catches fabricated numbers
 
   === fake repo (wrong claims) ===
   [FAIL] tool count: README claims 99 tools, source has 4
+  [FAIL] sep14 entry ruling: ruling files do not say 'MAGNET submits' — cannot verify entry
+  [PASS] screenshot check-docs sidecar: docs/screenshots/ absent — freshness claim skipped
   [FAIL] pytest count (docs/REPORT.md): docs/REPORT.md claims 42 tests, source has 0 tests
   [PASS] tool run_probe: listed
   [PASS] tool record_week: listed
   [PASS] tool adopt_change: listed
   [PASS] tool check_docs: listed
-  exit code: 1  (2 drift(s))
+  exit code: 1  (3 drift(s))
 
   === this repo (re-derived from source) ===
   [PASS] tool count: README claims 4 tools, source has 4
-  [PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 113 tests, source has 113 tests
-  [PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 113 tests, source has 113 tests
-  [PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 113 tests, source has 113 tests
-  [PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 113 tests, source has 113 tests
-  [PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 113 tests, source has 113 tests
-  [PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 113 tests, source has 113 tests
+  [PASS] sep14 entry ruling: README matches EYES: MAGNET submits; Grinder is companion
+  [PASS] screenshot check-docs sidecar: docs/screenshots/check-docs.txt re-derived (no 113/11; has sep14 ruling)
+  [PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 133 tests, source has 133 tests
+  [PASS] pytest count (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 133 tests, source has 133 tests
   [PASS] tool run_probe: listed
   [PASS] tool record_week: listed
   [PASS] tool adopt_change: listed
   [PASS] tool check_docs: listed
   exit code: 0  (0 drift(s))
 
-  source     113 test functions in tests/test_*.py
+  source     133 test functions in tests/test_*.py
   repro      magnet drift-demo
 # exit=0

@@ -21,7 +21,12 @@ DOCS_WITH_PYTEST_COUNTS = (
     "docs/DEVPOST-READY.md",
     "docs/DEVPOST-DESCRIPTION.md",
     "docs/FILM-SCOUT-COMMANDS.md",
+    # Live screenshot sidecar — previously invisible to check_docs (stayed at 113).
+    "docs/screenshots/pytest.txt",
 )
+
+# Live check-docs sidecar — must not carry pre-slice-16 claim counts.
+SCREENSHOT_CHECK_DOCS = "docs/screenshots/check-docs.txt"
 
 _PYTEST_COUNT_PATTERNS = (
     r"(\d+)\s+passed",
@@ -224,6 +229,9 @@ def check_docs(repo_root: str) -> list[dict]:
     # Source of truth: _NIGHT-SCOPE.md / hack.md EYES line (MAGNET submits).
     results.append(_check_sep14_entry_ruling(root, readme))
 
+    # Claim: live screenshot sidecars must not carry stale pre-slice-16 counts.
+    results.append(_check_screenshot_sidecar_freshness(root))
+
     # Claim: pytest test count in judge/devpost docs vs actual def test_ count
     actual_tests = _count_pytest_tests(root / "tests")
     for doc_name in DOCS_WITH_PYTEST_COUNTS:
@@ -232,6 +240,10 @@ def check_docs(repo_root: str) -> list[dict]:
             continue
         doc_text = doc_path.read_text(encoding="utf-8")
         claimed_tests = _first_int_any(doc_text, _PYTEST_COUNT_PATTERNS)
+        if doc_name.endswith("screenshots/pytest.txt"):
+            # Failure summaries say "N failed, M passed" — prefer the final
+            # summary line (last match), which is the suite total when green.
+            claimed_tests = _last_int_any(doc_text, _PYTEST_COUNT_PATTERNS)
         if claimed_tests is not None:
             results.append(
                 _result(
@@ -292,6 +304,58 @@ def _check_sep14_entry_ruling(root: Path, readme: str) -> dict:
         why,
     )
 
+
+def _check_screenshot_sidecar_freshness(root: Path) -> dict:
+    """Live sidecars must not still claim the pre-slice-16 suite (113 / 11).
+
+    If the screenshots directory is absent (tmp fixtures), this claim is skipped
+    as ok — only real checkouts with docs/screenshots/ are gated.
+    """
+    path = root / SCREENSHOT_CHECK_DOCS
+    shots_dir = root / "docs" / "screenshots"
+    if not shots_dir.is_dir():
+        return _result(
+            "screenshot check-docs sidecar",
+            SCREENSHOT_CHECK_DOCS,
+            "absent",
+            "optional",
+            True,
+            "docs/screenshots/ absent — freshness claim skipped",
+        )
+    if not path.is_file():
+        return _result(
+            "screenshot check-docs sidecar",
+            SCREENSHOT_CHECK_DOCS,
+            None,
+            "present + fresh",
+            False,
+            f"{SCREENSHOT_CHECK_DOCS} missing — run bash scripts/capture-sidecars.sh",
+        )
+    text = path.read_text(encoding="utf-8")
+    stale = ("113 tests" in text) or ("11 claims checked" in text)
+    has_ruling = "sep14 entry ruling" in text
+    ok = (not stale) and has_ruling
+    if stale:
+        why = (
+            f"{SCREENSHOT_CHECK_DOCS} still claims 113 tests or 11 claims — "
+            "re-run bash scripts/capture-sidecars.sh"
+        )
+    elif not has_ruling:
+        why = (
+            f"{SCREENSHOT_CHECK_DOCS} missing sep14 entry ruling line — "
+            "re-run bash scripts/capture-sidecars.sh"
+        )
+    else:
+        why = f"{SCREENSHOT_CHECK_DOCS} re-derived (no 113/11; has sep14 ruling)"
+    return _result(
+        "screenshot check-docs sidecar",
+        SCREENSHOT_CHECK_DOCS,
+        "stale" if stale else "fresh",
+        "fresh",
+        ok,
+        why,
+    )
+
 def _count_strands_tools() -> int:
     from magnet.constants import TOOL_NAMES
 
@@ -309,6 +373,14 @@ def _first_int_any(text: str, patterns: tuple[str, ...]) -> int | None:
         if val is not None:
             return val
     return None
+
+
+def _last_int_any(text: str, patterns: tuple[str, ...]) -> int | None:
+    last: int | None = None
+    for pattern in patterns:
+        for m in re.finditer(pattern, text, re.I):
+            last = int(m.group(1))
+    return last
 
 
 def _result(claim: str, doc: str, doc_value, source, ok: bool, why: str) -> dict:
