@@ -61,6 +61,11 @@ else
     "Debug failing tests by bisecting the stack trace" \
     --probe demo-pass-rate --demo-bonus --reset --fit \
     --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
+
+  echo ""
+  echo "=== 7b/8 · Impact: --apply closes the fit→coverage loop ==="
+  magnet apply-eval
+  magnet apply-demo
 fi
 
 echo ""

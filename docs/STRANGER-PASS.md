@@ -13,6 +13,8 @@ magnet eval
 magnet agent-run
 magnet stack
 magnet bakeoff
+magnet apply-demo
+magnet apply-eval
 magnet list-probes
 magnet history
 pytest -q
@@ -80,7 +82,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-113 passed in 25.32s
+124 passed in 25.32s
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -127,6 +129,49 @@ MAGNET bakeoff — gap-fit vs marketplace proxies on a planted flood
 Exit code: **0** (verified: `python3 -m magnet.cli bakeoff --no-write`)
 Numbers above must be re-checked at the object — do not trust a stale paste.
 
+## `magnet apply-demo` output (2026-09-05, re-derived)
+
+```
+MAGNET apply-demo — fit is a prediction; coverage is the measurement
+
+  stack      fixtures/stack
+  baseline   8/12  uncovered=data, debug, refactor, security
+
+  after fit alone (no write — embarrassing case):
+    fit label        fills-gap  fills=['security']
+    naive-fit verdict  helped  ← invents optimism from the ranking label
+    magnet (no --apply) unchanged — skill was not written to the stack
+
+  after --apply secrets-scanner (fills security):
+    coverage   8/12 → 9/12
+    receipt    helped (measured)
+
+  after --apply wine-pairing (noise):
+    coverage   8/12 → 8/12
+    fit        no-signal
+    receipt    unchanged (measured)
+
+  fixture stack left untouched:
+    still      8/12
+
+  FINDING  naive-fit says helped from the label alone; magnet waits for
+           coverage to move. Wine-pairing apply stays unchanged.
+  repro      magnet apply-demo
+```
+
+Exit code: **0** (verified: `magnet apply-demo`)
+
+## `magnet apply-eval` output
+
+```
+  naive_fit    2/3   (loses fit_without_apply — invents helped from the label)
+  magnet       3/3
+  silent_null  0/3
+  best arm     magnet (3/3)
+```
+
+Exit code: **0** (verified: `magnet apply-eval`)
+
 ## `magnet list-probes` output
 
 ```
@@ -144,9 +189,10 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 
 ## `magnet probe pytest-pass-rate` output
 
-```
-pytest-pass-rate: 100/100
-  command: python3 -m pytest -q --tb=no -m "not slow"
+Re-derive at the object — do not trust a pasted fraction:
+
+```bash
+magnet probe pytest-pass-rate
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)

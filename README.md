@@ -21,6 +21,8 @@ magnet list-probes    # built-in + your .magnet/probes.json
 magnet history        # adoption timeline from SQLite
 magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
 magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
+magnet apply-demo     # fit invents helped; --apply measures coverage
+magnet apply-eval     # naive-fit vs magnet vs silent_null on real writes
 ```
 
 Cold path — no keys, no network:
@@ -32,7 +34,11 @@ pip install -e .
 magnet demo
 magnet stack
 magnet bakeoff
+magnet apply-demo
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
+magnet adopt skill secrets-scanner \
+  "blocks leaking .env and finds credential patterns" \
+  --probe stack-coverage --apply --fit --reset
 magnet history
 ```
 
@@ -44,6 +50,12 @@ magnet history
 | `check-docs` | README claims vs source (re-derived at read time) |
 | `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
 | `stack-coverage` | YOUR stack: covered/total capability vocabulary |
+
+**Apply loop:** `magnet adopt skill … --apply --probe stack-coverage` copies the
+fixture stack into `.magnet/applied-stack` (source untouched), writes
+`skills/<slug>/SKILL.md`, and re-probes. Fit is a prediction; coverage is the
+measurement. `magnet apply-demo` shows naive-fit inventing `helped` from the
+label alone while magnet waits for coverage to move.
 
 Add your own via `.magnet/probes.json` (copy from `docs/probes.json.example`):
 

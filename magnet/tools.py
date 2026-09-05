@@ -12,9 +12,20 @@ from magnet.probes import check_docs, check_docs_exit_code, run_probe
 from magnet.reporter import verdict
 
 
-def tool_run_probe(probe_name: str, *, log_path: str | None = None, repo_root: str | None = None) -> dict:
+def tool_run_probe(
+    probe_name: str,
+    *,
+    log_path: str | None = None,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+) -> dict:
     conn = connect(log_path)
-    result = run_probe(conn, probe_name, repo_root=repo_root or os.getcwd())
+    result = run_probe(
+        conn,
+        probe_name,
+        repo_root=repo_root or os.getcwd(),
+        stack_dir=stack_dir,
+    )
     return result
 
 
@@ -24,6 +35,8 @@ def tool_record_week(
     log_path: str | None = None,
     change_id: int | None = None,
     simulate_next_week: bool = False,
+    stack_dir: str | None = None,
+    repo_root: str | None = None,
 ) -> dict:
     """Run the probe and store this week's reading.
 
@@ -34,7 +47,12 @@ def tool_record_week(
     rather than as a real read time.
     """
     conn = connect(log_path)
-    probe = run_probe(conn, probe_name)
+    probe = run_probe(
+        conn,
+        probe_name,
+        repo_root=repo_root or os.getcwd(),
+        stack_dir=stack_dir,
+    )
     now = None
     if simulate_next_week:
         now = _now() + timedelta(days=SIMULATED_WEEK_OFFSET_DAYS)

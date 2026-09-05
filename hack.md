@@ -60,10 +60,11 @@ No number without the command that produced it, the population it is out of, and
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
+| 15 | Apply-to-stack · measured coverage · naive-fit arm | `magnet adopt … --apply --probe stack-coverage` moves coverage · `magnet apply-demo` · `magnet apply-eval` · tests green |
 
 ## NOW
 
-**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
+**Slice 15:** Close the lie found by running — `magnet adopt … --fit` on secrets-scanner prints `fills-gap security` while `stack-coverage` stays 8/12 because nothing writes the skill. Ship `--apply`: copy fixture stack → writable `.magnet/applied-stack` → write `SKILL.md` → re-probe coverage. Embarrassment arm: wine-pairing apply stays unchanged + no-signal. Eval: naive-fit (believes fit label without measuring) vs magnet vs silent_null. Cold path: `magnet apply-demo`.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -93,3 +94,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 13 cold clone `/tmp/magnet-cold-s13` (branch) → demo/stack/bakeoff/pytest exit 0 · push `8027d79`.
 - 2026-09-02 · Slice 14: `magnet adopt --fit` · `stack-coverage` probe 8/12 · judge-demo step extended · `python3 -m pytest -q` → 98 passed · check-docs 11 PASS.
 - 2026-09-02 · **DEFECT found by running:** `tool_adopt_change` applied demo +1/5 whenever probe was `demo-pass-rate`, ignoring `apply_demo_bonus=False` — wine-pairing noise got `helped` while fit said `no-signal`. Fixed: bonus is opt-in only; scripted agent plan passes `apply_demo_bonus=True` explicitly · `python3 -m pytest -q` → 100 passed.
+- 2026-09-05 · Slice 15 START · ran `magnet adopt skill secrets-scanner … --fit --probe stack-coverage` → fit `fills-gap security`, coverage stayed **8/12** (skill never written). That is the object.
+- 2026-09-05 · Slice 15 SHIP · `magnet adopt --apply` writes working-stack copy · `magnet apply-demo` · `magnet apply-eval` (naive_fit 2/3, magnet 3/3, silent_null 0/3) · wine-pairing apply unchanged · fixture untouched · `python3 -m pytest -q` → 124 passed · check-docs 11 PASS.

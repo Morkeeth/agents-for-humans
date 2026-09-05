@@ -6,6 +6,8 @@ import os
 import sys
 
 from magnet.adopt import run_adopt
+from magnet.apply_demo import run_apply_demo
+from magnet.apply_eval import run_apply_eval
 from magnet.constants import CHANGE_TYPES
 from magnet.agent_run import MODES, run_agent_loop
 from magnet.bakeoff import render_bakeoff, run_bakeoff
@@ -42,7 +44,9 @@ def cmd_drift_demo(args: argparse.Namespace) -> int:
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    result = tool_run_probe(args.name, log_path=args.log)
+    result = tool_run_probe(
+        args.name, log_path=args.log, repo_root=args.repo, stack_dir=args.stack
+    )
     pop = result.get("population")
     val = result.get("value")
     shown = f"{val}/{pop}" if pop is not None else val
@@ -68,6 +72,11 @@ def cmd_agent_run(args: argparse.Namespace) -> int:
 
 
 def cmd_adopt(args: argparse.Namespace) -> int:
+    # --apply measures a real write in one sitting; default to no simulated week
+    # unless the caller also omitted --no-simulate while forcing simulate.
+    simulate = not args.no_simulate
+    if args.apply and not args.force_simulate:
+        simulate = False
     print(
         run_adopt(
             args.change_type,
@@ -76,13 +85,26 @@ def cmd_adopt(args: argparse.Namespace) -> int:
             args.probe,
             log_path=args.log,
             apply_demo_bonus=args.demo_bonus,
-            simulate_next_week=not args.no_simulate,
+            simulate_next_week=simulate,
             reset=args.reset,
             fit=args.fit,
             stack_dir=args.stack,
             fit_description=args.fit_text,
+            apply=args.apply,
+            apply_dest=args.apply_dest,
+            repo_root=args.repo,
         )
     )
+    return 0
+
+
+def cmd_apply_demo(args: argparse.Namespace) -> int:
+    print(run_apply_demo(repo_root=args.repo, stack_dir=args.stack, log_path=args.log))
+    return 0
+
+
+def cmd_apply_eval(args: argparse.Namespace) -> int:
+    print(run_apply_eval(repo_root=args.repo, stack_dir=args.stack))
     return 0
 
 
@@ -200,7 +222,35 @@ def main(argv: list[str] | None = None) -> int:
         help="Prose description used for fit matching (default: prediction)",
     )
     p_adopt.add_argument("--stack", help="Stack directory for --fit (default: fixtures/stack)")
+    p_adopt.add_argument(
+        "--apply",
+        action="store_true",
+        help="Write the skill onto a working copy of the stack, then re-probe",
+    )
+    p_adopt.add_argument(
+        "--apply-dest",
+        help="Writable stack copy for --apply (default: .magnet/applied-stack)",
+    )
+    p_adopt.add_argument(
+        "--force-simulate",
+        action="store_true",
+        help="With --apply, still advance the clock into next ISO week (demo only)",
+    )
     p_adopt.set_defaults(func=cmd_adopt)
+
+    p_apply_demo = sub.add_parser(
+        "apply-demo",
+        help="Cold demo: naive-fit invents helped; --apply measures coverage",
+    )
+    p_apply_demo.add_argument("--stack", help="Source stack (default: fixtures/stack)")
+    p_apply_demo.set_defaults(func=cmd_apply_demo)
+
+    p_apply_eval = sub.add_parser(
+        "apply-eval",
+        help="Score naive-fit vs magnet vs silent_null on real stack applies",
+    )
+    p_apply_eval.add_argument("--stack", help="Source stack (default: fixtures/stack)")
+    p_apply_eval.set_defaults(func=cmd_apply_eval)
 
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
     p_eval.set_defaults(func=cmd_eval)
@@ -225,6 +275,10 @@ def main(argv: list[str] | None = None) -> int:
 
     p_probe = sub.add_parser("probe", help="Run one probe")
     p_probe.add_argument("name", help="Probe name (e.g. demo-pass-rate)")
+    p_probe.add_argument(
+        "--stack",
+        help="Stack directory for stack-coverage (default: fixtures/stack or MAGNET_STACK)",
+    )
     p_probe.set_defaults(func=cmd_probe)
 
     p_record = sub.add_parser("record", help="Run probe and store this week")

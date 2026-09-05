@@ -23,6 +23,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Eval** | Real probes (`pytest-pass-rate`) + registry (`.magnet/probes.json`) | `magnet probe pytest-pass-rate` |
 | **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
 | **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
+| **Apply** | Write a skill onto a working stack copy; re-measure coverage | `magnet apply-demo` · `magnet adopt … --apply` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
@@ -51,6 +52,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 git clone https://github.com/Morkeeth/agents-for-humans.git
 cd agents-for-humans
 bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
+magnet apply-demo            # naive-fit invents helped; magnet measures 8/12→9/12
 ```
 
 ---
@@ -70,6 +72,7 @@ bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
 python3 -m pytest -q
 magnet drift-demo
 magnet check-docs
+magnet apply-eval
 ```
 
 Numbers re-derived at object — do not trust this file without running the commands above.
