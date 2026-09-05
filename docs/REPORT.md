@@ -26,7 +26,7 @@
 | Tests green | `python3 -m pytest -q` → 133 passed |
 | check_docs | `magnet check-docs` → 14 claims PASS |
 | Capture | `bash scripts/capture-sidecars.sh` → exit 0; pytest.txt `133 passed` |
-| Probe non-slow | `magnet probe pytest-pass-rate` → 132/132 (1 slow deselected) — re-derive |
+| Probe non-slow | `magnet probe pytest-pass-rate` → 132/132 (1 slow deselected) |
 | Apply-eval | `magnet apply-eval` → magnet 3/3 |
 | Dead probe | registry `false` → exit 1 |
 | Cold clone s16 | `/tmp/magnet-cold-s16` → 131 passed (pre-s17) |
