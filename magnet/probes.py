@@ -220,6 +220,10 @@ def check_docs(repo_root: str) -> list[dict]:
         )
     )
 
+    # Claim: Sep 14 entry ruling — README must not name Grinder as the entry.
+    # Source of truth: _NIGHT-SCOPE.md / hack.md EYES line (MAGNET submits).
+    results.append(_check_sep14_entry_ruling(root, readme))
+
     # Claim: pytest test count in judge/devpost docs vs actual def test_ count
     actual_tests = _count_pytest_tests(root / "tests")
     for doc_name in DOCS_WITH_PYTEST_COUNTS:
@@ -256,6 +260,37 @@ def check_docs(repo_root: str) -> list[dict]:
 
     return results
 
+
+def _check_sep14_entry_ruling(root: Path, readme: str) -> dict:
+    """EYES 1 Sep: MAGNET submits; Grinder is companion — never the entry in README."""
+    night = ""
+    for name in ("_NIGHT-SCOPE.md", "hack.md"):
+        path = root / name
+        if path.is_file():
+            night += path.read_text(encoding="utf-8") + "\n"
+    eyes_says_magnet = "MAGNET submits" in night
+    grinder_named_as_entry = (
+        "the Agents for Humans entry" in readme
+        or "not itself the submission" in readme
+    )
+    ok = eyes_says_magnet and not grinder_named_as_entry
+    if not eyes_says_magnet:
+        why = "ruling files do not say 'MAGNET submits' — cannot verify entry"
+    elif grinder_named_as_entry:
+        why = (
+            "README names Agent Grinder as the entry or says MAGNET is not the "
+            "submission — contradicts EYES (MAGNET submits; Grinder companion)"
+        )
+    else:
+        why = "README matches EYES: MAGNET submits; Grinder is companion"
+    return _result(
+        "sep14 entry ruling",
+        "README.md",
+        "grinder-as-entry" if grinder_named_as_entry else "magnet-submits",
+        "MAGNET submits",
+        ok,
+        why,
+    )
 
 def _count_strands_tools() -> int:
     from magnet.constants import TOOL_NAMES

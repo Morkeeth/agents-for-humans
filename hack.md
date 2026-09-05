@@ -61,10 +61,11 @@ No number without the command that produced it, the population it is out of, and
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Apply-to-stack · measured coverage · naive-fit arm | `magnet adopt … --apply --probe stack-coverage` moves coverage · `magnet apply-demo` · `magnet apply-eval` · tests green |
+| 16 | Ruling honesty + pytest-miss exits non-zero | README matches EYES (MAGNET submits) · `check_docs` catches entry drift · probe exit 1 on unmeasured |
 
 ## NOW
 
-**Slice 15:** Close the lie found by running — `magnet adopt … --fit` on secrets-scanner prints `fills-gap security` while `stack-coverage` stays 8/12 because nothing writes the skill. Ship `--apply`: copy fixture stack → writable `.magnet/applied-stack` → write `SKILL.md` → re-probe coverage. Embarrassment arm: wine-pairing apply stays unchanged + no-signal. Eval: naive-fit (believes fit label without measuring) vs magnet vs silent_null. Cold path: `magnet apply-demo`.
+**Slice 16:** Two defects found by opening the objects — (1) README still says Agent Grinder is "the Agents for Humans entry" and MAGNET "is not itself the submission", contradicting EYES / `_NIGHT-SCOPE.md` / `docs/DEVPOST-READY.md` (MAGNET submits; Grinder is companion). (2) `magnet probe pytest-pass-rate` with a dead command returns `None` and exits **0** (DEVPOST-DESCRIPTION already named this). Fix README + add check_docs ruling claim; CLI probe exits 1 when value is None; tests go red first.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -96,3 +97,5 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · **DEFECT found by running:** `tool_adopt_change` applied demo +1/5 whenever probe was `demo-pass-rate`, ignoring `apply_demo_bonus=False` — wine-pairing noise got `helped` while fit said `no-signal`. Fixed: bonus is opt-in only; scripted agent plan passes `apply_demo_bonus=True` explicitly · `python3 -m pytest -q` → 100 passed.
 - 2026-09-05 · Slice 15 START · ran `magnet adopt skill secrets-scanner … --fit --probe stack-coverage` → fit `fills-gap security`, coverage stayed **8/12** (skill never written). That is the object.
 - 2026-09-05 · Slice 15 SHIP · `magnet adopt --apply` writes working-stack copy · `magnet apply-demo` · `magnet apply-eval` (naive_fit 2/3, magnet 3/3, silent_null 0/3) · wine-pairing apply unchanged · fixture untouched · `python3 -m pytest -q` → 124 passed · check-docs 11 PASS.
+- 2026-09-05 · Slice 16 START · opened README vs `_NIGHT-SCOPE.md`: README named Grinder as the entry; EYES says MAGNET submits. Also re-ran dead `pytest` probe → `None` exit 0 (named in DEVPOST-DESCRIPTION).
+- 2026-09-05 · Slice 16 SHIP · README fixed · `check_docs` `sep14 entry ruling` (RED on planted lie) · `magnet probe` exit 1 on unmeasured · `python3 -m pytest -q` → 131 passed · check-docs 12 PASS.

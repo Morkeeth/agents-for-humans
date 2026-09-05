@@ -49,9 +49,12 @@ def cmd_probe(args: argparse.Namespace) -> int:
     )
     pop = result.get("population")
     val = result.get("value")
-    shown = f"{val}/{pop}" if pop is not None else val
+    shown = f"{val}/{pop}" if pop is not None else str(val)
     print(f"{result['probe_name']}: {shown}")
     print(f"  command: {result['command']}")
+    if val is None:
+        print("  unmeasured — probe produced no value/pop (exit non-zero)")
+        return 1
     return 0
 
 

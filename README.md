@@ -2,7 +2,10 @@
 
 **Professional Agents track · AWS Strands · Devpost Sep 14 2026**
 
-> **Role in the hackathon:** MAGNET is the engine library for [Agent Grinder](https://github.com/Morkeeth/agentgrinder), the Agents for Humans entry; its Strands agent and four tools run inside that product. This repo is public as the disclosed library and is not itself the submission.
+> **Role in the hackathon:** MAGNET is the **Sep 14 Agents for Humans submission**
+> (Professional Agents track). [Agent Grinder](https://github.com/Morkeeth/agentgrinder)
+> is the companion product (social layer for posting real runs) — separate repo, not this entry.
+> EYES ruling 1 Sep 2026: MAGNET submits; Grinder stays product-only.
 
 > **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
 

@@ -22,7 +22,11 @@ def test_check_docs_passes_when_claim_matches_source(tmp_path):
     readme.write_text(
         f"# test\n\nStrands agent · {len(TOOL_NAMES)} tools\n"
         + " ".join(TOOL_NAMES)
-        + "\n",
+        + "\nMAGNET submits Sep 14. Agent Grinder is a companion product.\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "_NIGHT-SCOPE.md").write_text(
+        "**EYES ruling:** MAGNET submits. Agent Grinder is a separate product.\n",
         encoding="utf-8",
     )
     assert check_docs_exit_code(str(tmp_path)) == 0
