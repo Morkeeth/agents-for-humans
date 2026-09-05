@@ -35,6 +35,16 @@ flowchart LR
     OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
 ```
 
+```mermaid
+flowchart LR
+    FIT[fit label<br/>fills-gap prediction] --> NF[naive-fit arm<br/>invents helped]
+    FIT --> APPLY[adopt --apply<br/>write SKILL.md to working copy]
+    APPLY --> WS[.magnet/applied-stack<br/>fixture untouched]
+    WS --> SC[stack-coverage probe<br/>covered/total]
+    SC --> LOG[(SQLite log)]
+    LOG --> DS2[Decision surface<br/>helped only if coverage moved]
+```
+
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.
@@ -58,6 +68,9 @@ flowchart LR
 | `magnet/demo.py` | One-command cold demo |
 | `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
+| `magnet/apply.py` | Materialize working stack + write SKILL.md (never mutate fixture) |
+| `magnet/apply_demo.py` | Cold demo: naive-fit vs measured coverage |
+| `magnet/apply_eval.py` | naive_fit vs magnet vs silent_null on real writes |
 
 ## Naive baseline arm
 
