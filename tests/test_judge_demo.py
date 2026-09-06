@@ -14,6 +14,7 @@ def test_judge_demo_script_has_path_fix():
     assert "magnet demo" in text
     assert "pytest-pass-rate adopt" in text
     assert "bind-demo" in text
+    assert "redact-scan" in text
     assert "JUDGE DEMO OK" in text
 
 

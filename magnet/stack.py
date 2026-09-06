@@ -86,7 +86,10 @@ def verify_declaration(declared: list, text: str) -> dict:
 
 
 def default_stack_dir(repo_root: str | None = None) -> str:
-    """Cold-path fixture first, then ~/.claude if present."""
+    """Cold-path fixture first, then MAGNET_STACK, then ~/.claude if present."""
+    env = os.environ.get("MAGNET_STACK")
+    if env and Path(os.path.expanduser(env)).is_dir():
+        return str(Path(os.path.expanduser(env)))
     root = Path(repo_root or os.getcwd())
     fixture = root / "fixtures" / "stack"
     if fixture.is_dir():

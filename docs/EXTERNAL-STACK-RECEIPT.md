@@ -1,20 +1,15 @@
-# External stack receipt · anthropics/skills · 2026-09-06
+# External stack receipt · 2026-09-06
 
-Measured a stack **we did not build**. Numbers re-derived at the object — do not
-trust this file without re-running the commands.
+Measured stacks **we did not build**. Numbers re-derived at the object — do not
+trust this file without re-running the commands. Cold path does **not** require
+these clones; `magnet bind-demo` uses `fixtures/stack` only.
 
-## Object
+## anthropics/skills
 
 ```bash
 git clone --depth 1 https://github.com/anthropics/skills.git /tmp/anthropics-skills
 magnet external-stack --stack /tmp/anthropics-skills
 ```
-
-Repo: [anthropics/skills](https://github.com/anthropics/skills) (public Agent Skills).
-Opened 2026-09-06 on this cloud VM. Cold path does **not** require this clone —
-`magnet bind-demo` uses `fixtures/stack` only.
-
-## Readings (re-derived)
 
 | Probe | Value | Command |
 |-------|------:|---------|
@@ -22,24 +17,34 @@ Opened 2026-09-06 on this cloud VM. Cold path does **not** require this clone �
 | deny-coverage | 0/4 | `magnet probe deny-coverage --stack /tmp/anthropics-skills` |
 | stack-coverage | 8/12 | `magnet probe stack-coverage --stack /tmp/anthropics-skills` |
 
-Inventory (from the same run): skills=19 · commands=0 · agents=0 · hooks=0.
-Uncovered caps: data, planning, review, security.
-Empty surfaces: commands, agents, hooks.
+Inventory: skills=19 · commands=0 · agents=0 · hooks=0.
+Uncovered: data, planning, review, security.
 
-## FINDING
+**FINDING:** Anthropic's published skills carry **zero** `effort:` frontmatter
+keys (0/19). Every SKILL.md was opened; keys counted at the object.
 
-Anthropic's published skills carry **zero** `effort:` frontmatter keys (0/19).
-The Ultimate Guide audit treated `effort:` coverage as a hardening signal on a
-local stack; against this public baseline the same probe reads empty. That is
-not a ranking by name — every SKILL.md was opened and its frontmatter keys
-counted.
+## obra/superpowers
 
-`deny-coverage` is 0/4 because this repo has no `settings.json` deny list —
-expected for a skills catalogue, not a full agent config. The probe still opens
-the object and refuses to invent a pass.
+```bash
+git clone --depth 1 https://github.com/obra/superpowers.git /tmp/superpowers
+magnet external-stack --stack /tmp/superpowers
+```
 
-## Naive arm (would lose the truth)
+| Probe | Value | Command |
+|-------|------:|---------|
+| effort-coverage | 0/14 | `magnet probe effort-coverage --stack /tmp/superpowers` |
+| deny-coverage | 0/4 | `magnet probe deny-coverage --stack /tmp/superpowers` |
+| stack-coverage | 6/12 | `magnet probe stack-coverage --stack /tmp/superpowers` |
 
-A title-only scanner that sees "skills" + "Agent Skills" and prints `helped` /
-`complete` without opening frontmatter would green-light this stack. MAGNET
-prints `0/19`.
+Inventory: skills=14 · commands=0 · agents=0 · hooks=0.
+Uncovered: data, debug, docs, refactor, research, security.
+No `settings.json` in the repo root (deny 0/4 expected).
+
+**FINDING:** Same empty `effort:` reading as anthropics/skills. A title-only
+scanner that sees "skills framework" and prints complete would green-light both.
+MAGNET prints `0/14`.
+
+## Naive arm (loses the truth)
+
+A title-only scanner that sees "Agent Skills" / "superpowers" without opening
+frontmatter invents a pass. MAGNET's probe opens every SKILL.md.

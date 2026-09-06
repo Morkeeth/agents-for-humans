@@ -67,6 +67,10 @@ else
   echo ""
   echo "=== 7b/8 · Impact: bind-demo (repo-blind vs stack-bind embarrassment) ==="
   magnet bind-demo
+
+  echo ""
+  echo "=== 7c/8 · Impact: redact-scan (must stay clean; planted secrets go RED in tests) ==="
+  magnet redact-scan
 fi
 
 echo ""

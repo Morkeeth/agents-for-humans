@@ -16,6 +16,7 @@ from magnet.eval import run_eval
 from magnet.history import render_history
 from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
+from magnet.redact import run_redact_scan
 from magnet.registry import list_all_probes
 from magnet.stack import default_stack_dir, magnet_report, render_stack
 from magnet.stack_bind import deny_coverage, effort_coverage
@@ -106,6 +107,12 @@ def cmd_external_stack(args: argparse.Namespace) -> int:
     print("")
     print("  repro      magnet external-stack --stack " + stack)
     return 0 if inv.get("present") else 1
+
+
+def cmd_redact_scan(args: argparse.Namespace) -> int:
+    text, code = run_redact_scan(repo_root=args.repo)
+    print(text)
+    return code
 
 
 def cmd_record(args: argparse.Namespace) -> int:
@@ -319,6 +326,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Path to an external agent stack (e.g. a cloned skills repo)",
     )
     p_ext.set_defaults(func=cmd_external_stack)
+
+    p_redact = sub.add_parser(
+        "redact-scan",
+        help="Scan the tree for live secret patterns; exit 1 if any finding",
+    )
+    p_redact.set_defaults(func=cmd_redact_scan)
 
     p_stack = sub.add_parser(
         "stack",

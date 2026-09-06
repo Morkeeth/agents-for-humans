@@ -61,10 +61,11 @@ No number without the command that produced it, the population it is out of, and
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Stack-bind probes + bind-demo vs repo-blind | `magnet bind-demo` exit 0 · FINDING line · `effort-coverage` + `deny-coverage` · external-stack receipt |
+| 16 | Redact-scan control + MAGNET_STACK + second external | `magnet redact-scan` exit 0 · planted secret goes RED · superpowers 0/14 |
 
 ## NOW
 
-**Slice 15:** Ship stack-bind probes that open YOUR stack object (`effort-coverage`, `deny-coverage`) · `magnet bind-demo` applies Ultimate Guide changes to a temp copy and proves repo-blind `check-docs` stays flat while stack probes move · measure a stack we did not build (`anthropics/skills`) · tests + doc counts re-derived · stranger/judge scripts call `bind-demo`.
+**Slice 16:** Ship `magnet redact-scan` (control that goes RED on planted secrets, GREEN on this repo) · `MAGNET_STACK` env · record obra/superpowers external receipt beside anthropics/skills · wire redact-scan into stranger/judge · tests + doc counts re-derived.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -98,3 +99,6 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-06 · Slice 15 START · opened Ultimate Guide product finding (repo probes cannot see stack changes) · opened bigger object `anthropics/skills` (19 SKILL.md, **0/19** carry `effort:`).
 - 2026-09-06 · Slice 15: `effort-coverage` + `deny-coverage` builtin probes · `magnet bind-demo` · FINDING repo-blind flat / stack-bind helped · `magnet external-stack --stack /tmp/anthropics-skills` → effort 0/19, deny 0/4, coverage 8/12 · fixtures untouched after bind-demo.
 - 2026-09-06 · Slice 15 VERIFIED: `python3 -m pytest -q` → 124 passed · `magnet check-docs` → 11 PASS · `magnet bind-demo` → exit 0 (effort 0/7→7/7, deny 0/4→4/4, check-docs 11/11 unchanged) · `MAGNET_JUDGE_QUICK=1 bash scripts/judge-demo.sh` → JUDGE DEMO OK · mid-slice FAIL: check-docs 5/11 until docs re-derived 113→124.
+- 2026-09-06 · Cold clone `/tmp/magnet-cold-s15` @ `fd74fc3` → `magnet bind-demo` FINDING · `pytest -q` 124 passed · check-docs 11 PASS.
+- 2026-09-06 · Slice 16 START · `magnet redact-scan` · first run RED on own test file (literal PEM/aws_secret in source) · allowlist `example` substring false-positive on EXAMPLEKEY · fixed both by running.
+- 2026-09-06 · Slice 16: opened `obra/superpowers` → effort 0/14 · coverage 6/12 · `python3 -m pytest -q` → 130 passed · `magnet redact-scan` → findings 0.

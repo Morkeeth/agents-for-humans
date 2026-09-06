@@ -98,6 +98,7 @@ magnet history       # adoption timeline from .magnet/log.db
 magnet probe pytest-pass-rate   # real eval (run from CLI, not inside pytest)
 magnet probe effort-coverage    # opens fixtures/stack SKILL.md frontmatter
 magnet probe deny-coverage      # opens fixtures/stack settings.json
+magnet redact-scan              # live secret patterns; exit 1 on finding
 ```
 
 ### Which model runs the agent

@@ -83,7 +83,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-124 passed in (re-derived; see latest stranger-pass run)
+130 passed in (re-derived; see latest stranger-pass run)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
