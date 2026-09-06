@@ -33,7 +33,8 @@
 | redact-scan clean | `magnet redact-scan` → findings 0 · exit 0 |
 | redact-scan RED | `tests/test_redact_scan.py` planted secret → exit 1 |
 | Hook+stack probe | `magnet adopt hook … --probe deny-coverage` → `measures stack` |
-| Cold clone (s15) | clone branch `cursor/stack-bind-probes-7019` → bind-demo + 124 pytest exit 0 at `fd74fc3` |
+| Cold clone (s15) | clone branch @ `fd74fc3` → bind-demo + 124 pytest exit 0 |
+| Cold clone (s16) | clone branch @ `ed0d6ea` → bind-demo FINDING · redact-scan clean · 130 passed |
 | Judge quick | `MAGNET_JUDGE_QUICK=1 bash scripts/judge-demo.sh` → JUDGE DEMO OK |
 
 ## WRONG
@@ -54,5 +55,4 @@
   `cursor/stack-bind-probes-7019`.
 - **Screenshots under docs/screenshots/** still show 113 — not in the
   check_docs scan set; left stale on purpose (historical captures).
-- **Cold clone after s16 not yet re-run** at the time this paragraph was
-  written — re-derive after push.
+- **Push hash:** `ed0d6ea` on `cursor/stack-bind-probes-7019` (not main — Oscar click).

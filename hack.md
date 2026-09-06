@@ -102,3 +102,4 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-06 · Cold clone `/tmp/magnet-cold-s15` @ `fd74fc3` → `magnet bind-demo` FINDING · `pytest -q` 124 passed · check-docs 11 PASS.
 - 2026-09-06 · Slice 16 START · `magnet redact-scan` · first run RED on own test file (literal PEM/aws_secret in source) · allowlist `example` substring false-positive on EXAMPLEKEY · fixed both by running.
 - 2026-09-06 · Slice 16: opened `obra/superpowers` → effort 0/14 · coverage 6/12 · `python3 -m pytest -q` → 130 passed · `magnet redact-scan` → findings 0.
+- 2026-09-06 · Cold clone `/tmp/magnet-cold-s16` @ `ed0d6ea` → bind-demo FINDING · redact-scan clean · 130 passed · check-docs 11 PASS.
