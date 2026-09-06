@@ -9,6 +9,7 @@ from magnet.adopt import run_adopt
 from magnet.constants import CHANGE_TYPES
 from magnet.agent_run import MODES, run_agent_loop
 from magnet.bakeoff import render_bakeoff, run_bakeoff
+from magnet.bind_demo import run_bind_demo
 from magnet.demo import run_demo
 from magnet.drift_demo import run_drift_demo
 from magnet.eval import run_eval
@@ -17,6 +18,7 @@ from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.stack import default_stack_dir, magnet_report, render_stack
+from magnet.stack_bind import deny_coverage, effort_coverage
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -42,13 +44,68 @@ def cmd_drift_demo(args: argparse.Namespace) -> int:
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    result = tool_run_probe(args.name, log_path=args.log)
+    result = tool_run_probe(
+        args.name,
+        log_path=args.log,
+        repo_root=args.repo,
+        stack_dir=getattr(args, "stack", None),
+    )
     pop = result.get("population")
     val = result.get("value")
     shown = f"{val}/{pop}" if pop is not None else val
     print(f"{result['probe_name']}: {shown}")
     print(f"  command: {result['command']}")
     return 0
+
+
+def cmd_bind_demo(args: argparse.Namespace) -> int:
+    text = run_bind_demo(
+        repo_root=args.repo,
+        stack_dir=args.stack,
+        log_path=args.log,
+    )
+    print(text)
+    # Exit 1 if the stack-bind arms did not move — a green outage is a lie.
+    if "stack-bind probes did NOT move" in text:
+        return 1
+    if "repo-blind check-docs stayed flat while stack-bind probes moved" not in text:
+        # Soft fail only when the FINDING line is missing entirely.
+        if "FINDING" not in text:
+            return 1
+    return 0
+
+
+def cmd_external_stack(args: argparse.Namespace) -> int:
+    """Measure a stack we did not build — effort/deny/coverage at the object."""
+    stack = args.stack
+    if not stack or not os.path.isdir(stack):
+        print(f"magnet external-stack: need an existing --stack directory (got {stack!r})")
+        return 2
+    from magnet.stack import gaps, inventory, stack_coverage
+
+    inv = inventory(stack)
+    g = gaps(inv)
+    effort = effort_coverage(stack)
+    deny = deny_coverage(stack)
+    cov = stack_coverage(stack)
+    print("MAGNET external-stack — measure a stack you did not build")
+    print("")
+    print(f"  stack      {stack}")
+    print(f"  present    {inv.get('present')}")
+    print(
+        f"  counts     skills={g['counts']['skills']}  commands={g['counts']['commands']}  "
+        f"agents={g['counts']['agents']}  hooks={g['counts']['hooks']}"
+    )
+    print(f"  effort     {effort['value']}/{effort['population']}  ({effort['command']})")
+    print(f"  deny       {deny['value']}/{deny['population']}  ({deny['command']})")
+    print(f"  coverage   {cov['value']}/{cov['population']}  ({cov['command']})")
+    if g["uncovered"]:
+        print(f"  uncovered  {', '.join(g['uncovered'])}")
+    if g["empty_surfaces"]:
+        print(f"  empty      {', '.join(g['empty_surfaces'])}")
+    print("")
+    print("  repro      magnet external-stack --stack " + stack)
+    return 0 if inv.get("present") else 1
 
 
 def cmd_record(args: argparse.Namespace) -> int:
@@ -199,7 +256,7 @@ def main(argv: list[str] | None = None) -> int:
         "--fit-text",
         help="Prose description used for fit matching (default: prediction)",
     )
-    p_adopt.add_argument("--stack", help="Stack directory for --fit (default: fixtures/stack)")
+    p_adopt.add_argument("--stack", help="Stack directory for stack probes / --fit (default: fixtures/stack)")
     p_adopt.set_defaults(func=cmd_adopt)
 
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
@@ -225,6 +282,10 @@ def main(argv: list[str] | None = None) -> int:
 
     p_probe = sub.add_parser("probe", help="Run one probe")
     p_probe.add_argument("name", help="Probe name (e.g. demo-pass-rate)")
+    p_probe.add_argument(
+        "--stack",
+        help="Stack directory for stack-bind probes (default: fixtures/stack)",
+    )
     p_probe.set_defaults(func=cmd_probe)
 
     p_record = sub.add_parser("record", help="Run probe and store this week")
@@ -240,6 +301,24 @@ def main(argv: list[str] | None = None) -> int:
     p_hist = sub.add_parser("history", help="Show adoption timeline from the log")
     p_hist.add_argument("--probe", help="Filter to one probe name")
     p_hist.set_defaults(func=cmd_history)
+
+    p_bind = sub.add_parser(
+        "bind-demo",
+        help="Embarrassment arm: stack change invisible to repo eval, visible to stack probes",
+    )
+    p_bind.add_argument("--stack", help="Source stack to copy (default: fixtures/stack)")
+    p_bind.set_defaults(func=cmd_bind_demo)
+
+    p_ext = sub.add_parser(
+        "external-stack",
+        help="Measure a stack you did not build (effort/deny/coverage at the object)",
+    )
+    p_ext.add_argument(
+        "--stack",
+        required=True,
+        help="Path to an external agent stack (e.g. a cloned skills repo)",
+    )
+    p_ext.set_defaults(func=cmd_external_stack)
 
     p_stack = sub.add_parser(
         "stack",

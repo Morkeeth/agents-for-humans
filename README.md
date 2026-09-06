@@ -21,6 +21,7 @@ magnet list-probes    # built-in + your .magnet/probes.json
 magnet history        # adoption timeline from SQLite
 magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
 magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
+magnet bind-demo      # stack change invisible to repo eval, visible to stack probes
 ```
 
 Cold path — no keys, no network:
@@ -32,6 +33,7 @@ pip install -e .
 magnet demo
 magnet stack
 magnet bakeoff
+magnet bind-demo
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -44,6 +46,8 @@ magnet history
 | `check-docs` | README claims vs source (re-derived at read time) |
 | `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
 | `stack-coverage` | YOUR stack: covered/total capability vocabulary |
+| `effort-coverage` | YOUR stack: skills with `effort:` frontmatter / total |
+| `deny-coverage` | YOUR stack: sensitive deny patterns in settings.json |
 
 Add your own via `.magnet/probes.json` (copy from `docs/probes.json.example`):
 
@@ -86,11 +90,14 @@ magnet check-docs
 magnet drift-demo   # live Qwen lesson: fake repo fails, real repo passes
 magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fixtures
+magnet bind-demo     # repo-blind vs stack-bind — Ultimate Guide product finding
 magnet stack         # inventory YOUR surfaces + gaps
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes
 magnet history       # adoption timeline from .magnet/log.db
 magnet probe pytest-pass-rate   # real eval (run from CLI, not inside pytest)
+magnet probe effort-coverage    # opens fixtures/stack SKILL.md frontmatter
+magnet probe deny-coverage      # opens fixtures/stack settings.json
 ```
 
 ### Which model runs the agent

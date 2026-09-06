@@ -29,7 +29,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## OPEN QUESTIONS
 
-- Which real eval probes ship for Devpost demo beyond `demo-pass-rate` + `pytest-pass-rate` + stack/bakeoff? (blocking for production, not for cold path)
+- Which real eval probes ship for Devpost demo beyond `demo-pass-rate` + `pytest-pass-rate` + stack/bakeoff + stack-bind? (blocking for production, not for cold path)
 - Bedrock model ID for live Strands agent run? (Oscar click — not resolved here)
 
 ## CONSTITUTION
@@ -60,10 +60,11 @@ No number without the command that produced it, the population it is out of, and
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
+| 15 | Stack-bind probes + bind-demo vs repo-blind | `magnet bind-demo` exit 0 · FINDING line · `effort-coverage` + `deny-coverage` · external-stack receipt |
 
 ## NOW
 
-**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
+**Slice 15:** Ship stack-bind probes that open YOUR stack object (`effort-coverage`, `deny-coverage`) · `magnet bind-demo` applies Ultimate Guide changes to a temp copy and proves repo-blind `check-docs` stays flat while stack probes move · measure a stack we did not build (`anthropics/skills`) · tests + doc counts re-derived · stranger/judge scripts call `bind-demo`.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
@@ -93,3 +94,7 @@ No number without the command that produced it, the population it is out of, and
 - 2026-09-02 · Slice 13 cold clone `/tmp/magnet-cold-s13` (branch) → demo/stack/bakeoff/pytest exit 0 · push `8027d79`.
 - 2026-09-02 · Slice 14: `magnet adopt --fit` · `stack-coverage` probe 8/12 · judge-demo step extended · `python3 -m pytest -q` → 98 passed · check-docs 11 PASS.
 - 2026-09-02 · **DEFECT found by running:** `tool_adopt_change` applied demo +1/5 whenever probe was `demo-pass-rate`, ignoring `apply_demo_bonus=False` — wine-pairing noise got `helped` while fit said `no-signal`. Fixed: bonus is opt-in only; scripted agent plan passes `apply_demo_bonus=True` explicitly · `python3 -m pytest -q` → 100 passed.
+- 2026-09-06 · Slice 14 VERIFIED on this VM: `magnet adopt … --fit` → fills-gap/no-signal · `magnet probe stack-coverage` → 8/12 · `python3 -m pytest -q` → 113 passed (pre-slice-15).
+- 2026-09-06 · Slice 15 START · opened Ultimate Guide product finding (repo probes cannot see stack changes) · opened bigger object `anthropics/skills` (19 SKILL.md, **0/19** carry `effort:`).
+- 2026-09-06 · Slice 15: `effort-coverage` + `deny-coverage` builtin probes · `magnet bind-demo` · FINDING repo-blind flat / stack-bind helped · `magnet external-stack --stack /tmp/anthropics-skills` → effort 0/19, deny 0/4, coverage 8/12 · fixtures untouched after bind-demo.
+- 2026-09-06 · Slice 15 VERIFIED: `python3 -m pytest -q` → 124 passed · `magnet check-docs` → 11 PASS · `magnet bind-demo` → exit 0 (effort 0/7→7/7, deny 0/4→4/4, check-docs 11/11 unchanged) · `MAGNET_JUDGE_QUICK=1 bash scripts/judge-demo.sh` → JUDGE DEMO OK · mid-slice FAIL: check-docs 5/11 until docs re-derived 113→124.

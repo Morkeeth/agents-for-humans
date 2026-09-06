@@ -155,4 +155,6 @@ def test_list_probes_includes_stack_coverage():
     )
     assert proc.returncode == 0
     assert "stack-coverage" in proc.stdout
-    assert "total      4" in proc.stdout
+    assert "effort-coverage" in proc.stdout
+    assert "deny-coverage" in proc.stdout
+    assert "total      6" in proc.stdout

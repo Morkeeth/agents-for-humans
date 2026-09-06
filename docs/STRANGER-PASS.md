@@ -13,11 +13,14 @@ magnet eval
 magnet agent-run
 magnet stack
 magnet bakeoff
+magnet bind-demo
 magnet list-probes
 magnet history
 pytest -q
 magnet check-docs
 magnet probe pytest-pass-rate   # real eval — run from CLI only
+magnet probe effort-coverage
+magnet probe deny-coverage
 ```
 
 Alternative one-liner:
@@ -80,7 +83,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-113 passed in 25.32s
+124 passed in (re-derived; see latest stranger-pass run)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -134,13 +137,41 @@ MAGNET probes  (built-in + .magnet/probes.json)
 
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
   check-docs           [builtin]  python -m magnet.check_docs
-  pytest-pass-rate     [builtin]  python3 -m pytest -q --tb=no
+  pytest-pass-rate     [builtin]  … pytest -q --tb=no -m "not slow"
   stack-coverage       [builtin]  magnet probe stack-coverage
+  effort-coverage      [builtin]  magnet probe effort-coverage
+  deny-coverage        [builtin]  magnet probe deny-coverage
 
-  total      4
+  total      6
 ```
 
 Exit code: **0** (verified: `python -m magnet.cli list-probes`)
+
+## `magnet bind-demo` output (2026-09-06, re-run on this branch)
+
+```
+MAGNET bind-demo — does YOUR eval open the object you changed?
+
+  BEFORE
+    check-docs       11/11  ← repo object
+    effort-coverage  0/7    ← stack SKILL.md
+    deny-coverage    0/4    ← stack settings.json
+
+  AFTER
+    check-docs       11/11
+    effort-coverage  7/7
+    deny-coverage    4/4
+
+  VERDICTS
+    repo-blind (check-docs)     unchanged  Δ 0
+    stack-bind (effort)         helped  Δ 7
+    stack-bind (deny)           helped  Δ 4
+    naive (title only)          helped  ← invented from the change title
+
+  FINDING  repo-blind check-docs stayed flat while stack-bind probes moved.
+```
+
+Exit code: **0** (verified: `magnet bind-demo`). Source `fixtures/stack` remains 0/7 effort after the run.
 
 ## `magnet probe pytest-pass-rate` output
 

@@ -1,48 +1,46 @@
-# Build report · Slice 13–14 · 2026-09-02
+# Build report · Slice 15 · 2026-09-06
 
 ## SHIPPED
 
-### Slice 13
-- `magnet/stack.py` — inventory / gaps / rank / verify_declaration from
-  `Morkeeth/mountain-of-helicon` `helicon/magnet.py`
-- `magnet/bakeoff.py` — magnet vs naive_stars vs naive_name vs silent_null
-- CLI: `magnet stack`, `magnet fit`, `magnet bakeoff`
-- Cold-path `fixtures/stack/`
-- Judge-demo step 7 + stranger-pass wired
-
-### Slice 14
-- `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
-- `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
-- `fit_one` / `render_fit` / `stack_coverage` helpers
-- 113 pytest tests (re-derived from `tests/test_*.py`)
+### Slice 15 — stack-bind
+- `magnet/stack_bind.py` — `effort-coverage` + `deny-coverage` probes that open
+  the stack object (SKILL.md frontmatter + settings.json deny patterns)
+- `magnet/bind_demo.py` + `magnet bind-demo` — applies Ultimate Guide changes
+  (`effort:` + `permissions.deny`) to a **temp copy** of fixtures/stack;
+  proves repo-blind `check-docs` stays flat while stack probes move
+- `magnet external-stack --stack <path>` — measure a stack you did not build
+- Adopt receipts: stack probes print `measures stack`; repo probes still warn
+  `measures repo only` for hook/setting changes
+- Judge + stranger scripts call `bind-demo`
+- `docs/EXTERNAL-STACK-RECEIPT.md` — anthropics/skills measured at the object
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 113 passed |
-| check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
-| Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
-| Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
-| Adopt+fit | `magnet adopt skill pdb-navigator … --fit` → label fills-gap, fills debug |
-| Noise adopt honesty | `magnet adopt skill wine-pairing … --fit` → verdict unchanged + fit no-signal |
-| Stack coverage | `magnet probe stack-coverage` → 8/12 |
-| Demo bonus opt-in | `tests/test_adopt_fit.py::test_demo_bonus_is_opt_in_only` |
-| Cold clone (s13/s14) | clone branch → demo/stack/bakeoff/pytest exit 0 |
+| Tests green | `python3 -m pytest -q` → 124 passed |
+| check_docs | `magnet check-docs` → 11 claims PASS |
+| bind-demo FINDING | `magnet bind-demo` → repo-blind unchanged; effort 0/7→7/7; deny 0/4→4/4 |
+| Fixture untouched | `magnet probe effort-coverage` → 0/7 after bind-demo |
+| External stack | `magnet external-stack --stack /tmp/anthropics-skills` → effort 0/19 |
+| Hook+stack probe | `magnet adopt hook … --probe deny-coverage` → `measures stack` |
+| Hook+repo probe | `magnet adopt hook … --probe demo-pass-rate` → `measures repo only` |
+| list-probes | `magnet list-probes` → total 6 |
+| Judge quick | `MAGNET_JUDGE_QUICK=1 bash scripts/judge-demo.sh` → JUDGE DEMO OK |
 
 ## WRONG
 
-- **First bakeoff magnet recall 0.0** — uncovered planning/design let noise
-  ("plan a wedding", "colour palette") fill top-20. Fixed on fixture; logged.
-- **`reproduce` stemmed to debug `repro`** — verify-receipt wording fixed.
-- **Surface arm 1/2** — reviewer-agent demoted by overlap with owned critique.
-- **Synonym primary still 0/3** — EXP-MAGNET-01 re-derived; claims tier 3/3.
-- **Demo-bonus always-on bug** — `tool_adopt_change` applied +1/5 on every
-  `demo-pass-rate` adopt regardless of `--demo-bonus`. Found by running
-  `magnet adopt … --fit` on wine-pairing (probe said helped, fit said
-  no-signal). Fixed; regression tests added.
-- **Bedrock cloud still BLOCKED** — NoCredentialsError.
+- **check-docs was 5/11 mid-slice** until the six judge docs were re-derived
+  113→124. Found by running `magnet bind-demo` / `magnet check-docs`, not by
+  reading. Fixed before ship.
+- **anthropics/skills has no settings.json** — deny-coverage 0/4 is correct for
+  a catalogue, not a full agent config; do not read it as "Anthropic failed
+  deny hardening."
+- **Bedrock cloud still BLOCKED** — NoCredentialsError on this VM.
 - **fleet-ops plan still 404**.
-- **PR create requires user approval** — branch pushed; merge is Oscar/user click.
 - **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature
-  branch + PR; commits on `cursor/stack-magnet-bakeoff-5608`.
+  branch + PR; outward push to public main is Oscar's click. Branch:
+  `cursor/stack-bind-probes-7019`.
+- **Synonym bakeoff arm still 0/3 primary** — unchanged; claims tier recovers.
+- **Screenshots under docs/screenshots/** still show 113 — not in the
+  check_docs scan set; left stale on purpose (historical captures).

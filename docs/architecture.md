@@ -35,6 +35,18 @@ flowchart LR
     OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
 ```
 
+```mermaid
+flowchart LR
+    CH[Stack change<br/>effort: / permissions.deny] --> TMP[Temp copy of YOUR stack]
+    TMP --> SB[effort-coverage + deny-coverage<br/>open the stack files]
+    TMP --> RB[check-docs<br/>opens THIS repo only]
+    SB --> DS2[helped / hurt / baseline]
+    RB --> FLAT[unchanged — cannot see stack]
+    NAIVE[naive title scanner] --> LIE[helped without measuring]
+    DS2 --> FIND[FINDING: promise holds only when<br/>YOUR probe opens the object]
+    FLAT --> FIND
+```
+
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.

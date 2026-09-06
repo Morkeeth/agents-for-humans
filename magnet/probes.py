@@ -12,6 +12,14 @@ DEMO_PROBE = "demo-pass-rate"
 CHECK_DOCS_PROBE = "check-docs"
 PYTEST_PROBE = "pytest-pass-rate"
 STACK_COVERAGE_PROBE = "stack-coverage"
+EFFORT_PROBE = "effort-coverage"
+DENY_PROBE = "deny-coverage"
+
+# Probes that open the stack directory — not the repo. adopt() must not claim
+# "measures repo only" for these when the change is a hook/setting.
+STACK_PROBES = frozenset(
+    {STACK_COVERAGE_PROBE, EFFORT_PROBE, DENY_PROBE}
+)
 
 # Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
 DOCS_WITH_PYTEST_COUNTS = (
@@ -53,6 +61,18 @@ BUILTIN_PROBES = (
         "command": "magnet probe stack-coverage",
         "direction": "up",
         "description": "YOUR stack: covered/total capabilities (fixtures/stack or --stack)",
+    },
+    {
+        "name": EFFORT_PROBE,
+        "command": "magnet probe effort-coverage",
+        "direction": "up",
+        "description": "YOUR stack: skills with effort: frontmatter / total skills",
+    },
+    {
+        "name": DENY_PROBE,
+        "command": "magnet probe deny-coverage",
+        "direction": "up",
+        "description": "YOUR stack: sensitive deny patterns present in settings.json",
     },
 )
 
@@ -136,7 +156,13 @@ def run_pytest_probe(
     }
 
 
-def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
+def run_probe(
+    conn,
+    probe_name: str,
+    *,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+) -> dict:
     root = repo_root or os.getcwd()
     if probe_name in (DEMO_PROBE, "demo-pass-rate", "demo"):
         return run_demo_probe(conn)
@@ -149,7 +175,11 @@ def run_probe(conn, probe_name: str, *, repo_root: str | None = None) -> dict:
             repo_root=root, command=builtin_probe_command(PYTEST_PROBE), scoped=False
         )
     if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage"):
-        return run_stack_coverage_probe(repo_root=root)
+        return run_stack_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (EFFORT_PROBE, "effort-coverage"):
+        return run_effort_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (DENY_PROBE, "deny-coverage"):
+        return run_deny_coverage_probe(repo_root=root, stack_dir=stack_dir)
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)
@@ -164,6 +194,24 @@ def run_stack_coverage_probe(*, repo_root: str | None = None, stack_dir: str | N
     root = repo_root or os.getcwd()
     stack = stack_dir or default_stack_dir(root)
     return stack_coverage(stack)
+
+
+def run_effort_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import default_stack_dir
+    from magnet.stack_bind import effort_coverage
+
+    root = repo_root or os.getcwd()
+    stack = stack_dir or default_stack_dir(root)
+    return effort_coverage(stack)
+
+
+def run_deny_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import default_stack_dir
+    from magnet.stack_bind import deny_coverage
+
+    root = repo_root or os.getcwd()
+    stack = stack_dir or default_stack_dir(root)
+    return deny_coverage(stack)
 
 
 def run_check_docs_probe(repo_root: str) -> dict:

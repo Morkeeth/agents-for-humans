@@ -5,7 +5,7 @@ import os
 
 from magnet.constants import STACK_CHANGE_TYPES
 from magnet.log import connect, latest_adoption, list_readings, reset_demo
-from magnet.probes import is_builtin_probe
+from magnet.probes import STACK_PROBES, is_builtin_probe
 from magnet.reporter import render_receipt, verdict
 from magnet.stack import default_stack_dir, fit_one, render_fit
 from magnet.tools import tool_adopt_change, tool_record_week
@@ -33,11 +33,12 @@ def run_adopt(
         reset_demo(conn)
 
     lines = ["MAGNET adopt", ""]
+    stack = stack_dir or default_stack_dir()
 
     # Baseline reading if none exists yet
     prior = list_readings(conn, probe_name)
     if not prior:
-        base = tool_record_week(probe_name, log_path=path)
+        base = tool_record_week(probe_name, log_path=path, stack_dir=stack)
         lines.append(f"  baseline   verdict={base['verdict']}  readings={base['readings']}")
 
     adoption = tool_adopt_change(
@@ -56,6 +57,7 @@ def run_adopt(
         log_path=path,
         change_id=adoption["id"],
         simulate_next_week=simulate_next_week,
+        stack_dir=stack,
     )
     sim_note = "  (SIMULATED week)" if rec.get("simulated") else ""
     lines.append(
@@ -74,12 +76,21 @@ def run_adopt(
         change_label=row["description"] if row else description,
         repro_command=f"magnet adopt {change_type} {description!r} {prediction!r} --probe {probe_name}",
     )
-    if change_type in STACK_CHANGE_TYPES and is_builtin_probe(probe_name):
+    if (
+        change_type in STACK_CHANGE_TYPES
+        and is_builtin_probe(probe_name)
+        and probe_name not in STACK_PROBES
+    ):
         # Say what the probe can see instead of printing a silent 0-delta.
         receipt += (
             f"\n  measures   repo only — {probe_name} reads this repo, not the stack; "
-            f"a {change_type} change is invisible to it. Add a registry probe that "
-            f"reads the stack (docs/probes.json.example) to measure this adoption."
+            f"a {change_type} change is invisible to it. Use --probe effort-coverage "
+            f"or deny-coverage (opens the stack), or add a registry probe "
+            f"(docs/probes.json.example)."
+        )
+    elif change_type in STACK_CHANGE_TYPES and probe_name in STACK_PROBES:
+        receipt += (
+            f"\n  measures   stack — {probe_name} opens {stack}"
         )
     parts = lines + [receipt]
 
