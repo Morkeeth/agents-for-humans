@@ -32,6 +32,8 @@
 | anthropics | `magnet probe stack-coverage --stack /tmp/anthropics-skills` → 7/12 |
 | Judge demo | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
 | Cold clone s18 | `/tmp/magnet-cold-s18` → 148 passed @ 655014d |
+| Cold clone s19 | `/tmp/magnet-cold-s19` → 159 passed · bind-demo FINDING @ 03d289a |
+| Cold clone main | `/tmp/magnet-main-cold` @ `d902156` → 159 passed · bind-demo FINDING |
 
 ## WRONG
 
@@ -40,7 +42,7 @@
 - **Agent Grinder is 1/12**.
 - **Surface arm still 1/2** (helicon science).
 - **Bedrock cloud BLOCKED**.
-- **SHIP GATE `git push origin main`** — feature branch + PR; Oscar merges.
+- **SHIP GATE `git push origin main`** — succeeded @ `d902156` (also on `cursor/magnet-fundable-wedge-9126`).
 - **Screenshot sidecars still claim 113**.
 - **bind-demo mid-slice showed check-docs 5/11** while docs lagged new tests — control went RED correctly; re-derived to 159.
 - **Prediction is lexical** — "all tests still pass" → no-direction.

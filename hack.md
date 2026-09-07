@@ -74,7 +74,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-07 · Slice 19 SHIP · `magnet bind-demo` FINDING · effort 0→7/7 · deny 0→4/4 · check-docs flat · list-probes total 6 · `python3 -m pytest -q` → 159 passed. · cold clone `/tmp/magnet-cold-s19` 159 passed · bind-demo FINDING · JUDGE DEMO OK @ 03d289a.
+- 2026-09-07 · Slice 19 SHIP · `magnet bind-demo` FINDING · effort 0→7/7 · deny 0→4/4 · check-docs flat · list-probes total 6 · `python3 -m pytest -q` → 159 passed. · cold clone `/tmp/magnet-cold-s19` 159 passed · bind-demo FINDING · JUDGE DEMO OK @ 03d289a · `git push origin main` → `d902156`.
 - 2026-09-07 · Slice 19 START · open Ultimate Guide defect object: repo probes cannot see hook/setting/frontmatter; bind probes must open the stack.
 - 2026-09-07 · Slice 18 SHIP · `magnet/prediction.py` · adopt prints prediction-held/missed · history shows outcome · `python3 -m pytest -q` → 148 passed · check-docs 11 PASS · pytest-pass-rate 147/147 · cold clone `/tmp/magnet-cold-s18` 148 passed · JUDGE DEMO OK @ 655014d.
 - 2026-09-07 · Slice 18 START · port prediction intent/check from helicon S3 spirit; wire adopt + history.
