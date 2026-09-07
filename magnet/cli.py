@@ -18,6 +18,7 @@ from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.stack import magnet_report, render_stack, resolve_stack_dir
 from magnet.stack_demo import run_stack_demo
+from magnet.receipt import render_receipt_json
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -165,6 +166,17 @@ def cmd_bakeoff(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_receipt(args: argparse.Namespace) -> int:
+    print(
+        render_receipt_json(
+            log_path=args.log,
+            probe_name=args.probe,
+            adoption_id=args.id,
+        )
+    )
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -308,6 +320,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Do not write fixtures/candidates-bakeoff.jsonl",
     )
     p_bake.set_defaults(func=cmd_bakeoff)
+
+    p_receipt = sub.add_parser(
+        "receipt",
+        help="Print latest adoption receipt as JSON (Grinder-ready, no invent)",
+    )
+    p_receipt.add_argument("--probe", help="Filter to one probe")
+    p_receipt.add_argument("--id", type=int, help="Specific adoption id")
+    p_receipt.set_defaults(func=cmd_receipt)
 
     args = parser.parse_args(argv)
     return args.func(args)

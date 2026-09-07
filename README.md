@@ -98,6 +98,7 @@ magnet eval          # naive vs magnet vs silent_null on 5 scenarios
 magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fixtures
 magnet stack         # inventory YOUR surfaces + gaps
 magnet stack-demo    # closed-loop coverage adopt + naive install arm + Agent Grinder 1/12
+magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for stranger verify
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes
 magnet history       # adoption timeline from .magnet/log.db

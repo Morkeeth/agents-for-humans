@@ -19,7 +19,7 @@ import os
 import random
 from pathlib import Path
 
-from magnet.stack import default_stack_dir, gaps, inventory, rank
+from magnet.stack import TAG_VOCAB_VERSION, default_stack_dir, gaps, inventory, rank
 
 # Seeded flood — identical on every stranger machine.
 SEED = 20260816
@@ -379,7 +379,11 @@ def render_bakeoff(result: dict) -> str:
             "claims tier recovers declarations without letting liars buy rank."
         )
     else:
-        lines.append("  FINDING  magnet leads on recall without admitting noise/liars.")
+        syn = result["arms"]["magnet"]["per_kind"]["synonym"]
+        lines.append(
+            f"  FINDING  synonym primary recovered {syn['found']}/{syn['of']} "
+            f"(TAG_VOCAB {TAG_VOCAB_VERSION}); wine-liar still out of primary."
+        )
 
     # Embarrass naive_stars if it elevated the duplicate with 9999 stars
     stars = result["arms"]["naive_stars"]

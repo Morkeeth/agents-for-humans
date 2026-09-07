@@ -37,6 +37,7 @@ python3 -m magnet.cli stack
 python3 -m magnet.cli bakeoff --no-write
 python3 -m magnet.cli stack-demo
 python3 -m magnet.cli probe stack-coverage --stack fixtures/real-stacks/agentgrinder
+python3 -m magnet.cli receipt
 python3 -m magnet.cli drift-demo
 python3 -m magnet.cli check-docs
 python3 -m magnet.cli history

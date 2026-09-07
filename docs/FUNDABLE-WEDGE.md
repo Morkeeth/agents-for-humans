@@ -60,7 +60,7 @@ bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
 
 - Bedrock live path verified on Oscar local only — cloud VM has no AWS creds.
 - Demo probe is synthetic; production eval is `pytest-pass-rate` (whole suite, slow on large repos).
-- Bakeoff synonym arm still 0/3 on primary (claims tier recovers) — vocabulary bottleneck, not hidden.
+- Bakeoff synonym primary recovered **3/3** under TAG_VOCAB 1.1 (was 0/3); wine-liar still False — re-derive with `magnet bakeoff`.
 - Companion product Agent Grinder stack covers **1/12** capabilities when opened as an object (`magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder`) — writing only.
 - Presentation score 3/5 until Oscar films the 5-min video.
 

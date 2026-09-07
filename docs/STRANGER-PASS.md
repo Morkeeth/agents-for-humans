@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-123 passed (re-derived 2026-09-07)
+130 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -109,17 +109,17 @@ MAGNET bakeoff — gap-fit vs marketplace proxies on a planted flood
 
   arm            recall@k  p@3   noise  liars  dupes
   ----------------------------------------------------------
-  magnet         0.5      1.0   0      0      0
+  magnet         0.875      1.0   0      0      0
   naive_stars    0.375    0.0   14     1      2
   naive_name     0.25     0.667 18     0      0
   silent_null    0.0      0.0   0      0      0
 
-  per-kind (magnet): direct 3/3 · synonym 0/3 · surface 1/2
-  synonym claims-tier recovery  3/3
+  per-kind (magnet): direct 3/3 · synonym 3/3 · surface 1/2
+  synonym claims-tier recovery  0/3  (primary owns them under TAG_VOCAB 1.1)
   wine-liar in magnet primary   False
   best arm                      magnet
 
-  FINDING  magnet primary misses the synonym arm; claims tier recovers.
+  FINDING  synonym primary recovered 3/3 (TAG_VOCAB 1.1); wine-liar still out of primary.
   FINDING  naive_stars promoted duplicates and/or liars by star count.
   FINDING  naive_name admitted noise via alphabetical tie-break.
 ```

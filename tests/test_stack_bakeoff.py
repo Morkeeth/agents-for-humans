@@ -88,18 +88,34 @@ def test_no_signal_items_are_not_ranked_by_name():
     inv = inventory(str(FIXTURE_STACK))
     g = gaps(inv)
     noise = [{"name": f"aaa-noise-{i}", "surface": "skills", "description": "read a tarot spread"} for i in range(5)]
+    # Claim-only: declares debug, but text avoids every TAG_VOCAB 1.1 debug term
+    # (including fault/misbehaving/crash/hypothesis). Must land in claims, not primary.
+    claim_only = {
+        "name": "zzz-pinpoint-unit",
+        "surface": "skills",
+        "description": "Pinpoint the broken unit without the usual keywords",
+        "capabilities": ["debug"],
+    }
+    res = rank(noise + [claim_only], inv, g, top=20)
+    ranked_names = [r["name"] for r in res["ranked"]]
+    assert all(not n.startswith("aaa-noise") for n in ranked_names)
+    assert "zzz-pinpoint-unit" not in ranked_names
+    assert any(r["name"] == "zzz-pinpoint-unit" for r in res["claimed"])
+
+
+def test_synonym_text_now_ranks_on_primary_after_vocab_1_1():
+    """Control: the old planted synonym prose must score > 0 under TAG_VOCAB 1.1."""
+    inv = inventory(str(FIXTURE_STACK))
+    g = gaps(inv)
     synonym = {
         "name": "zzz-fault-localiser",
         "surface": "skills",
         "description": "Narrow a misbehaving program to the smallest failing input",
         "capabilities": ["debug"],
     }
-    res = rank(noise + [synonym], inv, g, top=20)
-    ranked_names = [r["name"] for r in res["ranked"]]
-    assert all(not n.startswith("aaa-noise") for n in ranked_names)
-    # synonym with only a claim lands in claims tier, not primary
-    assert "zzz-fault-localiser" not in ranked_names
-    assert any(r["name"] == "zzz-fault-localiser" for r in res["claimed"])
+    res = rank([synonym], inv, g, top=5)
+    assert any(r["name"] == "zzz-fault-localiser" for r in res["ranked"])
+    assert res["ranked"][0]["score"] > 0
 
 
 def test_verify_declaration_verdicts():
@@ -149,9 +165,9 @@ def test_bakeoff_magnet_keeps_liar_out_and_finds_direct(tmp_path):
     # duplicates must not sit in magnet primary
     assert magnet["dupes_in_top"] == 0
     assert magnet["noise_in_top"] == 0
-    # synonym primary miss is the known EXP-MAGNET finding; claims tier recovers
-    assert magnet["per_kind"]["synonym"]["found"] == 0
-    assert len(result["synonym_in_claims_tier"]) == magnet["per_kind"]["synonym"]["of"]
+    # synonym primary recovered by TAG_VOCAB 1.1 (measured 2026-09-07 bakeoff)
+    assert magnet["per_kind"]["synonym"]["found"] == magnet["per_kind"]["synonym"]["of"]
+    assert magnet["liars_in_top"] == 0
     # marketplace proxy must look worse on precision or junk admission
     stars = result["arms"]["naive_stars"]
     assert stars["dupes_in_top"] >= 1 or stars["liars_in_top"] >= 1

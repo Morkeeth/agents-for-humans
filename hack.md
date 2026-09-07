@@ -61,17 +61,20 @@ No number without the command that produced it, the population it is out of, and
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Stack-coverage closed loop + real-stack object + naive install arm | `magnet stack-demo` exit 0 · `magnet probe stack-coverage --stack …` works · tests green |
+| 16 | Synonym vocab 1.1 + Grinder-ready receipt JSON | `magnet bakeoff` synonym 3/3 · wine-liar False · `magnet receipt` JSON · tests green |
 
 ## NOW
 
-**Slice 15:** Close the stack loop that Slice 14 left open — `adopt --fit` said fills-gap while coverage stayed 8/12 because the skill never landed in the stack. Ship `magnet stack-demo`: copy stack → record coverage → **install** a skill → re-probe → helped/hurt/baseline, with a naive "any install = helped" arm that can beat us on duplicates. Fix `magnet probe --stack` (receipt advertised a flag the CLI rejected — found by running). Open the real Agent Grinder stack object (not a proxy) and record its coverage.
+**Slice 16:** Evolve TAG_VOCAB 1.0→1.1 with synonym bridges measured at the bakeoff object (not guessed): debug gains fault/misbehaving/crash/hypothesis; refactor gains restructure/responsibilities/behaviour. Primary synonym 0/3→3/3, noise 0, wine-liar False, fixture coverage still 8/12. Ship `magnet receipt` JSON for Agent Grinder / stranger verify.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-07 · Slice 16 START · synonym vocab experiment at bakeoff object: tight expansion → recall 0.5→0.875, synonym 3/3, wine-liar False, fixture still 8/12.
+- 2026-09-07 · Slice 16 SHIP · TAG_VOCAB 1.1 · `magnet receipt` JSON · `python3 -m pytest -q` → 130 passed · check-docs 11 PASS · judge-demo OK.
 - 2026-09-07 · Slice 15 START · ran objects: `magnet probe stack-coverage --stack <path>` → argparse exit 2 (receipt lied) · `magnet adopt … --probe stack-coverage --fit` → fit fills-gap + verdict unchanged 8/12 (skill never installed) · real `Morkeeth/agentgrinder` stack → 1/12 (writing only).
-- 2026-09-07 · Slice 15 SHIP · `magnet stack-demo` exit 0 · gap 8→9/12 helped · dupe/noise magnet unchanged vs naive helped · `magnet probe --stack` exit 0 · `python3 -m pytest -q` → 123 passed · check-docs 11 PASS · fixture untouched after `--install`.
+- 2026-09-07 · Slice 15 SHIP · `magnet stack-demo` exit 0 · gap 8→9/12 helped · dupe/noise magnet unchanged vs naive helped · `magnet probe --stack` exit 0 · cold clone branch `/tmp/magnet-cold-s15` → 123 passed · check-docs 11 PASS.
 - 2026-08-29 · Repo created · cloud ambitious lane launched.
 - 2026-08-29 · `fleet-ops/plans/agents-for-humans-hack.md` not accessible (404) · reporter science from `helicon/measure.py` (mountain-of-helicon).
 - 2026-08-29 · Merged scaffold from `cursor/magnet-adoption-ledger-080a` into main worktree.

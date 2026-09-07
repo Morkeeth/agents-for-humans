@@ -32,12 +32,33 @@ CAPABILITIES = {
     "design": ("design", "ui", "visual", "typography", "palette"),
     "writing": ("writing", "draft", "prose", "copy", "email"),
     "data": ("sql", "dataframe", "etl", "schema", "migration"),
-    "debug": ("debug", "trace", "stack trace", "repro", "bisect"),
-    "refactor": ("refactor", "rename", "extract", "simplify"),
+    # Synonym bridges (TAG_VOCAB 1.1, measured 2026-09-07 on bakeoff):
+    # fault/misbehaving/crash/hypothesis recover the planted synonym arm without
+    # admitting wine-liar or noise. Re-derive with `magnet bakeoff` before editing.
+    "debug": (
+        "debug",
+        "trace",
+        "stack trace",
+        "repro",
+        "bisect",
+        "fault",
+        "misbehaving",
+        "crash",
+        "hypothesis",
+    ),
+    "refactor": (
+        "refactor",
+        "rename",
+        "extract",
+        "simplify",
+        "restructure",
+        "responsibilities",
+        "behaviour",
+    ),
 }
 
 TAG_VOCABULARY = tuple(sorted(CAPABILITIES))
-TAG_VOCAB_VERSION = "1.0"
+TAG_VOCAB_VERSION = "1.1"
 
 _WORD = re.compile(r"[a-z][a-z0-9-]{2,}")
 _STOP = {
