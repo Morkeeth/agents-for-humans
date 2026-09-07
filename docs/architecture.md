@@ -47,6 +47,16 @@ flowchart LR
     REAL[fixtures/real-stacks/agentgrinder<br/>opened object] --> COV[coverage at object]
 ```
 
+```mermaid
+flowchart LR
+    EXT[external stack path<br/>anthropics / grinder / superpowers] --> INV2[inventory + stack-coverage]
+    EXT --> NAIVE[naive_title arm<br/>README says complete]
+    INV2 --> FIND[FINDING when naive ≠ magnet]
+    REPO[this repo] --> REDACT[redact-scan]
+    REDACT -->|planted secret| RED[exit 1]
+    REDACT -->|clean tree| GREEN[exit 0]
+```
+
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.
@@ -71,6 +81,9 @@ flowchart LR
 | `magnet/stack.py` | Inventory + gaps + fit ranking + install_skill (ported from helicon.magnet) |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
 | `magnet/stack_demo.py` | Closed-loop coverage adopt + naive install arm + real-stack object |
+| `magnet/receipt.py` | JSON adoption receipt for stranger / Grinder verify |
+| `magnet/redact.py` | Secret-pattern scan that can go RED |
+| `magnet/external.py` | Measure a stack you did not build + naive_title arm |
 
 ## Naive baseline arm
 

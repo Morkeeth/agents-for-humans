@@ -24,6 +24,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
 | **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
 | **Closed loop** | Install a local skill into a working copy → re-measure coverage → magnet vs naive-install | `magnet stack-demo` · `magnet adopt --install` |
+| **External honesty** | Open stacks we did not build; refuse title-only complete; redact-scan can go RED | `magnet external-stack` · `magnet redact-scan` · `docs/EXTERNAL-STACK-RECEIPT.md` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
@@ -32,9 +33,10 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 ## Moat (why this is hard to copy badly)
 
 1. **Science ported from measurement-bench / helicon.magnet** — value/pop, baseline gate, gap-fit ranking with no name tie-break.
-2. **Embarrassment hunt built in** — `magnet eval` and `magnet bakeoff` ship arms that can beat us (silent_null, naive_stars).
+2. **Embarrassment hunt built in** — `magnet eval` and `magnet bakeoff` ship arms that can beat us (silent_null, naive_stars); `magnet redact-scan` can fail this repo; `naive_title` invents complete on foreign stacks.
 3. **Doc drift as product** — `check_docs` re-derives README and judge-doc numbers at read time (Qwen lesson).
 4. **Stranger path** — `bash scripts/judge-demo.sh` on cold clone, no keys, CI on every push.
+5. **Open the object** — foreign-stack / Agent Grinder receipts measured at the clone, not the README.
 
 ---
 

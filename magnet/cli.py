@@ -19,6 +19,8 @@ from magnet.registry import list_all_probes
 from magnet.stack import magnet_report, render_stack, resolve_stack_dir
 from magnet.stack_demo import run_stack_demo
 from magnet.receipt import render_receipt_json
+from magnet.redact import run_redact_scan
+from magnet.external import measure_external_stack, render_external
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -177,6 +179,21 @@ def cmd_receipt(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_redact_scan(args: argparse.Namespace) -> int:
+    text, code = run_redact_scan(repo_root=args.repo)
+    print(text)
+    return code
+
+
+def cmd_external_stack(args: argparse.Namespace) -> int:
+    if not args.stack:
+        print("magnet external-stack requires --stack <path>")
+        return 2
+    result = measure_external_stack(args.stack)
+    print(render_external(result))
+    return 0 if result["inventory"].get("present") else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -328,6 +345,23 @@ def main(argv: list[str] | None = None) -> int:
     p_receipt.add_argument("--probe", help="Filter to one probe")
     p_receipt.add_argument("--id", type=int, help="Specific adoption id")
     p_receipt.set_defaults(func=cmd_receipt)
+
+    p_redact = sub.add_parser(
+        "redact-scan",
+        help="Scan repo for live secret patterns (must go RED on plant, GREEN here)",
+    )
+    p_redact.set_defaults(func=cmd_redact_scan)
+
+    p_ext = sub.add_parser(
+        "external-stack",
+        help="Measure a stack you did not build (inventory + coverage + naive title arm)",
+    )
+    p_ext.add_argument(
+        "--stack",
+        required=True,
+        help="Path to an external stack directory (clone first)",
+    )
+    p_ext.set_defaults(func=cmd_external_stack)
 
     args = parser.parse_args(argv)
     return args.func(args)

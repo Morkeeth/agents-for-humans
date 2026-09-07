@@ -46,10 +46,14 @@ CAPABILITIES = {
         "crash",
         "hypothesis",
     ),
+    # "extract method" not bare "extract" — anthropics/skills docx/pdf say
+    # "extracting content from .docx" and invented refactor coverage (8/12→7/12
+    # measured 2026-09-07). Re-derive with `magnet probe stack-coverage --stack`
+    # on that object before editing.
     "refactor": (
         "refactor",
         "rename",
-        "extract",
+        "extract method",
         "simplify",
         "restructure",
         "responsibilities",

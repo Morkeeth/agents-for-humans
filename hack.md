@@ -62,15 +62,19 @@ No number without the command that produced it, the population it is out of, and
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
 | 15 | Stack-coverage closed loop + real-stack object + naive install arm | `magnet stack-demo` exit 0 · `magnet probe stack-coverage --stack …` works · tests green |
 | 16 | Synonym vocab 1.1 + Grinder-ready receipt JSON | `magnet bakeoff` synonym 3/3 · wine-liar False · `magnet receipt` JSON · tests green |
+| 17 | External-object honesty + redact-scan RED control | `extract`→`extract method` · anthropics 7/12 · `magnet redact-scan` RED on plant / GREEN on repo · `magnet external-stack` · foreign-stack.sh |
 
 ## NOW
 
-**Slice 16:** Evolve TAG_VOCAB 1.0→1.1 with synonym bridges measured at the bakeoff object (not guessed): debug gains fault/misbehaving/crash/hypothesis; refactor gains restructure/responsibilities/behaviour. Primary synonym 0/3→3/3, noise 0, wine-liar False, fixture coverage still 8/12. Ship `magnet receipt` JSON for Agent Grinder / stranger verify.
+**Slice 17:** Open stacks we did not build. Bare capability term `extract` invented refactor coverage on anthropics/skills (docx/pdf "extracting") — fix to `extract method`, re-derive at the object (8/12→7/12). Ship `magnet redact-scan` (control that goes RED on planted secrets, GREEN on this repo) and `magnet external-stack` + `scripts/foreign-stack.sh` with receipts for Agent Grinder, anthropics/skills, obra/superpowers. Do **not** rewrite helicon cross-surface overlap ranking (surface arm 1/2 stays a FINDING).
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-07 · Slice 17 SHIP · `extract`→`extract method` · anthropics 8/12→7/12 · `magnet redact-scan` GREEN · planted RED · `magnet external-stack` · foreign-stack.sh · Grinder real 1/12 · superpowers 6/12 · `python3 -m pytest -q` → 139 passed · check-docs 11 PASS · surface 1/2 left (helicon science).
+- 2026-09-07 · Slice 17 FAIL then FIX · redact-scan went RED on `tests/test_external_and_redact.py` itself (literal api_key assign in source). Assembled plant at runtime.
+- 2026-09-07 · Slice 17 START · opened real objects: Agent Grinder 1/12 (matches fixture) · anthropics/skills 8/12 with bare `extract` · obra/superpowers 6/12 · helicon source confirms cross-surface dupe penalty — surface 1/2 not rewritten.
 - 2026-09-07 · Slice 16 START · synonym vocab experiment at bakeoff object: tight expansion → recall 0.5→0.875, synonym 3/3, wine-liar False, fixture still 8/12.
 - 2026-09-07 · Slice 16 SHIP · TAG_VOCAB 1.1 · `magnet receipt` JSON · `python3 -m pytest -q` → 130 passed · check-docs 11 PASS · judge-demo OK.
 - 2026-09-07 · Slice 15 START · ran objects: `magnet probe stack-coverage --stack <path>` → argparse exit 2 (receipt lied) · `magnet adopt … --probe stack-coverage --fit` → fit fills-gap + verdict unchanged 8/12 (skill never installed) · real `Morkeeth/agentgrinder` stack → 1/12 (writing only).

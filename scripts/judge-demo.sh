@@ -66,6 +66,11 @@ else
   echo "=== 7b/8 · Impact: stack-coverage closed loop + real Agent Grinder object ==="
   magnet stack-demo
   magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder
+  magnet external-stack --stack fixtures/real-stacks/agentgrinder
+
+  echo ""
+  echo "=== 7c/8 · Honesty: redact-scan must stay GREEN on this repo ==="
+  magnet redact-scan
 fi
 
 echo ""

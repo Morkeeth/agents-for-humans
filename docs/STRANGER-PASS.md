@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-130 passed (re-derived 2026-09-07)
+139 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -145,11 +145,12 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 100/100
+pytest-pass-rate: 138/138
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)
+# re-derived 2026-09-07; 139 total tests, 1 marked slow
 
 ## `magnet history` output (after demo)
 
@@ -227,4 +228,34 @@ stack-coverage: 1/12
 ```
 
 Exit code: **0** (verified: same command, 2026-09-07)
+
+## `magnet redact-scan` output (embarrassment control)
+
+```
+MAGNET redact-scan — live secrets in a public tree
+
+  root       .
+  findings   0
+
+  clean      no matched secret patterns
+  repro      magnet redact-scan
+```
+
+Exit code: **0** (verified: `magnet redact-scan` on 2026-09-07). Planted secret in tests exits 1.
+
+## `magnet external-stack` (cold fixture object)
+
+```
+MAGNET external-stack — measure a stack you did not build
+
+  stack      fixtures/real-stacks/agentgrinder
+  coverage   1/12
+  naive_title  complete  ← title/README only — never opens SKILL.md
+  magnet       1/12  ← opened every SKILL.md
+
+  FINDING    naive_title says complete; magnet prints 1/12 — title is not the object.
+```
+
+Exit code: **0** (verified: `magnet external-stack --stack fixtures/real-stacks/agentgrinder`).
+Network foreign stacks: see `docs/EXTERNAL-STACK-RECEIPT.md` + `bash scripts/foreign-stack.sh`.
 

@@ -22,6 +22,9 @@ magnet history        # adoption timeline from SQLite
 magnet stack          # inventory YOUR agent surfaces (fixtures/stack cold path)
 magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
 magnet stack-demo     # install → coverage delta + naive arm + real Agent Grinder object
+magnet receipt        # JSON adoption receipt (Grinder-ready)
+magnet redact-scan    # secret patterns — must stay GREEN here
+magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 
 Cold path — no keys, no network:
@@ -34,6 +37,8 @@ magnet demo
 magnet stack
 magnet bakeoff
 magnet stack-demo
+magnet redact-scan
+magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -99,6 +104,8 @@ magnet bakeoff       # magnet vs naive_stars vs naive_name vs silent_null on fix
 magnet stack         # inventory YOUR surfaces + gaps
 magnet stack-demo    # closed-loop coverage adopt + naive install arm + Agent Grinder 1/12
 magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for stranger verify
+magnet redact-scan   # live secret patterns — exit 1 on plant, 0 on this repo
+magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes
 magnet history       # adoption timeline from .magnet/log.db
