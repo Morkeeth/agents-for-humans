@@ -23,6 +23,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Eval** | Real probes (`pytest-pass-rate`) + registry (`.magnet/probes.json`) | `magnet probe pytest-pass-rate` |
 | **Honesty** | baseline when n<2; naive arm in eval; drift gate on docs | `magnet demo` · `magnet eval` · `magnet drift-demo` |
 | **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
+| **Closed loop** | Install a local skill into a working copy → re-measure coverage → magnet vs naive-install | `magnet stack-demo` · `magnet adopt --install` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
@@ -60,6 +61,7 @@ bash scripts/judge-demo.sh   # must print JUDGE DEMO OK
 - Bedrock live path verified on Oscar local only — cloud VM has no AWS creds.
 - Demo probe is synthetic; production eval is `pytest-pass-rate` (whole suite, slow on large repos).
 - Bakeoff synonym arm still 0/3 on primary (claims tier recovers) — vocabulary bottleneck, not hidden.
+- Companion product Agent Grinder stack covers **1/12** capabilities when opened as an object (`magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder`) — writing only.
 - Presentation score 3/5 until Oscar films the 5-min video.
 
 ---

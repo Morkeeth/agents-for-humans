@@ -60,15 +60,18 @@ No number without the command that produced it, the population it is out of, and
 | 12 | Drift demo + judge-doc scan + fundable wedge | `magnet drift-demo` exit 0 · check_docs scans 6 judge docs · `docs/FUNDABLE-WEDGE.md` |
 | 13 | Stack-magnet + bakeoff vs naive stars/name | `magnet stack` · `magnet fit` · `magnet bakeoff` exit 0 · pytest green |
 | 14 | Adopt+fit receipt + stack-coverage probe | `magnet adopt … --fit` prints fills/dupes · `magnet probe stack-coverage` · tests green |
+| 15 | Stack-coverage closed loop + real-stack object + naive install arm | `magnet stack-demo` exit 0 · `magnet probe stack-coverage --stack …` works · tests green |
 
 ## NOW
 
-**Slice 14:** Wire stack-fit into `magnet adopt` receipts (fills / duplicates / no-signal — never rank by name) · add `stack-coverage` builtin probe (covered/total caps, re-derived from fixtures/stack) · record coverage in the SQLite log · tests + doc counts re-derived · cold-clone already OK for slice 13.
+**Slice 15:** Close the stack loop that Slice 14 left open — `adopt --fit` said fills-gap while coverage stayed 8/12 because the skill never landed in the stack. Ship `magnet stack-demo`: copy stack → record coverage → **install** a skill → re-probe → helped/hurt/baseline, with a naive "any install = helped" arm that can beat us on duplicates. Fix `magnet probe --stack` (receipt advertised a flag the CLI rejected — found by running). Open the real Agent Grinder stack object (not a proxy) and record its coverage.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-07 · Slice 15 START · ran objects: `magnet probe stack-coverage --stack <path>` → argparse exit 2 (receipt lied) · `magnet adopt … --probe stack-coverage --fit` → fit fills-gap + verdict unchanged 8/12 (skill never installed) · real `Morkeeth/agentgrinder` stack → 1/12 (writing only).
+- 2026-09-07 · Slice 15 SHIP · `magnet stack-demo` exit 0 · gap 8→9/12 helped · dupe/noise magnet unchanged vs naive helped · `magnet probe --stack` exit 0 · `python3 -m pytest -q` → 123 passed · check-docs 11 PASS · fixture untouched after `--install`.
 - 2026-08-29 · Repo created · cloud ambitious lane launched.
 - 2026-08-29 · `fleet-ops/plans/agents-for-humans-hack.md` not accessible (404) · reporter science from `helicon/measure.py` (mountain-of-helicon).
 - 2026-08-29 · Merged scaffold from `cursor/magnet-adoption-ledger-080a` into main worktree.

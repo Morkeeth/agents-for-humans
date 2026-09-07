@@ -16,7 +16,8 @@ from magnet.history import render_history
 from magnet.log import connect, default_log_path, reset_demo
 from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
-from magnet.stack import default_stack_dir, magnet_report, render_stack
+from magnet.stack import magnet_report, render_stack, resolve_stack_dir
+from magnet.stack_demo import run_stack_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -36,13 +37,20 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_stack_demo(args: argparse.Namespace) -> int:
+    print(run_stack_demo(log_path=args.log, repo_root=args.repo))
+    return 0
+
+
 def cmd_drift_demo(args: argparse.Namespace) -> int:
     print(run_drift_demo(repo_root=args.repo))
     return 0
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    result = tool_run_probe(args.name, log_path=args.log)
+    result = tool_run_probe(
+        args.name, log_path=args.log, repo_root=args.repo, stack_dir=args.stack
+    )
     pop = result.get("population")
     val = result.get("value")
     shown = f"{val}/{pop}" if pop is not None else val
@@ -52,7 +60,7 @@ def cmd_probe(args: argparse.Namespace) -> int:
 
 
 def cmd_record(args: argparse.Namespace) -> int:
-    out = tool_record_week(args.name, log_path=args.log)
+    out = tool_record_week(args.name, log_path=args.log, stack_dir=args.stack)
     print(f"recorded {args.name}: verdict={out['verdict']} readings={out['readings']}")
     return 0
 
@@ -81,6 +89,7 @@ def cmd_adopt(args: argparse.Namespace) -> int:
             fit=args.fit,
             stack_dir=args.stack,
             fit_description=args.fit_text,
+            install_from=args.install,
         )
     )
     return 0
@@ -122,14 +131,14 @@ def cmd_check_docs(args: argparse.Namespace) -> int:
 
 
 def cmd_stack(args: argparse.Namespace) -> int:
-    stack_dir = args.stack or default_stack_dir(args.repo)
+    stack_dir = resolve_stack_dir(args.stack, repo_root=args.repo)
     report = magnet_report(stack_dir, candidates_path=args.candidates or "", top=args.top)
     print(render_stack(report))
     return 0 if report["inventory"].get("present") else 1
 
 
 def cmd_fit(args: argparse.Namespace) -> int:
-    stack_dir = args.stack or default_stack_dir(args.repo)
+    stack_dir = resolve_stack_dir(args.stack, repo_root=args.repo)
     if not args.candidates:
         print("magnet fit requires --candidates <file.jsonl>")
         return 2
@@ -142,7 +151,7 @@ def cmd_fit(args: argparse.Namespace) -> int:
 
 def cmd_bakeoff(args: argparse.Namespace) -> int:
     result = run_bakeoff(
-        stack_dir=args.stack or default_stack_dir(args.repo),
+        stack_dir=resolve_stack_dir(args.stack, repo_root=args.repo),
         repo_root=args.repo,
         noise_n=args.noise,
         write_candidates=not args.no_write,
@@ -176,6 +185,12 @@ def main(argv: list[str] | None = None) -> int:
     p_demo = sub.add_parser("demo", help="Cold demo: baseline → adopt → receipt")
     p_demo.set_defaults(func=cmd_demo)
 
+    p_stack_demo = sub.add_parser(
+        "stack-demo",
+        help="Closed loop: install skill into stack → coverage delta + naive arm",
+    )
+    p_stack_demo.set_defaults(func=cmd_stack_demo)
+
     p_drift = sub.add_parser(
         "drift-demo",
         help="Show check_docs catching fabricated numbers (Qwen lesson)",
@@ -199,7 +214,18 @@ def main(argv: list[str] | None = None) -> int:
         "--fit-text",
         help="Prose description used for fit matching (default: prediction)",
     )
-    p_adopt.add_argument("--stack", help="Stack directory for --fit (default: fixtures/stack)")
+    p_adopt.add_argument(
+        "--stack",
+        help="Stack directory for --fit/--install (default: fixtures/stack)",
+    )
+    p_adopt.add_argument(
+        "--install",
+        metavar="SKILL_PATH",
+        help=(
+            "Install a local skill directory/SKILL.md into a working copy of "
+            "--stack, then re-probe (closes the coverage loop)"
+        ),
+    )
     p_adopt.set_defaults(func=cmd_adopt)
 
     p_eval = sub.add_parser("eval", help="Score naive vs magnet vs silent_null on scenarios")
@@ -225,10 +251,15 @@ def main(argv: list[str] | None = None) -> int:
 
     p_probe = sub.add_parser("probe", help="Run one probe")
     p_probe.add_argument("name", help="Probe name (e.g. demo-pass-rate)")
+    p_probe.add_argument(
+        "--stack",
+        help="Stack directory for stack-coverage (also: MAGNET_STACK env)",
+    )
     p_probe.set_defaults(func=cmd_probe)
 
     p_record = sub.add_parser("record", help="Run probe and store this week")
     p_record.add_argument("name", help="Probe name")
+    p_record.add_argument("--stack", help="Stack directory for stack-coverage")
     p_record.set_defaults(func=cmd_record)
 
     p_docs = sub.add_parser("check-docs", help="Re-derive README numbers; exit 1 on drift")

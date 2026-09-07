@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-113 passed in 25.32s
+123 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -193,3 +193,38 @@ pytest tests/test_check_docs_pytest_count.py -q
 ```
 
 Verified: **2 passed**
+
+## `magnet stack-demo` output (Slice 15 · closed loop)
+
+```
+MAGNET stack-demo — closed loop: install → re-probe coverage
+
+=== 1 · gap fill (pdb-navigator → debug) ===
+  before     8/12
+  after      9/12
+  magnet     helped  (Δ 1)
+  naive      helped  ← any-install arm
+  fit        fills-gap  fills=debug
+
+=== 2 · duplicate install (writing-coach-pro) — embarrassment arm ===
+  before     8/12
+  after      8/12
+  magnet     unchanged  (Δ 0)
+  naive      helped  ← invents helped on any install
+  fit        duplicate
+
+=== 4 · real object: Agent Grinder stack (vendored snapshot) ===
+  coverage   1/12
+```
+
+Exit code: **0** (verified: `magnet stack-demo` on 2026-09-07)
+
+## `magnet probe stack-coverage --stack` (receipt command that used to exit 2)
+
+```
+stack-coverage: 1/12
+  command: magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder
+```
+
+Exit code: **0** (verified: same command, 2026-09-07)
+

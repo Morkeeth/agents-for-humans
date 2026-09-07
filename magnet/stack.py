@@ -427,6 +427,71 @@ def stack_coverage(stack_dir: str) -> dict:
     }
 
 
+def resolve_stack_dir(
+    stack_dir: str | None = None, *, repo_root: str | None = None
+) -> str:
+    """Explicit path wins, then MAGNET_STACK env, then fixtures/stack cold path."""
+    if stack_dir:
+        return os.path.expanduser(stack_dir)
+    env = os.environ.get("MAGNET_STACK")
+    if env:
+        return os.path.expanduser(env)
+    return default_stack_dir(repo_root)
+
+
+def read_skill_source(path: str) -> dict:
+    """Read a skill directory or SKILL.md — names and descriptions only."""
+    p = Path(os.path.expanduser(path))
+    if p.is_dir():
+        skill = p / "SKILL.md"
+        name = p.name
+    else:
+        skill = p
+        name = p.parent.name if p.parent.name else p.stem
+    if not skill.is_file():
+        raise FileNotFoundError(f"no SKILL.md at {path}")
+    text = skill.read_text(encoding="utf-8", errors="replace")
+    desc = _frontmatter_desc(str(skill))
+    # Prefer frontmatter name when present
+    m = re.search(r"(?m)^name:\s*(.+)$", text)
+    if m:
+        name = m.group(1).strip().strip("\"'")
+    body = text
+    if text.startswith("---"):
+        end = text.find("\n---", 3)
+        if end != -1:
+            body = text[end + 4 :].lstrip("\n")
+    return {"name": name, "description": desc, "body": body, "source": str(skill)}
+
+
+def install_skill(
+    stack_dir: str,
+    *,
+    name: str,
+    description: str,
+    body: str = "",
+) -> dict:
+    """Write skills/<name>/SKILL.md into YOUR stack. Does not crawl or download.
+
+    Returns the path written. Overwrites an existing skill of the same name.
+    """
+    safe = re.sub(r"[^a-zA-Z0-9._-]+", "-", (name or "").strip()).strip("-") or "skill"
+    dest_dir = Path(os.path.expanduser(stack_dir)) / "skills" / safe
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / "SKILL.md"
+    content = (
+        f"---\nname: {safe}\ndescription: {description}\n---\n"
+        f"{body or description}\n"
+    )
+    dest.write_text(content, encoding="utf-8")
+    return {
+        "name": safe,
+        "path": str(dest),
+        "description": description,
+        "stack": os.path.expanduser(stack_dir),
+    }
+
+
 def render_fit(fit: dict) -> str:
     lines = [
         "MAGNET fit (against YOUR stack)",

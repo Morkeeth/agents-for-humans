@@ -61,6 +61,11 @@ else
     "Debug failing tests by bisecting the stack trace" \
     --probe demo-pass-rate --demo-bonus --reset --fit \
     --fit-text "Debug a failing test by driving pdb and bisecting the stack trace"
+
+  echo ""
+  echo "=== 7b/8 · Impact: stack-coverage closed loop + real Agent Grinder object ==="
+  magnet stack-demo
+  magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder
 fi
 
 echo ""

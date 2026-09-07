@@ -1,48 +1,35 @@
-# Build report · Slice 13–14 · 2026-09-02
+# Build report · Slice 15 · 2026-09-07
 
 ## SHIPPED
 
-### Slice 13
-- `magnet/stack.py` — inventory / gaps / rank / verify_declaration from
-  `Morkeeth/mountain-of-helicon` `helicon/magnet.py`
-- `magnet/bakeoff.py` — magnet vs naive_stars vs naive_name vs silent_null
-- CLI: `magnet stack`, `magnet fit`, `magnet bakeoff`
-- Cold-path `fixtures/stack/`
-- Judge-demo step 7 + stranger-pass wired
-
-### Slice 14
-- `magnet adopt --fit` — receipt includes fills-gap / duplicate / no-signal
-- `stack-coverage` builtin probe — covered/total capabilities (8/12 on fixture)
-- `fit_one` / `render_fit` / `stack_coverage` helpers
-- 113 pytest tests (re-derived from `tests/test_*.py`)
+- **`magnet probe --stack`** — CLI accepts the flag the receipt already advertised (was exit 2)
+- **`magnet/stack.py`**: `install_skill`, `read_skill_source`, `resolve_stack_dir` (+ `MAGNET_STACK` env)
+- **`magnet adopt --install <SKILL_PATH>`** — copies stack → baseline coverage → installs skill into working copy → re-probes → receipt + naive install arm + fit
+- **`magnet stack-demo`** — three arms (gap fill / duplicate / noise) + real Agent Grinder object
+- **`fixtures/candidates/`** — pdb-navigator, writing-coach-pro, wine-pairing
+- **`fixtures/real-stacks/agentgrinder/`** — vendored snapshot of the companion product's skill surface
+- Architecture diagram for the closed loop; judge-demo step 7b; README quick start
+- 123 pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests green | `python3 -m pytest -q` → 113 passed |
-| check_docs | `python3 -m magnet.cli check-docs` → 11 claims PASS |
-| Stack inventory | `python3 -m magnet.cli stack` → EMPTY agents |
-| Bakeoff | `magnet bakeoff --no-write` → magnet best; synonym 0/3; wine-liar False |
-| Adopt+fit | `magnet adopt skill pdb-navigator … --fit` → label fills-gap, fills debug |
-| Noise adopt honesty | `magnet adopt skill wine-pairing … --fit` → verdict unchanged + fit no-signal |
-| Stack coverage | `magnet probe stack-coverage` → 8/12 |
-| Demo bonus opt-in | `tests/test_adopt_fit.py::test_demo_bonus_is_opt_in_only` |
-| Cold clone (s13/s14) | clone branch → demo/stack/bakeoff/pytest exit 0 |
+| probe --stack works | `magnet probe stack-coverage --stack fixtures/real-stacks/agentgrinder` → `1/12` exit 0 |
+| stack-demo exit 0 | `magnet stack-demo` → gap 8→9/12 helped; dupe/noise unchanged vs naive helped; AG 1/12 |
+| adopt --install closes loop | `magnet adopt skill pdb-navigator … --probe stack-coverage --install fixtures/candidates/pdb-navigator --reset` → helped; fixture still 8/12 |
+| Tests green | `python3 -m pytest -q` → 123 passed |
+| check_docs | `magnet check-docs` → 11 claims PASS |
+| Real object coverage | opened `Morkeeth/agentgrinder` clone then vendored fixture → writing only, 1/12 |
 
 ## WRONG
 
-- **First bakeoff magnet recall 0.0** — uncovered planning/design let noise
-  ("plan a wedding", "colour palette") fill top-20. Fixed on fixture; logged.
-- **`reproduce` stemmed to debug `repro`** — verify-receipt wording fixed.
-- **Surface arm 1/2** — reviewer-agent demoted by overlap with owned critique.
-- **Synonym primary still 0/3** — EXP-MAGNET-01 re-derived; claims tier 3/3.
-- **Demo-bonus always-on bug** — `tool_adopt_change` applied +1/5 on every
-  `demo-pass-rate` adopt regardless of `--demo-bonus`. Found by running
-  `magnet adopt … --fit` on wine-pairing (probe said helped, fit said
-  no-signal). Fixed; regression tests added.
+- **First diagnosis of Slice 14 "done" was incomplete** — fit said fills-gap while coverage stayed 8/12 because nothing landed in the stack. Found only by running `magnet adopt … --probe stack-coverage --fit`, not by reading the LOG.
+- **Receipt advertised `magnet probe … --stack` while CLI rejected it** for weeks of green demos that never passed `--stack`. Same class as the 2026-09-03 advertised-command defect.
+- **`fit_one` after install would erase fills-gap** — fixed by scoring fit against the pre-install stack; almost shipped the bug.
+- **Agent Grinder is 1/12** — MAGNET's companion product covers writing only. Embarrassing; measured at the object; left as FINDING, not papered over.
+- **Synonym arm still 0/3** on bakeoff primary — not fixed tonight; claims tier still recovers 3/3.
 - **Bedrock cloud still BLOCKED** — NoCredentialsError.
 - **fleet-ops plan still 404**.
-- **PR create requires user approval** — branch pushed; merge is Oscar/user click.
-- **SHIP GATE asked `git push origin main`** — cloud agent policy uses feature
-  branch + PR; commits on `cursor/stack-magnet-bakeoff-5608`.
+- **SHIP GATE asked `git push origin main`** — this run uses feature branch + PR per cloud agent policy; merge is Oscar click.
+- **Screenshot sidecars still say 113** — not in check_docs scan list; left stale on purpose rather than re-film.

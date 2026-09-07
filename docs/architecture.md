@@ -35,6 +35,18 @@ flowchart LR
     OUT --> B[bakeoff arms<br/>magnet vs naive_stars vs naive_name vs silent_null]
 ```
 
+```mermaid
+flowchart LR
+    BASE[stack-coverage baseline] --> INST[install_skill into working copy]
+    INST --> RE[re-probe stack-coverage]
+    RE --> LOG[(SQLite log)]
+    LOG --> M[magnet verdict<br/>helped / hurt / unchanged / baseline]
+    INST --> N[naive install arm<br/>any install = helped]
+    M --> CMP[side-by-side receipt]
+    N --> CMP
+    REAL[fixtures/real-stacks/agentgrinder<br/>opened object] --> COV[coverage at object]
+```
+
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.
@@ -56,14 +68,17 @@ flowchart LR
 | `magnet/registry.py` | Load YOUR probes from `.magnet/probes.json` |
 | `magnet/history.py` | Adoption timeline / decision surface |
 | `magnet/demo.py` | One-command cold demo |
-| `magnet/stack.py` | Inventory + gaps + fit ranking (ported from helicon.magnet) |
+| `magnet/stack.py` | Inventory + gaps + fit ranking + install_skill (ported from helicon.magnet) |
 | `magnet/bakeoff.py` | magnet vs naive_stars vs naive_name vs silent_null |
+| `magnet/stack_demo.py` | Closed-loop coverage adopt + naive install arm + real-stack object |
 
 ## Naive baseline arm
 
 `reporter.naive_verdict()` always returns `helped` on fewer than two readings — the two-hour team bug MAGNET exists to catch. The demo prints both verdicts side by side.
 
 `magnet bakeoff` adds marketplace proxies: **naive_stars** (rank by star count) and **naive_name** (alphabetical tie-break of zero-score items — the EXP-MAGNET-01 defect).
+
+`magnet stack-demo` adds **naive_install** (any skill install = helped). On duplicate and noise installs, magnet prints `unchanged` while naive prints `helped` — measured tonight against fixtures, not argued.
 
 ## AWS path (optional · Oscar click)
 
