@@ -38,6 +38,7 @@
 | history outcome | `magnet history` → outcome prediction-held |
 | Judge demo | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
 | Cold clone s17 | `/tmp/magnet-cold-s17` → 139 passed · JUDGE DEMO OK |
+| Cold clone s18 | `/tmp/magnet-cold-s18` → 148 passed · prediction-held · JUDGE DEMO OK @ 655014d |
 
 ## WRONG
 

@@ -73,7 +73,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-07 · Slice 18 SHIP · `magnet/prediction.py` · adopt prints prediction-held/missed · history shows outcome · `python3 -m pytest -q` → 148 passed · check-docs 11 PASS · pytest-pass-rate 147/147.
+- 2026-09-07 · Slice 18 SHIP · `magnet/prediction.py` · adopt prints prediction-held/missed · history shows outcome · `python3 -m pytest -q` → 148 passed · check-docs 11 PASS · pytest-pass-rate 147/147 · cold clone `/tmp/magnet-cold-s18` 148 passed · JUDGE DEMO OK @ 655014d.
 - 2026-09-07 · Slice 18 START · port prediction intent/check from helicon S3 spirit; wire adopt + history.
 - 2026-09-07 · Slice 17 SHIP · `extract`→`extract method` · anthropics 8/12→7/12 · `magnet redact-scan` GREEN · planted RED · `magnet external-stack` · foreign-stack.sh · Grinder real 1/12 · superpowers 6/12 · `python3 -m pytest -q` → 139 passed · check-docs 11 PASS · surface 1/2 left (helicon science) · cold clone `/tmp/magnet-cold-s17` JUDGE DEMO OK.
 - 2026-09-07 · Slice 17 FAIL then FIX · redact-scan went RED on `tests/test_external_and_redact.py` itself (literal api_key assign in source). Assembled plant at runtime.
