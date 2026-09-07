@@ -25,6 +25,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
 | **Closed loop** | Install a local skill into a working copy → re-measure coverage → magnet vs naive-install | `magnet stack-demo` · `magnet adopt --install` |
 | **External honesty** | Open stacks we did not build; refuse title-only complete; redact-scan can go RED | `magnet external-stack` · `magnet redact-scan` · `docs/EXTERNAL-STACK-RECEIPT.md` |
+| **Prediction check** | Grade free-text prediction vs measured verdict (held/missed — not attribution) | `magnet adopt` · `magnet history` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

@@ -84,6 +84,7 @@ flowchart LR
 | `magnet/receipt.py` | JSON adoption receipt for stranger / Grinder verify |
 | `magnet/redact.py` | Secret-pattern scan that can go RED |
 | `magnet/external.py` | Measure a stack you did not build + naive_title arm |
+| `magnet/prediction.py` | Grade prediction intent vs measured verdict (not attribution) |
 
 ## Naive baseline arm
 

@@ -63,16 +63,19 @@ No number without the command that produced it, the population it is out of, and
 | 15 | Stack-coverage closed loop + real-stack object + naive install arm | `magnet stack-demo` exit 0 · `magnet probe stack-coverage --stack …` works · tests green |
 | 16 | Synonym vocab 1.1 + Grinder-ready receipt JSON | `magnet bakeoff` synonym 3/3 · wine-liar False · `magnet receipt` JSON · tests green |
 | 17 | External-object honesty + redact-scan RED control | `extract`→`extract method` · anthropics 7/12 · `magnet redact-scan` RED on plant / GREEN on repo · `magnet external-stack` · foreign-stack.sh |
+| 18 | Prediction check on adopt + history | `magnet adopt` prints prediction-held/missed · history shows outcome · tests green |
 
 ## NOW
 
-**Slice 17:** Open stacks we did not build. Bare capability term `extract` invented refactor coverage on anthropics/skills (docx/pdf "extracting") — fix to `extract method`, re-derive at the object (8/12→7/12). Ship `magnet redact-scan` (control that goes RED on planted secrets, GREEN on this repo) and `magnet external-stack` + `scripts/foreign-stack.sh` with receipts for Agent Grinder, anthropics/skills, obra/superpowers. Do **not** rewrite helicon cross-surface overlap ranking (surface arm 1/2 stays a FINDING).
+**Slice 18:** Grade each adoption's free-text prediction against the measured verdict (`prediction-held` / `prediction-missed` / `unmeasured` / `no-direction` — never attribution). Wire into `magnet adopt` receipts and `magnet history`. Helicon S3 spirit. Do not invent causation.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
-- 2026-09-07 · Slice 17 SHIP · `extract`→`extract method` · anthropics 8/12→7/12 · `magnet redact-scan` GREEN · planted RED · `magnet external-stack` · foreign-stack.sh · Grinder real 1/12 · superpowers 6/12 · `python3 -m pytest -q` → 139 passed · check-docs 11 PASS · surface 1/2 left (helicon science).
+- 2026-09-07 · Slice 18 SHIP · `magnet/prediction.py` · adopt prints prediction-held/missed · history shows outcome · `python3 -m pytest -q` → 148 passed · check-docs 11 PASS · pytest-pass-rate 147/147.
+- 2026-09-07 · Slice 18 START · port prediction intent/check from helicon S3 spirit; wire adopt + history.
+- 2026-09-07 · Slice 17 SHIP · `extract`→`extract method` · anthropics 8/12→7/12 · `magnet redact-scan` GREEN · planted RED · `magnet external-stack` · foreign-stack.sh · Grinder real 1/12 · superpowers 6/12 · `python3 -m pytest -q` → 139 passed · check-docs 11 PASS · surface 1/2 left (helicon science) · cold clone `/tmp/magnet-cold-s17` JUDGE DEMO OK.
 - 2026-09-07 · Slice 17 FAIL then FIX · redact-scan went RED on `tests/test_external_and_redact.py` itself (literal api_key assign in source). Assembled plant at runtime.
 - 2026-09-07 · Slice 17 START · opened real objects: Agent Grinder 1/12 (matches fixture) · anthropics/skills 8/12 with bare `extract` · obra/superpowers 6/12 · helicon source confirms cross-surface dupe penalty — surface 1/2 not rewritten.
 - 2026-09-07 · Slice 16 START · synonym vocab experiment at bakeoff object: tight expansion → recall 0.5→0.875, synonym 3/3, wine-liar False, fixture still 8/12.

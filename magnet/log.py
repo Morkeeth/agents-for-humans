@@ -241,13 +241,31 @@ def list_readings(conn: sqlite3.Connection, probe_name: str) -> list[dict]:
 
 def latest_adoption(conn: sqlite3.Connection, probe_name: str) -> dict | None:
     row = conn.execute(
-        "SELECT id, recorded_at, change_type, description, prediction, probe_name "
+        "SELECT id, recorded_at, change_type, description, prediction, probe_name, detail "
         "FROM adoptions WHERE probe_name = ? ORDER BY recorded_at DESC LIMIT 1",
         (probe_name,),
     ).fetchone()
     if row is None:
         return None
-    return dict(row)
+    d = dict(row)
+    d["detail"] = json.loads(d.get("detail") or "{}")
+    return d
+
+
+def set_adoption_detail(conn: sqlite3.Connection, adoption_id: int, detail: dict) -> None:
+    """Merge keys into an adoption's detail JSON (prediction outcome lives here)."""
+    row = conn.execute(
+        "SELECT detail FROM adoptions WHERE id = ?", (adoption_id,)
+    ).fetchone()
+    if row is None:
+        return
+    current = json.loads(row["detail"] or "{}")
+    current.update(detail)
+    conn.execute(
+        "UPDATE adoptions SET detail = ? WHERE id = ?",
+        (json.dumps(current), adoption_id),
+    )
+    conn.commit()
 
 
 def get_demo_bonus(conn: sqlite3.Connection) -> int:

@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-139 passed (re-derived 2026-09-07)
+148 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -258,4 +258,17 @@ MAGNET external-stack — measure a stack you did not build
 
 Exit code: **0** (verified: `magnet external-stack --stack fixtures/real-stacks/agentgrinder`).
 Network foreign stacks: see `docs/EXTERNAL-STACK-RECEIPT.md` + `bash scripts/foreign-stack.sh`.
+
+## `magnet adopt` prediction check (2026-09-07)
+
+```
+MAGNET prediction check
+
+  intent     rise
+  outcome    prediction-held
+  expected   helped  got=helped
+  note       prediction-held: intent=rise expected=helped got=helped — correlation, not attribution
+```
+
+Noise install with `coverage rises` prints `prediction-missed`. History shows `outcome`.
 

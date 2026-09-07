@@ -6,7 +6,8 @@ import shutil
 from pathlib import Path
 
 from magnet.constants import STACK_CHANGE_TYPES
-from magnet.log import connect, latest_adoption, list_readings, reset_demo
+from magnet.log import connect, latest_adoption, list_readings, reset_demo, set_adoption_detail
+from magnet.prediction import check_prediction, render_prediction_check
 from magnet.probes import STACK_COVERAGE_PROBE, is_builtin_probe
 from magnet.reporter import render_receipt, verdict
 from magnet.stack import (
@@ -109,7 +110,7 @@ def run_adopt(
 
     row = latest_adoption(conn, probe_name)
     readings = list_readings(conn, probe_name)
-    label, _ = verdict(readings, direction="up")
+    label, delta = verdict(readings, direction="up")
     receipt = render_receipt(
         probe_name,
         readings,
@@ -147,5 +148,10 @@ def run_adopt(
         prose = skill_prose or prediction
         fit_result = fit_one(description, prose, source_stack, surface=surface)
         parts += ["", render_fit(fit_result)]
+
+    # Grade the free-text prediction against the measured verdict (helicon S3).
+    pred_check = check_prediction(prediction, label, delta)
+    set_adoption_detail(conn, adoption["id"], {"prediction_check": pred_check})
+    parts += ["", render_prediction_check(pred_check)]
 
     return "\n".join(parts)
