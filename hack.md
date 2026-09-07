@@ -64,15 +64,18 @@ No number without the command that produced it, the population it is out of, and
 | 16 | Synonym vocab 1.1 + Grinder-ready receipt JSON | `magnet bakeoff` synonym 3/3 · wine-liar False · `magnet receipt` JSON · tests green |
 | 17 | External-object honesty + redact-scan RED control | `extract`→`extract method` · anthropics 7/12 · `magnet redact-scan` RED on plant / GREEN on repo · `magnet external-stack` · foreign-stack.sh |
 | 18 | Prediction check on adopt + history | `magnet adopt` prints prediction-held/missed · history shows outcome · tests green |
+| 19 | Stack-bind probes + bind-demo vs repo-blind | `magnet bind-demo` · effort-coverage + deny-coverage · FINDING line · tests green |
 
 ## NOW
 
-**Slice 18:** Grade each adoption's free-text prediction against the measured verdict (`prediction-held` / `prediction-missed` / `unmeasured` / `no-direction` — never attribution). Wire into `magnet adopt` receipts and `magnet history`. Helicon S3 spirit. Do not invent causation.
+**Slice 19:** Port stack-bind probes (`effort-coverage`, `deny-coverage`) that open the stack object — prove repo-blind `check-docs` stays flat while stack probes move when Ultimate Guide changes (`effort:` + `permissions.deny`) land on a temp copy of fixtures/stack. Never rank by skill title.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-07 · Slice 19 SHIP · `magnet bind-demo` FINDING · effort 0→7/7 · deny 0→4/4 · check-docs flat · list-probes total 6 · `python3 -m pytest -q` → 159 passed.
+- 2026-09-07 · Slice 19 START · open Ultimate Guide defect object: repo probes cannot see hook/setting/frontmatter; bind probes must open the stack.
 - 2026-09-07 · Slice 18 SHIP · `magnet/prediction.py` · adopt prints prediction-held/missed · history shows outcome · `python3 -m pytest -q` → 148 passed · check-docs 11 PASS · pytest-pass-rate 147/147 · cold clone `/tmp/magnet-cold-s18` 148 passed · JUDGE DEMO OK @ 655014d.
 - 2026-09-07 · Slice 18 START · port prediction intent/check from helicon S3 spirit; wire adopt + history.
 - 2026-09-07 · Slice 17 SHIP · `extract`→`extract method` · anthropics 8/12→7/12 · `magnet redact-scan` GREEN · planted RED · `magnet external-stack` · foreign-stack.sh · Grinder real 1/12 · superpowers 6/12 · `python3 -m pytest -q` → 139 passed · check-docs 11 PASS · surface 1/2 left (helicon science) · cold clone `/tmp/magnet-cold-s17` JUDGE DEMO OK.

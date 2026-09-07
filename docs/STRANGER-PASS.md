@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-148 passed (re-derived 2026-09-07)
+159 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -136,8 +136,10 @@ MAGNET probes  (built-in + .magnet/probes.json)
   check-docs           [builtin]  python -m magnet.check_docs
   pytest-pass-rate     [builtin]  python3 -m pytest -q --tb=no
   stack-coverage       [builtin]  magnet probe stack-coverage
+  effort-coverage      [builtin]  magnet probe effort-coverage
+  deny-coverage        [builtin]  magnet probe deny-coverage
 
-  total      4
+  total      6
 ```
 
 Exit code: **0** (verified: `python -m magnet.cli list-probes`)
@@ -271,4 +273,14 @@ MAGNET prediction check
 ```
 
 Noise install with `coverage rises` prints `prediction-missed`. History shows `outcome`.
+
+## `magnet bind-demo` (repo-blind vs stack-bind)
+
+```
+FINDING  repo-blind check-docs stayed flat while stack-bind probes moved.
+  effort-coverage  0/7 → 7/7
+  deny-coverage    0/4 → 4/4
+```
+
+Exit code: **0** (verified: `magnet bind-demo`). Source fixtures/stack untouched (effort stays 0/7 after).
 

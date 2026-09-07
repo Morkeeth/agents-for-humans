@@ -9,6 +9,7 @@ from magnet.constants import STACK_CHANGE_TYPES
 from magnet.log import connect, latest_adoption, list_readings, reset_demo, set_adoption_detail
 from magnet.prediction import check_prediction, render_prediction_check
 from magnet.probes import STACK_COVERAGE_PROBE, is_builtin_probe
+from magnet.stack_bind import STACK_BIND_PROBES
 from magnet.reporter import render_receipt, verdict
 from magnet.stack import (
     fit_one,
@@ -60,7 +61,7 @@ def run_adopt(
         skill_prose = fit_description or src["description"] or prediction
         description = src["name"] or description
 
-    if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage") or install_from:
+    if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage") or install_from or probe_name in STACK_BIND_PROBES:
         probe_stack: str | None = work_stack
     else:
         probe_stack = stack_dir  # may be None → default / MAGNET_STACK
@@ -126,12 +127,15 @@ def run_adopt(
         change_type in STACK_CHANGE_TYPES
         and is_builtin_probe(probe_name)
         and probe_name not in (STACK_COVERAGE_PROBE, "stack-coverage")
+        and probe_name not in STACK_BIND_PROBES
     ):
         receipt += (
             f"\n  measures   repo only — {probe_name} reads this repo, not the stack; "
             f"a {change_type} change is invisible to it. Add a registry probe that "
             f"reads the stack (docs/probes.json.example) to measure this adoption."
         )
+    elif probe_name in STACK_BIND_PROBES or probe_name in (STACK_COVERAGE_PROBE, "stack-coverage"):
+        receipt += f"\n  measures   stack — {probe_name} opens the stack object"
     parts = lines + [receipt]
 
     if install_from:

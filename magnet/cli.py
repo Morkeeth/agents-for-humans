@@ -21,6 +21,7 @@ from magnet.stack_demo import run_stack_demo
 from magnet.receipt import render_receipt_json
 from magnet.redact import run_redact_scan
 from magnet.external import measure_external_stack, render_external
+from magnet.bind_demo import run_bind_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -194,6 +195,16 @@ def cmd_external_stack(args: argparse.Namespace) -> int:
     return 0 if result["inventory"].get("present") else 1
 
 
+def cmd_bind_demo(args: argparse.Namespace) -> int:
+    text = run_bind_demo(repo_root=args.repo, stack_dir=args.stack, log_path=args.log)
+    print(text)
+    if "stack-bind probes did NOT move" in text:
+        return 1
+    if "repo-blind check-docs stayed flat while stack-bind probes moved" not in text:
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -362,6 +373,13 @@ def main(argv: list[str] | None = None) -> int:
         help="Path to an external stack directory (clone first)",
     )
     p_ext.set_defaults(func=cmd_external_stack)
+
+    p_bind = sub.add_parser(
+        "bind-demo",
+        help="Embarrassment arm: repo-blind check-docs flat while stack-bind probes move",
+    )
+    p_bind.add_argument("--stack", help="Source stack to copy (default: fixtures/stack)")
+    p_bind.set_defaults(func=cmd_bind_demo)
 
     args = parser.parse_args(argv)
     return args.func(args)

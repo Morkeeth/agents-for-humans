@@ -15,7 +15,15 @@ from typing import Any
 DEFAULT_REGISTRY = ".magnet/probes.json"
 
 BUILTIN_PROBE_NAMES = frozenset(
-    {"demo-pass-rate", "demo", "check-docs", "pytest-pass-rate", "stack-coverage"}
+    {
+        "demo-pass-rate",
+        "demo",
+        "check-docs",
+        "pytest-pass-rate",
+        "stack-coverage",
+        "effort-coverage",
+        "deny-coverage",
+    }
 )
 
 

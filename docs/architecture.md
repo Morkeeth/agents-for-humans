@@ -85,6 +85,8 @@ flowchart LR
 | `magnet/redact.py` | Secret-pattern scan that can go RED |
 | `magnet/external.py` | Measure a stack you did not build + naive_title arm |
 | `magnet/prediction.py` | Grade prediction intent vs measured verdict (not attribution) |
+| `magnet/stack_bind.py` | effort-coverage + deny-coverage — open the stack object |
+| `magnet/bind_demo.py` | Embarrassment arm: repo-blind flat, stack-bind moves |
 
 ## Naive baseline arm
 

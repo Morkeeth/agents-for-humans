@@ -70,7 +70,11 @@ else
 
   echo ""
   echo "=== 7c/8 · Honesty: redact-scan must stay GREEN on this repo ==="
-  magnet redact-scan
+    magnet redact-scan
+
+  echo ""
+  echo "=== 7d/8 · Honesty: bind-demo (repo-blind flat, stack-bind moves) ==="
+  magnet bind-demo
 fi
 
 echo ""

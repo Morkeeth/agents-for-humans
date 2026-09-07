@@ -12,6 +12,8 @@ DEMO_PROBE = "demo-pass-rate"
 CHECK_DOCS_PROBE = "check-docs"
 PYTEST_PROBE = "pytest-pass-rate"
 STACK_COVERAGE_PROBE = "stack-coverage"
+EFFORT_PROBE = "effort-coverage"
+DENY_PROBE = "deny-coverage"
 
 # Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
 DOCS_WITH_PYTEST_COUNTS = (
@@ -53,6 +55,18 @@ BUILTIN_PROBES = (
         "command": "magnet probe stack-coverage",
         "direction": "up",
         "description": "YOUR stack: covered/total capabilities (fixtures/stack or --stack)",
+    },
+    {
+        "name": EFFORT_PROBE,
+        "command": "magnet probe effort-coverage",
+        "direction": "up",
+        "description": "YOUR stack: skills with effort: frontmatter / total skills",
+    },
+    {
+        "name": DENY_PROBE,
+        "command": "magnet probe deny-coverage",
+        "direction": "up",
+        "description": "YOUR stack: sensitive deny patterns present in settings.json",
     },
 )
 
@@ -156,6 +170,10 @@ def run_probe(
         )
     if probe_name in (STACK_COVERAGE_PROBE, "stack-coverage"):
         return run_stack_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (EFFORT_PROBE, "effort-coverage"):
+        return run_effort_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (DENY_PROBE, "deny-coverage"):
+        return run_deny_coverage_probe(repo_root=root, stack_dir=stack_dir)
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)
@@ -170,6 +188,24 @@ def run_stack_coverage_probe(*, repo_root: str | None = None, stack_dir: str | N
     root = repo_root or os.getcwd()
     stack = resolve_stack_dir(stack_dir, repo_root=root)
     return stack_coverage(stack)
+
+
+def run_effort_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import effort_coverage
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return effort_coverage(stack)
+
+
+def run_deny_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import deny_coverage
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return deny_coverage(stack)
 
 
 def run_check_docs_probe(repo_root: str) -> dict:
