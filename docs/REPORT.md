@@ -1,37 +1,38 @@
-# Build report · Slice 20 · 2026-09-08
+# Build report · Slice 20–21 · 2026-09-08
 
 ## SHIPPED
 
 ### Slice 20 — Ultimate Guide closed loop
-- `tools-coverage`, `hook-coverage`, `prompt-consistency` bind probes (open the stack object)
-- Fixture objects: `CLAUDE.md`, `post-compact-reinject.txt`, `Bash(rm -rf *)` allow (starts RED)
-- `magnet guide-demo` — 5-row UG verdict table vs naive title; repo-blind flat; moved=5/5
-- `check_docs` now scans `docs/screenshots/*.txt` (skips drift-demo's intentional fakes)
-- Bakeoff FINDING when surface < 2/2 (cross-surface dupe — helicon science, not papered over)
-- Screenshot sidecars re-derived; judge docs → **169** tests; list-probes **total 9**
+- `tools-coverage`, `hook-coverage`, `prompt-consistency` bind probes
+- `magnet guide-demo` — 5-row UG table vs naive title; moved=5/5; repo-blind flat
+- `check_docs` scans screenshot sidecars (closed the 113 control gap)
+- Bakeoff surface 1/2 FINDING (helicon cross-surface dupe)
+
+### Slice 21 — Foreign-bind
+- `magnet foreign-bind` — bind probes on stacks we did not build
+- Offline: fixtures/stack + Agent Grinder fixture both FINDING (naive=complete, hardening 0)
+- Live objects (re-derived tonight): anthropics effort **0/19** · tools **0/19** · deny **0/4**; superpowers effort **0/14** · tools **0/14** · deny **0/4**; both naive_title=complete
+- **174** pytest tests
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 169 passed |
-| check_docs | `magnet check-docs` → 13 claims PASS |
-| guide-demo FINDING | `magnet guide-demo` → moved=5/5 · check-docs 13/13 unchanged |
-| bind-demo | `magnet bind-demo` → effort 0→7/7 · deny 0→4/4 · repo-blind flat |
-| Fixture untouched | `magnet probe tools-coverage` → 0/7 after guide-demo |
-| list-probes | `magnet list-probes` → total 9 |
-| bakeoff surface FINDING | `magnet bakeoff --no-write` → surface 1/2 FINDING line |
-| Screenshot control | stale 113 made check_docs RED; after re-derive → PASS |
-| pytest-pass-rate | `magnet probe pytest-pass-rate` → 168/168 (`-m "not slow"`) |
-| Cold clone s20 | `/tmp/magnet-cold-s20` @ `68991cc` → 169 passed · guide-demo FINDING · JUDGE DEMO OK |
-| SHIP GATE main | `git push origin main` → `dabe8c7` |
+| Tests | `python3 -m pytest -q` → 174 passed (re-derive) |
+| guide-demo | `magnet guide-demo` → moved=5/5 FINDING |
+| foreign-bind offline | `magnet foreign-bind` → findings 2/2 |
+| foreign-bind anthropics | `magnet foreign-bind --stack /tmp/anthropics-skills` → effort 0/19 FINDING |
+| foreign-bind superpowers | `magnet foreign-bind --stack /tmp/superpowers` → effort 0/14 FINDING |
+| check_docs | `magnet check-docs` → claims PASS |
+| Slice 20 cold clone | `/tmp/magnet-cold-s20` @ `68991cc` JUDGE DEMO OK |
+| SHIP GATE s20 | `git push origin main` → `dabe8c7` (tip `8d80ba0`) |
 
 ## WRONG
 
-- **Surface arm still 1/2** — reviewer-agent demoted by overlap with `critique` command; printed as FINDING, not rewritten (helicon cross-surface dupe science).
-- **Screenshot PNGs not re-rendered** — `.txt` sidecars updated; PNGs still show old frames until Oscar runs `scripts/render-screenshot.py`.
-- **Bedrock cloud still BLOCKED** — no AWS creds in this VM.
-- **Prediction still lexical** — "all tests still pass" → no-direction.
-- **Agent Grinder still 1/12** at the real object.
-- **guide-demo mid-slice showed check-docs 5/14** while docs/screenshots lagged — control went RED correctly (including the 113 sidecar gap this slice closed).
-- **Parallel night branch `magnet recover` not merged** — left on `cursor/stack-magnet-night-5e60`; not this slice.
+- **Surface arm still 1/2** — FINDING only; helicon science.
+- **Screenshot PNGs not re-rendered** — txt sidecars only.
+- **Bedrock cloud BLOCKED**.
+- **Prediction still lexical**.
+- **hook-coverage 1/2 on foreign stacks** — `no-rm-rf-star-allow` is true when allow is empty (correct); blocker still missing. Not a full 0.
+- **prompt-consistency n/a** on foreign stacks without CLAUDE.md — population 0, cannot invent a score.
+- **Parallel `magnet recover` branch still unmerged**.

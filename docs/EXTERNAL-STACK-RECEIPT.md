@@ -77,6 +77,25 @@ the embarrassment. Literals assembled at runtime now.
 A title-only scanner that sees "Agent Skills" / "superpowers" without opening
 SKILL.md invents `complete`. MAGNET opens every SKILL.md.
 
+## Foreign-bind (Ultimate Guide probes · 2026-09-08)
+
+```bash
+magnet foreign-bind                                          # offline fixtures
+magnet foreign-bind --stack /tmp/anthropics-skills --stack /tmp/superpowers
+```
+
+| Stack | effort | tools | deny | hook | naive_title |
+|-------|-------:|------:|-----:|-----:|-------------|
+| fixtures/stack | 0/7 | 0/7 | 0/4 | 0/2 | complete |
+| fixtures/real-stacks/agentgrinder | 0/1 | 0/1 | 0/4 | 1/2 | complete |
+| anthropics/skills (clone) | 0/19 | 0/19 | 0/4 | 1/2 | complete |
+| obra/superpowers (clone) | 0/14 | 0/14 | 0/4 | 1/2 | complete |
+
+**FINDING:** Marketplace and companion stacks that look complete by title carry
+**zero** `effort:` / `allowed-tools:` frontmatter and **zero** sensitive deny
+patterns when the object is opened. Numbers re-derived at the clones tonight —
+do not carry them; re-run `magnet foreign-bind --stack …`.
+
 ## Repro
 
 ```bash

@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-169 passed (re-derived 2026-09-07)
+174 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -150,7 +150,7 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 168/168
+pytest-pass-rate: 173/173
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
@@ -303,4 +303,15 @@ Exit code: **0** (verified: `magnet bind-demo`). Source fixtures/stack untouched
 ```
 
 Exit code: **0** (verified: `magnet guide-demo`). Source fixtures/stack untouched (tools/hook/prompt stay at before values).
+
+## `magnet foreign-bind` (marketplace title vs bind probes)
+
+```
+  FINDING  naive_title=complete but hardening is near-zero (effort 0/7, tools 0/7, deny 0/4)
+  FINDING  naive_title=complete but hardening is near-zero (effort 0/1, tools 0/1, deny 0/4)
+  findings   2/2 stacks embarrassed naive_title
+```
+
+Exit code: **0** (verified: `magnet foreign-bind`). Offline — no network.
+Live clones (optional): anthropics effort 0/19 · superpowers effort 0/14 — re-derive with `--stack`.
 

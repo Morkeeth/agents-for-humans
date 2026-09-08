@@ -24,6 +24,7 @@ cd "$ROOT"
 
 python3 -m magnet.cli external-stack --stack "$DEST"
 python3 -m magnet.cli probe stack-coverage --stack "$DEST"
+python3 -m magnet.cli foreign-bind --stack "$DEST"
 
 echo ""
 echo "== foreign-stack OK =="

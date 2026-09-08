@@ -66,15 +66,18 @@ No number without the command that produced it, the population it is out of, and
 | 18 | Prediction check on adopt + history | `magnet adopt` prints prediction-held/missed · history shows outcome · tests green |
 | 19 | Stack-bind probes + bind-demo vs repo-blind | `magnet bind-demo` · effort-coverage + deny-coverage · FINDING line · tests green |
 | 20 | Ultimate Guide closed loop · remaining bind probes · guide-demo · screenshot drift control | `magnet guide-demo` exit 0 · tools/hook/prompt probes · check_docs scans screenshot sidecars · pytest green |
+| 21 | Foreign-stack bind probes · open anthropics/superpowers objects · naive complete arm | `magnet foreign-bind` exit 0 · FINDING when foreign effort/deny/tools near 0 · pytest green |
 
 ## NOW
 
-**Slice 20:** Close Ultimate Guide cannot-measure for remaining recommendations — `tools-coverage` + `hook-coverage` + `prompt-consistency` probes + `magnet guide-demo` (5-row verdict table vs naive title; repo-blind flat). Extend `check_docs` to scan `docs/screenshots/*.txt` so stale 113 cannot hide. Bakeoff prints FINDING when surface < 2/2 (cross-surface dupe — helicon science, not papered over). Never rank by title.
+**Slice 21:** Open foreign stacks we did not build and run bind probes (effort/deny/tools/hook/prompt) at the object — not the README. `magnet foreign-bind` prints magnet vs naive_title complete; FINDING when marketplace stacks score near-zero on hardening while title says complete. Never rank by repo name.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-08 · Slice 21 SHIP · `magnet foreign-bind` findings 2/2 offline · anthropics effort 0/19 tools 0/19 · superpowers 0/14 · naive_title=complete · (pytest + push pending).
+- 2026-09-08 · Slice 21 START · open anthropics/skills + obra/superpowers objects for bind probes; fixture Agent Grinder as offline arm.
 - 2026-09-08 · Slice 20 SHIP · `magnet guide-demo` moved=5/5 · tools/hook/prompt probes · check_docs scans screenshots (113 RED→PASS) · bakeoff surface 1/2 FINDING · list-probes total 9 · `python3 -m pytest -q` → 169 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s20` JUDGE DEMO OK @ 68991cc · `git push origin main` → `dabe8c7`.
 - 2026-09-08 · Slice 20 START · opened Ultimate Guide object: items 3–5 still cannot-measure; screenshot sidecars still claim 113 (control gap); bakeoff surface 1/2 is helicon cross-surface dupe on reviewer-agent↔critique — will FINDING, not rewrite.
 - 2026-09-07 · Slice 19 SHIP · `magnet bind-demo` FINDING · effort 0→7/7 · deny 0→4/4 · check-docs flat · list-probes total 6 · `python3 -m pytest -q` → 159 passed. · cold clone `/tmp/magnet-cold-s19` 159 passed · bind-demo FINDING · JUDGE DEMO OK @ 03d289a · `git push origin main` → `d902156` · tip `0df0ba7`.

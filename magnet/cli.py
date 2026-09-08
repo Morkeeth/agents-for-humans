@@ -23,6 +23,7 @@ from magnet.redact import run_redact_scan
 from magnet.external import measure_external_stack, render_external
 from magnet.bind_demo import run_bind_demo
 from magnet.guide_demo import run_guide_demo
+from magnet.foreign_bind import run_foreign_bind
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -218,6 +219,19 @@ def cmd_guide_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_foreign_bind(args: argparse.Namespace) -> int:
+    stacks = list(args.stack or [])
+    text = run_foreign_bind(repo_root=args.repo, stacks=stacks or None)
+    print(text)
+    if "no stacks found" in text:
+        return 1
+    if "no stack embarrassed naive_title" in text:
+        return 1
+    if "FINDING" not in text:
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -400,6 +414,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_guide.add_argument("--stack", help="Source stack to copy (default: fixtures/stack)")
     p_guide.set_defaults(func=cmd_guide_demo)
+
+    p_fb = sub.add_parser(
+        "foreign-bind",
+        help="Run bind probes on stacks we did not build (offline fixtures + optional clones)",
+    )
+    p_fb.add_argument(
+        "--stack",
+        action="append",
+        help="Stack path (repeatable). Default: offline fixtures. Or set MAGNET_FOREIGN_BIND",
+    )
+    p_fb.set_defaults(func=cmd_foreign_bind)
 
     args = parser.parse_args(argv)
     return args.func(args)

@@ -79,6 +79,10 @@ else
   echo ""
   echo "=== 7e/8 · Honesty: guide-demo (Ultimate Guide 5-row table) ==="
   magnet guide-demo
+
+  echo ""
+  echo "=== 7f/8 · Honesty: foreign-bind (marketplace title vs bind probes)"
+  magnet foreign-bind
 fi
 
 echo ""

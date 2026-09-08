@@ -99,6 +99,7 @@ flowchart LR
 | `magnet/stack_bind.py` | effort/deny/tools/hook/prompt probes — open the stack object |
 | `magnet/bind_demo.py` | Embarrassment arm: repo-blind flat, stack-bind moves |
 | `magnet/guide_demo.py` | Ultimate Guide 5-row closed loop vs naive title |
+| `magnet/foreign_bind.py` | Bind probes on foreign stacks vs naive_title |
 
 ## Naive baseline arm
 
