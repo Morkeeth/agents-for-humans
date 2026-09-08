@@ -26,6 +26,7 @@
 | check_docs | `magnet check-docs` → claims PASS |
 | Slice 20 cold clone | `/tmp/magnet-cold-s20` @ `68991cc` JUDGE DEMO OK |
 | SHIP GATE s20 | `git push origin main` → `dabe8c7` (tip `8d80ba0`) |
+| Cold clone s21 | `/tmp/magnet-cold-s21` @ `1281155` → 174 passed · foreign-bind 2/2 · JUDGE DEMO OK |
 
 ## WRONG
 

@@ -76,7 +76,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-08 · Slice 21 SHIP · `magnet foreign-bind` findings 2/2 offline · anthropics effort 0/19 tools 0/19 · superpowers 0/14 · naive_title=complete · (pytest + push pending).
+- 2026-09-08 · Slice 21 SHIP · `magnet foreign-bind` findings 2/2 offline · anthropics effort 0/19 tools 0/19 · superpowers 0/14 · naive_title=complete · cold clone `/tmp/magnet-cold-s21` JUDGE DEMO OK @ 1281155.
 - 2026-09-08 · Slice 21 START · open anthropics/skills + obra/superpowers objects for bind probes; fixture Agent Grinder as offline arm.
 - 2026-09-08 · Slice 20 SHIP · `magnet guide-demo` moved=5/5 · tools/hook/prompt probes · check_docs scans screenshots (113 RED→PASS) · bakeoff surface 1/2 FINDING · list-probes total 9 · `python3 -m pytest -q` → 169 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s20` JUDGE DEMO OK @ 68991cc · `git push origin main` → `dabe8c7`.
 - 2026-09-08 · Slice 20 START · opened Ultimate Guide object: items 3–5 still cannot-measure; screenshot sidecars still claim 113 (control gap); bakeoff surface 1/2 is helicon cross-surface dupe on reviewer-agent↔critique — will FINDING, not rewrite.
