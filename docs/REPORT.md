@@ -23,6 +23,7 @@
 | bakeoff surface FINDING | `magnet bakeoff --no-write` → surface 1/2 FINDING line |
 | Screenshot control | stale 113 made check_docs RED; after re-derive → PASS |
 | pytest-pass-rate | `magnet probe pytest-pass-rate` → 168/168 (`-m "not slow"`) |
+| Cold clone s20 | `/tmp/magnet-cold-s20` @ `68991cc` → 169 passed · guide-demo FINDING · JUDGE DEMO OK |
 
 ## WRONG
 
