@@ -399,5 +399,13 @@ def render_bakeoff(result: dict) -> str:
             "the EXP-MAGNET-01 defect re-derived."
         )
 
+    surface = result["arms"]["magnet"]["per_kind"]["surface"]
+    if surface["found"] < surface["of"]:
+        lines.append(
+            f"  FINDING  surface arm {surface['found']}/{surface['of']} — "
+            "cross-surface dupe penalty demoted an empty-agents fill "
+            "(reviewer-agent ↔ critique command). Helicon science, not papered over."
+        )
+
     lines += ["", "  repro      magnet bakeoff"]
     return "\n".join(lines)

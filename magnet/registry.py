@@ -23,6 +23,9 @@ BUILTIN_PROBE_NAMES = frozenset(
         "stack-coverage",
         "effort-coverage",
         "deny-coverage",
+        "tools-coverage",
+        "hook-coverage",
+        "prompt-consistency",
     }
 )
 

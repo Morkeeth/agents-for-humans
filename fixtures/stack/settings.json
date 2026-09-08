@@ -8,5 +8,9 @@
         ]
       }
     ]
+  },
+  "permissions": {
+    "allow": ["Bash(rm -rf *)"],
+    "deny": []
   }
 }

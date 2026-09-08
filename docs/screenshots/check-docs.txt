@@ -1,16 +1,18 @@
 $ magnet check-docs
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli check-docs
+# run 2026-09-08 20:15:26 UTC on cursor/guide-demo-bind-19ce @ a9f50cd, via: python3 -m magnet.cli check-docs
 [PASS] tool count: README claims 4 tools, source has 4
-[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 113 tests, source has 113 tests
-[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 113 tests, source has 113 tests
+[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 169 tests, source has 169 tests
+[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 169 tests, source has 169 tests
+[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 169 tests, source has 169 tests
+[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 169 tests, source has 169 tests
+[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 169 tests, source has 169 tests
+[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 169 tests, source has 169 tests
+[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 169 tests, source has 169 tests
+[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 169 tests, source has 169 tests
 [PASS] tool run_probe: listed
 [PASS] tool record_week: listed
 [PASS] tool adopt_change: listed
 [PASS] tool check_docs: listed
 
-11 claims checked. All match source.
+13 claims checked. All match source.
 # exit=0

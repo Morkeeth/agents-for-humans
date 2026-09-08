@@ -1,16 +1,26 @@
 $ magnet list-probes
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli list-probes
+# run 2026-09-08 20:14:02  on cursor/guide-demo-bind-19ce @ a9f50cd, via: python3 -m magnet.cli list-probes
 MAGNET probes  (built-in + .magnet/probes.json)
 
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
     Synthetic pass-rate for cold demo (skill_bonus in SQLite)
   check-docs           [builtin]  python -m magnet.check_docs
     Re-derive README claims; value=passing/total
-  pytest-pass-rate     [builtin]  /Library/Frameworks/Python.framework/Versions/3.12/bin/python3 -m pytest -q --tb=no -m "not slow"
+  pytest-pass-rate     [builtin]  /usr/bin/python3 -m pytest -q --tb=no -m "not slow"
     Real eval: run pytest and count passed/total
   stack-coverage       [builtin]  magnet probe stack-coverage
     YOUR stack: covered/total capabilities (fixtures/stack or --stack)
+  effort-coverage      [builtin]  magnet probe effort-coverage
+    YOUR stack: skills with effort: frontmatter / total skills
+  deny-coverage        [builtin]  magnet probe deny-coverage
+    YOUR stack: sensitive deny patterns present in settings.json
+  tools-coverage       [builtin]  magnet probe tools-coverage
+    YOUR stack: skills with allowed-tools: frontmatter / total skills
+  hook-coverage        [builtin]  magnet probe hook-coverage
+    YOUR stack: dangerous-actions-blocker + no Bash(rm -rf *) allow
+  prompt-consistency   [builtin]  magnet probe prompt-consistency
+    YOUR stack: CLAUDE.md MUST lines present in post-compact-reinject.txt
 
-  total      4
+  total      9
   repro      magnet list-probes
 # exit=0

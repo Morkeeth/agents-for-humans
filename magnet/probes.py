@@ -14,6 +14,9 @@ PYTEST_PROBE = "pytest-pass-rate"
 STACK_COVERAGE_PROBE = "stack-coverage"
 EFFORT_PROBE = "effort-coverage"
 DENY_PROBE = "deny-coverage"
+TOOLS_PROBE = "tools-coverage"
+HOOK_PROBE = "hook-coverage"
+PROMPT_PROBE = "prompt-consistency"
 
 # Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
 DOCS_WITH_PYTEST_COUNTS = (
@@ -24,6 +27,9 @@ DOCS_WITH_PYTEST_COUNTS = (
     "docs/DEVPOST-DESCRIPTION.md",
     "docs/FILM-SCOUT-COMMANDS.md",
 )
+
+# Screenshot sidecars — stale counts hid here for weeks (WRONG: claimed 113).
+SCREENSHOT_SIDECAR_GLOB = "docs/screenshots/*.txt"
 
 _PYTEST_COUNT_PATTERNS = (
     r"(\d+)\s+passed",
@@ -67,6 +73,24 @@ BUILTIN_PROBES = (
         "command": "magnet probe deny-coverage",
         "direction": "up",
         "description": "YOUR stack: sensitive deny patterns present in settings.json",
+    },
+    {
+        "name": TOOLS_PROBE,
+        "command": "magnet probe tools-coverage",
+        "direction": "up",
+        "description": "YOUR stack: skills with allowed-tools: frontmatter / total skills",
+    },
+    {
+        "name": HOOK_PROBE,
+        "command": "magnet probe hook-coverage",
+        "direction": "up",
+        "description": "YOUR stack: dangerous-actions-blocker + no Bash(rm -rf *) allow",
+    },
+    {
+        "name": PROMPT_PROBE,
+        "command": "magnet probe prompt-consistency",
+        "direction": "up",
+        "description": "YOUR stack: CLAUDE.md MUST lines present in post-compact-reinject.txt",
     },
 )
 
@@ -174,6 +198,12 @@ def run_probe(
         return run_effort_coverage_probe(repo_root=root, stack_dir=stack_dir)
     if probe_name in (DENY_PROBE, "deny-coverage"):
         return run_deny_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (TOOLS_PROBE, "tools-coverage"):
+        return run_tools_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (HOOK_PROBE, "hook-coverage"):
+        return run_hook_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (PROMPT_PROBE, "prompt-consistency"):
+        return run_prompt_consistency_probe(repo_root=root, stack_dir=stack_dir)
     from magnet.registry import load_registry, run_registry_probe
 
     registry = load_registry(root)
@@ -206,6 +236,33 @@ def run_deny_coverage_probe(*, repo_root: str | None = None, stack_dir: str | No
     root = repo_root or os.getcwd()
     stack = resolve_stack_dir(stack_dir, repo_root=root)
     return deny_coverage(stack)
+
+
+def run_tools_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import tools_coverage
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return tools_coverage(stack)
+
+
+def run_hook_coverage_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import hook_coverage
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return hook_coverage(stack)
+
+
+def run_prompt_consistency_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import prompt_consistency
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return prompt_consistency(stack)
 
 
 def run_check_docs_probe(repo_root: str) -> dict:
@@ -274,6 +331,28 @@ def check_docs(repo_root: str) -> list[dict]:
                     f"{doc_name} claims {claimed_tests} tests, source has {actual_tests} tests",
                 )
             )
+
+    # Screenshot sidecars — the control gap that let "113" linger after 159.
+    # Skip drift-demo.txt: it intentionally embeds fabricated counts (the demo).
+    screenshot_patterns = _PYTEST_COUNT_PATTERNS + (r"(\d+)\s+tests",)
+    for side in sorted((root / "docs" / "screenshots").glob("*.txt")):
+        rel = str(side.relative_to(root))
+        text = side.read_text(encoding="utf-8")
+        if "fake repo" in text.lower() or "fabricated numbers" in text.lower():
+            continue
+        claimed = _first_int_any(text, screenshot_patterns)
+        if claimed is None:
+            continue
+        results.append(
+            _result(
+                f"screenshot pytest ({rel})",
+                rel,
+                claimed,
+                actual_tests,
+                claimed == actual_tests,
+                f"{rel} claims {claimed} tests, source has {actual_tests} tests",
+            )
+        )
 
     # Claim: probe names listed in README
     for name in ("run_probe", "record_week", "adopt_change", "check_docs"):

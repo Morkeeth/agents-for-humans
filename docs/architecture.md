@@ -57,6 +57,17 @@ flowchart LR
     REDACT -->|clean tree| GREEN[exit 0]
 ```
 
+```mermaid
+flowchart LR
+    UG[Ultimate Guide change<br/>effort / deny / tools / hook / prompt] --> GD[guide-demo temp stack]
+    GD --> BP[stack-bind probes<br/>open the object]
+    GD --> RB[repo-blind check-docs]
+    BP --> VT[5-row verdict table]
+    RB --> VT
+    VT --> N2[naive title arm<br/>always helped]
+    VT --> FIND2[FINDING when repo-blind flat<br/>and stack-bind moves]
+```
+
 ## Data flow
 
 1. **Baseline** — `record_week` runs `run_probe`, stores `{value, population, command, week}`.
@@ -85,8 +96,9 @@ flowchart LR
 | `magnet/redact.py` | Secret-pattern scan that can go RED |
 | `magnet/external.py` | Measure a stack you did not build + naive_title arm |
 | `magnet/prediction.py` | Grade prediction intent vs measured verdict (not attribution) |
-| `magnet/stack_bind.py` | effort-coverage + deny-coverage — open the stack object |
+| `magnet/stack_bind.py` | effort/deny/tools/hook/prompt probes — open the stack object |
 | `magnet/bind_demo.py` | Embarrassment arm: repo-blind flat, stack-bind moves |
+| `magnet/guide_demo.py` | Ultimate Guide 5-row closed loop vs naive title |
 
 ## Naive baseline arm
 

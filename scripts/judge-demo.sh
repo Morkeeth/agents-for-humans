@@ -75,6 +75,10 @@ else
   echo ""
   echo "=== 7d/8 · Honesty: bind-demo (repo-blind flat, stack-bind moves) ==="
   magnet bind-demo
+
+  echo ""
+  echo "=== 7e/8 · Honesty: guide-demo (Ultimate Guide 5-row table) ==="
+  magnet guide-demo
 fi
 
 echo ""

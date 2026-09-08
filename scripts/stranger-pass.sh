@@ -40,6 +40,7 @@ python3 -m magnet.cli probe stack-coverage --stack fixtures/real-stacks/agentgri
 python3 -m magnet.cli receipt
 python3 -m magnet.cli redact-scan
 python3 -m magnet.cli bind-demo
+python3 -m magnet.cli guide-demo
 python3 -m magnet.cli external-stack --stack fixtures/real-stacks/agentgrinder
 python3 -m magnet.cli drift-demo
 python3 -m magnet.cli check-docs

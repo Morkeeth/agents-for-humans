@@ -80,7 +80,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-159 passed (re-derived 2026-09-07)
+169 passed (re-derived 2026-09-07)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -138,8 +138,11 @@ MAGNET probes  (built-in + .magnet/probes.json)
   stack-coverage       [builtin]  magnet probe stack-coverage
   effort-coverage      [builtin]  magnet probe effort-coverage
   deny-coverage        [builtin]  magnet probe deny-coverage
+  tools-coverage       [builtin]  magnet probe tools-coverage
+  hook-coverage        [builtin]  magnet probe hook-coverage
+  prompt-consistency   [builtin]  magnet probe prompt-consistency
 
-  total      6
+  total      9
 ```
 
 Exit code: **0** (verified: `python -m magnet.cli list-probes`)
@@ -147,12 +150,12 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 138/138
+pytest-pass-rate: 168/168
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)
-# re-derived 2026-09-07; 139 total tests, 1 marked slow
+# re-derived 2026-09-08; 169 total tests, 1 marked slow
 
 ## `magnet history` output (after demo)
 
@@ -283,4 +286,21 @@ FINDING  repo-blind check-docs stayed flat while stack-bind probes moved.
 ```
 
 Exit code: **0** (verified: `magnet bind-demo`). Source fixtures/stack untouched (effort stays 0/7 after).
+
+## `magnet guide-demo` (Ultimate Guide 5-row closed loop)
+
+```
+  #   change_type  probe                 before   after    magnet      naive
+  1  setting       deny-coverage         0/4      4/4      helped      helped
+  2  skill         effort-coverage       0/7      7/7      helped      helped
+  3  skill         tools-coverage        0/7      7/7      helped      helped
+  4  prompt        prompt-consistency    0/3      3/3      helped      helped
+  5  hook          hook-coverage         0/2      2/2      helped      helped
+
+  REPO-BLIND CONTROL  check-docs 13/13 → unchanged
+  MAGNET     moved=5/5
+  FINDING  repo-blind check-docs stayed flat while 5/5 Ultimate Guide stack-bind probes moved.
+```
+
+Exit code: **0** (verified: `magnet guide-demo`). Source fixtures/stack untouched (tools/hook/prompt stay at before values).
 

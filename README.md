@@ -25,6 +25,7 @@ magnet stack-demo     # install → coverage delta + naive arm + real Agent Grin
 magnet receipt        # JSON adoption receipt (Grinder-ready)
 magnet redact-scan    # secret patterns — must stay GREEN here
 magnet bind-demo      # repo-blind flat; stack-bind probes move
+magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 

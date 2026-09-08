@@ -22,6 +22,7 @@ from magnet.receipt import render_receipt_json
 from magnet.redact import run_redact_scan
 from magnet.external import measure_external_stack, render_external
 from magnet.bind_demo import run_bind_demo
+from magnet.guide_demo import run_guide_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -205,6 +206,18 @@ def cmd_bind_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_guide_demo(args: argparse.Namespace) -> int:
+    text = run_guide_demo(repo_root=args.repo, stack_dir=args.stack, log_path=args.log)
+    print(text)
+    if "guide-demo must fail loud" in text:
+        return 1
+    if "repo-blind check-docs stayed flat while" not in text:
+        return 1
+    if "Ultimate Guide stack-bind probes moved" not in text:
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -380,6 +393,13 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_bind.add_argument("--stack", help="Source stack to copy (default: fixtures/stack)")
     p_bind.set_defaults(func=cmd_bind_demo)
+
+    p_guide = sub.add_parser(
+        "guide-demo",
+        help="Ultimate Guide closed loop: 5 recommendations measured vs naive title",
+    )
+    p_guide.add_argument("--stack", help="Source stack to copy (default: fixtures/stack)")
+    p_guide.set_defaults(func=cmd_guide_demo)
 
     args = parser.parse_args(argv)
     return args.func(args)
