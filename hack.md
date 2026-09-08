@@ -75,7 +75,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-08 · Slice 20 SHIP · `magnet guide-demo` moved=5/5 · tools/hook/prompt probes · check_docs scans screenshots (113 RED→PASS) · bakeoff surface 1/2 FINDING · list-probes total 9 · `python3 -m pytest -q` → 169 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s20` JUDGE DEMO OK @ 68991cc.
+- 2026-09-08 · Slice 20 SHIP · `magnet guide-demo` moved=5/5 · tools/hook/prompt probes · check_docs scans screenshots (113 RED→PASS) · bakeoff surface 1/2 FINDING · list-probes total 9 · `python3 -m pytest -q` → 169 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s20` JUDGE DEMO OK @ 68991cc · `git push origin main` → `dabe8c7`.
 - 2026-09-08 · Slice 20 START · opened Ultimate Guide object: items 3–5 still cannot-measure; screenshot sidecars still claim 113 (control gap); bakeoff surface 1/2 is helicon cross-surface dupe on reviewer-agent↔critique — will FINDING, not rewrite.
 - 2026-09-07 · Slice 19 SHIP · `magnet bind-demo` FINDING · effort 0→7/7 · deny 0→4/4 · check-docs flat · list-probes total 6 · `python3 -m pytest -q` → 159 passed. · cold clone `/tmp/magnet-cold-s19` 159 passed · bind-demo FINDING · JUDGE DEMO OK @ 03d289a · `git push origin main` → `d902156` · tip `0df0ba7`.
 - 2026-09-07 · Slice 19 START · open Ultimate Guide defect object: repo probes cannot see hook/setting/frontmatter; bind probes must open the stack.
