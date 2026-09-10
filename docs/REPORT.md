@@ -29,7 +29,8 @@
 | SHIP GATE s22 | `git push origin main` → `643cbed` |
 | SHIP GATE s23 | `git push origin main` → `f79a14f` (tip `bfb32a9`) |
 
-*(s24 cold clone hash after push.)*
+| Cold clone s24 | `/tmp/magnet-cold-s24` @ `54b2f79` → 190 passed · foreign-hurt prediction-held 4/4 · JUDGE DEMO OK |
+| SHIP GATE s24 | `git push origin main` → `54b2f79` |
 
 ## WRONG
 

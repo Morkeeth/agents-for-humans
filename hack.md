@@ -79,7 +79,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-10 · Slice 24 SHIP · fall lexicon simplify/streamline/relax/remove · `foreign-hurt` prediction-held 4/4 · `python3 -m pytest -q` → 190 passed · check-docs 13 PASS · (cold clone after push).
+- 2026-09-10 · Slice 24 SHIP · fall lexicon simplify/streamline/relax/remove · `foreign-hurt` prediction-held 4/4 · `python3 -m pytest -q` → 190 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s24` @ `54b2f79` JUDGE DEMO OK · `git push origin main` → `54b2f79`.
 - 2026-09-10 · Slice 24 START · prediction_intent("simplify skill frontmatter") → unknown (cannot grade hurt). Extending fall lexicon; wire check into foreign-hurt rows.
 - 2026-09-10 · Slice 23 SHIP · `magnet foreign-hurt` naive-helped on 4/4 magnet-hurt · `hooks-layout` 3/3 vs UG hook 0/2 · list-probes total 10 · `python3 -m pytest -q` → 189 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s23` @ `f79a14f` JUDGE DEMO OK · `git push origin main` → `f79a14f`.
 - 2026-09-10 · Slice 23 START · opened obra/superpowers `hooks/hooks.json` (SessionStart) — UG hook-coverage stays 0/2 correctly but was silent that hooks exist. Building foreign-hurt (naive helped on magnet hurt) + hooks-layout probe.
