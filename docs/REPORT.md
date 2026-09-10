@@ -1,41 +1,41 @@
-# Build report · Slice 22–23 · 2026-09-10
+# Build report · Slice 22–24 · 2026-09-10
 
 ## SHIPPED
 
-### Slice 22 — Hook control fix + foreign-harden
-- **Hook control:** missing `settings.json` no longer scores `no-rm-rf-star-allow` (green-on-outage fix) → `0/2`.
-- **`magnet foreign-harden`:** title-complete at near-zero → UG apply on working copy → helped with value/pop.
+### Slice 22 — Hook control + foreign-harden
+- Missing `settings.json` no longer scores hook-coverage 1/2.
+- `magnet foreign-harden`: title-complete → UG apply → helped.
 
 ### Slice 23 — Foreign-hurt + hooks-layout
-- **`magnet foreign-hurt`:** harden then strip; magnet prints **hurt** while naive invents **helped** from the strip title (4/4 on fixture + Grinder; anthropics 0/19→19/19→0/19).
-- **`hooks-layout` probe:** opens `hooks/hooks.json` (obra/superpowers extract offline). Layout 3/3 while UG hook-coverage 0/2 — FINDING.
-- Offline fixture: `fixtures/real-stacks/superpowers-hooks/` (extracted from live clone).
-- list-probes total **10**. Pytest **189** (re-derived).
+- `magnet foreign-hurt`: magnet hurt while naive invents helped.
+- `hooks-layout` probe opens `hooks/hooks.json` (superpowers extract + live 3/3 vs UG 0/2).
+- stranger-pass wires harden/hurt/hooks-layout.
+
+### Slice 24 — Prediction fall-intent on strip titles
+- Fall lexicon: simplify / streamline / relax / remove / strip / …
+- `foreign-hurt` prints prediction-held on hurt rows while naive still invents helped.
+- **190** pytest tests (re-derived).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 189 passed |
-| Hook empty dir | hook_coverage(temp) → 0/2 |
-| foreign-harden | `magnet foreign-harden` → findings 2/2 |
-| foreign-hurt | `magnet foreign-hurt` → naive invented helped on 4/4 magnet-hurt |
-| foreign-hurt anthropics | `--stack /tmp/magnet-foreign/anthropics-skills` → effort hurt 19→0 |
-| hooks-layout | `magnet probe hooks-layout --stack fixtures/real-stacks/superpowers-hooks` → 3/3 |
-| foreign-bind | `magnet foreign-bind` → findings across 3/3 stacks |
-| check_docs | `magnet check-docs` → claims PASS |
-
-| Cold clone s23 | `/tmp/magnet-cold-s23` @ `f79a14f` → 189 passed · foreign-hurt 2/2 · JUDGE DEMO OK |
+| Tests | `python3 -m pytest -q` → 190 passed |
+| foreign-hurt pred | `magnet foreign-hurt` → prediction-held on 4/4 hurt rows |
+| simplify→fall | `prediction_intent("simplify skill frontmatter")` → fall |
+| hooks-layout live | `--stack /tmp/magnet-foreign/superpowers` → 3/3 |
+| check_docs | `magnet check-docs` → 13 PASS |
+| Cold clone s23 | `/tmp/magnet-cold-s23` @ `f79a14f` → 189 passed · JUDGE DEMO OK |
 | SHIP GATE s22 | `git push origin main` → `643cbed` |
-| SHIP GATE s23 | `git push origin main` → `f79a14f` |
+| SHIP GATE s23 | `git push origin main` → `f79a14f` (tip `bfb32a9`) |
+
+*(s24 cold clone hash after push.)*
 
 ## WRONG
 
-- **Surface arm still 1/2** — helicon science; FINDING only.
-- **prompt-consistency n/a** on foreign stacks without CLAUDE.md.
+- **Surface arm still 1/2** — helicon science.
 - **Bedrock cloud BLOCKED.**
-- **Prediction still lexical.**
-- **Screenshot PNGs not re-rendered** — txt sidecars only.
-- **fixtures/stack hooks-layout 1/3** via settings.json hooks, not hooks/hooks.json — message now says "hooks object present".
-- **superpowers-hooks has no skills** — effort/tools n/a; harden/hurt skip it by default.
-- **No `magnet recover` remote branch** found (prior REPORT trivia).
+- **Screenshot PNGs not re-rendered.**
+- **Prediction still lexical** — fall lexicon is broader, not semantic.
+- **Cold clone s23 tip was 189 tests**; s24 adds one test — do not carry 190 onto s23.
+- **REPORT s23 cold-clone line briefly claimed 190** during doc rewrite — corrected here.

@@ -82,7 +82,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-189 passed (re-derived 2026-09-10)
+190 passed (re-derived 2026-09-10)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -344,6 +344,7 @@ Exit code: **0** (verified: `magnet foreign-harden`). Source fixtures untouched.
 ```
 
 Exit code: **0** (verified: `magnet foreign-hurt`). The arm that can embarrass us.
+Prediction grades strip titles as fall → **prediction-held** on hurt rows while naive invents helped (Slice 24).
 
 ## `magnet probe hooks-layout` (superpowers hooks object)
 

@@ -19,6 +19,16 @@ def test_prediction_intent_rise_fall_flat():
     assert prediction_intent("no coverage change expected") == "flat"
     assert prediction_intent("security must NOT rise on a claimed-only tag") == "flat"
     assert prediction_intent("pass rate drops") == "fall"
+    assert prediction_intent("simplify skill frontmatter") == "fall"
+    assert prediction_intent("relax permissions.deny for developer velocity") == "fall"
+    assert prediction_intent("remove noisy PreToolUse blocker hooks") == "fall"
+    assert prediction_intent("streamline allowed-tools declarations") == "fall"
+
+
+def test_prediction_held_on_hurt_for_strip_title():
+    c = check_prediction("simplify skill frontmatter (drop effort: fields)", "hurt", -1)
+    assert c["outcome"] == "prediction-held"
+    assert c["intent"] == "fall"
 
 
 def test_prediction_held_on_helped():
@@ -26,6 +36,7 @@ def test_prediction_held_on_helped():
     assert c["outcome"] == "prediction-held"
     assert c["intent"] == "rise"
     assert "not attribution" in c["note"]
+
 
 
 def test_prediction_missed_when_noise_unchanged():

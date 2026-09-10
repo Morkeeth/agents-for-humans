@@ -69,15 +69,18 @@ No number without the command that produced it, the population it is out of, and
 | 21 | Foreign-stack bind probes · open anthropics/superpowers objects · naive complete arm | `magnet foreign-bind` exit 0 · FINDING when foreign effort/deny/tools near 0 · pytest green |
 | 22 | Hook control fix + foreign-harden closed loop on stacks we did not build | `magnet foreign-harden` exit 0 · hook-coverage 0/2 when settings.json missing · FINDING title-complete→apply→helped · pytest green |
 | 23 | Foreign-hurt embarrassment + foreign hooks-layout honesty | `magnet foreign-hurt` exit 0 · naive helped on a magnet-hurt row · hooks-layout opens hooks/hooks.json · pytest green |
+| 24 | Prediction fall-intent for strip titles + foreign-hurt prediction check | `magnet foreign-hurt` prints prediction-held on hurt rows · simplify/relax/remove → fall · pytest green |
 
 ## NOW
 
-**Slice 23:** Build the arm that can embarrass us — strip hardening on a foreign working copy and print magnet `hurt` while naive invents `helped` from the title. Also open foreign `hooks/hooks.json` (superpowers object) so UG hook-coverage 0/2 does not pretend the stack has no hooks. `magnet foreign-hurt`. Never rank by repo name.
+**Slice 24:** Prediction was still rise/flat-only lexical. Strip titles ("simplify", "relax", "remove") must grade as fall so foreign-hurt can print prediction-held on magnet-hurt while naive invents helped. Open the prediction object — do not leave it too weak to grade the embarrassment arm.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-10 · Slice 24 SHIP · fall lexicon simplify/streamline/relax/remove · `foreign-hurt` prediction-held 4/4 · `python3 -m pytest -q` → 190 passed · check-docs 13 PASS · (cold clone after push).
+- 2026-09-10 · Slice 24 START · prediction_intent("simplify skill frontmatter") → unknown (cannot grade hurt). Extending fall lexicon; wire check into foreign-hurt rows.
 - 2026-09-10 · Slice 23 SHIP · `magnet foreign-hurt` naive-helped on 4/4 magnet-hurt · `hooks-layout` 3/3 vs UG hook 0/2 · list-probes total 10 · `python3 -m pytest -q` → 189 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s23` @ `f79a14f` JUDGE DEMO OK · `git push origin main` → `f79a14f`.
 - 2026-09-10 · Slice 23 START · opened obra/superpowers `hooks/hooks.json` (SessionStart) — UG hook-coverage stays 0/2 correctly but was silent that hooks exist. Building foreign-hurt (naive helped on magnet hurt) + hooks-layout probe.
 - 2026-09-10 · Slice 22 SHIP · hook control fix (empty dir 0/2) · `magnet foreign-harden` findings 2/2 offline · anthropics effort 0/19→19/19 · `python3 -m pytest -q` → 183 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s22` @ `643cbed` JUDGE DEMO OK · `git push origin main` → `643cbed`.

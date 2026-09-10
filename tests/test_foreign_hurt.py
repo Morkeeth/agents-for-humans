@@ -56,6 +56,8 @@ def test_foreign_hurt_offline_finding():
     assert "FINDING" in text
     assert "naive invented helped" in text
     assert "magnet-hurt" in text or "hurt" in text
+    assert "prediction-held" in text
+    assert "pred=" in text
 
 
 def test_cli_foreign_hurt_exits_zero():
@@ -69,6 +71,7 @@ def test_cli_foreign_hurt_exits_zero():
     assert proc.returncode == 0, proc.stdout + proc.stderr
     assert "FINDING" in proc.stdout
     assert "naive invented helped" in proc.stdout
+    assert "prediction-held" in proc.stdout
 
 
 def test_foreign_bind_reports_layout_finding_on_superpowers_hooks():

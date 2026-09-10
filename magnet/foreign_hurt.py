@@ -15,6 +15,7 @@ import tempfile
 from pathlib import Path
 
 from magnet.foreign_bind import resolve_offline
+from magnet.prediction import check_prediction
 from magnet.reporter import format_value_pop
 from magnet.stack_bind import (
     apply_allowed_tools_frontmatter,
@@ -107,6 +108,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
                     "harden_label": "cannot-measure",
                     "hurt_label": "cannot-measure",
                     "naive": "helped",
+                    "prediction": check_prediction(row["title"], "baseline"),
                 }
             )
             continue
@@ -118,6 +120,9 @@ def hurt_one(source: str, *, label: str = "") -> dict:
         row["strip"](stack)
         after = row["measure"](stack)
         hurt_label = _delta_label(hardened, after)
+        # Grade the strip TITLE as a prediction against magnet's hurt verdict.
+        # Naive still invents helped; prediction-held means the title admitted fall.
+        pred = check_prediction(row["title"], hurt_label)
         if hurt_label == "hurt":
             magnet_hurt += 1
             # Naive invents helped from the strip title every time.
@@ -133,6 +138,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
                 "harden_label": harden_label,
                 "hurt_label": hurt_label,
                 "naive": "helped",
+                "prediction": pred,
             }
         )
 
@@ -176,11 +182,21 @@ def render_foreign_hurt(results: list[dict]) -> str:
                 f"{row['hurt_label']:<13}{row['naive']}"
             )
         lines.append("")
-        lines.append("  strip titles (naive arm — NOT used to rank):")
+        lines.append("  strip titles (naive=helped always; prediction grades the title):")
+        held = 0
+        graded = 0
         for row in result["rows"]:
+            pred = row.get("prediction") or {}
+            outcome = pred.get("outcome", "unmeasured")
+            intent = pred.get("intent", "unknown")
+            if row["hurt_label"] == "hurt":
+                graded += 1
+                if outcome == "prediction-held":
+                    held += 1
             lines.append(
                 f"    {row['id']:<12} naive={row['naive']:<8} "
-                f"magnet={row['hurt_label']:<16}  {row['title']}"
+                f"magnet={row['hurt_label']:<16} "
+                f"pred={outcome:<20} intent={intent:<8}  {row['title']}"
             )
 
         if result["naive_helped_on_hurt"] >= 1 and result["magnet_hurt"] >= 1:
@@ -189,6 +205,16 @@ def render_foreign_hurt(results: list[dict]) -> str:
                 f"  FINDING  naive invented helped on {result['naive_helped_on_hurt']}/"
                 f"{result['magnet_hurt']} magnet-hurt rows — title is not the object."
             )
+            if graded and held == graded:
+                lines.append(
+                    f"  FINDING  prediction-held on {held}/{graded} hurt rows "
+                    f"(strip titles admit fall) while naive still invents helped."
+                )
+            elif graded:
+                lines.append(
+                    f"  note      prediction-held {held}/{graded} hurt rows "
+                    f"(strip titles that lack fall intent stay no-direction)."
+                )
         elif result["magnet_hurt"] == 0:
             lines.append(
                 "  FINDING  magnet printed no hurt rows — strip did not open the "

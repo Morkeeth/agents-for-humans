@@ -17,7 +17,8 @@ _RISE = re.compile(
     re.I,
 )
 _FALL = re.compile(
-    r"\b(fall|falls|falling|drop|drops|hurt|decreas|lower|down|regress)\b",
+    r"\b(fall|falls|falling|drop|drops|hurt|decreas|lower|down|regress|"
+    r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
     re.I,
 )
 _FLAT = re.compile(
