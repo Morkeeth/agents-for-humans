@@ -95,6 +95,11 @@ magnet foreign-bind --stack /tmp/anthropics-skills --stack /tmp/superpowers
 because an empty allow list was treated as clean. That was green-on-outage. After the
 fix, no settings → `0/2`. Re-derive with `magnet probe hook-coverage --stack …`.
 
+**Hooks-layout (Slice 23):** live `obra/superpowers` opens `hooks/hooks.json` →
+`hooks-layout 3/3` while UG `hook-coverage 0/2`. Offline extract:
+`fixtures/real-stacks/superpowers-hooks`. Re-derive:
+`magnet probe hooks-layout --stack /path/to/superpowers`.
+
 **FINDING:** Marketplace and companion stacks that look complete by title carry
 **zero** `effort:` / `allowed-tools:` frontmatter and **zero** sensitive deny
 patterns when the object is opened. Numbers re-derived at the clones — do not
@@ -111,12 +116,25 @@ Closes the loop: BEFORE naive_title=complete at near-zero → APPLY UG on a work
 copy → AFTER magnet helped with value/pop. Source untouched. Naive invents helped
 from titles without measuring the delta.
 
+## Foreign-hurt (naive helped on magnet hurt · 2026-09-10)
+
+```bash
+magnet foreign-hurt
+magnet foreign-hurt --stack /tmp/magnet-foreign/anthropics-skills
+```
+
+Harden then strip. Magnet prints hurt (effort 19/19→0/19 on anthropics). Naive
+invents helped from titles like "simplify skill frontmatter". The arm that can
+embarrass us.
+
 ## Repro
 
 ```bash
 magnet redact-scan
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet foreign-harden
+magnet foreign-hurt
+magnet probe hooks-layout --stack fixtures/real-stacks/superpowers-hooks
 bash scripts/foreign-stack.sh   # network once
 ```
 

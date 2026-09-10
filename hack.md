@@ -78,6 +78,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
+- 2026-09-10 · Slice 23 SHIP · `magnet foreign-hurt` naive-helped on 4/4 magnet-hurt · `hooks-layout` 3/3 vs UG hook 0/2 · list-probes total 10 · `python3 -m pytest -q` → 189 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s23` @ `f79a14f` JUDGE DEMO OK · `git push origin main` → `f79a14f`.
 - 2026-09-10 · Slice 23 START · opened obra/superpowers `hooks/hooks.json` (SessionStart) — UG hook-coverage stays 0/2 correctly but was silent that hooks exist. Building foreign-hurt (naive helped on magnet hurt) + hooks-layout probe.
 - 2026-09-10 · Slice 22 SHIP · hook control fix (empty dir 0/2) · `magnet foreign-harden` findings 2/2 offline · anthropics effort 0/19→19/19 · `python3 -m pytest -q` → 183 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s22` @ `643cbed` JUDGE DEMO OK · `git push origin main` → `643cbed`.
 - 2026-09-10 · Slice 22 START · opened anthropics/skills + obra/superpowers + live agentgrinder: hook-coverage scored 1/2 with NO settings.json (empty allow invented "hardened"). guide-demo --stack foreign already moves 4/5 but never prints the before-lie. Building foreign-harden + hook control fix.

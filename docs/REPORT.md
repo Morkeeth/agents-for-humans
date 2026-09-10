@@ -25,7 +25,9 @@
 | foreign-bind | `magnet foreign-bind` → findings across 3/3 stacks |
 | check_docs | `magnet check-docs` → claims PASS |
 
-*(Cold clone + SHIP GATE hashes filled after push.)*
+| Cold clone s23 | `/tmp/magnet-cold-s23` @ `f79a14f` → 189 passed · foreign-hurt 2/2 · JUDGE DEMO OK |
+| SHIP GATE s22 | `git push origin main` → `643cbed` |
+| SHIP GATE s23 | `git push origin main` → `f79a14f` |
 
 ## WRONG
 
