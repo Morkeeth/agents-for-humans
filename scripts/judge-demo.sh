@@ -83,6 +83,10 @@ else
   echo ""
   echo "=== 7f/8 · Honesty: foreign-bind (marketplace title vs bind probes)"
   magnet foreign-bind
+
+  echo ""
+  echo "=== 7g/8 · Honesty: foreign-harden (title-complete → apply → helped)"
+  magnet foreign-harden
 fi
 
 echo ""

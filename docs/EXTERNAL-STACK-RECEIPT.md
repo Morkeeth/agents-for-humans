@@ -87,21 +87,37 @@ magnet foreign-bind --stack /tmp/anthropics-skills --stack /tmp/superpowers
 | Stack | effort | tools | deny | hook | naive_title |
 |-------|-------:|------:|-----:|-----:|-------------|
 | fixtures/stack | 0/7 | 0/7 | 0/4 | 0/2 | complete |
-| fixtures/real-stacks/agentgrinder | 0/1 | 0/1 | 0/4 | 1/2 | complete |
-| anthropics/skills (clone) | 0/19 | 0/19 | 0/4 | 1/2 | complete |
-| obra/superpowers (clone) | 0/14 | 0/14 | 0/4 | 1/2 | complete |
+| fixtures/real-stacks/agentgrinder | 0/1 | 0/1 | 0/4 | 0/2 | complete |
+| anthropics/skills (clone) | 0/19 | 0/19 | 0/4 | 0/2 | complete |
+| obra/superpowers (clone) | 0/14 | 0/14 | 0/4 | 0/2 | complete |
+
+**Hook control (Slice 22):** missing `settings.json` used to score `hook-coverage 1/2`
+because an empty allow list was treated as clean. That was green-on-outage. After the
+fix, no settings → `0/2`. Re-derive with `magnet probe hook-coverage --stack …`.
 
 **FINDING:** Marketplace and companion stacks that look complete by title carry
 **zero** `effort:` / `allowed-tools:` frontmatter and **zero** sensitive deny
-patterns when the object is opened. Numbers re-derived at the clones tonight —
-do not carry them; re-run `magnet foreign-bind --stack …`.
+patterns when the object is opened. Numbers re-derived at the clones — do not
+carry them; re-run `magnet foreign-bind --stack …`.
+
+## Foreign-harden (title → apply → helped · 2026-09-10)
+
+```bash
+magnet foreign-harden                                          # offline fixtures
+magnet foreign-harden --stack /tmp/anthropics-skills
+```
+
+Closes the loop: BEFORE naive_title=complete at near-zero → APPLY UG on a working
+copy → AFTER magnet helped with value/pop. Source untouched. Naive invents helped
+from titles without measuring the delta.
 
 ## Repro
 
 ```bash
 magnet redact-scan
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
+magnet foreign-harden
 bash scripts/foreign-stack.sh   # network once
 ```
 
-Numbers above re-derived 2026-09-07 — do not carry them forward without re-running.
+Numbers above must be re-derived at the object — do not carry them without re-running.

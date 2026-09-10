@@ -13,6 +13,8 @@ magnet eval
 magnet agent-run
 magnet stack
 magnet bakeoff
+magnet foreign-bind
+magnet foreign-harden
 magnet list-probes
 magnet history
 pytest -q
@@ -80,7 +82,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-174 passed (re-derived 2026-09-07)
+183 passed (re-derived 2026-09-10)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -314,4 +316,19 @@ Exit code: **0** (verified: `magnet guide-demo`). Source fixtures/stack untouche
 
 Exit code: **0** (verified: `magnet foreign-bind`). Offline — no network.
 Live clones (optional): anthropics effort 0/19 · superpowers effort 0/14 — re-derive with `--stack`.
+
+## `magnet foreign-harden` (title-complete → apply → helped)
+
+```
+  STACK    fixtures/real-stacks/agentgrinder
+  naive_title  complete
+  effort-coverage        0/1        1/1        helped
+  deny-coverage          0/4        4/4        helped
+  tools-coverage         0/1        1/1        helped
+  hook-coverage          0/2        2/2        helped
+  FINDING  naive_title=complete at hardening near-zero (effort 0/1); after UG apply magnet moved=4/5 (effort 1/1) — title never measured the delta.
+  findings   2/2 stacks closed the title→apply→helped loop
+```
+
+Exit code: **0** (verified: `magnet foreign-harden`). Source fixtures untouched. Hook before is **0/2** after the Slice 22 control fix (missing settings.json is no longer green-on-outage).
 

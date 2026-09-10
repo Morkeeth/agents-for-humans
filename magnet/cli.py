@@ -24,6 +24,7 @@ from magnet.external import measure_external_stack, render_external
 from magnet.bind_demo import run_bind_demo
 from magnet.guide_demo import run_guide_demo
 from magnet.foreign_bind import run_foreign_bind
+from magnet.foreign_harden import run_foreign_harden
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -232,6 +233,23 @@ def cmd_foreign_bind(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_foreign_harden(args: argparse.Namespace) -> int:
+    stacks = list(args.stack or [])
+    text = run_foreign_harden(repo_root=args.repo, stacks=stacks or None)
+    print(text)
+    if "no stacks found" in text or "no usable stack" in text:
+        return 1
+    if "no stack closed the foreign-harden loop" in text:
+        return 1
+    if "FINDING" not in text:
+        return 1
+    if "title→apply→helped" not in text and "title never measured" not in text:
+        # Require the closed-loop finding language, not a generic FINDING.
+        if "closed the title" not in text:
+            return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -425,6 +443,17 @@ def main(argv: list[str] | None = None) -> int:
         help="Stack path (repeatable). Default: offline fixtures. Or set MAGNET_FOREIGN_BIND",
     )
     p_fb.set_defaults(func=cmd_foreign_bind)
+
+    p_fh = sub.add_parser(
+        "foreign-harden",
+        help="Apply UG hardening to foreign stacks: title-complete → apply → helped",
+    )
+    p_fh.add_argument(
+        "--stack",
+        action="append",
+        help="Stack path (repeatable). Default: offline fixtures. Or set MAGNET_FOREIGN_BIND",
+    )
+    p_fh.set_defaults(func=cmd_foreign_harden)
 
     args = parser.parse_args(argv)
     return args.func(args)

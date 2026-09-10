@@ -172,9 +172,11 @@ def run_guide_demo(
 
         before_s = format_value_pop(before.get("value"), before.get("population"))
         after_s = format_value_pop(after.get("value"), after.get("population"))
+        # format_value_pop returns "n/a" when population is 0 — pad labels so
+        # "cannot-measure" never concatenates into "cannot-measurehelped".
         lines.append(
             f"  {i:<3}{row['change_type']:<14}{row['probe']:<22}"
-            f"{before_s:<9}{after_s:<9}{magnet_label:<12}{naive}"
+            f"{before_s:<9}{after_s:<9}{magnet_label:<14}{naive}"
         )
         rows_out.append(
             {

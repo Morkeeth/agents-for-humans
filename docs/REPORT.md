@@ -1,40 +1,34 @@
-# Build report · Slice 20–21 · 2026-09-08
+# Build report · Slice 22 · 2026-09-10
 
 ## SHIPPED
 
-### Slice 20 — Ultimate Guide closed loop
-- `tools-coverage`, `hook-coverage`, `prompt-consistency` bind probes
-- `magnet guide-demo` — 5-row UG table vs naive title; moved=5/5; repo-blind flat
-- `check_docs` scans screenshot sidecars (closed the 113 control gap)
-- Bakeoff surface 1/2 FINDING (helicon cross-surface dupe)
-
-### Slice 21 — Foreign-bind
-- `magnet foreign-bind` — bind probes on stacks we did not build
-- Offline: fixtures/stack + Agent Grinder fixture both FINDING (naive=complete, hardening 0)
-- Live objects (re-derived tonight): anthropics effort **0/19** · tools **0/19** · deny **0/4**; superpowers effort **0/14** · tools **0/14** · deny **0/4**; both naive_title=complete
-- **174** pytest tests
+### Slice 22 — Hook control fix + foreign-harden closed loop
+- **Hook control:** `no-rm-rf-star-allow` no longer scores when `settings.json` is missing or has no `permissions.allow` key (green-on-outage fix). Empty dir and Agent Grinder / anthropics clones now report `hook-coverage 0/2` before harden.
+- **`magnet foreign-harden`:** Open foreign stack → BEFORE naive_title=complete at near-zero → APPLY Ultimate Guide hardening on a working copy → AFTER magnet helped with value/pop. Offline fixtures + optional `--stack` / `MAGNET_FOREIGN_BIND`.
+- Wired into `scripts/judge-demo.sh` (7g/8) and `scripts/foreign-stack.sh`.
+- guide-demo column padding fix (`cannot-measure` no longer concatenates into `cannot-measurehelped`).
+- **183** pytest tests (re-derived from `tests/test_*.py`).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 174 passed (re-derive) |
-| guide-demo | `magnet guide-demo` → moved=5/5 FINDING |
-| foreign-bind offline | `magnet foreign-bind` → findings 2/2 |
-| foreign-bind anthropics | `magnet foreign-bind --stack /tmp/anthropics-skills` → effort 0/19 FINDING |
-| foreign-bind superpowers | `magnet foreign-bind --stack /tmp/superpowers` → effort 0/14 FINDING |
-| check_docs | `magnet check-docs` → claims PASS |
-| Slice 20 cold clone | `/tmp/magnet-cold-s20` @ `68991cc` JUDGE DEMO OK |
-| SHIP GATE s20 | `git push origin main` → `dabe8c7` (tip `8d80ba0`) |
-| Cold clone s21 | `/tmp/magnet-cold-s21` @ `1281155` → 174 passed · foreign-bind 2/2 · JUDGE DEMO OK |
-| SHIP GATE s21 | `git push origin main` → `ec3a084` |
+| Tests | `python3 -m pytest -q` → 183 passed |
+| Hook empty dir | `python3 -c "… hook_coverage(tempdir)"` → 0/2 |
+| foreign-harden offline | `magnet foreign-harden` → findings 2/2 · moved=5/5 + 4/5 |
+| foreign-harden anthropics | `magnet foreign-harden --stack /tmp/magnet-foreign/anthropics-skills` → effort 0/19→19/19 FINDING |
+| foreign-bind hook | `magnet foreign-bind` → hook-coverage 0/2 on both offline stacks |
+| check_docs | `magnet check-docs` → 13 claims PASS |
+| drift-demo | `magnet drift-demo` → fake exit 1, real exit 0 |
+
+*(Cold clone + SHIP GATE hashes filled after push.)*
 
 ## WRONG
 
-- **Surface arm still 1/2** — FINDING only; helicon science.
-- **Screenshot PNGs not re-rendered** — txt sidecars only.
-- **Bedrock cloud BLOCKED**.
-- **Prediction still lexical**.
-- **hook-coverage 1/2 on foreign stacks** — `no-rm-rf-star-allow` is true when allow is empty (correct); blocker still missing. Not a full 0.
-- **prompt-consistency n/a** on foreign stacks without CLAUDE.md — population 0, cannot invent a score.
-- **Parallel `magnet recover` branch still unmerged**.
+- **Surface arm still 1/2** — FINDING only; helicon cross-surface dupe science.
+- **prompt-consistency n/a** on foreign stacks without CLAUDE.md — population 0; naive still invents helped (correct embarrassment).
+- **Bedrock cloud BLOCKED** — no AWS creds in this VM.
+- **Prediction still lexical** — not opened this slice.
+- **Screenshot PNGs not re-rendered** — txt sidecars only (counts updated).
+- **Naive UG arm invents helped on every title** — same as magnet after a successful apply; the before-lie (complete at 0/N) is the embarrassment, not after-row disagreement.
+- **Parallel `magnet recover` branch** cited in prior REPORT — no such remote branch found tonight; left as open trivia.

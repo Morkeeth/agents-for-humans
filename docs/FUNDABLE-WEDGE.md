@@ -28,6 +28,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Prediction check** | Grade free-text prediction vs measured verdict (held/missed — not attribution) | `magnet adopt` · `magnet history` |
 | **Stack-bind** | Probes that open the stack object; bind-demo + guide-demo prove repo-blind stays flat | `magnet bind-demo` · `magnet guide-demo` · `magnet probe effort-coverage` |
 | **Foreign-bind** | Same bind probes on stacks we did not build; embarrasses naive_title=complete | `magnet foreign-bind` · `bash scripts/foreign-stack.sh` |
+| **Foreign-harden** | Closed loop: title-complete at near-zero → UG apply on working copy → magnet helped | `magnet foreign-harden` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

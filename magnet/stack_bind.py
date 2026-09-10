@@ -172,13 +172,22 @@ def deny_coverage(stack_dir: str) -> dict:
 
 def _hook_signal_present(stack_dir: str, signal: str) -> bool:
     root = Path(os.path.expanduser(stack_dir))
+    settings_path = root / "settings.json"
     blob = _settings_blob(stack_dir)
     if signal == "dangerous-actions-blocker":
         script = root / "hooks" / BLOCKER_SCRIPT
         return BLOCKER_SCRIPT in blob or script.is_file()
     if signal == "no-rm-rf-star-allow":
+        # Control must go RED on outage: missing settings.json is not a clean
+        # allow list. An empty temp dir used to score 1/2 (green-on-outage).
+        if not settings_path.is_file():
+            return False
         data = _load_settings(stack_dir)
-        allow = [str(a) for a in ((data.get("permissions") or {}).get("allow") or [])]
+        perms = data.get("permissions")
+        if not isinstance(perms, dict) or "allow" not in perms:
+            # Never opened an allow list — cannot claim it is clean.
+            return False
+        allow = [str(a) for a in (perms.get("allow") or [])]
         # Open the allow list itself — title "hardened" does not count.
         return DANGEROUS_ALLOW not in allow and not any(
             "rm -rf *" in a for a in allow

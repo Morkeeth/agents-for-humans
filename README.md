@@ -27,6 +27,7 @@ magnet redact-scan    # secret patterns — must stay GREEN here
 magnet bind-demo      # repo-blind flat; stack-bind probes move
 magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet foreign-bind   # bind probes on stacks we did not build
+magnet foreign-harden # title-complete → UG apply → helped (foreign closed loop)
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 

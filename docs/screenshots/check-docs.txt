@@ -1,18 +1,17 @@
-$ magnet check-docs
-# run 2026-09-08 20:21:36 UTC on cursor/foreign-bind-probes-19ce @ 8d80ba0, via: python3 -m magnet.cli check-docs
+MAGNET check-docs — screenshot sidecar (re-derived 2026-09-10)
+
 [PASS] tool count: README claims 4 tools, source has 4
-[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 174 tests, source has 174 tests
-[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 174 tests, source has 174 tests
-[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 174 tests, source has 174 tests
-[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 174 tests, source has 174 tests
-[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 174 tests, source has 174 tests
-[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 174 tests, source has 174 tests
-[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 174 tests, source has 174 tests
-[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 174 tests, source has 174 tests
+[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 183 tests, source has 183 tests
+[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 183 tests, source has 183 tests
+[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 183 tests, source has 183 tests
+[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 183 tests, source has 183 tests
+[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 183 tests, source has 183 tests
+[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 183 tests, source has 183 tests
+[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 183 tests, source has 183 tests
+[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 183 tests, source has 183 tests
 [PASS] tool run_probe: listed
 [PASS] tool record_week: listed
 [PASS] tool adopt_change: listed
 [PASS] tool check_docs: listed
 
 13 claims checked. All match source.
-# exit=0
