@@ -82,7 +82,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-183 passed (re-derived 2026-09-10)
+189 passed (re-derived 2026-09-10)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
@@ -144,7 +144,7 @@ MAGNET probes  (built-in + .magnet/probes.json)
   hook-coverage        [builtin]  magnet probe hook-coverage
   prompt-consistency   [builtin]  magnet probe prompt-consistency
 
-  total      9
+  total      10
 ```
 
 Exit code: **0** (verified: `python -m magnet.cli list-probes`)
@@ -331,4 +331,26 @@ Live clones (optional): anthropics effort 0/19 · superpowers effort 0/14 — re
 ```
 
 Exit code: **0** (verified: `magnet foreign-harden`). Source fixtures untouched. Hook before is **0/2** after the Slice 22 control fix (missing settings.json is no longer green-on-outage).
+
+## `magnet foreign-hurt` (naive helped on magnet hurt)
+
+```
+  #   probe              before   hardened after    magnet-hurt  naive
+  1  effort-coverage    0/1      1/1      0/1      hurt         helped
+  2  tools-coverage     0/1      1/1      0/1      hurt         helped
+  3  deny-coverage      0/4      4/4      0/4      hurt         helped
+  4  hook-coverage      0/2      2/2      0/2      hurt         helped
+  FINDING  naive invented helped on 4/4 magnet-hurt rows — title is not the object.
+```
+
+Exit code: **0** (verified: `magnet foreign-hurt`). The arm that can embarrass us.
+
+## `magnet probe hooks-layout` (superpowers hooks object)
+
+```
+hooks-layout: 3/3
+  command: magnet probe hooks-layout --stack fixtures/real-stacks/superpowers-hooks
+```
+
+UG `hook-coverage` on the same extract is **0/2**. Layout ≠ hardening.
 

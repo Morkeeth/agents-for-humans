@@ -28,6 +28,7 @@ magnet bind-demo      # repo-blind flat; stack-bind probes move
 magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet foreign-bind   # bind probes on stacks we did not build
 magnet foreign-harden # title-complete → UG apply → helped (foreign closed loop)
+magnet foreign-hurt   # strip hardening → magnet hurt; naive invents helped
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 

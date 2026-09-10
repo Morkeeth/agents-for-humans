@@ -25,6 +25,7 @@ from magnet.bind_demo import run_bind_demo
 from magnet.guide_demo import run_guide_demo
 from magnet.foreign_bind import run_foreign_bind
 from magnet.foreign_harden import run_foreign_harden
+from magnet.foreign_hurt import run_foreign_hurt
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -250,6 +251,22 @@ def cmd_foreign_harden(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_foreign_hurt(args: argparse.Namespace) -> int:
+    stacks = list(args.stack or [])
+    text = run_foreign_hurt(repo_root=args.repo, stacks=stacks or None)
+    print(text)
+    if "no stacks found" in text or "no usable stack" in text:
+        return 1
+    if "no stack embarrassed naive-on-hurt" in text:
+        return 1
+    if "FINDING" not in text:
+        return 1
+    if "naive invented helped" not in text and "magnet-hurt" not in text:
+        if "naive invented helped" not in text:
+            return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -454,6 +471,17 @@ def main(argv: list[str] | None = None) -> int:
         help="Stack path (repeatable). Default: offline fixtures. Or set MAGNET_FOREIGN_BIND",
     )
     p_fh.set_defaults(func=cmd_foreign_harden)
+
+    p_hurt = sub.add_parser(
+        "foreign-hurt",
+        help="Strip hardening on foreign stacks: magnet hurt while naive invents helped",
+    )
+    p_hurt.add_argument(
+        "--stack",
+        action="append",
+        help="Stack path (repeatable). Default: offline fixtures with skills",
+    )
+    p_hurt.set_defaults(func=cmd_foreign_hurt)
 
     args = parser.parse_args(argv)
     return args.func(args)

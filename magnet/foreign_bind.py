@@ -16,6 +16,7 @@ from magnet.stack_bind import (
     deny_coverage,
     effort_coverage,
     hook_coverage,
+    hooks_layout,
     prompt_consistency,
     tools_coverage,
 )
@@ -24,6 +25,10 @@ from magnet.stack_bind import (
 OFFLINE_STACKS = (
     ("fixtures/stack", "fixture (ours — starts unhardened)"),
     ("fixtures/real-stacks/agentgrinder", "Agent Grinder fixture (companion)"),
+    (
+        "fixtures/real-stacks/superpowers-hooks",
+        "obra/superpowers hooks/ extract (layout ≠ UG)",
+    ),
 )
 
 BIND_MEASURES = (
@@ -31,6 +36,7 @@ BIND_MEASURES = (
     ("deny-coverage", deny_coverage),
     ("tools-coverage", tools_coverage),
     ("hook-coverage", hook_coverage),
+    ("hooks-layout", hooks_layout),
     ("prompt-consistency", prompt_consistency),
     ("stack-coverage", stack_coverage),
 )
@@ -70,6 +76,13 @@ def _hardening_near_zero(probes: dict) -> bool:
     return True
 
 
+def _layout_without_ug_hardening(probes: dict) -> bool:
+    """hooks-layout present while UG hook-coverage is empty — foreign honesty."""
+    layout = probes.get("hooks-layout") or {}
+    ug = probes.get("hook-coverage") or {}
+    return (layout.get("value") or 0) > 0 and (ug.get("value") or 0) == 0
+
+
 def render_foreign_bind(results: list[dict]) -> str:
     lines = [
         "MAGNET foreign-bind — Ultimate Guide probes on stacks we did not build",
@@ -78,9 +91,11 @@ def render_foreign_bind(results: list[dict]) -> str:
         "",
     ]
     findings = 0
+    stacks_with_finding = 0
     for result in results:
         probes = result["probes"]
         naive = result["naive"]
+        stack_findings_before = findings
         lines += [
             f"  STACK  {result['stack']}",
             f"  label  {result.get('label', '')}",
@@ -119,10 +134,23 @@ def render_foreign_bind(results: list[dict]) -> str:
                     f"  FINDING  naive_title=complete; stack-coverage "
                     f"{format_value_pop(cov.get('value'), cov.get('population'))}."
                 )
+        if _layout_without_ug_hardening(probes):
+            findings += 1
+            layout = probes["hooks-layout"]
+            ug = probes["hook-coverage"]
+            lines.append(
+                f"  FINDING  hooks-layout "
+                f"{format_value_pop(layout.get('value'), layout.get('population'))} "
+                f"while UG hook-coverage "
+                f"{format_value_pop(ug.get('value'), ug.get('population'))} "
+                f"— hooks object present; UG hardening is a different probe."
+            )
+        if findings > stack_findings_before:
+            stacks_with_finding += 1
         lines.append("")
 
     lines += [
-        f"  findings   {findings}/{len(results)} stacks embarrassed naive_title",
+        f"  findings   {findings} across {stacks_with_finding}/{len(results)} stacks",
         "  repro      magnet foreign-bind",
         "  repro      magnet foreign-bind --stack /path/to/clone",
         "  repro      bash scripts/foreign-stack.sh",

@@ -160,4 +160,4 @@ def test_list_probes_includes_stack_coverage():
     assert "tools-coverage" in proc.stdout
     assert "hook-coverage" in proc.stdout
     assert "prompt-consistency" in proc.stdout
-    assert "total      9" in proc.stdout
+    assert "total      10" in proc.stdout

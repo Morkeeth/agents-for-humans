@@ -1,5 +1,3 @@
-$ magnet list-probes
-# run 2026-09-08 20:21:36 UTC on cursor/foreign-bind-probes-19ce @ 8d80ba0, via: python3 -m magnet.cli list-probes
 MAGNET probes  (built-in + .magnet/probes.json)
 
   demo-pass-rate       [builtin]  magnet probe demo-pass-rate
@@ -18,9 +16,10 @@ MAGNET probes  (built-in + .magnet/probes.json)
     YOUR stack: skills with allowed-tools: frontmatter / total skills
   hook-coverage        [builtin]  magnet probe hook-coverage
     YOUR stack: dangerous-actions-blocker + no Bash(rm -rf *) allow
+  hooks-layout         [builtin]  magnet probe hooks-layout
+    YOUR stack: hooks/hooks.json layout (≠ UG hardening)
   prompt-consistency   [builtin]  magnet probe prompt-consistency
     YOUR stack: CLAUDE.md MUST lines present in post-compact-reinject.txt
 
-  total      9
+  total      10
   repro      magnet list-probes
-# exit=0

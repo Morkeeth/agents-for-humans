@@ -18,7 +18,6 @@ from pathlib import Path
 
 from magnet.foreign_bind import (
     BIND_MEASURES,
-    OFFLINE_STACKS,
     _hardening_near_zero,
     measure_bind,
     resolve_offline,
@@ -32,11 +31,15 @@ def resolve_targets(
     repo_root: str,
     stacks: list[str] | None = None,
 ) -> list[tuple[str, str]]:
-    """Offline fixtures by default; --stack / MAGNET_FOREIGN_BIND for live clones."""
+    """Offline fixtures with skills by default; --stack / MAGNET_FOREIGN_BIND for live."""
     if stacks:
         return [(os.path.expanduser(s), "cli --stack") for s in stacks]
-    pairs = resolve_offline(repo_root)
-    # Prefer the companion fixture first — we did not author its SKILL.md body.
+    pairs = [
+        (p, lab)
+        for p, lab in resolve_offline(repo_root)
+        # hooks-only extract has no SKILL.md — use foreign-bind / hooks-layout instead
+        if "superpowers-hooks" not in p
+    ]
     extra = os.environ.get("MAGNET_FOREIGN_BIND", "").strip()
     if extra:
         for part in extra.split(","):
@@ -232,7 +235,6 @@ def render_foreign_harden(results: list[dict]) -> str:
 
     lines += [
         f"  findings   {findings}/{len(results)} stacks closed the title→apply→helped loop",
-        f"  offline    {[rel for rel, _ in OFFLINE_STACKS]}",
         "  repro      magnet foreign-harden",
         "  repro      magnet foreign-harden --stack /path/to/clone",
         "  repro      bash scripts/foreign-stack.sh",

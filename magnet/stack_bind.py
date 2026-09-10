@@ -25,6 +25,7 @@ DENY_PROBE = "deny-coverage"
 TOOLS_PROBE = "tools-coverage"
 HOOK_PROBE = "hook-coverage"
 PROMPT_PROBE = "prompt-consistency"
+HOOKS_LAYOUT_PROBE = "hooks-layout"
 
 STACK_BIND_PROBES = frozenset(
     {
@@ -33,6 +34,7 @@ STACK_BIND_PROBES = frozenset(
         TOOLS_PROBE,
         HOOK_PROBE,
         PROMPT_PROBE,
+        HOOKS_LAYOUT_PROBE,
         "stack-coverage",
     }
 )
@@ -212,6 +214,156 @@ def hook_coverage(stack_dir: str) -> dict:
             "object": "settings.json hooks + permissions.allow",
         },
     }
+
+
+# Layout signals for hooks MAGNET did not invent — open hooks/hooks.json etc.
+# Distinct from UG hook-coverage (dangerous-actions-blocker). A stack can have
+# SessionStart hooks and still score 0/2 on UG hardening.
+HOOKS_LAYOUT_SIGNALS = (
+    "hooks-dir",
+    "hooks-json",
+    "session-or-pretool-hook",
+)
+
+
+def hooks_layout(stack_dir: str) -> dict:
+    """Open hooks/hooks.json (and siblings) — not settings.json UG signals.
+
+    Re-derived at the object. Superpowers carries SessionStart here while UG
+    hook-coverage stays 0/2. Never invent a score from the repo name.
+    """
+    root = Path(os.path.expanduser(stack_dir))
+    hooks_dir = root / "hooks"
+    hooks_json = hooks_dir / "hooks.json"
+    settings_hooks = bool((_load_settings(stack_dir).get("hooks") or {}))
+
+    present: list[str] = []
+    detail_files: list[str] = []
+    if hooks_dir.is_dir():
+        present.append("hooks-dir")
+    if hooks_json.is_file():
+        present.append("hooks-json")
+        detail_files.append(str(hooks_json))
+        try:
+            data = json.loads(hooks_json.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        events = (data.get("hooks") or {}) if isinstance(data, dict) else {}
+        if "SessionStart" in events or "PreToolUse" in events:
+            present.append("session-or-pretool-hook")
+    elif settings_hooks:
+        # settings.json hooks count as a layout signal when hooks/ is absent.
+        present.append("session-or-pretool-hook")
+        detail_files.append(str(root / "settings.json"))
+
+    missing = [s for s in HOOKS_LAYOUT_SIGNALS if s not in present]
+    return {
+        "probe_name": HOOKS_LAYOUT_PROBE,
+        "value": len(present),
+        "population": len(HOOKS_LAYOUT_SIGNALS),
+        "command": f"magnet probe {HOOKS_LAYOUT_PROBE} --stack {stack_dir}",
+        "direction": "up",
+        "detail": {
+            "stack": stack_dir,
+            "present": present,
+            "missing": missing,
+            "files": detail_files,
+            "object": "hooks/hooks.json (or settings.json hooks)",
+            "note": "layout ≠ UG hardening — hook-coverage is a separate probe",
+        },
+    }
+
+
+def strip_effort_frontmatter(stack_dir: str) -> list[str]:
+    """Remove effort: lines from every SKILL.md — hurt-arm for foreign-hurt."""
+    touched: list[str] = []
+    effort_line = re.compile(r"^effort\s*:.*\n?", re.M | re.I)
+    for path in list_skill_paths(stack_dir):
+        if not skill_has_effort(path):
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        m = _FRONTMATTER.match(text)
+        if not m:
+            continue
+        body = effort_line.sub("", m.group(1))
+        # Keep frontmatter even if only other keys remain.
+        new = f"---\n{body.rstrip()}\n---\n" + text[m.end() :]
+        path.write_text(new, encoding="utf-8")
+        touched.append(path.parent.name)
+    return touched
+
+
+def strip_allowed_tools_frontmatter(stack_dir: str) -> list[str]:
+    """Remove allowed-tools: lines — second hurt signal."""
+    touched: list[str] = []
+    tools_line = re.compile(r"^allowed-tools\s*:.*\n?", re.M | re.I)
+    for path in list_skill_paths(stack_dir):
+        if not skill_has_allowed_tools(path):
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        m = _FRONTMATTER.match(text)
+        if not m:
+            continue
+        body = tools_line.sub("", m.group(1))
+        new = f"---\n{body.rstrip()}\n---\n" + text[m.end() :]
+        path.write_text(new, encoding="utf-8")
+        touched.append(path.parent.name)
+    return touched
+
+
+def strip_deny_patterns(stack_dir: str) -> list[str]:
+    """Clear permissions.deny — hurt arm for deny-coverage."""
+    root = Path(os.path.expanduser(stack_dir))
+    settings_path = root / "settings.json"
+    if not settings_path.is_file():
+        return []
+    try:
+        data = json.loads(settings_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    perms = data.get("permissions") or {}
+    deny = list(perms.get("deny") or [])
+    if not deny:
+        return []
+    perms["deny"] = []
+    data["permissions"] = perms
+    settings_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return [str(d) for d in deny]
+
+
+def strip_hook_hardening(stack_dir: str) -> list[str]:
+    """Remove dangerous-actions-blocker and re-add Bash(rm -rf *) allow."""
+    root = Path(os.path.expanduser(stack_dir))
+    removed: list[str] = []
+    blocker = root / "hooks" / BLOCKER_SCRIPT
+    if blocker.is_file():
+        blocker.unlink()
+        removed.append("removed-blocker-script")
+    data = _load_settings(stack_dir)
+    if not data and not (root / "settings.json").is_file():
+        return removed
+    perms = data.setdefault("permissions", {})
+    allow = list(perms.get("allow") or [])
+    if DANGEROUS_ALLOW not in allow:
+        allow.append(DANGEROUS_ALLOW)
+        removed.append("restored-rm-rf-star-allow")
+    perms["allow"] = allow
+    data["permissions"] = perms
+    # Drop PreToolUse entries that reference the blocker.
+    hooks = data.get("hooks") or {}
+    pre = hooks.get("PreToolUse") or []
+    kept = []
+    for entry in pre:
+        blob = json.dumps(entry)
+        if BLOCKER_SCRIPT in blob:
+            removed.append("unwired-blocker-hook")
+            continue
+        kept.append(entry)
+    if "hooks" in data:
+        data["hooks"]["PreToolUse"] = kept
+    settings_path = root / "settings.json"
+    settings_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return removed
 
 
 def _claude_must_lines(stack_dir: str) -> list[str]:

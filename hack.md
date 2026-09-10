@@ -68,15 +68,18 @@ No number without the command that produced it, the population it is out of, and
 | 20 | Ultimate Guide closed loop · remaining bind probes · guide-demo · screenshot drift control | `magnet guide-demo` exit 0 · tools/hook/prompt probes · check_docs scans screenshot sidecars · pytest green |
 | 21 | Foreign-stack bind probes · open anthropics/superpowers objects · naive complete arm | `magnet foreign-bind` exit 0 · FINDING when foreign effort/deny/tools near 0 · pytest green |
 | 22 | Hook control fix + foreign-harden closed loop on stacks we did not build | `magnet foreign-harden` exit 0 · hook-coverage 0/2 when settings.json missing · FINDING title-complete→apply→helped · pytest green |
+| 23 | Foreign-hurt embarrassment + foreign hooks-layout honesty | `magnet foreign-hurt` exit 0 · naive helped on a magnet-hurt row · hooks-layout opens hooks/hooks.json · pytest green |
 
 ## NOW
 
-**Slice 22:** Fix the green-on-outage hook control (`no-rm-rf-star-allow` must not score when `settings.json` is missing), then close the loop: open a foreign stack → measure near-zero hardening under naive_title=complete → apply Ultimate Guide hardening to a working copy → re-measure helped with value/pop. `magnet foreign-harden`. Never rank by repo name.
+**Slice 23:** Build the arm that can embarrass us — strip hardening on a foreign working copy and print magnet `hurt` while naive invents `helped` from the title. Also open foreign `hooks/hooks.json` (superpowers object) so UG hook-coverage 0/2 does not pretend the stack has no hooks. `magnet foreign-hurt`. Never rank by repo name.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-10 · Slice 23 START · opened obra/superpowers `hooks/hooks.json` (SessionStart) — UG hook-coverage stays 0/2 correctly but was silent that hooks exist. Building foreign-hurt (naive helped on magnet hurt) + hooks-layout probe.
+- 2026-09-10 · Slice 22 SHIP · hook control fix (empty dir 0/2) · `magnet foreign-harden` findings 2/2 offline · anthropics effort 0/19→19/19 · `python3 -m pytest -q` → 183 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s22` @ `643cbed` JUDGE DEMO OK · `git push origin main` → `643cbed`.
 - 2026-09-10 · Slice 22 START · opened anthropics/skills + obra/superpowers + live agentgrinder: hook-coverage scored 1/2 with NO settings.json (empty allow invented "hardened"). guide-demo --stack foreign already moves 4/5 but never prints the before-lie. Building foreign-harden + hook control fix.
 - 2026-09-08 · Slice 21 SHIP · `magnet foreign-bind` findings 2/2 offline · anthropics effort 0/19 tools 0/19 · superpowers 0/14 · naive_title=complete · cold clone `/tmp/magnet-cold-s21` JUDGE DEMO OK @ 1281155 · `git push origin main` → `ec3a084`.
 - 2026-09-08 · Slice 21 START · open anthropics/skills + obra/superpowers objects for bind probes; fixture Agent Grinder as offline arm.

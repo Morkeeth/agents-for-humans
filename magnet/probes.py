@@ -17,6 +17,7 @@ DENY_PROBE = "deny-coverage"
 TOOLS_PROBE = "tools-coverage"
 HOOK_PROBE = "hook-coverage"
 PROMPT_PROBE = "prompt-consistency"
+HOOKS_LAYOUT_PROBE = "hooks-layout"
 
 # Docs that claim pytest counts — re-derived from tests/test_*.py at read time.
 DOCS_WITH_PYTEST_COUNTS = (
@@ -85,6 +86,12 @@ BUILTIN_PROBES = (
         "command": "magnet probe hook-coverage",
         "direction": "up",
         "description": "YOUR stack: dangerous-actions-blocker + no Bash(rm -rf *) allow",
+    },
+    {
+        "name": HOOKS_LAYOUT_PROBE,
+        "command": "magnet probe hooks-layout",
+        "direction": "up",
+        "description": "YOUR stack: hooks/hooks.json layout (≠ UG hardening)",
     },
     {
         "name": PROMPT_PROBE,
@@ -202,6 +209,8 @@ def run_probe(
         return run_tools_coverage_probe(repo_root=root, stack_dir=stack_dir)
     if probe_name in (HOOK_PROBE, "hook-coverage"):
         return run_hook_coverage_probe(repo_root=root, stack_dir=stack_dir)
+    if probe_name in (HOOKS_LAYOUT_PROBE, "hooks-layout"):
+        return run_hooks_layout_probe(repo_root=root, stack_dir=stack_dir)
     if probe_name in (PROMPT_PROBE, "prompt-consistency"):
         return run_prompt_consistency_probe(repo_root=root, stack_dir=stack_dir)
     from magnet.registry import load_registry, run_registry_probe
@@ -254,6 +263,15 @@ def run_hook_coverage_probe(*, repo_root: str | None = None, stack_dir: str | No
     root = repo_root or os.getcwd()
     stack = resolve_stack_dir(stack_dir, repo_root=root)
     return hook_coverage(stack)
+
+
+def run_hooks_layout_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:
+    from magnet.stack import resolve_stack_dir
+    from magnet.stack_bind import hooks_layout
+
+    root = repo_root or os.getcwd()
+    stack = resolve_stack_dir(stack_dir, repo_root=root)
+    return hooks_layout(stack)
 
 
 def run_prompt_consistency_probe(*, repo_root: str | None = None, stack_dir: str | None = None) -> dict:

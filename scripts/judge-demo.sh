@@ -87,6 +87,10 @@ else
   echo ""
   echo "=== 7g/8 · Honesty: foreign-harden (title-complete → apply → helped)"
   magnet foreign-harden
+
+  echo ""
+  echo "=== 7h/8 · Honesty: foreign-hurt (naive helped on magnet hurt)"
+  magnet foreign-hurt
 fi
 
 echo ""
