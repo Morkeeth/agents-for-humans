@@ -15,7 +15,7 @@ CANDIDATES = ROOT / "fixtures" / "candidates"
 def test_prediction_intent_rise_fall_flat():
     assert prediction_intent("pass rate rises by 1/5") == "rise"
     assert prediction_intent("coverage rises — debug gap fills") == "rise"
-    assert prediction_intent("all tests still pass") == "unknown"
+    assert prediction_intent("all tests still pass") == "flat"
     assert prediction_intent("no coverage change expected") == "flat"
     assert prediction_intent("security must NOT rise on a claimed-only tag") == "flat"
     assert prediction_intent("pass rate drops") == "fall"

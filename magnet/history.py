@@ -5,6 +5,7 @@ import json
 import sqlite3
 
 from magnet.log import connect, list_readings
+from magnet.prediction import check_prediction, claimed_magnitude
 from magnet.reporter import format_value_pop, verdict
 
 
@@ -73,11 +74,30 @@ def render_history(
             lines.append(f"    latest     {vp}  ({latest.get('command', '')})")
         lines.append(f"    verdict    {label}" + (f"  (Δ {delta})" if delta is not None else ""))
         pred = (row.get("detail") or {}).get("prediction_check")
+        if pred is None and row.get("prediction"):
+            latest_pop = measured[-1].get("population") if measured else None
+            pred = check_prediction(
+                row["prediction"], label, delta, population=latest_pop
+            )
         if pred:
             lines.append(
                 f"    outcome    {pred.get('outcome')}  "
-                f"(intent={pred.get('intent')}; not attribution)"
+                f"(intent={pred.get('intent')}; grade={pred.get('grade', 'direction')}; "
+                f"not attribution)"
             )
+            claim = pred.get("claimed") or claimed_magnitude(row.get("prediction") or "")
+            if claim and claim.get("amount") is not None:
+                exp_d = pred.get("expected_delta")
+                lines.append(
+                    f"    claimed Δ  amount={claim['amount']}"
+                    + (
+                        f"/{claim['population']}"
+                        if claim.get("population") is not None
+                        else ""
+                    )
+                    + f"  expected_delta={exp_d if exp_d is not None else '—'}  "
+                    f"measured_delta={delta if delta is not None else '—'}"
+                )
         lines.append(f"    readings   {len(readings)}")
         lines.append("")
 

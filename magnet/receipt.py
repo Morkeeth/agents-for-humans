@@ -10,6 +10,7 @@ from typing import Any
 
 from magnet.history import list_adoptions, readings_for_adoption
 from magnet.log import connect, default_log_path, list_readings
+from magnet.prediction import check_prediction, claimed_magnitude
 from magnet.reporter import format_value_pop, verdict
 
 
@@ -55,6 +56,16 @@ def build_receipt(
     label, delta = verdict(series, direction="up") if series else ("baseline", None)
     measured = [r for r in series if r.get("value") is not None]
     latest = measured[-1] if measured else None
+    prediction_text = (row or {}).get("prediction")
+    pred_stored = ((row or {}).get("detail") or {}).get("prediction_check")
+    if pred_stored is None and prediction_text:
+        pred_stored = check_prediction(
+            prediction_text,
+            label,
+            delta,
+            population=(latest or {}).get("population"),
+        )
+    claim = claimed_magnitude(prediction_text or "") if prediction_text else None
     return {
         "schema": "magnet.receipt/v1",
         "probe": probe,
@@ -81,6 +92,8 @@ def build_receipt(
         "verdict": label,
         "delta": delta,
         "readings": len(measured),
+        "prediction_check": pred_stored,
+        "claimed_magnitude": claim,
         "repro": "magnet receipt" + (f" --probe {probe}" if probe else ""),
     }
 

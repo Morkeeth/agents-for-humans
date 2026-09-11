@@ -25,12 +25,13 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Stack fit** | Inventory YOUR surfaces; rank a local candidates file against YOUR gaps | `magnet stack` · `magnet bakeoff` |
 | **Closed loop** | Install a local skill into a working copy → re-measure coverage → magnet vs naive-install | `magnet stack-demo` · `magnet adopt --install` |
 | **External honesty** | Open stacks we did not build; refuse title-only complete; redact-scan can go RED | `magnet external-stack` · `magnet redact-scan` · `docs/EXTERNAL-STACK-RECEIPT.md` |
-| **Prediction check** | Grade free-text prediction vs measured verdict (held/missed — not attribution) | `magnet adopt` · `magnet history` |
+| **Prediction check** | Grade free-text prediction vs measured verdict + claimed Δ (held/missed — not attribution) | `magnet adopt` · `magnet pred-demo` · `magnet history` |
 | **Stack-bind** | Probes that open the stack object; bind-demo + guide-demo prove repo-blind stays flat | `magnet bind-demo` · `magnet guide-demo` · `magnet probe effort-coverage` |
 | **Foreign-bind** | Same bind probes on stacks we did not build; embarrasses naive_title=complete | `magnet foreign-bind` · `bash scripts/foreign-stack.sh` |
 | **Foreign-harden** | Closed loop: title-complete at near-zero → UG apply on working copy → magnet helped | `magnet foreign-harden` |
 | **Foreign-hurt** | Strip hardening → magnet hurt while naive invents helped from the title | `magnet foreign-hurt` |
 | **Hooks-layout** | Opens `hooks/hooks.json` (superpowers object); layout ≠ UG hook-coverage | `magnet probe hooks-layout` |
+| **Magnitude honesty** | Claimed `rises by 2/5` with measured Δ +1 → magnet missed; naive direction invents held | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

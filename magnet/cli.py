@@ -26,6 +26,7 @@ from magnet.guide_demo import run_guide_demo
 from magnet.foreign_bind import run_foreign_bind
 from magnet.foreign_harden import run_foreign_harden
 from magnet.foreign_hurt import run_foreign_hurt
+from magnet.pred_demo import run_pred_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -52,6 +53,25 @@ def cmd_stack_demo(args: argparse.Namespace) -> int:
 
 def cmd_drift_demo(args: argparse.Namespace) -> int:
     print(run_drift_demo(repo_root=args.repo))
+    return 0
+
+
+def cmd_pred_demo(args: argparse.Namespace) -> int:
+    text = run_pred_demo()
+    print(text)
+    # Done-when: magnet perfect on scenarios AND naive invents held on wrong magnitude.
+    if "FINDING  naive direction-only invents" not in text:
+        return 1
+    magnet_line = next(
+        (ln for ln in text.splitlines() if ln.strip().startswith("magnet")),
+        "",
+    )
+    parts = magnet_line.split()
+    if len(parts) < 2 or "/" not in parts[1]:
+        return 1
+    n_s, t_s = parts[1].split("/", 1)
+    if n_s != t_s:
+        return 1
     return 0
 
 
@@ -298,6 +318,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Show check_docs catching fabricated numbers (Qwen lesson)",
     )
     p_drift.set_defaults(func=cmd_drift_demo)
+
+    p_pred = sub.add_parser(
+        "pred-demo",
+        help="Magnitude honesty: naive direction invents held on wrong fraction",
+    )
+    p_pred.set_defaults(func=cmd_pred_demo)
 
     p_adopt = sub.add_parser("adopt", help="Adopt a change, re-probe, print receipt")
     p_adopt.add_argument("change_type", choices=list(CHANGE_TYPES))

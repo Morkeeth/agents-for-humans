@@ -154,7 +154,12 @@ def run_adopt(
         parts += ["", render_fit(fit_result)]
 
     # Grade the free-text prediction against the measured verdict (helicon S3).
-    pred_check = check_prediction(prediction, label, delta)
+    # Pass population so claimed N/P can be checked at the object (Slice 25).
+    measured = [r for r in readings if r.get("value") is not None]
+    latest_pop = measured[-1].get("population") if measured else None
+    pred_check = check_prediction(
+        prediction, label, delta, population=latest_pop
+    )
     set_adoption_detail(conn, adoption["id"], {"prediction_check": pred_check})
     parts += ["", render_prediction_check(pred_check)]
 

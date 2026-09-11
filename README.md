@@ -29,6 +29,7 @@ magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet foreign-bind   # bind probes on stacks we did not build
 magnet foreign-harden # title-complete → UG apply → helped (foreign closed loop)
 magnet foreign-hurt   # strip hardening → magnet hurt; naive invents helped
+magnet pred-demo      # magnitude honesty: rises-by-2/5 with +1 → magnet missed / naive held
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 
@@ -44,6 +45,7 @@ magnet bakeoff
 magnet stack-demo
 magnet redact-scan
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
+magnet pred-demo
 magnet adopt skill my-skill "pass rate rises by 1/5" --demo-bonus --reset
 magnet history
 ```
@@ -110,6 +112,7 @@ magnet stack         # inventory YOUR surfaces + gaps
 magnet stack-demo    # closed-loop coverage adopt + naive install arm + Agent Grinder 1/12
 magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for stranger verify
 magnet redact-scan   # live secret patterns — exit 1 on plant, 0 on this repo
+magnet pred-demo     # magnitude honesty vs naive direction-only
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
 magnet list-probes   # built-in + registry probes

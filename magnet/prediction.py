@@ -4,6 +4,10 @@ Ported spirit of helicon MAGNET S3 (prediction record): every shortlisted
 candidate makes a checkable claim; check it at the next reading. Cold start
 is unmeasured — never a default. A held prediction is still correlation,
 not attribution: MAGNET does not claim the change caused the delta.
+
+Slice 25: when the prediction names a fraction (`rises by 1/5`), magnet
+checks magnitude (+ population when claimed). Direction-only grading is the
+naive arm — it invents held when the fraction is wrong.
 """
 from __future__ import annotations
 
@@ -23,9 +27,22 @@ _FALL = re.compile(
 )
 _FLAT = re.compile(
     r"\b(unchanged|no\s+change|same|stable|flat|must\s+NOT\s+rise|not\s+rise|"
-    r"no\s+coverage\s+change|nothing\s+moves?)\b",
+    r"no\s+coverage\s+change|nothing\s+moves?|still\s+pass|remain(?:s|ing)?\s+green|"
+    r"stay(?:s|ing)?\s+at|must\s+stay)\b",
     re.I,
 )
+
+# Claimed magnitude: "rises by 1/5", "falls by 2/7", "+1/5", "by 1/5".
+_CLAIM_FRAC = re.compile(
+    r"(?:by\s*|[+\-]\s*|↑\s*\+?)(\d+)\s*/\s*(\d+)",
+    re.I,
+)
+# Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
+_CLAIM_ABS = re.compile(
+    r"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+)(\d+)(?!\s*/)",
+    re.I,
+)
+_CLAIM_SIGNED = re.compile(r"(?<![/\d])([+\-])(\d+)(?!\s*/)", re.I)
 
 
 def prediction_intent(prediction: str) -> str:
@@ -43,25 +60,66 @@ def prediction_intent(prediction: str) -> str:
     return "unknown"
 
 
-def check_prediction(
+def claimed_magnitude(prediction: str) -> dict:
+    """Parse claimed delta amount + optional population from the prediction text.
+
+    Returns:
+      amount      int | None  — absolute size of the claimed move (never signed here)
+      population  int | None  — denominator when written as N/P
+      raw         str | None  — matched substring for the receipt
+    Sign is applied later from intent (rise → +, fall → −, flat → 0).
+    """
+    text = prediction or ""
+    m = _CLAIM_FRAC.search(text)
+    if m:
+        return {
+            "amount": int(m.group(1)),
+            "population": int(m.group(2)),
+            "raw": m.group(0).strip(),
+        }
+    m = _CLAIM_ABS.search(text)
+    if m:
+        return {"amount": int(m.group(1)), "population": None, "raw": m.group(0).strip()}
+    m = _CLAIM_SIGNED.search(text)
+    if m:
+        return {"amount": int(m.group(2)), "population": None, "raw": m.group(0).strip()}
+    return {"amount": None, "population": None, "raw": None}
+
+
+def expected_delta_from_claim(intent: str, claim: dict) -> int | None:
+    """Signed expected delta from intent + claimed amount. None if no amount."""
+    amount = claim.get("amount")
+    if amount is None:
+        return None
+    if intent == "rise":
+        return int(amount)
+    if intent == "fall":
+        return -int(amount)
+    if intent == "flat":
+        return 0
+    return None
+
+
+def naive_direction_check(
     prediction: str,
     label: Verdict | str,
     delta: int | None = None,
 ) -> dict:
-    """Compare prediction intent to the measured verdict.
+    """Two-hour naive arm: grade direction only, ignore claimed fraction.
 
-    Returns:
-      outcome   prediction-held | prediction-missed | unmeasured | no-direction
-      intent    rise | fall | flat | unknown
-      note      always reminds that held ≠ attributed
+    This is what magnet did through Slice 24 — it invents prediction-held when
+    the claim says rises by 2/5 and the measured delta is +1.
     """
     intent = prediction_intent(prediction)
+    claim = claimed_magnitude(prediction)
     if label == "baseline":
         return {
             "outcome": "unmeasured",
             "intent": intent,
             "verdict": label,
             "delta": delta,
+            "grade": "direction-only",
+            "claimed": claim,
             "note": "unmeasured — need two readings before a prediction can be checked",
         }
     if intent == "unknown":
@@ -70,14 +128,118 @@ def check_prediction(
             "intent": intent,
             "verdict": label,
             "delta": delta,
+            "grade": "direction-only",
+            "claimed": claim,
+            "note": "prediction has no rise/fall/flat signal MAGNET can grade",
+        }
+    expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
+    held = label == expected
+    outcome = "prediction-held" if held else "prediction-missed"
+    return {
+        "outcome": outcome,
+        "intent": intent,
+        "verdict": label,
+        "delta": delta,
+        "expected": expected,
+        "grade": "direction-only",
+        "claimed": claim,
+        "note": (
+            f"{outcome}: intent={intent} expected={expected} got={label}"
+            " — direction only; claimed fraction ignored"
+        ),
+    }
+
+
+def check_prediction(
+    prediction: str,
+    label: Verdict | str,
+    delta: int | None = None,
+    *,
+    population: int | None = None,
+) -> dict:
+    """Compare prediction intent (+ magnitude when claimed) to the measured verdict.
+
+    Returns:
+      outcome   prediction-held | prediction-missed | unmeasured | no-direction
+      intent    rise | fall | flat | unknown
+      grade     direction | direction+magnitude
+      claimed   {amount, population, raw}
+      note      always reminds that held ≠ attributed
+    """
+    intent = prediction_intent(prediction)
+    claim = claimed_magnitude(prediction)
+    if label == "baseline":
+        return {
+            "outcome": "unmeasured",
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "grade": "direction",
+            "claimed": claim,
+            "note": "unmeasured — need two readings before a prediction can be checked",
+        }
+    if intent == "unknown":
+        return {
+            "outcome": "no-direction",
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "grade": "direction",
+            "claimed": claim,
             "note": "prediction has no rise/fall/flat signal MAGNET can grade",
         }
 
     expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
-    held = label == expected
+    direction_ok = label == expected
+    expected_delta = expected_delta_from_claim(intent, claim)
+
+    if expected_delta is None:
+        # No fraction claimed — direction is the whole grade (honest when vague).
+        held = direction_ok
+        outcome = "prediction-held" if held else "prediction-missed"
+        note = (
+            f"{outcome}: intent={intent} expected={expected} got={label}"
+            " — correlation, not attribution"
+        )
+        return {
+            "outcome": outcome,
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "expected": expected,
+            "expected_delta": None,
+            "grade": "direction",
+            "claimed": claim,
+            "note": note,
+        }
+
+    # Fraction claimed — magnitude (and population when both known) must match.
+    magnitude_ok = delta is not None and int(delta) == int(expected_delta)
+    pop_ok = True
+    pop_note = ""
+    if claim.get("population") is not None and population is not None:
+        pop_ok = int(claim["population"]) == int(population)
+        if not pop_ok:
+            pop_note = (
+                f" pop claimed={claim['population']} measured={population}"
+            )
+
+    held = direction_ok and magnitude_ok and pop_ok
     outcome = "prediction-held" if held else "prediction-missed"
+    if not direction_ok:
+        why = f"direction expected={expected} got={label}"
+    elif not magnitude_ok:
+        why = (
+            f"magnitude claimed Δ {expected_delta:+d} "
+            f"got Δ {delta if delta is not None else '—'}"
+        )
+    else:
+        why = f"population mismatch{pop_note}" if not pop_ok else "direction+magnitude"
     note = (
-        f"{outcome}: intent={intent} expected={expected} got={label}"
+        f"{outcome}: intent={intent} {why}"
         " — correlation, not attribution"
     )
     return {
@@ -85,7 +247,13 @@ def check_prediction(
         "intent": intent,
         "verdict": label,
         "delta": delta,
+        "population": population,
         "expected": expected,
+        "expected_delta": expected_delta,
+        "grade": "direction+magnitude",
+        "claimed": claim,
+        "magnitude_ok": magnitude_ok,
+        "population_ok": pop_ok,
         "note": note,
     }
 
@@ -96,10 +264,28 @@ def render_prediction_check(check: dict) -> str:
         "",
         f"  intent     {check['intent']}",
         f"  outcome    {check['outcome']}",
+        f"  grade      {check.get('grade', 'direction')}",
     ]
     if check.get("expected"):
         lines.append(
             f"  expected   {check['expected']}  got={check['verdict']}"
         )
+    claim = check.get("claimed") or {}
+    if claim.get("amount") is not None:
+        pop = claim.get("population")
+        claim_txt = (
+            f"{claim['amount']}/{pop}" if pop is not None else str(claim["amount"])
+        )
+        exp_d = check.get("expected_delta")
+        got_d = check.get("delta")
+        lines.append(
+            f"  claimed Δ  {claim_txt}  expected_delta="
+            f"{exp_d if exp_d is not None else '—'}  "
+            f"measured_delta={got_d if got_d is not None else '—'}"
+        )
+        if check.get("population") is not None and pop is not None:
+            lines.append(
+                f"  claimed pop {pop}  measured_pop={check['population']}"
+            )
     lines.append(f"  note       {check['note']}")
     return "\n".join(lines)

@@ -122,7 +122,16 @@ def hurt_one(source: str, *, label: str = "") -> dict:
         hurt_label = _delta_label(hardened, after)
         # Grade the strip TITLE as a prediction against magnet's hurt verdict.
         # Naive still invents helped; prediction-held means the title admitted fall.
-        pred = check_prediction(row["title"], hurt_label)
+        pred = check_prediction(
+            row["title"],
+            hurt_label,
+            population=(after.get("population") if isinstance(after, dict) else None),
+            delta=(
+                None
+                if hurt_label in ("baseline", "cannot-measure")
+                else int(after["value"]) - int(hardened["value"])
+            ),
+        )
         if hurt_label == "hurt":
             magnet_hurt += 1
             # Naive invents helped from the strip title every time.
