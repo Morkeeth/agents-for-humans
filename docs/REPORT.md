@@ -1,42 +1,35 @@
-# Build report · Slice 22–24 · 2026-09-10
+# Build report · Slice 25 · 2026-09-11
 
 ## SHIPPED
 
-### Slice 22 — Hook control + foreign-harden
-- Missing `settings.json` no longer scores hook-coverage 1/2.
-- `magnet foreign-harden`: title-complete → UG apply → helped.
-
-### Slice 23 — Foreign-hurt + hooks-layout
-- `magnet foreign-hurt`: magnet hurt while naive invents helped.
-- `hooks-layout` probe opens `hooks/hooks.json` (superpowers extract + live 3/3 vs UG 0/2).
-- stranger-pass wires harden/hurt/hooks-layout.
-
-### Slice 24 — Prediction fall-intent on strip titles
-- Fall lexicon: simplify / streamline / relax / remove / strip / …
-- `foreign-hurt` prints prediction-held on hurt rows while naive still invents helped.
-- **190** pytest tests (re-derived).
+### Slice 25 — Prediction stem honesty + marketing-title embarrassment
+- Stems `improv`/`increas`/`decreas` now match real English (`improves`/`increases`/`decreases`).
+- Bare `\bup\b` removed — `clean up` / `set up` no longer invent rise.
+- `magnet adopt … "pass rate improves by 1/5" --demo-bonus` → prediction-held (was no-direction).
+- `magnet foreign-hurt` grades marketing rise-speak on the same strip → prediction-missed 4/4.
+- `magnet pred-demo` cold path proves stems + marketing at the object.
+- **196** pytest tests (re-derived from `tests/test_*.py`).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 190 passed |
-| foreign-hurt pred | `magnet foreign-hurt` → prediction-held on 4/4 hurt rows |
-| simplify→fall | `prediction_intent("simplify skill frontmatter")` → fall |
-| hooks-layout live | `--stack /tmp/magnet-foreign/superpowers` → 3/3 |
+| Tests | `python3 -m pytest -q` → 196 passed |
+| improves→rise | `prediction_intent("pass rate improves")` → rise |
+| clean up≠rise | `prediction_intent("clean up frontmatter")` → unknown |
+| adopt improves | `magnet adopt skill x 'pass rate improves by 1/5' --demo-bonus --reset` → prediction-held |
+| pred-demo | `magnet pred-demo` → RESULT PASS · market missed 4/4 |
+| foreign-hurt market | `magnet foreign-hurt` → marketing rise-speak prediction-missed 4/4 |
 | check_docs | `magnet check-docs` → 13 PASS |
-| Cold clone s23 | `/tmp/magnet-cold-s23` @ `f79a14f` → 189 passed · JUDGE DEMO OK |
-| SHIP GATE s22 | `git push origin main` → `643cbed` |
-| SHIP GATE s23 | `git push origin main` → `f79a14f` (tip `bfb32a9`) |
-
-| Cold clone s24 | `/tmp/magnet-cold-s24` @ `54b2f79` → 190 passed · foreign-hurt prediction-held 4/4 · JUDGE DEMO OK |
-| SHIP GATE s24 | `git push origin main` → `54b2f79` |
+| Live anthropics | `magnet foreign-hurt --stack /tmp/magnet-foreign/skills` → effort 0/19→19/19→0/19 hurt |
+| Live superpowers | hooks-layout 3/3 · foreign-hurt 4/4 |
 
 ## WRONG
 
-- **Surface arm still 1/2** — helicon science.
-- **Bedrock cloud BLOCKED.**
-- **Screenshot PNGs not re-rendered.**
-- **Prediction still lexical** — fall lexicon is broader, not semantic.
-- **Cold clone s23 tip was 189 tests**; s24 adds one test — do not carry 190 onto s23.
-- **REPORT s23 cold-clone line briefly claimed 190** during doc rewrite — corrected here.
+- **Surface arm still 1/2** — helicon science, not papered over.
+- **Bedrock cloud BLOCKED** — no AWS creds in this VM.
+- **Screenshot PNGs not re-rendered** — txt sidecars updated; PNGs stale.
+- **Prediction still lexical** — stems fixed, not semantic understanding.
+- **"pass rate up" is now unknown** — bare `up` removed; use rises/improves.
+- **SHIP GATE on feature branch** — cloud agent pushes `cursor/prediction-stem-honesty-441a` + PR; Oscar merges to main.
+- Historical s22–s24 cold-clone hashes unchanged; do not carry 196 onto those tips.

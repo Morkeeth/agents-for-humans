@@ -91,6 +91,10 @@ else
   echo ""
   echo "=== 7h/8 · Honesty: foreign-hurt (naive helped on magnet hurt)"
   magnet foreign-hurt
+
+  echo ""
+  echo "=== 7i/8 · Honesty: pred-demo (stems + marketing rise-speak miss)"
+  magnet pred-demo
 fi
 
 echo ""

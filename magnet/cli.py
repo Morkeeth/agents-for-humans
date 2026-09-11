@@ -26,6 +26,7 @@ from magnet.guide_demo import run_guide_demo
 from magnet.foreign_bind import run_foreign_bind
 from magnet.foreign_harden import run_foreign_harden
 from magnet.foreign_hurt import run_foreign_hurt
+from magnet.pred_demo import run_pred_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -267,6 +268,16 @@ def cmd_foreign_hurt(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_pred_demo(args: argparse.Namespace) -> int:
+    text = run_pred_demo(repo_root=args.repo)
+    print(text)
+    if "RESULT    FAIL" in text:
+        return 1
+    if "RESULT    PASS" not in text:
+        return 1
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="magnet",
@@ -482,6 +493,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Stack path (repeatable). Default: offline fixtures with skills",
     )
     p_hurt.set_defaults(func=cmd_foreign_hurt)
+
+    p_pred = sub.add_parser(
+        "pred-demo",
+        help="Prove prediction stems + marketing rise-speak miss at the object",
+    )
+    p_pred.set_defaults(func=cmd_pred_demo)
 
     args = parser.parse_args(argv)
     return args.func(args)

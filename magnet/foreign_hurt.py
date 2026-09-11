@@ -4,6 +4,7 @@ Closes the honesty gap left by foreign-harden (which only shows helped):
   1. Harden a foreign working copy (UG apply) → magnet helped
   2. Strip effort:/allowed-tools (and optionally deny/hooks) → magnet hurt
   3. Naive invents helped from the strip TITLE ("simplify skill frontmatter")
+  4. Marketing rise titles on the SAME strip → prediction-missed (Slice 25)
 
 A demo that can only print helped is a demo. This arm can print a result we
 would not want on a marketing slide.
@@ -33,11 +34,14 @@ from magnet.stack_bind import (
     tools_coverage,
 )
 
-# Rows that can hurt after a harden. Title is for the naive arm only.
+# Rows that can hurt after a harden.
+# title        = honest strip (fall intent) → prediction-held on hurt
+# market_title = marketing rise speak for the SAME strip → prediction-missed
 HURT_ROWS = (
     {
         "id": "hurt-effort",
         "title": "simplify skill frontmatter (drop effort: fields)",
+        "market_title": "improve developer velocity on skill frontmatter",
         "probe": "effort-coverage",
         "measure": effort_coverage,
         "harden": apply_effort_frontmatter,
@@ -46,6 +50,7 @@ HURT_ROWS = (
     {
         "id": "hurt-tools",
         "title": "streamline allowed-tools declarations",
+        "market_title": "improve clarity of allowed-tools declarations",
         "probe": "tools-coverage",
         "measure": tools_coverage,
         "harden": apply_allowed_tools_frontmatter,
@@ -54,6 +59,7 @@ HURT_ROWS = (
     {
         "id": "hurt-deny",
         "title": "relax permissions.deny for developer velocity",
+        "market_title": "increase developer velocity via permissions.deny changes",
         "probe": "deny-coverage",
         "measure": deny_coverage,
         "harden": apply_deny_patterns,
@@ -62,6 +68,7 @@ HURT_ROWS = (
     {
         "id": "hurt-hook",
         "title": "remove noisy PreToolUse blocker hooks",
+        "market_title": "improve PreToolUse hook experience",
         "probe": "hook-coverage",
         "measure": hook_coverage,
         "harden": apply_hook_hardening,
@@ -93,6 +100,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
     rows_out: list[dict] = []
     naive_helped_on_hurt = 0
     magnet_hurt = 0
+    market_missed_on_hurt = 0
 
     for row in HURT_ROWS:
         before = row["measure"](stack)
@@ -101,6 +109,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
                 {
                     "id": row["id"],
                     "title": row["title"],
+                    "market_title": row["market_title"],
                     "probe": row["probe"],
                     "before": before,
                     "hardened": before,
@@ -109,6 +118,9 @@ def hurt_one(source: str, *, label: str = "") -> dict:
                     "hurt_label": "cannot-measure",
                     "naive": "helped",
                     "prediction": check_prediction(row["title"], "baseline"),
+                    "market_prediction": check_prediction(
+                        row["market_title"], "baseline"
+                    ),
                 }
             )
             continue
@@ -123,14 +135,19 @@ def hurt_one(source: str, *, label: str = "") -> dict:
         # Grade the strip TITLE as a prediction against magnet's hurt verdict.
         # Naive still invents helped; prediction-held means the title admitted fall.
         pred = check_prediction(row["title"], hurt_label)
+        # Marketing title invents rise on the same strip — must miss on hurt.
+        market = check_prediction(row["market_title"], hurt_label)
         if hurt_label == "hurt":
             magnet_hurt += 1
             # Naive invents helped from the strip title every time.
             naive_helped_on_hurt += 1
+            if market.get("outcome") == "prediction-missed":
+                market_missed_on_hurt += 1
         rows_out.append(
             {
                 "id": row["id"],
                 "title": row["title"],
+                "market_title": row["market_title"],
                 "probe": row["probe"],
                 "before": before,
                 "hardened": hardened,
@@ -139,6 +156,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
                 "hurt_label": hurt_label,
                 "naive": "helped",
                 "prediction": pred,
+                "market_prediction": market,
             }
         )
 
@@ -149,6 +167,7 @@ def hurt_one(source: str, *, label: str = "") -> dict:
         "rows": rows_out,
         "magnet_hurt": magnet_hurt,
         "naive_helped_on_hurt": naive_helped_on_hurt,
+        "market_missed_on_hurt": market_missed_on_hurt,
     }
 
 
@@ -156,9 +175,10 @@ def render_foreign_hurt(results: list[dict]) -> str:
     lines = [
         "MAGNET foreign-hurt — strip hardening; naive invents helped from the title",
         "",
-        "  HARDEN  UG apply on a temporary copy (so there is something to strip)",
-        "  STRIP   remove effort/tools/deny/hook signals — magnet must print hurt",
-        "  NAIVE   invents helped from every strip title without opening SKILL.md",
+        "  HARDEN   UG apply on a temporary copy (so there is something to strip)",
+        "  STRIP    remove effort/tools/deny/hook signals — magnet must print hurt",
+        "  NAIVE    invents helped from every strip title without opening SKILL.md",
+        "  MARKET   rise-speak title on the same strip → prediction-missed on hurt",
         "",
     ]
     findings = 0
@@ -199,6 +219,25 @@ def render_foreign_hurt(results: list[dict]) -> str:
                 f"pred={outcome:<20} intent={intent:<8}  {row['title']}"
             )
 
+        lines.append("")
+        lines.append(
+            "  marketing titles (same strip; rise-speak must miss when magnet=hurt):"
+        )
+        market_missed = 0
+        market_graded = 0
+        for row in result["rows"]:
+            mpred = row.get("market_prediction") or {}
+            outcome = mpred.get("outcome", "unmeasured")
+            intent = mpred.get("intent", "unknown")
+            if row["hurt_label"] == "hurt":
+                market_graded += 1
+                if outcome == "prediction-missed":
+                    market_missed += 1
+            lines.append(
+                f"    {row['id']:<12} magnet={row['hurt_label']:<16} "
+                f"market={outcome:<20} intent={intent:<8}  {row['market_title']}"
+            )
+
         if result["naive_helped_on_hurt"] >= 1 and result["magnet_hurt"] >= 1:
             findings += 1
             lines.append(
@@ -215,6 +254,18 @@ def render_foreign_hurt(results: list[dict]) -> str:
                     f"  note      prediction-held {held}/{graded} hurt rows "
                     f"(strip titles that lack fall intent stay no-direction)."
                 )
+            if market_graded and market_missed == market_graded:
+                lines.append(
+                    f"  FINDING  marketing rise-speak prediction-missed on "
+                    f"{market_missed}/{market_graded} hurt rows — title claimed "
+                    f"helped while magnet measured hurt."
+                )
+            elif market_graded:
+                lines.append(
+                    f"  note      marketing prediction-missed "
+                    f"{market_missed}/{market_graded} hurt rows "
+                    f"(rise-speak that stays unknown is no-direction, not missed)."
+                )
         elif result["magnet_hurt"] == 0:
             lines.append(
                 "  FINDING  magnet printed no hurt rows — strip did not open the "
@@ -228,6 +279,7 @@ def render_foreign_hurt(results: list[dict]) -> str:
         "  repro      magnet foreign-hurt",
         "  repro      magnet foreign-hurt --stack /path/to/clone",
         "  repro      magnet foreign-harden   # helped arm",
+        "  repro      magnet pred-demo        # stem + marketing at object",
         "  repro      magnet probe hooks-layout --stack fixtures/real-stacks/superpowers-hooks",
     ]
     if findings == 0 and results:

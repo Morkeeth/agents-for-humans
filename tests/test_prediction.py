@@ -25,6 +25,22 @@ def test_prediction_intent_rise_fall_flat():
     assert prediction_intent("streamline allowed-tools declarations") == "fall"
 
 
+def test_prediction_stems_match_real_english():
+    """Slice 25 — broken stems found by running adopt with 'improves'."""
+    assert prediction_intent("pass rate improves") == "rise"
+    assert prediction_intent("coverage increases") == "rise"
+    assert prediction_intent("coverage decreases") == "fall"
+    assert prediction_intent("improve PreToolUse hooks") == "rise"
+    assert prediction_intent("scores decreased after strip") == "fall"
+
+
+def test_prediction_phrasal_up_does_not_invent_rise():
+    """Bare \\bup\\b used to invent rise on clean up / set up."""
+    assert prediction_intent("clean up frontmatter") == "unknown"
+    assert prediction_intent("set up hooks") == "unknown"
+    assert prediction_intent("speed up the agent") == "unknown"
+
+
 def test_prediction_held_on_hurt_for_strip_title():
     c = check_prediction("simplify skill frontmatter (drop effort: fields)", "hurt", -1)
     assert c["outcome"] == "prediction-held"
@@ -68,6 +84,23 @@ def test_adopt_prints_prediction_held_with_demo_bonus(tmp_path):
     )
     assert "MAGNET prediction check" in out
     assert "prediction-held" in out
+
+
+def test_adopt_improves_is_prediction_held_not_no_direction(tmp_path):
+    """Pre-fix: 'improves' → no-direction while verdict=helped."""
+    out = run_adopt(
+        "skill",
+        "improves-stem-skill",
+        "pass rate improves by 1/5",
+        "demo-pass-rate",
+        log_path=str(tmp_path / "log.db"),
+        reset=True,
+        apply_demo_bonus=True,
+        simulate_next_week=True,
+    )
+    assert "prediction-held" in out
+    assert "intent     rise" in out
+    assert "no-direction" not in out
 
 
 def test_adopt_prints_prediction_missed_on_noise_install(tmp_path):

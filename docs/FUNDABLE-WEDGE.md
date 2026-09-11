@@ -30,6 +30,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Foreign-bind** | Same bind probes on stacks we did not build; embarrasses naive_title=complete | `magnet foreign-bind` · `bash scripts/foreign-stack.sh` |
 | **Foreign-harden** | Closed loop: title-complete at near-zero → UG apply on working copy → magnet helped | `magnet foreign-harden` |
 | **Foreign-hurt** | Strip hardening → magnet hurt while naive invents helped from the title | `magnet foreign-hurt` |
+| **Pred-demo** | Stems grade real English; marketing rise-speak misses on strip | `magnet pred-demo` |
 | **Hooks-layout** | Opens `hooks/hooks.json` (superpowers object); layout ≠ UG hook-coverage | `magnet probe hooks-layout` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.

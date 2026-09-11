@@ -4,6 +4,10 @@ Ported spirit of helicon MAGNET S3 (prediction record): every shortlisted
 candidate makes a checkable claim; check it at the next reading. Cold start
 is unmeasured — never a default. A held prediction is still correlation,
 not attribution: MAGNET does not claim the change caused the delta.
+
+Slice 25 (found by running, not reading): stems `improv`/`increas`/`decreas`
+with a trailing word-boundary never matched improve*/increase*/decrease*.
+Bare `\\bup\\b` invented rise on phrasal verbs ("clean up", "set up").
 """
 from __future__ import annotations
 
@@ -12,13 +16,32 @@ import re
 from magnet.reporter import Verdict
 
 # Lexical intent only — never ranks by the prediction's wording beauty.
+# Full conjugations, not truncated stems that die on \\b.
 _RISE = re.compile(
-    r"\b(ris(?:e|es|ing)|up|improv|increas|higher|helped|gain|\+\s*\d|coverage rises)\b",
+    r"\b("
+    r"ris(?:e|es|ing)|"
+    r"improv(?:e|es|ed|ing|ement)|"
+    r"increas(?:e|es|ed|ing)|"
+    r"higher|helped|gains?|gained|"
+    r"\+\s*\d|"
+    r"coverage rises"
+    r")\b",
     re.I,
 )
 _FALL = re.compile(
-    r"\b(fall|falls|falling|drop|drops|hurt|decreas|lower|down|regress|"
-    r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
+    r"\b("
+    r"fall|falls|falling|"
+    r"drop|drops|dropped|dropping|"
+    r"hurt|"
+    r"decreas(?:e|es|ed|ing)|"
+    r"lower|down|regress(?:ion|ed|es|ing)?|"
+    r"simplify|simplifies|simplifying|"
+    r"streamline|streamlines|streamlining|"
+    r"relax|relaxes|relaxing|"
+    r"remove|removes|removing|"
+    r"strip|strips|stripping|"
+    r"undo|revert|weaken|weakens|weakening"
+    r")\b",
     re.I,
 )
 _FLAT = re.compile(

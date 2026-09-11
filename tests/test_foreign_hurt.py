@@ -58,6 +58,20 @@ def test_foreign_hurt_offline_finding():
     assert "magnet-hurt" in text or "hurt" in text
     assert "prediction-held" in text
     assert "pred=" in text
+    assert "marketing rise-speak prediction-missed" in text
+    assert "market=" in text
+
+
+def test_foreign_hurt_marketing_missed_on_hurt():
+    result = hurt_one(str(FIXTURE), label="fixture")
+    assert result["magnet_hurt"] >= 3
+    assert result["market_missed_on_hurt"] == result["magnet_hurt"]
+    for row in result["rows"]:
+        if row["hurt_label"] != "hurt":
+            continue
+        assert row["prediction"]["outcome"] == "prediction-held"
+        assert row["market_prediction"]["outcome"] == "prediction-missed"
+        assert row["market_prediction"]["intent"] == "rise"
 
 
 def test_cli_foreign_hurt_exits_zero():
@@ -72,6 +86,7 @@ def test_cli_foreign_hurt_exits_zero():
     assert "FINDING" in proc.stdout
     assert "naive invented helped" in proc.stdout
     assert "prediction-held" in proc.stdout
+    assert "marketing rise-speak prediction-missed" in proc.stdout
 
 
 def test_foreign_bind_reports_layout_finding_on_superpowers_hooks():
