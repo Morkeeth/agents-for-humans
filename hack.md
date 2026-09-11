@@ -82,6 +82,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
+- 2026-09-11 · Slice 27 SHIP · `claude_present` = file exists · foreign-bind FINDING on CLAUDE.md with 0 UG MUST: · live superpowers prints `CLAUDE.md present · 0 UG MUST: lines` · `python3 -m pytest -q` → 201 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s27` @ `e0bd519` JUDGE DEMO OK · tip branch `cursor/prediction-stem-honesty-441a`.
 - 2026-09-11 · Slice 27 START · opened `/tmp/magnet-foreign/superpowers/CLAUDE.md` (115 lines, inline MUST). `prompt_consistency` → 0/0, detail `claude_present=False`, foreign-bind prints `n/a object missing`. File is not missing — UG `^MUST:` lines are.
 - 2026-09-11 · Slice 26 SHIP · receipt binds to THIS adoption · `latest_adoption` ORDER BY id DESC · foreign-hurt requires marketing FINDING · same-second SECOND→`change SECOND` · `python3 -m pytest -q` → 199 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `9c9d680` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a`.
 - 2026-09-11 · Slice 26 START · ran two `--no-simulate` adopts in one second: receipt on SECOND said `change FIRST` while `recorded [skill] SECOND`. `latest_adoption` ties on `recorded_at`. Also `cmd_foreign_hurt` exits 0 without marketing FINDING.
