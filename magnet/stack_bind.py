@@ -366,8 +366,12 @@ def strip_hook_hardening(stack_dir: str) -> list[str]:
     return removed
 
 
+def _claude_md_path(stack_dir: str) -> Path:
+    return Path(os.path.expanduser(stack_dir)) / "CLAUDE.md"
+
+
 def _claude_must_lines(stack_dir: str) -> list[str]:
-    path = Path(os.path.expanduser(stack_dir)) / "CLAUDE.md"
+    path = _claude_md_path(stack_dir)
     if not path.is_file():
         return []
     text = path.read_text(encoding="utf-8", errors="replace")
@@ -388,7 +392,12 @@ def prompt_consistency(stack_dir: str) -> dict:
     """UG item 4 — CLAUDE.md MUST lines that also appear in post-compact-reinject.
 
     Opens both files. A title claiming 'aligned prompts' does not score.
+    `claude_md_present` is the file; MUST: lines are a separate population.
+    Found 2026-09-11: live obra/superpowers CLAUDE.md exists with inline MUST
+    but zero `^MUST:` lines — detail used to claim claude_present=False.
     """
+    claude_path = _claude_md_path(stack_dir)
+    claude_md_present = claude_path.is_file()
     musts = _claude_must_lines(stack_dir)
     blob = _post_compact_text(stack_dir)
     present = [m for m in musts if m in blob]
@@ -403,7 +412,10 @@ def prompt_consistency(stack_dir: str) -> dict:
             "stack": stack_dir,
             "present": present,
             "missing": missing,
-            "claude_present": bool(musts),
+            # File presence ≠ MUST: population (Slice 27).
+            "claude_md_present": claude_md_present,
+            "must_line_count": len(musts),
+            "claude_present": claude_md_present,  # honest alias of file presence
             "post_compact_present": bool(blob),
             "object": "CLAUDE.md vs post-compact-reinject.txt",
         },

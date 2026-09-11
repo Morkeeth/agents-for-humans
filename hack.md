@@ -72,15 +72,17 @@ No number without the command that produced it, the population it is out of, and
 | 24 | Prediction fall-intent for strip titles + foreign-hurt prediction check | `magnet foreign-hurt` prints prediction-held on hurt rows · simplify/relax/remove → fall · pytest green |
 | 25 | Prediction stem honesty + marketing-title embarrassment | `improves`/`increases`/`decreases` grade · `clean up` not rise · `magnet pred-demo` · foreign-hurt prints prediction-missed on rise-for-strip · pytest green |
 | 26 | Adopt receipt binds to this adoption · foreign-hurt marketing RED control | same-second SECOND adopt prints `change SECOND` · `foreign-hurt` exits 1 without marketing FINDING · pytest green |
+| 27 | prompt-consistency honesty on foreign CLAUDE.md | live superpowers CLAUDE.md present · 0 UG MUST: · foreign-bind FINDING not "object missing" · pytest green |
 
 ## NOW
 
-**Slice 26:** Adopt receipt binds to `latest_adoption` ordered by `recorded_at` only — two adopts in the same second printed `change FIRST` on the SECOND receipt (found by running). Bind the receipt to the adoption just recorded (`id`), and make `latest_adoption` `ORDER BY id DESC`. Also: `foreign-hurt` CLI did not require the marketing FINDING — a control that has not gone RED.
+**Slice 27:** `prompt-consistency` on live `obra/superpowers` printed `n/a` / `object missing` while `CLAUDE.md` exists (115 lines, inline "MUST" but zero `^MUST:` UG lines). Detail field `claude_present` was `bool(musts)` — a lie about the file. Open the CLAUDE.md object: report file-present vs MUST-line population, and FINDING on foreign-bind when the file is there but UG MUST: lines are zero.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-11 · Slice 27 START · opened `/tmp/magnet-foreign/superpowers/CLAUDE.md` (115 lines, inline MUST). `prompt_consistency` → 0/0, detail `claude_present=False`, foreign-bind prints `n/a object missing`. File is not missing — UG `^MUST:` lines are.
 - 2026-09-11 · Slice 26 SHIP · receipt binds to THIS adoption · `latest_adoption` ORDER BY id DESC · foreign-hurt requires marketing FINDING · same-second SECOND→`change SECOND` · `python3 -m pytest -q` → 199 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `9c9d680` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a`.
 - 2026-09-11 · Slice 26 START · ran two `--no-simulate` adopts in one second: receipt on SECOND said `change FIRST` while `recorded [skill] SECOND`. `latest_adoption` ties on `recorded_at`. Also `cmd_foreign_hurt` exits 0 without marketing FINDING.
 - 2026-09-11 · Slice 25 SHIP · stems improve*/increase*/decrease* · bare `up` removed · `magnet pred-demo` RESULT PASS · foreign-hurt marketing prediction-missed 4/4 · live anthropics 0/19→19/19→0/19 · `python3 -m pytest -q` → 196 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s25` @ `d7afa12` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a` pushed (Oscar merges main).

@@ -106,12 +106,17 @@ def render_foreign_bind(results: list[dict]) -> str:
         for name, _ in BIND_MEASURES:
             r = probes[name]
             pop = r.get("population")
-            if not pop:
+            detail = r.get("detail") or {}
+            if name == "prompt-consistency" and detail.get("claude_md_present") and not pop:
+                # File exists; UG ^MUST: lines do not — not "object missing".
+                vp = "0/0"
+                note = "CLAUDE.md present · 0 UG MUST: lines"
+            elif not pop:
                 vp = "n/a"
                 note = "object missing"
             else:
                 vp = format_value_pop(r.get("value"), pop)
-                note = (r.get("detail") or {}).get("object", "")
+                note = detail.get("object", "")
             lines.append(f"  {name:<22} {vp:<11} {note}")
 
         if naive["verdict"] == "complete" and _hardening_near_zero(probes):
@@ -144,6 +149,15 @@ def render_foreign_bind(results: list[dict]) -> str:
                 f"while UG hook-coverage "
                 f"{format_value_pop(ug.get('value'), ug.get('population'))} "
                 f"— hooks object present; UG hardening is a different probe."
+            )
+        prompt = probes.get("prompt-consistency") or {}
+        pdetail = prompt.get("detail") or {}
+        if pdetail.get("claude_md_present") and not (prompt.get("population") or 0):
+            findings += 1
+            lines.append(
+                "  FINDING  CLAUDE.md present with 0 UG MUST: lines "
+                "(^MUST: …) — file is not missing; prompt object differs from "
+                "Ultimate Guide format."
             )
         if findings > stack_findings_before:
             stacks_with_finding += 1

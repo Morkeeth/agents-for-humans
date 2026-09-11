@@ -44,6 +44,8 @@ def test_fixture_prompt_starts_inconsistent():
     assert reading["probe_name"] == "prompt-consistency"
     assert reading["population"] == 3  # MUST lines in fixtures/stack/CLAUDE.md
     assert reading["value"] == 0
+    assert reading["detail"]["claude_md_present"] is True
+    assert reading["detail"]["must_line_count"] == 3
 
 
 def test_apply_tools_then_probe_moves(tmp_path):
