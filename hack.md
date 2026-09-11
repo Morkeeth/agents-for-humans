@@ -71,15 +71,18 @@ No number without the command that produced it, the population it is out of, and
 | 23 | Foreign-hurt embarrassment + foreign hooks-layout honesty | `magnet foreign-hurt` exit 0 · naive helped on a magnet-hurt row · hooks-layout opens hooks/hooks.json · pytest green |
 | 24 | Prediction fall-intent for strip titles + foreign-hurt prediction check | `magnet foreign-hurt` prints prediction-held on hurt rows · simplify/relax/remove → fall · pytest green |
 | 25 | Prediction stem honesty + marketing-title embarrassment | `improves`/`increases`/`decreases` grade · `clean up` not rise · `magnet pred-demo` · foreign-hurt prints prediction-missed on rise-for-strip · pytest green |
+| 26 | Adopt receipt binds to this adoption · foreign-hurt marketing RED control | same-second SECOND adopt prints `change SECOND` · `foreign-hurt` exits 1 without marketing FINDING · pytest green |
 
 ## NOW
 
-**Slice 25:** Prediction stems were broken at the object — `improv`/`increas`/`decreas` never matched real English (`improves` → unknown; adopt with "pass rate improves" → no-direction while verdict helped). Bare `\bup\b` invented rise on "clean up" / "set up". Marketing rise titles on a strip must print prediction-missed while naive still invents helped. Open the prediction object again — do not leave stems that fail on the verbs strangers actually type.
+**Slice 26:** Adopt receipt binds to `latest_adoption` ordered by `recorded_at` only — two adopts in the same second printed `change FIRST` on the SECOND receipt (found by running). Bind the receipt to the adoption just recorded (`id`), and make `latest_adoption` `ORDER BY id DESC`. Also: `foreign-hurt` CLI did not require the marketing FINDING — a control that has not gone RED.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-11 · Slice 26 START · ran two `--no-simulate` adopts in one second: receipt on SECOND said `change FIRST` while `recorded [skill] SECOND`. `latest_adoption` ties on `recorded_at`. Also `cmd_foreign_hurt` exits 0 without marketing FINDING.
+- 2026-09-11 · Slice 25 SHIP · stems improve*/increase*/decrease* · bare `up` removed · `magnet pred-demo` RESULT PASS · foreign-hurt marketing prediction-missed 4/4 · live anthropics 0/19→19/19→0/19 · `python3 -m pytest -q` → 196 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s25` @ `d7afa12` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a` pushed (Oscar merges main).
 - 2026-09-11 · Slice 25 VERIFY · `prediction_intent("pass rate improves")` → rise · `("clean up frontmatter")` → unknown · `magnet pred-demo` → RESULT PASS · market missed 4/4 · `magnet foreign-hurt` marketing prediction-missed 4/4 · live anthropics effort 0/19→19/19→0/19 · `python3 -m pytest -q` → 196 passed · `magnet check-docs` → 13 PASS · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · pytest-pass-rate 195/195.
 - 2026-09-11 · Slice 25 START · ran at object: `prediction_intent("pass rate improves")` → unknown; `("coverage increases")` → unknown; `("coverage decreases")` → unknown; `("clean up frontmatter")` → rise (false); `magnet adopt … "pass rate improves by 1" --demo-bonus` → outcome=no-direction while verdict=helped. Stem `\bimprov\b` cannot match "improve*". Building stem fix + marketing-title arm + `magnet pred-demo`.
 - 2026-09-10 · Slice 24 SHIP · fall lexicon simplify/streamline/relax/remove · `foreign-hurt` prediction-held 4/4 · `python3 -m pytest -q` → 190 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s24` @ `54b2f79` JUDGE DEMO OK · `git push origin main` → `54b2f79`.

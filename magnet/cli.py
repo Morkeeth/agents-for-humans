@@ -265,6 +265,10 @@ def cmd_foreign_hurt(args: argparse.Namespace) -> int:
     if "naive invented helped" not in text and "magnet-hurt" not in text:
         if "naive invented helped" not in text:
             return 1
+    # RED control: marketing rise-speak must appear as prediction-missed.
+    # A demo that only prints honest fall titles is incomplete (Slice 26).
+    if "marketing rise-speak prediction-missed" not in text:
+        return 1
     return 0
 
 

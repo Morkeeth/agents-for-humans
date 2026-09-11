@@ -240,9 +240,11 @@ def list_readings(conn: sqlite3.Connection, probe_name: str) -> list[dict]:
 
 
 def latest_adoption(conn: sqlite3.Connection, probe_name: str) -> dict | None:
+    # id DESC — recorded_at alone ties when two adopts land in the same second
+    # (found 2026-09-11: SECOND receipt printed change FIRST).
     row = conn.execute(
         "SELECT id, recorded_at, change_type, description, prediction, probe_name, detail "
-        "FROM adoptions WHERE probe_name = ? ORDER BY recorded_at DESC LIMIT 1",
+        "FROM adoptions WHERE probe_name = ? ORDER BY id DESC LIMIT 1",
         (probe_name,),
     ).fetchone()
     if row is None:

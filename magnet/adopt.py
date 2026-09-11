@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 
 from magnet.constants import STACK_CHANGE_TYPES
-from magnet.log import connect, latest_adoption, list_readings, reset_demo, set_adoption_detail
+from magnet.log import connect, list_readings, reset_demo, set_adoption_detail
 from magnet.prediction import check_prediction, render_prediction_check
 from magnet.probes import STACK_COVERAGE_PROBE, is_builtin_probe
 from magnet.stack_bind import STACK_BIND_PROBES
@@ -109,14 +109,15 @@ def run_adopt(
     )
     lines.append("")
 
-    row = latest_adoption(conn, probe_name)
     readings = list_readings(conn, probe_name)
     label, delta = verdict(readings, direction="up")
+    # Bind to THIS adoption's description — never latest_adoption by timestamp
+    # (same-second tie printed FIRST on a SECOND receipt, 2026-09-11).
     receipt = render_receipt(
         probe_name,
         readings,
         direction="up",
-        change_label=row["description"] if row else description,
+        change_label=description,
         repro_command=(
             f"magnet adopt {change_type} {description!r} {prediction!r} "
             f"--probe {probe_name}"
