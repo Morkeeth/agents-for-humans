@@ -27,8 +27,10 @@
 | check_docs | `magnet check-docs` → 13 PASS |
 | Linux font | `python3 scripts/render-screenshot.py docs/screenshots/pred-demo.txt …` → PNG |
 | Cold clone s26 | `/tmp/magnet-cold-s26` @ `f293b38` → 209 passed · JUDGE DEMO OK |
+| Cold clone s27 | `/tmp/magnet-cold-s27` @ `fab2443` → 212 passed · pred-demo FINDING · JUDGE DEMO OK · pred-demo.png present |
 | SHIP GATE s25 | `git push origin main` → `8354a7c` |
 | SHIP GATE s26 | `git push origin main` → `f293b38` |
+| SHIP GATE s27 | `git push origin main` → `fab2443` |
 
 ## WRONG
 
@@ -36,5 +38,4 @@
 - **Bedrock cloud BLOCKED.**
 - **one-workflow.png / history.png** not re-captured tonight — still historical sidecars.
 - **Stay-at without `/pop`** not parsed.
-- **Cold clone s27** — filled after ship gate below.
 - **Pillow not in base install** — screenshots extra only; stranger cold path does not need PNGs.

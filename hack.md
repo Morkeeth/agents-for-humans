@@ -82,6 +82,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
+- 2026-09-11 · Slice 27 SHIP · Linux fonts in render-screenshot.py · pred-demo.png + check-docs/pytest PNGs · `python3 -m pytest -q` → 212 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s27` @ `fab2443` 212 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `fab2443`.
 - 2026-09-11 · Slice 27 START · opened render-screenshot.py — only macOS Menlo paths; PIL missing in base env. Building Linux font candidates + live sidecar refresh + pred-demo stranger paste.
 - 2026-09-11 · Slice 26 SHIP · stay-at absolute level · `magnet pred-demo` 10/10 · embarrassed 3 · `python3 -m pytest -q` → 209 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `f293b38` 209 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `f293b38`.
 - 2026-09-11 · Slice 26 START · `claimed_magnitude("must stay at 190/190")` → amount=None. Flat held on unchanged even when latest value ≠ claimed level. Building stay-at absolute check + pred-demo row.
