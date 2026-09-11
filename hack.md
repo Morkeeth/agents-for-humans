@@ -72,15 +72,18 @@ No number without the command that produced it, the population it is out of, and
 | 24 | Prediction fall-intent for strip titles + foreign-hurt prediction check | `magnet foreign-hurt` prints prediction-held on hurt rows · simplify/relax/remove → fall · pytest green |
 | 25 | Prediction magnitude honesty + naive direction arm | `magnet pred-demo` · rises-by-2/5 with +1 → magnet missed / naive held · adopt wires claimed Δ · pytest green |
 | 26 | Stay-at absolute level honesty | `magnet pred-demo` stay-at row · must-stay-at 5/5 with measured 4/5 → magnet missed / naive held · pytest green |
+| 27 | Linux screenshot render + live sidecars + pred-demo stranger paste | `render-screenshot.py` finds DejaVu · `pred-demo.png` on disk · check-docs 13 PASS · pytest green |
 
 ## NOW
 
-**Slice 26:** `must stay at 190/190` parsed as flat with no claimed level — absolute N/P was invisible (found by opening the prediction object after Slice 25). When a prediction names a stay-at level, magnet must check latest value/pop; naive flat-only invents held.
+**Slice 27:** Screenshot PNGs still show stale 190 — txt sidecars were updated but PNGs were not re-rendered (WRONG since Slice 20). Open the render object: make `scripts/render-screenshot.py` work on Linux fonts, re-derive key sidecars from live commands, regenerate PNGs. Paste `magnet pred-demo` into STRANGER-PASS.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-11 · Slice 27 START · opened render-screenshot.py — only macOS Menlo paths; PIL missing in base env. Building Linux font candidates + live sidecar refresh + pred-demo stranger paste.
+- 2026-09-11 · Slice 26 SHIP · stay-at absolute level · `magnet pred-demo` 10/10 · embarrassed 3 · `python3 -m pytest -q` → 209 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `f293b38` 209 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `f293b38`.
 - 2026-09-11 · Slice 26 START · `claimed_magnitude("must stay at 190/190")` → amount=None. Flat held on unchanged even when latest value ≠ claimed level. Building stay-at absolute check + pred-demo row.
 - 2026-09-11 · Slice 25 SHIP · magnitude check · `magnet pred-demo` FINDING · `python3 -m pytest -q` → 206 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s25` @ `8354a7c` 206 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `8354a7c`.
 - 2026-09-11 · Slice 25 START · ran `check_prediction("pass rate rises by 2/5", "helped", 1)` → prediction-held (lie). Direction-only invents held when claimed fraction is wrong. Building magnitude check + pred-demo embarrassment arm + flat lexicon for "still pass".

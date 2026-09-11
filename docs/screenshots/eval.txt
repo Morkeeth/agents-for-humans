@@ -1,5 +1,5 @@
 $ magnet eval
-# run 2026-09-03 13:57:35 CEST on main @ f690fd0, via: python3 -m magnet.cli eval
+# run 2026-09-11 08:30:19Z on main @ f293b38, via: python3 -m magnet.cli eval
 MAGNET eval — arms scored against explicit ground truth
 
   scenario       truth      naive   magnet  silent_null

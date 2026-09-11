@@ -1,5 +1,5 @@
 $ magnet probe pytest-pass-rate
-# run 2026-09-08 20:21:36 UTC on cursor/foreign-bind-probes-19ce @ 8d80ba0, via: python3 -m magnet.cli probe pytest-pass-rate
-pytest-pass-rate: 173/173
+# run 2026-09-11 08:31:35Z on main @ f293b38, via: python3 -m magnet.cli probe pytest-pass-rate
+pytest-pass-rate: 211/211
   command: /usr/bin/python3 -m pytest -q --tb=no -m "not slow"
 # exit=0

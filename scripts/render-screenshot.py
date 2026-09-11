@@ -16,9 +16,17 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 FONT_CANDIDATES = (
+    # macOS
     "/System/Library/Fonts/Menlo.ttc",
     "/System/Library/Fonts/SFNSMono.ttf",
     "/System/Library/Fonts/Supplemental/Courier New.ttf",
+    # Linux (cloud / Devpost capture hosts)
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
+    "/usr/share/fonts/truetype/jetbrains-mono/JetBrainsMono-Regular.ttf",
+    "/usr/share/fonts/truetype/croscore/Cousine-Regular.ttf",
+    "/usr/share/fonts/truetype/noto/NotoSansMono-Regular.ttf",
 )
 BG = (24, 24, 27)
 FG = (229, 229, 234)

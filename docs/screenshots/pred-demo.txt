@@ -1,0 +1,31 @@
+$ magnet pred-demo
+# run 2026-09-11 08:31:35Z on main @ f293b38, via: python3 -m magnet.cli pred-demo
+MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only
+
+  When a prediction names a fraction (rises by 1/5), magnet checks Δ.
+  When it names a stay-at level (must stay at 5/5), magnet checks latest.
+  Naive grades direction only — invents held when the claim is wrong.
+
+  scenario            claim                    Δ    pop  latest magnet              naive
+  ----------------------------------------------------------------------------------------------------
+  correct_fraction    1/5                     +1   5    4      prediction-held     prediction-held
+  wrong_magnitude     2/5                     +1   5    4      prediction-missed   prediction-held
+  wrong_population    1/5                     +1   12   9      prediction-missed   prediction-held
+  vague_rise          rise                    +1   12   9      prediction-held     prediction-held
+  strip_fall          fall                    -7   7    0      prediction-held     prediction-held
+  still_pass_flat     flat                    +0   190  190    prediction-held     prediction-held
+  still_pass_missed   flat                    +1   5    4      prediction-missed   prediction-missed
+  fall_fraction       2/5                     -2   5    2      prediction-held     prediction-held
+  stay_at_holds       stay 4/5                +0   5    4      prediction-held     prediction-held
+  stay_at_wrong_level stay 5/5                +0   5    4      prediction-missed   prediction-held
+
+  magnet       10/10  (direction + magnitude/level when claimed)
+  naive        7/10  (direction only — pre-Slice-25 behaviour)
+  embarrassed  3 scenario(s) where naive invents held on wrong claim
+
+  FINDING  naive direction-only invents prediction-held when the claimed fraction or stay-at level is wrong; magnet misses. Direction is not the object — open the measured Δ / latest value.
+
+  repro      magnet pred-demo
+  repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
+  repro      magnet adopt skill x 'must stay at 5/5' --probe demo-pass-rate --reset
+# exit=0

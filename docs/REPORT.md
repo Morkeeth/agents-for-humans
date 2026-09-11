@@ -1,36 +1,40 @@
-# Build report · Slice 25–26 · 2026-09-11
+# Build report · Slice 25–27 · 2026-09-11
 
 ## SHIPPED
 
 ### Slice 25 — Prediction magnitude honesty
-- Claimed fractions (`rises by 1/5`) checked against measured Δ (+ population).
-- Direction-only ships as `naive_direction_check` (the lie that invented held).
-- `magnet pred-demo` embarrassment arm.
-- Flat lexicon: `still pass` / `remain green` / `stay at`.
+- Claimed fractions checked against measured Δ (+ population).
+- `naive_direction_check` is the old lie; `magnet pred-demo` embarrasses it.
 
 ### Slice 26 — Stay-at absolute level honesty
-- `claimed_level("must stay at 5/5")` parses absolute value/pop (not a delta).
-- Magnet checks latest reading; naive flat-only invents held when level is wrong.
-- pred-demo rows `stay_at_holds` / `stay_at_wrong_level`.
-- **209** pytest tests (re-derived from `tests/test_*.py`).
+- `must stay at N/P` grades latest value/pop; naive flat invents held on wrong level.
+
+### Slice 27 — Screenshot render on Linux + live sidecars
+- `scripts/render-screenshot.py` finds DejaVu/Liberation/JetBrains/Cousine on Linux.
+- Live sidecars + PNGs: pred-demo, check-docs, pytest, probe-pytest-pass-rate, demo, eval, agent-run.
+- `pip install -e ".[screenshots]"` optional Pillow extra.
+- STRANGER-PASS pastes pred-demo FINDING.
+- **212** pytest tests (re-derived from `tests/test_*.py`).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 209 passed |
-| pred-demo | `magnet pred-demo` → magnet 10/10 · naive 7/10 · FINDING |
-| wrong magnitude | `check_prediction("…rises by 2/5", "helped", 1, population=5)` → missed |
-| wrong stay-at | `check_prediction("must stay at 5/5", "unchanged", 0, latest_value=4, population=5)` → missed |
-| naive invents held | `naive_direction_check` → held on both wrong-magnitude and wrong-level |
+| Tests | `python3 -m pytest -q` → 212 passed |
+| pred-demo | `magnet pred-demo` → magnet 10/10 · FINDING |
+| wrong magnitude | rises-by-2/5 with Δ +1 → prediction-missed |
+| wrong stay-at | must-stay-at 5/5 with latest 4/5 → prediction-missed |
 | check_docs | `magnet check-docs` → 13 PASS |
-| Cold clone s25 | `/tmp/magnet-cold-s25` @ `8354a7c` → 206 passed · pred-demo FINDING · JUDGE DEMO OK |
+| Linux font | `python3 scripts/render-screenshot.py docs/screenshots/pred-demo.txt …` → PNG |
+| Cold clone s26 | `/tmp/magnet-cold-s26` @ `f293b38` → 209 passed · JUDGE DEMO OK |
 | SHIP GATE s25 | `git push origin main` → `8354a7c` |
+| SHIP GATE s26 | `git push origin main` → `f293b38` |
 
 ## WRONG
 
 - **Surface arm still 1/2** — helicon science.
 - **Bedrock cloud BLOCKED.**
-- **Screenshot PNGs not re-rendered** — txt sidecars updated.
-- **Cold clone s26 / tip push** — filled after ship gate below.
-- **Stay-at without `/pop`** (`stay at 5`) not parsed — require value/pop form.
+- **one-workflow.png / history.png** not re-captured tonight — still historical sidecars.
+- **Stay-at without `/pop`** not parsed.
+- **Cold clone s27** — filled after ship gate below.
+- **Pillow not in base install** — screenshots extra only; stranger cold path does not need PNGs.

@@ -16,6 +16,7 @@ magnet bakeoff
 magnet foreign-bind
 magnet foreign-harden
 magnet list-probes
+magnet pred-demo
 magnet history
 pytest -q
 magnet check-docs
@@ -82,10 +83,26 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-209 passed (re-derived 2026-09-11)
+212 passed (re-derived 2026-09-11)
 ```
 
-Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-02)
+Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-11)
+
+## `magnet pred-demo` output (Slice 25–26 · magnitude + stay-at)
+
+```
+MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only
+
+  magnet       10/10  (direction + magnitude/level when claimed)
+  naive        7/10  (direction only — pre-Slice-25 behaviour)
+  embarrassed  3 scenario(s) where naive invents held on wrong claim
+
+  FINDING  naive direction-only invents prediction-held when the claimed
+  fraction or stay-at level is wrong; magnet misses.
+```
+
+Exit code: **0** (verified: `python3 -m magnet.cli pred-demo`)
+Screenshot: `docs/screenshots/pred-demo.png` (rendered 2026-09-11).
 
 ## `magnet stack` output (fixture cold path)
 
@@ -152,12 +169,12 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 173/173
+pytest-pass-rate: 211/211
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)
-# re-derived 2026-09-08; 169 total tests, 1 marked slow
+# re-derived 2026-09-11; 212 total tests, 1 marked slow
 
 ## `magnet history` output (after demo)
 
