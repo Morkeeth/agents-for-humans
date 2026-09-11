@@ -28,6 +28,7 @@
 | same-second receipt | two `--no-simulate` adopts → SECOND receipt `change SECOND` |
 | check_docs | `magnet check-docs` → 13 PASS |
 | Judge | `bash scripts/judge-demo.sh` → JUDGE DEMO OK |
+| Cold clone s26 | `/tmp/magnet-cold-s26` @ `9c9d680` → 199 passed · JUDGE DEMO OK |
 | Live anthropics | `magnet foreign-hurt --stack /tmp/magnet-foreign/skills` → effort 0/19→19/19→0/19 |
 
 ## WRONG

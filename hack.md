@@ -81,6 +81,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
+- 2026-09-11 · Slice 26 SHIP · receipt binds to THIS adoption · `latest_adoption` ORDER BY id DESC · foreign-hurt requires marketing FINDING · same-second SECOND→`change SECOND` · `python3 -m pytest -q` → 199 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `9c9d680` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a`.
 - 2026-09-11 · Slice 26 START · ran two `--no-simulate` adopts in one second: receipt on SECOND said `change FIRST` while `recorded [skill] SECOND`. `latest_adoption` ties on `recorded_at`. Also `cmd_foreign_hurt` exits 0 without marketing FINDING.
 - 2026-09-11 · Slice 25 SHIP · stems improve*/increase*/decrease* · bare `up` removed · `magnet pred-demo` RESULT PASS · foreign-hurt marketing prediction-missed 4/4 · live anthropics 0/19→19/19→0/19 · `python3 -m pytest -q` → 196 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s25` @ `d7afa12` JUDGE DEMO OK · branch `cursor/prediction-stem-honesty-441a` pushed (Oscar merges main).
 - 2026-09-11 · Slice 25 VERIFY · `prediction_intent("pass rate improves")` → rise · `("clean up frontmatter")` → unknown · `magnet pred-demo` → RESULT PASS · market missed 4/4 · `magnet foreign-hurt` marketing prediction-missed 4/4 · live anthropics effort 0/19→19/19→0/19 · `python3 -m pytest -q` → 196 passed · `magnet check-docs` → 13 PASS · `bash scripts/judge-demo.sh` → JUDGE DEMO OK · pytest-pass-rate 195/195.
