@@ -71,15 +71,18 @@ No number without the command that produced it, the population it is out of, and
 | 23 | Foreign-hurt embarrassment + foreign hooks-layout honesty | `magnet foreign-hurt` exit 0 · naive helped on a magnet-hurt row · hooks-layout opens hooks/hooks.json · pytest green |
 | 24 | Prediction fall-intent for strip titles + foreign-hurt prediction check | `magnet foreign-hurt` prints prediction-held on hurt rows · simplify/relax/remove → fall · pytest green |
 | 25 | Prediction magnitude honesty + naive direction arm | `magnet pred-demo` · rises-by-2/5 with +1 → magnet missed / naive held · adopt wires claimed Δ · pytest green |
+| 26 | Stay-at absolute level honesty | `magnet pred-demo` stay-at row · must-stay-at 5/5 with measured 4/5 → magnet missed / naive held · pytest green |
 
 ## NOW
 
-**Slice 25:** Prediction graded direction only — `pass rate rises by 2/5` with measured Δ +1 still printed prediction-held (found by running adopt). Open the prediction object: when a claim names a fraction, magnet must check magnitude (+ population when claimed); direction-only becomes the naive arm. Also grade "still pass" as flat so judge-demo predictions are checkable.
+**Slice 26:** `must stay at 190/190` parsed as flat with no claimed level — absolute N/P was invisible (found by opening the prediction object after Slice 25). When a prediction names a stay-at level, magnet must check latest value/pop; naive flat-only invents held.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-11 · Slice 26 START · `claimed_magnitude("must stay at 190/190")` → amount=None. Flat held on unchanged even when latest value ≠ claimed level. Building stay-at absolute check + pred-demo row.
+- 2026-09-11 · Slice 25 SHIP · magnitude check · `magnet pred-demo` FINDING · `python3 -m pytest -q` → 206 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s25` @ `8354a7c` 206 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `8354a7c`.
 - 2026-09-11 · Slice 25 START · ran `check_prediction("pass rate rises by 2/5", "helped", 1)` → prediction-held (lie). Direction-only invents held when claimed fraction is wrong. Building magnitude check + pred-demo embarrassment arm + flat lexicon for "still pass".
 - 2026-09-10 · Slice 24 SHIP · fall lexicon simplify/streamline/relax/remove · `foreign-hurt` prediction-held 4/4 · `python3 -m pytest -q` → 190 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s24` @ `54b2f79` JUDGE DEMO OK · `git push origin main` → `54b2f79`.
 - 2026-09-10 · Slice 24 START · prediction_intent("simplify skill frontmatter") → unknown (cannot grade hurt). Extending fall lexicon; wire check into foreign-hurt rows.

@@ -145,6 +145,39 @@ def test_cli_pred_demo_exit_zero():
     )
     assert proc.returncode == 0, proc.stdout + proc.stderr
     assert "FINDING" in proc.stdout
+    assert "stay_at_wrong_level" in proc.stdout
+
+
+def test_stay_at_level_parses():
+    from magnet.prediction import claimed_level
+
+    level = claimed_level("must stay at 190/190")
+    assert level["value"] == 190
+    assert level["population"] == 190
+    # Stay-at is not a delta claim.
+    assert claimed_magnitude("must stay at 190/190")["amount"] is None
+
+
+def test_stay_at_wrong_level_magnet_misses_naive_holds():
+    pred = "must stay at 5/5"
+    magnet = check_prediction(
+        pred, "unchanged", 0, population=5, latest_value=4
+    )
+    naive = naive_direction_check(
+        pred, "unchanged", 0, population=5, latest_value=4
+    )
+    assert magnet["outcome"] == "prediction-missed"
+    assert magnet["grade"] == "direction+level"
+    assert magnet["level_ok"] is False
+    assert naive["outcome"] == "prediction-held"
+
+
+def test_stay_at_correct_level_holds():
+    c = check_prediction(
+        "must stay at 4/5", "unchanged", 0, population=5, latest_value=4
+    )
+    assert c["outcome"] == "prediction-held"
+    assert c["grade"] == "direction+level"
 
 
 def test_history_shows_claimed_delta(tmp_path):

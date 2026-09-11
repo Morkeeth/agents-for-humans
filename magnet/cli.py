@@ -59,7 +59,7 @@ def cmd_drift_demo(args: argparse.Namespace) -> int:
 def cmd_pred_demo(args: argparse.Namespace) -> int:
     text = run_pred_demo()
     print(text)
-    # Done-when: magnet perfect on scenarios AND naive invents held on wrong magnitude.
+    # Done-when: magnet perfect on scenarios AND naive invents held on wrong claim.
     if "FINDING  naive direction-only invents" not in text:
         return 1
     magnet_line = next(

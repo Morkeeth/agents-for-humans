@@ -32,6 +32,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Foreign-hurt** | Strip hardening → magnet hurt while naive invents helped from the title | `magnet foreign-hurt` |
 | **Hooks-layout** | Opens `hooks/hooks.json` (superpowers object); layout ≠ UG hook-coverage | `magnet probe hooks-layout` |
 | **Magnitude honesty** | Claimed `rises by 2/5` with measured Δ +1 → magnet missed; naive direction invents held | `magnet pred-demo` |
+| **Stay-at honesty** | Claimed `must stay at 5/5` with latest 4/5 → magnet missed; naive flat invents held | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

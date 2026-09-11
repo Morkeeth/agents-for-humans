@@ -127,6 +127,30 @@ Harden then strip. Magnet prints hurt (effort 19/19→0/19 on anthropics). Naive
 invents helped from titles like "simplify skill frontmatter". The arm that can
 embarrass us.
 
+## Prediction magnitude + stay-at (2026-09-11 · opened the prediction object)
+
+```bash
+magnet pred-demo
+# Found by running: check_prediction("pass rate rises by 2/5", "helped", 1)
+# → was prediction-held (lie). Now magnet misses; naive_direction holds.
+```
+
+| Scenario | Claim | Measured | Magnet | Naive |
+|----------|-------|----------|--------|-------|
+| wrong_magnitude | rises by 2/5 | Δ +1 / pop 5 | missed | held |
+| wrong_population | rises by 1/5 | Δ +1 / pop 12 | missed | held |
+| stay_at_wrong_level | must stay at 5/5 | latest 4/5 unchanged | missed | held |
+
+Live foreign stacks re-derived tonight (clones under `/tmp/magnet-foreign/`):
+
+| Stack | stack-coverage | effort | hooks-layout |
+|-------|---------------:|-------:|-------------:|
+| anthropics/skills | 7/12 | 0/19 | 0/3 |
+| obra/superpowers | 6/12 | 0/14 | 3/3 |
+| Morkeeth/agentgrinder | 1/12 | 0/1 | 0/3 |
+
+Re-run: `magnet external-stack --stack <clone>` · `magnet foreign-hurt --stack <clone>`.
+
 ## Repro
 
 ```bash
@@ -134,6 +158,7 @@ magnet redact-scan
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet foreign-harden
 magnet foreign-hurt
+magnet pred-demo
 magnet probe hooks-layout --stack fixtures/real-stacks/superpowers-hooks
 bash scripts/foreign-stack.sh   # network once
 ```

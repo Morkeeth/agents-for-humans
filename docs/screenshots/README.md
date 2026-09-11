@@ -10,6 +10,6 @@ Every `.png` is rendered from the `.txt` beside it by `scripts/render-screenshot
 | optional | `demo.png` | MAGNET refuses to trend on one reading (naive `helped` vs magnet `baseline`); week 2 labelled SIMULATED |
 | optional | `history.png` | Adoption log after `magnet agent-run` |
 
-Sidecars without a PNG: `list-probes.txt`, `check-docs.txt` (13 claims, all match), `drift-demo.txt` (fake repo 2 drifts exit 1, this repo 0 drifts exit 0), `probe-pytest-pass-rate.txt` (205/206; one test marked `slow` is deselected by the probe command — re-derive with `magnet probe pytest-pass-rate`), `pytest.txt` (206 passed, full suite, `python3 -m pytest -q`).
+Sidecars without a PNG: `list-probes.txt`, `check-docs.txt` (13 claims, all match), `drift-demo.txt` (fake repo 2 drifts exit 1, this repo 0 drifts exit 0), `probe-pytest-pass-rate.txt` (208/209; one test marked `slow` is deselected by the probe command — re-derive with `magnet probe pytest-pass-rate`), `pytest.txt` (209 passed, full suite, `python3 -m pytest -q`).
 
 Companion text: `docs/DEVPOST-DESCRIPTION.md` (paste-ready, same numbers), `docs/VIDEO-SHOTLIST.md` (what to record, in what order), `docs/DEMO-ONE-WORKFLOW.md` (the six commands with the pasted output of an earlier run; the counts there are from 2 Sep and are superseded by `one-workflow.txt`).

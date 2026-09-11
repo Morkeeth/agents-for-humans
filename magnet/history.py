@@ -76,8 +76,13 @@ def render_history(
         pred = (row.get("detail") or {}).get("prediction_check")
         if pred is None and row.get("prediction"):
             latest_pop = measured[-1].get("population") if measured else None
+            latest_val = measured[-1].get("value") if measured else None
             pred = check_prediction(
-                row["prediction"], label, delta, population=latest_pop
+                row["prediction"],
+                label,
+                delta,
+                population=latest_pop,
+                latest_value=latest_val,
             )
         if pred:
             lines.append(
@@ -97,6 +102,14 @@ def render_history(
                     )
                     + f"  expected_delta={exp_d if exp_d is not None else '—'}  "
                     f"measured_delta={delta if delta is not None else '—'}"
+                )
+            level = pred.get("claimed_level")
+            if level and level.get("value") is not None:
+                latest_val = measured[-1].get("value") if measured else None
+                latest_pop = measured[-1].get("population") if measured else None
+                lines.append(
+                    f"    claimed lvl {level['value']}/{level.get('population')}  "
+                    f"latest={latest_val}/{latest_pop}"
                 )
         lines.append(f"    readings   {len(readings)}")
         lines.append("")
