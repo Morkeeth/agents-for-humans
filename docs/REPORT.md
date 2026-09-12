@@ -20,6 +20,8 @@
 | pred-demo | `magnet pred-demo` → magnet 15/15 · embarrassed 7 · FINDING |
 | check_docs | `magnet check-docs` → 13 PASS |
 | Naive arm | direction-only still invents held on wrong level/floor (embarrassment) |
+| Cold clone s28 | `/tmp/magnet-cold-s28` @ `ecc179f` → 227 passed · pred-demo FINDING · JUDGE DEMO OK |
+| SHIP GATE s28 | `git push origin main` → pending |
 
 ## WRONG
 
