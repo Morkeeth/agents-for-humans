@@ -16,7 +16,13 @@ Verdict = Literal["baseline", "helped", "hurt", "unchanged"]
 
 
 def format_value_pop(value: int | None, population: int | None) -> str:
-    """Render value with population when one is declared."""
+    """Render value with population when one is declared.
+
+    Population 0 is vacuous — nothing was opened — so print n/a, never 0/0.
+    (guide_demo and foreign_* already expect this; 0/0 was the green-on-outage lie.)
+    """
+    if population == 0:
+        return "n/a"
     if value is None:
         return "unmeasured"
     if population is not None:

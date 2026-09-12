@@ -33,9 +33,11 @@ DOCS_WITH_PYTEST_COUNTS = (
 SCREENSHOT_SIDECAR_GLOB = "docs/screenshots/*.txt"
 
 _PYTEST_COUNT_PATTERNS = (
-    r"(\d+)\s+passed",
-    r"(\d+)\s+pytest",
-    r"(\d+)\s+automated tests",
+    # Do NOT use \s — it matches newlines and lets a commit hash like c1ed898
+    # on the line above "pytest-pass-rate" invent a claimed count of 898.
+    r"(\d+)[ \t]+passed",
+    r"(\d+)[ \t]+pytest",
+    r"(\d+)[ \t]+automated tests",
 )
 
 BUILTIN_PROBES = (
@@ -352,7 +354,7 @@ def check_docs(repo_root: str) -> list[dict]:
 
     # Screenshot sidecars — the control gap that let "113" linger after 159.
     # Skip drift-demo.txt: it intentionally embeds fabricated counts (the demo).
-    screenshot_patterns = _PYTEST_COUNT_PATTERNS + (r"(\d+)\s+tests",)
+    screenshot_patterns = _PYTEST_COUNT_PATTERNS + (r"(\d+)[ \t]+tests",)
     for side in sorted((root / "docs" / "screenshots").glob("*.txt")):
         rel = str(side.relative_to(root))
         text = side.read_text(encoding="utf-8")

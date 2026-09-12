@@ -83,7 +83,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-232 passed (re-derived 2026-09-12)
+243 passed (re-derived 2026-09-12)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-12)
@@ -110,6 +110,23 @@ MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
 Exit code: **0** (verified: `python3 -m magnet.cli pred-demo`)
 Screenshot: `docs/screenshots/pred-demo.png` (rendered 2026-09-12).
 Full paste: `docs/screenshots/pred-demo.txt`.
+
+## `magnet vacuous-demo` output (Slice 30 · controls go RED)
+
+```
+MAGNET vacuous-demo — controls must go RED on empty/missing objects
+
+  magnet      empty effort as 'n/a' + exit 1
+  naive arm   empty effort as '0/0' success
+
+  FINDING  vacuous/missing objects go RED (n/a + exit 1);
+  empty allow:[] no longer invents hook 1/2 without the blocker.
+```
+
+Exit code: **0** (verified: `python3 -m magnet.cli vacuous-demo`)
+Full paste: `docs/screenshots/vacuous-demo.txt`.
+
+
 
 ## `magnet stack` output (fixture cold path)
 
@@ -176,7 +193,7 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 231/231
+pytest-pass-rate: 242/242
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 

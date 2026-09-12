@@ -27,6 +27,7 @@ from magnet.foreign_bind import run_foreign_bind
 from magnet.foreign_harden import run_foreign_harden
 from magnet.foreign_hurt import run_foreign_hurt
 from magnet.pred_demo import run_pred_demo
+from magnet.vacuous_demo import run_vacuous_demo
 from magnet.tools import tool_check_docs, tool_record_week, tool_run_probe
 
 
@@ -75,12 +76,30 @@ def cmd_pred_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_vacuous_demo(args: argparse.Namespace) -> int:
+    text = run_vacuous_demo(repo_root=args.repo)
+    print(text)
+    if "FINDING  vacuous/missing objects go RED" not in text:
+        return 1
+    return 0
+
+
 def cmd_probe(args: argparse.Namespace) -> int:
     result = tool_run_probe(
         args.name, log_path=args.log, repo_root=args.repo, stack_dir=args.stack
     )
     pop = result.get("population")
     val = result.get("value")
+    detail = result.get("detail") or {}
+    vacuous = bool(detail.get("vacuous")) or (pop == 0 and val is None)
+    if vacuous or (pop == 0 and val in (0, None)):
+        from magnet.reporter import format_value_pop
+
+        shown = format_value_pop(val, pop)
+        print(f"{result['probe_name']}: {shown}")
+        print(f"  command: {result['command']}")
+        print("  note:     vacuous — no object to measure (control RED, not 0/0 green)")
+        return 1
     shown = f"{val}/{pop}" if pop is not None else val
     print(f"{result['probe_name']}: {shown}")
     print(f"  command: {result['command']}")
@@ -324,6 +343,12 @@ def main(argv: list[str] | None = None) -> int:
         help="Magnitude honesty: naive direction invents held on wrong fraction",
     )
     p_pred.set_defaults(func=cmd_pred_demo)
+
+    p_vacuous = sub.add_parser(
+        "vacuous-demo",
+        help="Controls go RED on empty/missing objects (not 0/0 green)",
+    )
+    p_vacuous.set_defaults(func=cmd_vacuous_demo)
 
     p_adopt = sub.add_parser("adopt", help="Adopt a change, re-probe, print receipt")
     p_adopt.add_argument("change_type", choices=list(CHANGE_TYPES))

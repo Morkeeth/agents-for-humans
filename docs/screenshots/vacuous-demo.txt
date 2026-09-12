@@ -1,0 +1,25 @@
+$ magnet vacuous-demo
+# run 2026-09-12T17:30:39Z commit c1ed898
+MAGNET vacuous-demo — controls must go RED on empty/missing objects
+
+  Empty skills used to print 0/0 exit 0. Empty allow:[] used to score
+  hook 1/2. Both invented green. Naive arm: treat 0/0 as success.
+
+  object            probe                 shown     vacuous    exit
+  ------------------------------------------------------------------------
+  empty-skills      effort-coverage       n/a       yes        1
+  empty-skills      tools-coverage        n/a       yes        1
+  missing-path      effort-coverage       n/a       yes        1
+  empty-allow       hook-coverage         0/2       lie-fixed  0
+  fixture/stack     effort-coverage       0/7       no         0
+  fixture/stack     hook-coverage         0/2       no         0
+
+  naive arm   empty effort as '0/0' success  ← invents green on outage
+  magnet      empty effort as 'n/a' + exit 1
+
+  FINDING  vacuous/missing objects go RED (n/a + exit 1); empty allow:[] no longer invents hook 1/2 without the blocker.
+
+  repro      magnet vacuous-demo
+  repro      magnet probe effort-coverage --stack /tmp/empty-skills   # expect n/a exit 1
+  repro      magnet probe hook-coverage --stack <settings allow:[]>   # expect 0/2
+# exit=0

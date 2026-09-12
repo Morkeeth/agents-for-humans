@@ -76,15 +76,18 @@ No number without the command that produced it, the population it is out of, and
 | 28 | Absolute-level honesty without slash + remain/hold/keep + floor | `must stay at 5` @ latest 4 → missed · remain/hold grade · `at least 4/5` floor · `magnet pred-demo` embarrasses · pytest green |
 | 29 | Adopt default real week (no fabricated SIMULATED) | bare `magnet adopt` prints no SIMULATED · `--simulate` opt-in · demo exit 0 · pytest green |
 | 30 | Vacuous probe RED control + empty-allow hook honesty | empty skills → effort n/a or fail (not 0/0 success) · empty allow alone ≠ hook signal · pytest green |
+| 31 | Stale Devpost sidecar refresh + check_docs RED on history/one-workflow | re-derive history.txt + one-workflow.txt (+ PNGs) · check_docs fails if history lacks outcome · pytest green |
 
 ## NOW
 
-**Slice 30:** Vacuous probes invent green: empty skills dir → `effort-coverage: 0/0` exit 0; empty `permissions.allow: []` can score hook credit without a blocker. Controls must go RED. Open the probe objects: empty/missing → explicit n/a or non-zero; empty allow alone does not invent hardening. pytest green.
+**Slice 31:** `docs/screenshots/history.txt` and `one-workflow.txt` still pre–outcome (stale @ f690fd0). check_docs stays GREEN while blind to them. Re-derive from live `magnet history` / one-workflow; extend check_docs to fail if history sidecar lacks `outcome` / live commit stamp. pytest green.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-12 · Slice 30 SHIP · vacuous n/a+exit 1 · empty allow:[] ≠ hook 1/2 · `magnet vacuous-demo` FINDING · `python3 -m pytest -q` → 243 passed · check-docs 13 PASS · cold clone pending.
+- 2026-09-12 · Slice 30 START · ran objects: effort empty → 0/0 exit 0; hook allow:[] → 1/2. Building vacuous RED + empty-allow honesty.
 - 2026-09-12 · Slice 29 SHIP · adopt default real week · `--simulate` opt-in · bare adopt no SIMULATED · `python3 -m pytest -q` → 232 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s29` @ `4504e44` 232 passed · bare adopt no SIMULATED · JUDGE DEMO OK · `git push origin main` → .
 - 2026-09-12 · Slice 29 START · ran object: bare `magnet adopt … --demo-bonus --reset` prints `(SIMULATED week)` and future `simulated` stamp. Same-day readings already survive. Flipping default to real week; `--simulate` opt-in; `--no-simulate` kept as no-op for old docs.
 - 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s28` @ `ecc179f` 227 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `bc7a58b`.

@@ -85,11 +85,14 @@ def skill_has_allowed_tools(path: Path) -> bool:
 
 
 def effort_coverage(stack_dir: str) -> dict:
-    """skills with effort: frontmatter / total skills — re-derived from disk."""
+    """skills with effort: frontmatter / total skills — re-derived from disk.
+
+    Zero skills is vacuous (n/a), not 0/0 success — control must go RED.
+    """
     paths = list_skill_paths(stack_dir)
     total = len(paths)
     with_effort = [p for p in paths if skill_has_effort(p)]
-    value = len(with_effort)
+    value = len(with_effort) if total else None
     missing = [p.parent.name for p in paths if not skill_has_effort(p)]
     return {
         "probe_name": EFFORT_PROBE,
@@ -102,19 +105,23 @@ def effort_coverage(stack_dir: str) -> dict:
             "with_effort": [p.parent.name for p in with_effort],
             "missing_effort": missing,
             "object": "SKILL.md frontmatter",
+            "vacuous": total == 0,
         },
     }
 
 
 def tools_coverage(stack_dir: str) -> dict:
-    """skills with allowed-tools: frontmatter / total skills — UG item 3."""
+    """skills with allowed-tools: frontmatter / total skills — UG item 3.
+
+    Zero skills is vacuous (n/a), not 0/0 success.
+    """
     paths = list_skill_paths(stack_dir)
     total = len(paths)
     with_tools = [p for p in paths if skill_has_allowed_tools(p)]
     missing = [p.parent.name for p in paths if not skill_has_allowed_tools(p)]
     return {
         "probe_name": TOOLS_PROBE,
-        "value": len(with_tools),
+        "value": len(with_tools) if total else None,
         "population": total,
         "command": f"magnet probe {TOOLS_PROBE} --stack {stack_dir}",
         "direction": "up",
@@ -123,6 +130,7 @@ def tools_coverage(stack_dir: str) -> dict:
             "with_allowed_tools": [p.parent.name for p in with_tools],
             "missing_allowed_tools": missing,
             "object": "SKILL.md allowed-tools frontmatter",
+            "vacuous": total == 0,
         },
     }
 
@@ -190,10 +198,16 @@ def _hook_signal_present(stack_dir: str, signal: str) -> bool:
             # Never opened an allow list — cannot claim it is clean.
             return False
         allow = [str(a) for a in (perms.get("allow") or [])]
-        # Open the allow list itself — title "hardened" does not count.
-        return DANGEROUS_ALLOW not in allow and not any(
+        clean = DANGEROUS_ALLOW not in allow and not any(
             "rm -rf *" in a for a in allow
         )
+        if not clean:
+            return False
+        # Slice 30: empty allow alone invents hardening (0/2 → 1/2 by writing
+        # allow:[]). Require the blocker object too when allow is empty.
+        if not allow:
+            return _hook_signal_present(stack_dir, "dangerous-actions-blocker")
+        return True
     return False
 
 
@@ -388,15 +402,17 @@ def prompt_consistency(stack_dir: str) -> dict:
     """UG item 4 — CLAUDE.md MUST lines that also appear in post-compact-reinject.
 
     Opens both files. A title claiming 'aligned prompts' does not score.
+    Zero MUST lines is vacuous (n/a), not 0/0 success.
     """
     musts = _claude_must_lines(stack_dir)
     blob = _post_compact_text(stack_dir)
     present = [m for m in musts if m in blob]
     missing = [m for m in musts if m not in blob]
+    total = len(musts)
     return {
         "probe_name": PROMPT_PROBE,
-        "value": len(present),
-        "population": len(musts),
+        "value": len(present) if total else None,
+        "population": total,
         "command": f"magnet probe {PROMPT_PROBE} --stack {stack_dir}",
         "direction": "up",
         "detail": {
@@ -406,6 +422,7 @@ def prompt_consistency(stack_dir: str) -> dict:
             "claude_present": bool(musts),
             "post_compact_present": bool(blob),
             "object": "CLAUDE.md vs post-compact-reinject.txt",
+            "vacuous": total == 0,
         },
     }
 

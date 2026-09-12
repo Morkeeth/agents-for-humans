@@ -45,15 +45,15 @@ def test_settings_without_allow_key_does_not_score_clean():
     assert "no-rm-rf-star-allow" in reading["detail"]["missing"]
 
 
-def test_empty_allow_list_with_settings_scores_clean_allow():
-    """settings.json present + allow: [] means we opened a clean allow list."""
+def test_empty_allow_list_alone_does_not_score_clean():
+    """Slice 30: allow:[] without blocker invents 1/2 — must stay 0/2."""
     d = Path(tempfile.mkdtemp())
     (d / "settings.json").write_text(
         '{"permissions": {"allow": [], "deny": []}}\n', encoding="utf-8"
     )
     reading = hook_coverage(str(d))
-    assert reading["value"] == 1
-    assert "no-rm-rf-star-allow" in reading["detail"]["present"]
+    assert reading["value"] == 0
+    assert "no-rm-rf-star-allow" in reading["detail"]["missing"]
     assert "dangerous-actions-blocker" in reading["detail"]["missing"]
 
 
