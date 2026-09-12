@@ -30,7 +30,7 @@
 | vacuous-demo | `magnet vacuous-demo` → FINDING |
 | Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 243 passed |
 | Cold clone s31 | `/tmp/magnet-cold-s31` @ `1e57c56` → 246 passed · check-docs 15 PASS · JUDGE DEMO OK |
-| SHIP GATE s31 | `git push origin main` → pending |
+| SHIP GATE s31 | `git push origin main` → `c697a29` |
 | SHIP GATE s30 | `git push origin main` → `c00bd87` |
 
 ## WRONG
