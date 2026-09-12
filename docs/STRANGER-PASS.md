@@ -83,26 +83,33 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-212 passed (re-derived 2026-09-11)
+227 passed (re-derived 2026-09-12)
 ```
 
-Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-11)
+Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-12)
 
-## `magnet pred-demo` output (Slice 25–26 · magnitude + stay-at)
+## `magnet pred-demo` output (Slice 28 · absolute-level + floor)
 
 ```
-MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only
+MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
 
-  magnet       10/10  (direction + magnitude/level when claimed)
-  naive        7/10  (direction only — pre-Slice-25 behaviour)
-  embarrassed  3 scenario(s) where naive invents held on wrong claim
+  magnet       15/15  (direction + magnitude/level/floor when claimed)
+  naive        8/15  (direction only — pre-Slice-25 behaviour)
+  embarrassed  7 scenario(s) where naive invents held on wrong claim
 
   FINDING  naive direction-only invents prediction-held when the claimed
-  fraction or stay-at level is wrong; magnet misses.
+  fraction, stay-at level, or floor is wrong; magnet misses.
+
+  Rows that close Slice-26/28 holes:
+    stay_at_no_slash   must stay at 5 @ latest 4 → magnet missed / naive held
+    remain_at_wrong    must remain at 5/5 → magnet missed / naive held
+    hold_at_wrong      hold at 190/190 @ 189 → magnet missed / naive held
+    floor_missed       at least 4/5 @ latest 3 → magnet missed / naive held
 ```
 
 Exit code: **0** (verified: `python3 -m magnet.cli pred-demo`)
-Screenshot: `docs/screenshots/pred-demo.png` (rendered 2026-09-11).
+Screenshot: `docs/screenshots/pred-demo.png` (rendered 2026-09-12).
+Full paste: `docs/screenshots/pred-demo.txt`.
 
 ## `magnet stack` output (fixture cold path)
 
@@ -169,12 +176,12 @@ Exit code: **0** (verified: `python -m magnet.cli list-probes`)
 ## `magnet probe pytest-pass-rate` output
 
 ```
-pytest-pass-rate: 211/211
+pytest-pass-rate: 226/226
   command: python3 -m pytest -q --tb=no -m "not slow"
 ```
 
 Exit code: **0** (verified from CLI, not inside pytest — probe refuses recursion)
-# re-derived 2026-09-11; 212 total tests, 1 marked slow
+# re-derived 2026-09-12; 227 total tests, 1 marked slow
 
 ## `magnet history` output (after demo)
 

@@ -73,15 +73,19 @@ No number without the command that produced it, the population it is out of, and
 | 25 | Prediction magnitude honesty + naive direction arm | `magnet pred-demo` · rises-by-2/5 with +1 → magnet missed / naive held · adopt wires claimed Δ · pytest green |
 | 26 | Stay-at absolute level honesty | `magnet pred-demo` stay-at row · must-stay-at 5/5 with measured 4/5 → magnet missed / naive held · pytest green |
 | 27 | Linux screenshot render + live sidecars + pred-demo stranger paste | `render-screenshot.py` finds DejaVu · `pred-demo.png` on disk · check-docs 13 PASS · pytest green |
+| 28 | Absolute-level honesty without slash + remain/hold/keep + floor | `must stay at 5` @ latest 4 → missed · remain/hold grade · `at least 4/5` floor · `magnet pred-demo` embarrasses · pytest green |
+| 29 | Adopt default real week (no fabricated SIMULATED) | bare `magnet adopt` prints no SIMULATED · `--simulate` opt-in · demo exit 0 · pytest green |
 
 ## NOW
 
-**Slice 27:** Screenshot PNGs still show stale 190 — txt sidecars were updated but PNGs were not re-rendered (WRONG since Slice 20). Open the render object: make `scripts/render-screenshot.py` work on Linux fonts, re-derive key sidecars from live commands, regenerate PNGs. Paste `magnet pred-demo` into STRANGER-PASS.
+**Slice 29:** `adopt` still fabricates next week by default (`SIMULATED week` on bare `magnet adopt`). Same-day readings already survive under `--no-simulate`. Flip default to real week; keep `--simulate` for the demo affordance. Done when: bare adopt prints no SIMULATED; demo still exits 0; pytest green.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · JUDGE DEMO OK · cold clone pending.
+- 2026-09-12 · Slice 28 START · ran objects: `claimed_level("must stay at 5")` → None → check_prediction held @ latest 4/5 (lie). `remain at 4/5` / `hold at 190/190` → level parsed, intent unknown → no-direction. `unchanged at 5/5` → flat, no level. Building absolute-level honesty pack.
 - 2026-09-11 · Slice 27 SHIP · Linux fonts in render-screenshot.py · pred-demo.png + check-docs/pytest PNGs · `python3 -m pytest -q` → 212 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s27` @ `fab2443` 212 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `fab2443`.
 - 2026-09-11 · Slice 27 START · opened render-screenshot.py — only macOS Menlo paths; PIL missing in base env. Building Linux font candidates + live sidecar refresh + pred-demo stranger paste.
 - 2026-09-11 · Slice 26 SHIP · stay-at absolute level · `magnet pred-demo` 10/10 · embarrassed 3 · `python3 -m pytest -q` → 209 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s26` @ `f293b38` 209 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `f293b38`.

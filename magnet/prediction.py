@@ -12,6 +12,11 @@ naive arm — it invents held when the fraction is wrong.
 Slice 26: when the prediction names a stay-at level (`must stay at 5/5`),
 magnet checks latest value/pop. Flat-only grading invents held when the
 level is wrong.
+
+Slice 28: stay-at without `/pop` (`must stay at 5`), remain/hold/keep/
+unchanged-at lexicon, and floor claims (`at least 4/5`). A parsed level
+with unknown intent is treated as flat — never no-direction while a level
+sits on the table.
 """
 from __future__ import annotations
 
@@ -32,14 +37,25 @@ _FALL = re.compile(
 _FLAT = re.compile(
     r"\b(unchanged|no\s+change|same|stable|flat|must\s+NOT\s+rise|not\s+rise|"
     r"no\s+coverage\s+change|nothing\s+moves?|still\s+pass|remain(?:s|ing)?\s+green|"
-    r"stay(?:s|ing)?\s+at|must\s+stay)\b",
+    r"stay(?:s|ing)?\s+at|must\s+stay|"
+    r"remain(?:s|ing)?\s+at|hold(?:s|ing)?\s+at|keep(?:s|ing)?\s+at|"
+    r"must\s+(?:remain|hold|keep))\b",
     re.I,
 )
 
-# Absolute stay-at level: "must stay at 190/190", "stay at 4/5".
-# Parsed BEFORE delta claims — this is a level, not a move.
+# Absolute stay-at level: "must stay at 190/190", "stay at 4/5", "stay at 5",
+# "remain at 4/5", "hold at 190", "keep at 5/5", "unchanged at 5/5".
+# Population is optional — value-only claims compare latest value alone.
 _STAY_AT = re.compile(
-    r"(?:must\s+)?(?:stay(?:s|ing)?|remain(?:s|ing)?|hold(?:s|ing)?)\s+at\s+(\d+)\s*/\s*(\d+)",
+    r"(?:must\s+)?"
+    r"(?:stay(?:s|ing)?|remain(?:s|ing)?|hold(?:s|ing)?|keep(?:s|ing)?|unchanged)"
+    r"\s+at\s+(\d+)(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Floor claim: "at least 4/5", "no worse than 4/5". Held when latest >= value.
+_FLOOR = re.compile(
+    r"(?:at\s+least|no\s+worse\s+than)\s+(\d+)(?:\s*/\s*(\d+))?",
     re.I,
 )
 
@@ -57,7 +73,12 @@ _CLAIM_SIGNED = re.compile(r"(?<![/\d])([+\-])(\d+)(?!\s*/)", re.I)
 
 
 def prediction_intent(prediction: str) -> str:
-    """rise | fall | flat | unknown — derived from the prediction text itself."""
+    """rise | fall | flat | unknown — derived from the prediction text itself.
+
+    A parsed stay-at / floor level with no rise/fall signal is flat: naming a
+    required level is itself a stay claim (Slice 28 — never no-direction while
+    a level sits on the table).
+    """
     text = prediction or ""
     # Flat checked first: "must NOT rise" contains rise but means flat.
     if _FLAT.search(text):
@@ -68,18 +89,39 @@ def prediction_intent(prediction: str) -> str:
         return "fall"
     if _RISE.search(text) and _FALL.search(text):
         return "unknown"
+    # Level or floor on the table ⇒ stay intent even if lexicon missed.
+    if claimed_level(text)["value"] is not None or claimed_floor(text)["value"] is not None:
+        return "flat"
     return "unknown"
 
 
 def claimed_level(prediction: str) -> dict:
-    """Parse stay-at absolute value/pop. Not a delta — a required latest reading."""
+    """Parse stay-at absolute value (+ optional pop). Not a delta — a required latest."""
     text = prediction or ""
     m = _STAY_AT.search(text)
     if not m:
         return {"value": None, "population": None, "raw": None}
+    pop = m.group(2)
     return {
         "value": int(m.group(1)),
-        "population": int(m.group(2)),
+        "population": int(pop) if pop is not None else None,
+        "raw": m.group(0).strip(),
+    }
+
+
+def claimed_floor(prediction: str) -> dict:
+    """Parse floor claim value (+ optional pop). Held when latest >= value."""
+    text = prediction or ""
+    # Stay-at owns "stay at N" — floor is a different object.
+    if claimed_level(text)["value"] is not None:
+        return {"value": None, "population": None, "raw": None}
+    m = _FLOOR.search(text)
+    if not m:
+        return {"value": None, "population": None, "raw": None}
+    pop = m.group(2)
+    return {
+        "value": int(m.group(1)),
+        "population": int(pop) if pop is not None else None,
         "raw": m.group(0).strip(),
     }
 
@@ -92,10 +134,12 @@ def claimed_magnitude(prediction: str) -> dict:
       population  int | None  — denominator when written as N/P
       raw         str | None  — matched substring for the receipt
     Sign is applied later from intent (rise → +, fall → −, flat → 0).
-    Stay-at levels are NOT deltas — claimed_level owns those.
+    Stay-at levels and floors are NOT deltas — claimed_level / claimed_floor own those.
     """
     text = prediction or ""
     if claimed_level(text)["value"] is not None:
+        return {"amount": None, "population": None, "raw": None}
+    if claimed_floor(text)["value"] is not None:
         return {"amount": None, "population": None, "raw": None}
     m = _CLAIM_FRAC.search(text)
     if m:
@@ -135,15 +179,16 @@ def naive_direction_check(
     population: int | None = None,
     latest_value: int | None = None,
 ) -> dict:
-    """Two-hour naive arm: grade direction only, ignore claimed fraction/level.
+    """Two-hour naive arm: grade direction only, ignore claimed fraction/level/floor.
 
     This is what magnet did through Slice 24 — it invents prediction-held when
     the claim says rises by 2/5 and the measured delta is +1, or stay-at 5/5
-    while latest is 4/5.
+    while latest is 4/5, or stay-at 5 while latest is 4.
     """
     intent = prediction_intent(prediction)
     claim = claimed_magnitude(prediction)
     level = claimed_level(prediction)
+    floor = claimed_floor(prediction)
     if label == "baseline":
         return {
             "outcome": "unmeasured",
@@ -153,6 +198,7 @@ def naive_direction_check(
             "grade": "direction-only",
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "note": "unmeasured — need two readings before a prediction can be checked",
         }
     if intent == "unknown":
@@ -164,6 +210,7 @@ def naive_direction_check(
             "grade": "direction-only",
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "note": "prediction has no rise/fall/flat signal MAGNET can grade",
         }
     expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
@@ -180,11 +227,18 @@ def naive_direction_check(
         "grade": "direction-only",
         "claimed": claim,
         "claimed_level": level,
+        "claimed_floor": floor,
         "note": (
             f"{outcome}: intent={intent} expected={expected} got={label}"
-            " — direction only; claimed fraction/level ignored"
+            " — direction only; claimed fraction/level/floor ignored"
         ),
     }
+
+
+def _pop_ok(claimed_pop: int | None, measured_pop: int | None) -> bool:
+    if claimed_pop is None or measured_pop is None:
+        return True
+    return int(claimed_pop) == int(measured_pop)
 
 
 def check_prediction(
@@ -195,19 +249,21 @@ def check_prediction(
     population: int | None = None,
     latest_value: int | None = None,
 ) -> dict:
-    """Compare prediction intent (+ magnitude/level when claimed) to the measured verdict.
+    """Compare prediction intent (+ magnitude/level/floor when claimed) to the measured verdict.
 
     Returns:
       outcome   prediction-held | prediction-missed | unmeasured | no-direction
       intent    rise | fall | flat | unknown
-      grade     direction | direction+magnitude | direction+level
+      grade     direction | direction+magnitude | direction+level | floor
       claimed   {amount, population, raw}
       claimed_level {value, population, raw}
+      claimed_floor {value, population, raw}
       note      always reminds that held ≠ attributed
     """
     intent = prediction_intent(prediction)
     claim = claimed_magnitude(prediction)
     level = claimed_level(prediction)
+    floor = claimed_floor(prediction)
     if label == "baseline":
         return {
             "outcome": "unmeasured",
@@ -219,6 +275,7 @@ def check_prediction(
             "grade": "direction",
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "note": "unmeasured — need two readings before a prediction can be checked",
         }
     if intent == "unknown":
@@ -232,7 +289,38 @@ def check_prediction(
             "grade": "direction",
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "note": "prediction has no rise/fall/flat signal MAGNET can grade",
+        }
+
+    # Floor claims: held when latest >= claimed floor (pop match when both present).
+    # Direction is not the object — the floor is.
+    if floor.get("value") is not None:
+        if latest_value is None:
+            floor_ok = False
+        else:
+            floor_ok = int(latest_value) >= int(floor["value"])
+            floor_ok = floor_ok and _pop_ok(floor.get("population"), population)
+        outcome = "prediction-held" if floor_ok else "prediction-missed"
+        why = (
+            f"floor claimed ≥{floor['value']}/{floor.get('population')} "
+            f"got {latest_value}/{population}"
+        )
+        return {
+            "outcome": outcome,
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "latest_value": latest_value,
+            "expected": None,
+            "expected_delta": None,
+            "grade": "floor",
+            "claimed": claim,
+            "claimed_level": level,
+            "claimed_floor": floor,
+            "floor_ok": floor_ok,
+            "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
         }
 
     expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
@@ -245,8 +333,7 @@ def check_prediction(
             level_ok = False
         else:
             level_ok = int(latest_value) == int(level["value"])
-            if level.get("population") is not None and population is not None:
-                level_ok = level_ok and int(population) == int(level["population"])
+            level_ok = level_ok and _pop_ok(level.get("population"), population)
 
     if expected_delta is None and level.get("value") is None:
         held = direction_ok
@@ -267,14 +354,13 @@ def check_prediction(
             "grade": "direction",
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "note": note,
         }
 
     if expected_delta is not None:
         magnitude_ok = delta is not None and int(delta) == int(expected_delta)
-        pop_ok = True
-        if claim.get("population") is not None and population is not None:
-            pop_ok = int(claim["population"]) == int(population)
+        pop_ok = _pop_ok(claim.get("population"), population)
         held = direction_ok and magnitude_ok and pop_ok and level_ok
         outcome = "prediction-held" if held else "prediction-missed"
         if not direction_ok:
@@ -309,6 +395,7 @@ def check_prediction(
             "grade": grade,
             "claimed": claim,
             "claimed_level": level,
+            "claimed_floor": floor,
             "magnitude_ok": magnitude_ok,
             "population_ok": pop_ok,
             "level_ok": level_ok,
@@ -339,6 +426,7 @@ def check_prediction(
         "grade": "direction+level",
         "claimed": claim,
         "claimed_level": level,
+        "claimed_floor": floor,
         "level_ok": level_ok,
         "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
     }
@@ -375,8 +463,18 @@ def render_prediction_check(check: dict) -> str:
             )
     level = check.get("claimed_level") or {}
     if level.get("value") is not None:
+        pop = level.get("population")
+        lvl_txt = f"{level['value']}/{pop}" if pop is not None else str(level["value"])
         lines.append(
-            f"  claimed lvl {level['value']}/{level.get('population')}  "
+            f"  claimed lvl {lvl_txt}  "
+            f"latest={check.get('latest_value')}/{check.get('population')}"
+        )
+    floor = check.get("claimed_floor") or {}
+    if floor.get("value") is not None:
+        pop = floor.get("population")
+        fl_txt = f"{floor['value']}/{pop}" if pop is not None else str(floor["value"])
+        lines.append(
+            f"  claimed floor ≥{fl_txt}  "
             f"latest={check.get('latest_value')}/{check.get('population')}"
         )
     lines.append(f"  note       {check['note']}")

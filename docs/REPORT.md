@@ -1,41 +1,32 @@
-# Build report · Slice 25–27 · 2026-09-11
+# Build report · Slice 28 · 2026-09-12
 
 ## SHIPPED
 
-### Slice 25 — Prediction magnitude honesty
-- Claimed fractions checked against measured Δ (+ population).
-- `naive_direction_check` is the old lie; `magnet pred-demo` embarrasses it.
-
-### Slice 26 — Stay-at absolute level honesty
-- `must stay at N/P` grades latest value/pop; naive flat invents held on wrong level.
-
-### Slice 27 — Screenshot render on Linux + live sidecars
-- `scripts/render-screenshot.py` finds DejaVu/Liberation/JetBrains/Cousine on Linux.
-- Live sidecars + PNGs: pred-demo, check-docs, pytest, probe-pytest-pass-rate, demo, eval, agent-run.
-- `pip install -e ".[screenshots]"` optional Pillow extra.
-- STRANGER-PASS pastes pred-demo FINDING.
-- **212** pytest tests (re-derived from `tests/test_*.py`).
+### Slice 28 — Absolute-level honesty (no-slash stay-at + remain/hold/keep + floor)
+- `must stay at 5` (no `/pop`) grades latest value — no longer invents held @ 4/5.
+- `remain at` / `hold at` / `keep at` / `unchanged at` are flat + level (no more no-direction while a level sits on the table).
+- Floor claims: `at least 4/5` / `no worse than 4/5` — held when latest ≥ floor.
+- `magnet pred-demo` → **15/15** magnet · **7** embarrassment rows vs naive direction-only.
+- **227** pytest tests (re-derived from `tests/test_*.py`).
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 212 passed |
-| pred-demo | `magnet pred-demo` → magnet 10/10 · FINDING |
-| wrong magnitude | rises-by-2/5 with Δ +1 → prediction-missed |
-| wrong stay-at | must-stay-at 5/5 with latest 4/5 → prediction-missed |
+| Tests | `python3 -m pytest -q` → 227 passed |
+| stay-at no slash | `check_prediction("must stay at 5", "unchanged", 0, population=5, latest_value=4)` → prediction-missed |
+| remain-at | `prediction_intent("must remain at 5/5")` → flat · wrong level → missed |
+| floor | `check_prediction("pass rate at least 4/5", …, latest_value=3)` → prediction-missed |
+| pred-demo | `magnet pred-demo` → magnet 15/15 · embarrassed 7 · FINDING |
 | check_docs | `magnet check-docs` → 13 PASS |
-| Linux font | `python3 scripts/render-screenshot.py docs/screenshots/pred-demo.txt …` → PNG |
-| Cold clone s26 | `/tmp/magnet-cold-s26` @ `f293b38` → 209 passed · JUDGE DEMO OK |
-| Cold clone s27 | `/tmp/magnet-cold-s27` @ `fab2443` → 212 passed · pred-demo FINDING · JUDGE DEMO OK · pred-demo.png present |
-| SHIP GATE s25 | `git push origin main` → `8354a7c` |
-| SHIP GATE s26 | `git push origin main` → `f293b38` |
-| SHIP GATE s27 | `git push origin main` → `fab2443` |
+| Naive arm | direction-only still invents held on wrong level/floor (embarrassment) |
 
 ## WRONG
 
-- **Surface arm still 1/2** — helicon science.
+- **Surface arm still 1/2** — helicon science; not papered over.
 - **Bedrock cloud BLOCKED.**
-- **one-workflow.png / history.png** not re-captured tonight — still historical sidecars.
-- **Stay-at without `/pop`** not parsed.
-- **Pillow not in base install** — screenshots extra only; stranger cold path does not need PNGs.
+- **`adopt` still fabricates next week by default** — MAGNET-BUGS left open; Slice 29 candidate.
+- **Vacuous `0/0` probes exit 0** — empty stack invents a green control; Slice 30 candidate.
+- **history/one-workflow sidecars still stale** (pre–outcome lines); check_docs blind to them.
+- **Pillow not in base install** — screenshots extra only.
+- Historical cold-clone rows in older LOG entries keep their then-true counts; do not rewrite them to 227.

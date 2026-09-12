@@ -33,6 +33,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Hooks-layout** | Opens `hooks/hooks.json` (superpowers object); layout ≠ UG hook-coverage | `magnet probe hooks-layout` |
 | **Magnitude honesty** | Claimed `rises by 2/5` with measured Δ +1 → magnet missed; naive direction invents held | `magnet pred-demo` |
 | **Stay-at honesty** | Claimed `must stay at 5/5` with latest 4/5 → magnet missed; naive flat invents held | `magnet pred-demo` |
+| **Absolute-level honesty** | `must stay at 5` (no `/pop`), `remain at` / `hold at`, floor `at least 4/5` — magnet misses wrong levels; naive invents held | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

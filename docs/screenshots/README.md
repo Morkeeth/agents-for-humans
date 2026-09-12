@@ -14,7 +14,7 @@ with `# exit=N`. Re-derive: run the first line of the `.txt`, then
 | 3 required | `eval.png` | Scored against ground truth on 5 scenarios: naive 3/5, magnet 5/5, silent_null 1/5 |
 | optional | `demo.png` | MAGNET refuses to trend on one reading (naive `helped` vs magnet `baseline`); week 2 labelled SIMULATED |
 | optional | `history.png` | Adoption log after `magnet agent-run` |
-| optional | `pred-demo.png` | Magnitude + stay-at honesty: naive invents held on wrong claim; magnet misses |
+| optional | `pred-demo.png` | Magnitude + stay-at + floor honesty: naive invents held on wrong claim; magnet misses |
 | optional | `check-docs.png` | Doc drift gate — 13 claims match source |
 | optional | `pytest.png` | Full suite green (re-derive count with `python3 -m pytest -q`) |
 

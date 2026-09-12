@@ -5,6 +5,8 @@ Found 2026-09-11 by running:
 
 That was a lie. Magnet now checks the claimed fraction; the old behaviour
 ships as the naive arm so a stranger can see us lose to honesty.
+
+Slice 28: stay-at without /pop, remain/hold lexicon, floor claims.
 """
 from __future__ import annotations
 
@@ -12,6 +14,7 @@ from dataclasses import dataclass
 
 from magnet.prediction import (
     check_prediction,
+    claimed_floor,
     claimed_level,
     claimed_magnitude,
     naive_direction_check,
@@ -135,16 +138,67 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="flat ok but latest 4 ≠ claimed 5 — THE LIE Slice 25 left open",
     ),
+    PredScenario(
+        "stay_at_no_slash",
+        "must stay at 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="no /pop — Slice 26 left unparsed → invents held; now grades value",
+    ),
+    PredScenario(
+        "remain_at_wrong",
+        "must remain at 5/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="remain-at was no-direction while level sat on the table",
+    ),
+    PredScenario(
+        "hold_at_wrong",
+        "hold at 190/190",
+        "unchanged",
+        0,
+        190,
+        "prediction-missed",
+        latest_value=189,
+        note="hold-at lexicon; latest 189 ≠ claimed 190",
+    ),
+    PredScenario(
+        "floor_holds",
+        "pass rate at least 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="floor met: latest 4 ≥ claimed 4",
+    ),
+    PredScenario(
+        "floor_missed",
+        "pass rate at least 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="direction flat ok but latest 3 < floor 4 — naive invents held",
+    ),
 )
 
 
 def run_pred_demo() -> str:
-    """Print magnet vs naive_direction on magnitude/level scenarios."""
+    """Print magnet vs naive_direction on magnitude/level/floor scenarios."""
     lines = [
-        "MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only",
+        "MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only",
         "",
         "  When a prediction names a fraction (rises by 1/5), magnet checks Δ.",
-        "  When it names a stay-at level (must stay at 5/5), magnet checks latest.",
+        "  When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.",
+        "  When it names a floor (at least 4/5), magnet checks latest ≥ floor.",
         "  Naive grades direction only — invents held when the claim is wrong.",
         "",
         "  scenario            claim                    Δ    pop  latest magnet              naive",
@@ -181,9 +235,20 @@ def run_pred_demo() -> str:
         ):
             embarrass += 1
         level = claimed_level(sc.prediction)
+        floor = claimed_floor(sc.prediction)
         claim = claimed_magnitude(sc.prediction)
-        if level["value"] is not None:
-            claim_txt = f"stay {level['value']}/{level['population']}"
+        if floor["value"] is not None:
+            pop = floor["population"]
+            claim_txt = (
+                f"≥{floor['value']}/{pop}" if pop is not None else f"≥{floor['value']}"
+            )
+        elif level["value"] is not None:
+            pop = level["population"]
+            claim_txt = (
+                f"stay {level['value']}/{pop}"
+                if pop is not None
+                else f"stay {level['value']}"
+            )
         elif claim["amount"] is not None and claim["population"] is not None:
             claim_txt = f"{claim['amount']}/{claim['population']}"
         elif claim["amount"] is not None:
@@ -201,7 +266,7 @@ def run_pred_demo() -> str:
     total = len(SCENARIOS)
     lines += [
         "",
-        f"  magnet       {magnet_ok}/{total}  (direction + magnitude/level when claimed)",
+        f"  magnet       {magnet_ok}/{total}  (direction + magnitude/level/floor when claimed)",
         f"  naive        {naive_ok}/{total}  (direction only — pre-Slice-25 behaviour)",
         f"  embarrassed  {embarrass} scenario(s) where naive invents held on wrong claim",
         "",
@@ -209,13 +274,13 @@ def run_pred_demo() -> str:
     if embarrass >= 1 and magnet_ok == total:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
-            "claimed fraction or stay-at level is wrong; magnet misses. "
+            "claimed fraction, stay-at level, or floor is wrong; magnet misses. "
             "Direction is not the object — open the measured Δ / latest value."
         )
     elif magnet_ok < total:
         lines.append(
-            f"  FINDING  magnet scored {magnet_ok}/{total} — magnitude/level grade drifted; "
-            "re-check claimed_magnitude / claimed_level / check_prediction."
+            f"  FINDING  magnet scored {magnet_ok}/{total} — magnitude/level/floor grade drifted; "
+            "re-check claimed_magnitude / claimed_level / claimed_floor / check_prediction."
         )
     else:
         lines.append(
@@ -225,6 +290,7 @@ def run_pred_demo() -> str:
         "",
         "  repro      magnet pred-demo",
         "  repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset",
-        "  repro      magnet adopt skill x 'must stay at 5/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must stay at 5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'at least 4/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

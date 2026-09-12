@@ -1,9 +1,10 @@
 $ magnet pred-demo
-# run 2026-09-11 08:31:35Z on main @ f293b38, via: python3 -m magnet.cli pred-demo
-MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only
+# run 2026-09-12T17:17:25Z on branch cursor/absolute-level-honesty-f22d @ 62e4dad, via: python3 -m magnet.cli pred-demo
+MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
 
   When a prediction names a fraction (rises by 1/5), magnet checks Δ.
-  When it names a stay-at level (must stay at 5/5), magnet checks latest.
+  When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.
+  When it names a floor (at least 4/5), magnet checks latest ≥ floor.
   Naive grades direction only — invents held when the claim is wrong.
 
   scenario            claim                    Δ    pop  latest magnet              naive
@@ -18,14 +19,20 @@ MAGNET pred-demo — magnitude + stay-at honesty vs naive direction-only
   fall_fraction       2/5                     -2   5    2      prediction-held     prediction-held
   stay_at_holds       stay 4/5                +0   5    4      prediction-held     prediction-held
   stay_at_wrong_level stay 5/5                +0   5    4      prediction-missed   prediction-held
+  stay_at_no_slash    stay 5                  +0   5    4      prediction-missed   prediction-held
+  remain_at_wrong     stay 5/5                +0   5    4      prediction-missed   prediction-held
+  hold_at_wrong       stay 190/190            +0   190  189    prediction-missed   prediction-held
+  floor_holds         ≥4/5                    +0   5    4      prediction-held     prediction-held
+  floor_missed        ≥4/5                    +0   5    3      prediction-missed   prediction-held
 
-  magnet       10/10  (direction + magnitude/level when claimed)
-  naive        7/10  (direction only — pre-Slice-25 behaviour)
-  embarrassed  3 scenario(s) where naive invents held on wrong claim
+  magnet       15/15  (direction + magnitude/level/floor when claimed)
+  naive        8/15  (direction only — pre-Slice-25 behaviour)
+  embarrassed  7 scenario(s) where naive invents held on wrong claim
 
-  FINDING  naive direction-only invents prediction-held when the claimed fraction or stay-at level is wrong; magnet misses. Direction is not the object — open the measured Δ / latest value.
+  FINDING  naive direction-only invents prediction-held when the claimed fraction, stay-at level, or floor is wrong; magnet misses. Direction is not the object — open the measured Δ / latest value.
 
   repro      magnet pred-demo
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
-  repro      magnet adopt skill x 'must stay at 5/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'must stay at 5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'at least 4/5' --probe demo-pass-rate --reset
 # exit=0
