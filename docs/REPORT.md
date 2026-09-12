@@ -31,6 +31,8 @@
 | Cold clone s28 | `/tmp/magnet-cold-s28` @ `ecc179f` → 227 passed |
 | Cold clone s29 | `/tmp/magnet-cold-s29` @ `4504e44` → 232 passed · no SIMULATED |
 | SHIP GATE s28 | `git push origin main` → `bc7a58b` |
+| Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 243 passed · vacuous FINDING · JUDGE DEMO OK |
+| SHIP GATE s30 | `git push origin main` → pending |
 | SHIP GATE s29 | `git push origin main` → `20e77ad` |
 
 ## WRONG
