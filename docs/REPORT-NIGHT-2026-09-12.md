@@ -24,7 +24,7 @@
 | cold s29 | `/tmp/magnet-cold-s29` @ 4504e44 | 232 · no SIMULATED |
 | cold s30 | `/tmp/magnet-cold-s30` @ 7da6b5f | 243 · vacuous RED |
 | cold s31 | `/tmp/magnet-cold-s31` @ 1e57c56 | 246 · 15 PASS |
-| push main | `git push origin main` | tip $(git rev-parse --short HEAD) |
+| push main |  | tip  |
 
 ## WRONG
 
