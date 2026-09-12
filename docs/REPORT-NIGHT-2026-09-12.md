@@ -1,6 +1,6 @@
 # Night report · 2026-09-12 · Slices 28–31
 
-**main tip:** `0f54b88` · **SHIP GATE hashes:** s28 `bc7a58b` · s29 `20e77ad` · s30 `c00bd87` · s31 `c697a29`
+**main tip:** `78e6616` · **SHIP GATE hashes:** s28 `bc7a58b` · s29 `20e77ad` · s30 `c00bd87` · s31 `c697a29`
 
 ## SHIPPED
 
@@ -25,7 +25,7 @@
 | cold s29 | `/tmp/magnet-cold-s29` @ 4504e44 | 232 · no SIMULATED |
 | cold s30 | `/tmp/magnet-cold-s30` @ 7da6b5f | 243 · vacuous RED |
 | cold s31 | `/tmp/magnet-cold-s31` @ 1e57c56 | 246 · 15 PASS |
-| push main | `git push origin main` | tip `0f54b88` |
+| push main | `git push origin main` | tip `78e6616` |
 
 ## WRONG
 
