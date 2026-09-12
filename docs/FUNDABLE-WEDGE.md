@@ -36,6 +36,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Absolute-level honesty** | `must stay at 5` (no `/pop`), `remain at` / `hold at`, floor `at least 4/5` — magnet misses wrong levels; naive invents held | `magnet pred-demo` |
 | **Real-week default** | Bare `magnet adopt` uses a real `read_at`; `--simulate` is the labelled demo opt-in | `magnet adopt … --demo-bonus --reset` |
 | **Vacuous RED** | Empty/missing skills → `n/a` exit 1; `allow:[]` alone ≠ hook 1/2; naive still prints 0/0 success | `magnet vacuous-demo` |
+| **Sidecar outcome** | history/one-workflow Devpost shots must carry prediction outcome or check_docs goes RED | `magnet check-docs` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

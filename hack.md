@@ -80,12 +80,14 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 31:** `docs/screenshots/history.txt` and `one-workflow.txt` still pre–outcome (stale @ f690fd0). check_docs stays GREEN while blind to them. Re-derive from live `magnet history` / one-workflow; extend check_docs to fail if history sidecar lacks `outcome` / live commit stamp. pytest green.
+**Slice 31 done.** Next risk (if night continues): rise lexicon for `recover`/`restore` so one-workflow prediction grades; or Grinder receipt bridge. Otherwise Oscar gates.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-12 · Slice 31 SHIP · history+one-workflow sidecars re-derived with outcome · check_docs RED without outcome · `python3 -m pytest -q` → 246 passed · check-docs 15 PASS · cold clone pending.
+- 2026-09-12 · Slice 31 START · opened `docs/screenshots/history.txt` @ f690fd0 — no `outcome`/`claimed Δ` while live `magnet history` prints both. check_docs 13 PASS while blind. Building sidecar refresh + check_docs RED control.
 - 2026-09-12 · Slice 30 SHIP · vacuous n/a+exit 1 · empty allow:[] ≠ hook 1/2 · `magnet vacuous-demo` FINDING · `python3 -m pytest -q` → 243 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s30` @ `7da6b5f` 243 passed · vacuous-demo FINDING · effort n/a exit 1 · JUDGE DEMO OK · `git push origin main` → `c00bd87`.
 - 2026-09-12 · Slice 30 START · ran objects: effort empty → 0/0 exit 0; hook allow:[] → 1/2. Building vacuous RED + empty-allow honesty.
 - 2026-09-12 · Slice 29 SHIP · adopt default real week · `--simulate` opt-in · bare adopt no SIMULATED · `python3 -m pytest -q` → 232 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s29` @ `4504e44` 232 passed · bare adopt no SIMULATED · JUDGE DEMO OK · `git push origin main` → .

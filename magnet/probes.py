@@ -374,6 +374,53 @@ def check_docs(repo_root: str) -> list[dict]:
             )
         )
 
+    # Slice 31: history sidecar must carry prediction outcome (Slice 18+).
+    # Stale pre-outcome paste used to stay GREEN forever — control must go RED.
+    history_side = root / "docs" / "screenshots" / "history.txt"
+    if history_side.is_file():
+        hist_text = history_side.read_text(encoding="utf-8")
+        has_outcome = "outcome" in hist_text
+        has_claimed = "claimed" in hist_text.lower()
+        ok = has_outcome and has_claimed
+        results.append(
+            _result(
+                "screenshot history outcome",
+                "docs/screenshots/history.txt",
+                "outcome+claimed" if ok else (
+                    "missing outcome"
+                    if not has_outcome
+                    else "missing claimed"
+                ),
+                "outcome+claimed",
+                ok,
+                (
+                    "history.txt carries outcome + claimed"
+                    if ok
+                    else "history.txt lacks prediction outcome/claimed — re-derive from magnet history"
+                ),
+            )
+        )
+
+    one_wf = root / "docs" / "screenshots" / "one-workflow.txt"
+    if one_wf.is_file():
+        wf_text = one_wf.read_text(encoding="utf-8")
+        # Must show the history step carries outcome after Slice 18.
+        ok = "outcome" in wf_text
+        results.append(
+            _result(
+                "screenshot one-workflow outcome",
+                "docs/screenshots/one-workflow.txt",
+                "outcome" if ok else "missing outcome",
+                "outcome",
+                ok,
+                (
+                    "one-workflow.txt history step carries outcome"
+                    if ok
+                    else "one-workflow.txt lacks outcome — re-run DEMO-ONE-WORKFLOW"
+                ),
+            )
+        )
+
     # Claim: probe names listed in README
     for name in ("run_probe", "record_week", "adopt_change", "check_docs"):
         ok = name in readme

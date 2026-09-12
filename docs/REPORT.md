@@ -1,44 +1,40 @@
-# Build report · Slice 28–30 · 2026-09-12
+# Build report · Slice 28–31 · 2026-09-12
 
 ## SHIPPED
 
 ### Slice 28 — Absolute-level honesty
-- `must stay at 5`, remain/hold/keep/unchanged-at, floor `at least 4/5`
-- `magnet pred-demo` → **15/15** · **7** embarrassment rows
+- stay-at without `/pop`, remain/hold/keep, floor `at least`
+- `magnet pred-demo` → 15/15 · 7 embarrassment rows
 
 ### Slice 29 — Adopt default real week
-- Bare `magnet adopt` → real `read_at`, no SIMULATED
-- `--simulate` opt-in; `--no-simulate` deprecated no-op
+- Bare adopt → real `read_at`; `--simulate` opt-in
 
-### Slice 30 — Vacuous probe RED + empty-allow honesty
-- Empty/missing skills → `n/a` + exit 1 (not `0/0` green)
-- `allow:[]` alone no longer invents hook `1/2` (needs blocker too)
-- `magnet vacuous-demo` FINDING vs naive `0/0` success arm
-- check_docs pattern fix: `\s` matched newlines so commit `c1ed898` invented claim 898
-- **243** pytest tests (re-derived from `tests/test_*.py`)
+### Slice 30 — Vacuous RED + empty-allow + newline poison fix
+- Empty skills → `n/a` exit 1; `allow:[]` alone ≠ hook 1/2
+- `magnet vacuous-demo`; check_docs `[ \t]` not `\s`
+
+### Slice 31 — Stale Devpost sidecar refresh + check_docs RED
+- Re-derived `history.txt` / `one-workflow.txt` with prediction `outcome`
+- check_docs fails if history lacks outcome/claimed or one-workflow lacks outcome
+- **246** pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 243 passed |
-| pred-demo | `magnet pred-demo` → 15/15 · embarrassed 7 |
-| bare adopt | no SIMULATED · real `read_at` |
-| vacuous effort | `magnet probe effort-coverage --stack <empty>` → n/a exit 1 |
-| empty allow | `hook-coverage` @ allow:[] → 0/2 |
+| Tests | `python3 -m pytest -q` → 246 passed |
+| check_docs | `magnet check-docs` → 15 PASS (incl. history + one-workflow outcome) |
+| history sidecar | `docs/screenshots/history.txt` contains `outcome` + `claimed` |
+| one-workflow | `docs/screenshots/one-workflow.txt` contains `outcome` |
+| RED control | tmp history without outcome → check_docs FAIL |
 | vacuous-demo | `magnet vacuous-demo` → FINDING |
-| check_docs | `magnet check-docs` → 13 PASS |
-| Cold clone s28 | `/tmp/magnet-cold-s28` @ `ecc179f` → 227 passed |
-| Cold clone s29 | `/tmp/magnet-cold-s29` @ `4504e44` → 232 passed · no SIMULATED |
-| SHIP GATE s28 | `git push origin main` → `bc7a58b` |
-| Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 243 passed · vacuous FINDING · JUDGE DEMO OK |
+| Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 243 passed |
 | SHIP GATE s30 | `git push origin main` → `c00bd87` |
-| SHIP GATE s29 | `git push origin main` → `20e77ad` |
 
 ## WRONG
 
-- **Surface arm still 1/2** — helicon science.
+- **Surface arm still 1/2** — helicon.
 - **Bedrock cloud BLOCKED.**
-- **history/one-workflow sidecars still stale**; check_docs still blind to them — Slice 31.
+- **one-workflow live paste** shows hurt then helped with outcome, but pass-rate swing was larger than −1/+1 while other suite noise ran — classic camera story still needs a quiet tree; numbers in the sidecar are the object, not the old 112 paste.
+- **"pass rate recovers by 1"** is still no-direction (recover ∉ rise lexicon) — used `rises by 1` in the refresh.
 - **Pillow not in base install.**
-- Empty allow + blocker still scores 2/2 by design; a stranger must open both objects.

@@ -1,13 +1,15 @@
 $ magnet history
-# run 2026-09-03 13:57:36 CEST on main @ f690fd0, via: python3 -m magnet.cli history
+# run 2026-09-12T17:33:45Z on main-worktree @ b61775a, via: python3 -m magnet.cli history
 MAGNET history
 
-  #2  2026-09-03T11:57:35+00:00
-    change     [skill] agent-run-verification-skill
+  #1  2026-09-12T17:33:45+00:00
+    change     [skill] demo-verification-skill
     probe      demo-pass-rate
     predict    pass rate rises by 1/5
     latest     4/5  (magnet probe demo-pass-rate)
     verdict    helped  (Δ 1)
+    outcome    prediction-held  (intent=rise; grade=direction+magnitude; not attribution)
+    claimed Δ  amount=1/5  expected_delta=1  measured_delta=1
     readings   2
 
   probes     demo-pass-rate

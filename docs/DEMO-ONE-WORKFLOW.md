@@ -14,7 +14,7 @@ M="python3 -m magnet.cli --log .magnet/demo-one.db"
 $M record pytest-pass-rate
 
 # 2  the one prompt change: drop the rule from SYSTEM_PROMPT
-sed -i '' 's/ — never invent a trend from one reading//' magnet/tools.py
+sed -i 's/ — never invent a trend from one reading//' magnet/tools.py
 
 # 3  adopt the change: MAGNET re-runs the eval and prints the verdict
 $M adopt prompt 'drop the never-invent rule from SYSTEM_PROMPT' 'pass rate unchanged' --probe pytest-pass-rate --no-simulate
@@ -37,7 +37,7 @@ $M history
 ### 1  $ python3 -m magnet.cli --log .magnet/demo-one.db record pytest-pass-rate
 recorded pytest-pass-rate: verdict=baseline readings=1
 
-### 2  $ sed -i '' 's/ — never invent a trend from one reading//' magnet/tools.py
+### 2  $ sed -i 's/ — never invent a trend from one reading//' magnet/tools.py
 -    "and report helped, hurt, or baseline — never invent a trend from one reading. "
 +    "and report helped, hurt, or baseline. "
 
