@@ -85,7 +85,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-12 · Slice 29 SHIP · adopt default real week · `--simulate` opt-in · bare adopt no SIMULATED · `python3 -m pytest -q` → 232 passed · check-docs 13 PASS · cold clone pending.
+- 2026-09-12 · Slice 29 SHIP · adopt default real week · `--simulate` opt-in · bare adopt no SIMULATED · `python3 -m pytest -q` → 232 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s29` @ `4504e44` 232 passed · bare adopt no SIMULATED · JUDGE DEMO OK · `git push origin main` → pending.
 - 2026-09-12 · Slice 29 START · ran object: bare `magnet adopt … --demo-bonus --reset` prints `(SIMULATED week)` and future `simulated` stamp. Same-day readings already survive. Flipping default to real week; `--simulate` opt-in; `--no-simulate` kept as no-op for old docs.
 - 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s28` @ `ecc179f` 227 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `bc7a58b`.
 - 2026-09-12 · Slice 28 START · ran objects: `claimed_level("must stay at 5")` → None → check_prediction held @ latest 4/5 (lie). `remain at 4/5` / `hold at 190/190` → level parsed, intent unknown → no-direction. `unchanged at 5/5` → flat, no level. Building absolute-level honesty pack.
