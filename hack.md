@@ -75,15 +75,18 @@ No number without the command that produced it, the population it is out of, and
 | 27 | Linux screenshot render + live sidecars + pred-demo stranger paste | `render-screenshot.py` finds DejaVu · `pred-demo.png` on disk · check-docs 13 PASS · pytest green |
 | 28 | Absolute-level honesty without slash + remain/hold/keep + floor | `must stay at 5` @ latest 4 → missed · remain/hold grade · `at least 4/5` floor · `magnet pred-demo` embarrasses · pytest green |
 | 29 | Adopt default real week (no fabricated SIMULATED) | bare `magnet adopt` prints no SIMULATED · `--simulate` opt-in · demo exit 0 · pytest green |
+| 30 | Vacuous probe RED control + empty-allow hook honesty | empty skills → effort n/a or fail (not 0/0 success) · empty allow alone ≠ hook signal · pytest green |
 
 ## NOW
 
-**Slice 29:** `adopt` still fabricates next week by default (`SIMULATED week` on bare `magnet adopt`). Same-day readings already survive under `--no-simulate`. Flip default to real week; keep `--simulate` for the demo affordance. Done when: bare adopt prints no SIMULATED; demo still exits 0; pytest green.
+**Slice 30:** Vacuous probes invent green: empty skills dir → `effort-coverage: 0/0` exit 0; empty `permissions.allow: []` can score hook credit without a blocker. Controls must go RED. Open the probe objects: empty/missing → explicit n/a or non-zero; empty allow alone does not invent hardening. pytest green.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-12 · Slice 29 SHIP · adopt default real week · `--simulate` opt-in · bare adopt no SIMULATED · `python3 -m pytest -q` → 232 passed · check-docs 13 PASS · cold clone pending.
+- 2026-09-12 · Slice 29 START · ran object: bare `magnet adopt … --demo-bonus --reset` prints `(SIMULATED week)` and future `simulated` stamp. Same-day readings already survive. Flipping default to real week; `--simulate` opt-in; `--no-simulate` kept as no-op for old docs.
 - 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s28` @ `ecc179f` 227 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `bc7a58b`.
 - 2026-09-12 · Slice 28 START · ran objects: `claimed_level("must stay at 5")` → None → check_prediction held @ latest 4/5 (lie). `remain at 4/5` / `hold at 190/190` → level parsed, intent unknown → no-direction. `unchanged at 5/5` → flat, no level. Building absolute-level honesty pack.
 - 2026-09-11 · Slice 27 SHIP · Linux fonts in render-screenshot.py · pred-demo.png + check-docs/pytest PNGs · `python3 -m pytest -q` → 212 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s27` @ `fab2443` 212 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `fab2443`.

@@ -112,7 +112,7 @@ def cmd_adopt(args: argparse.Namespace) -> int:
             args.probe,
             log_path=args.log,
             apply_demo_bonus=args.demo_bonus,
-            simulate_next_week=not args.no_simulate,
+            simulate_next_week=args.simulate,
             reset=args.reset,
             fit=args.fit,
             stack_dir=args.stack,
@@ -331,7 +331,16 @@ def main(argv: list[str] | None = None) -> int:
     p_adopt.add_argument("prediction", help="Testable prediction (e.g. 'pass rate rises by 1/5')")
     p_adopt.add_argument("--probe", default="demo-pass-rate", help="Probe to measure")
     p_adopt.add_argument("--demo-bonus", action="store_true", help="Apply demo skill bonus (+1/5)")
-    p_adopt.add_argument("--no-simulate", action="store_true", help="Do not simulate next week")
+    p_adopt.add_argument(
+        "--simulate",
+        action="store_true",
+        help="DEMO only: place the post-adoption reading in a simulated following week",
+    )
+    p_adopt.add_argument(
+        "--no-simulate",
+        action="store_true",
+        help="Deprecated no-op — real week is now the default (kept for old docs)",
+    )
     p_adopt.add_argument("--reset", action="store_true", help="Clear log before adopt")
     p_adopt.add_argument(
         "--fit",

@@ -30,7 +30,7 @@ def run_adopt(
     *,
     log_path: str | None = None,
     apply_demo_bonus: bool = False,
-    simulate_next_week: bool = True,
+    simulate_next_week: bool = False,
     reset: bool = False,
     fit: bool = False,
     stack_dir: str | None = None,

@@ -98,4 +98,4 @@ Before, the scripts under test with `PIP_REQUIRE_VIRTUALENV=1`: `MAGNET judge de
 
 ## Left open, on purpose
 - (Closed by Cursor's `cursor/stack-magnet-bakeoff-5608`, commit "Fix demo-bonus always-on", once merged.) `tools.py` `tool_adopt_change` sets the demo bonus whenever the probe is `demo-pass-rate`, with or without `--demo-bonus`. So a hook adoption measured on the demo probe prints `helped` by construction (see the after-output of #1). The new `measures repo only` line sits under it, but the verdict line is still a lie for a stack change. Product ruling: either make the bonus opt-in only, or refuse `demo-pass-rate` for `hook`/`setting`.
-- `adopt` still simulates the next week by default. Now that same-day reads survive, the default fabricates a week for no reason. Flipping the default changes the recorded demo; Oscar's call.
+- (Closed Slice 29 · 2026-09-12.) `adopt` defaulted to `simulate_next_week=True`, fabricating a week for no reason after same-day readings survived. Default is now real week; `--simulate` is the demo opt-in; `--no-simulate` is a deprecated no-op for old docs.
