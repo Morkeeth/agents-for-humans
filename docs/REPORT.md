@@ -21,7 +21,7 @@
 | check_docs | `magnet check-docs` → 13 PASS |
 | Naive arm | direction-only still invents held on wrong level/floor (embarrassment) |
 | Cold clone s28 | `/tmp/magnet-cold-s28` @ `ecc179f` → 227 passed · pred-demo FINDING · JUDGE DEMO OK |
-| SHIP GATE s28 | `git push origin main` → pending |
+| SHIP GATE s28 | `git push origin main` → `bc7a58b` |
 
 ## WRONG
 

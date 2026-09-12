@@ -84,7 +84,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s28` @ `ecc179f` 227 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → pending.
+- 2026-09-12 · Slice 28 SHIP · stay-at without /pop · remain/hold/keep/unchanged-at · floor `at least` · `magnet pred-demo` 15/15 embarrassed 7 · `python3 -m pytest -q` → 227 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s28` @ `ecc179f` 227 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `bc7a58b`.
 - 2026-09-12 · Slice 28 START · ran objects: `claimed_level("must stay at 5")` → None → check_prediction held @ latest 4/5 (lie). `remain at 4/5` / `hold at 190/190` → level parsed, intent unknown → no-direction. `unchanged at 5/5` → flat, no level. Building absolute-level honesty pack.
 - 2026-09-11 · Slice 27 SHIP · Linux fonts in render-screenshot.py · pred-demo.png + check-docs/pytest PNGs · `python3 -m pytest -q` → 212 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s27` @ `fab2443` 212 passed · pred-demo FINDING · JUDGE DEMO OK · `git push origin main` → `fab2443`.
 - 2026-09-11 · Slice 27 START · opened render-screenshot.py — only macOS Menlo paths; PIL missing in base env. Building Linux font candidates + live sidecar refresh + pred-demo stranger paste.
