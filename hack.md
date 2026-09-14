@@ -78,15 +78,18 @@ No number without the command that produced it, the population it is out of, and
 | 30 | Vacuous probe RED control + empty-allow hook honesty | empty skills → effort n/a or fail (not 0/0 success) · empty allow alone ≠ hook signal · pytest green |
 | 31 | Stale Devpost sidecar refresh + check_docs RED on history/one-workflow | re-derive history.txt + one-workflow.txt (+ PNGs) · check_docs fails if history lacks outcome · pytest green |
 | 32 | Rise lexicon recover/restore + one-workflow grades | `pass rate recovers by 1` → rise · held on Δ+1 · `scripts/one-workflow.sh` exit 0 · pytest green |
+| 33 | Grinder receipt verify bridge | `magnet receipt --verify` re-probes · GREEN on match · RED on planted drift · pytest green |
 
 ## NOW
 
-**Slice 32 done.** Next risk: Grinder receipt bridge (`magnet receipt --verify` re-probes and compares to stored reading) or Oscar gates.
+**Slice 33 done.** Next risk: night report + cold clone verify, or Oscar gates.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-14 · Slice 33 SHIP · `magnet receipt --verify` re-probes · GREEN match / RED planted · `magnet receipt-demo` FINDING · `--json` alias · `python3 -m pytest -q` green · check-docs PASS.
+- 2026-09-14 · Slice 33 START · opened `magnet receipt` JSON — Grinder-ready schema exists but never re-probes. A stale log can print helped forever. Building `--verify` that opens the probe object.
 - 2026-09-14 · Slice 32 SHIP · recover/restore/regain/rebound rise · `pass rate recovers by 1` prediction-held on Δ+1 · `scripts/one-workflow.sh` · honest pytest paste N+M · `python3 -m pytest -q` → 255 passed, 1 skipped · check-docs 15 PASS · one-workflow 254/254→253/254→254/254 recovers held.
 - 2026-09-14 · Slice 32 START · ran object: `prediction_intent("pass rate recovers by 1")` → `unknown` · adopt → `no-direction` while Δ +1 and claimed amount=1. DEMO-ONE-WORKFLOW.md still says recovers; Slice 31 sidecar papered over with `rises by 1`. Building rise lexicon + live one-workflow script.
 - 2026-09-12 · Slice 31 SHIP · history+one-workflow sidecars re-derived with outcome · check_docs RED without outcome · `python3 -m pytest -q` → 246 passed · check-docs 15 PASS · cold clone `/tmp/magnet-cold-s31` @ `1e57c56` 246 passed · check-docs 15 PASS · JUDGE DEMO OK · `git push origin main` → `c697a29`.

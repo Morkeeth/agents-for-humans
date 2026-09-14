@@ -1,0 +1,12 @@
+MAGNET receipt-demo — Grinder bridge: re-probe vs stored receipt
+
+  A JSON receipt that only reads SQLite can lie after the world moves.
+  --verify re-runs the probe at the object. Planted drift must go RED.
+
+  arm GREEN  stored=4/5  live=4/5  ok=True
+  arm RED    stored=103/5  live=4/5  ok=False
+
+  FINDING  verify goes GREEN on a live receipt and RED when the stored value is planted wrong — Grinder can refuse a stale receipt.
+
+  repro      magnet receipt-demo
+  repro      magnet receipt --verify

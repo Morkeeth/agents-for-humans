@@ -1,16 +1,19 @@
 """Machine-readable adoption receipt — verify without inventing numbers.
 
 A stranger (or Agent Grinder) can check value/pop/command/verdict at the object.
-No network; reads the local SQLite log only.
+No network for the JSON print; `--verify` re-runs the probe at the object and
+compares. A receipt that only reads SQLite can lie forever after the world moves.
 """
 from __future__ import annotations
 
 import json
+import os
 from typing import Any
 
 from magnet.history import list_adoptions, readings_for_adoption
 from magnet.log import connect, default_log_path, list_readings
 from magnet.prediction import check_prediction, claimed_level, claimed_magnitude
+from magnet.probes import run_probe
 from magnet.reporter import format_value_pop, verdict
 
 
@@ -46,7 +49,7 @@ def build_receipt(
             "verdict": "baseline",
             "delta": None,
             "readings": 0,
-            "repro": "magnet receipt --json",
+            "repro": "magnet receipt",
         }
 
     series = list_readings(conn, probe)
@@ -101,15 +104,201 @@ def build_receipt(
     }
 
 
+def verify_receipt(
+    conn,
+    *,
+    probe_name: str | None = None,
+    adoption_id: int | None = None,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+    receipt: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Re-run the probe at the object; compare value/pop to the stored receipt.
+
+    Returns:
+      ok            bool — True only when stored value+pop match the live probe
+      mismatches    list[str]
+      stored        {value, population, command}
+      live          {value, population, command}
+      note          always names the probe command that was re-run
+    """
+    payload = receipt or build_receipt(
+        conn, probe_name=probe_name, adoption_id=adoption_id
+    )
+    probe = payload.get("probe")
+    latest = payload.get("latest") or {}
+    if not probe or latest.get("value") is None:
+        return {
+            "ok": False,
+            "mismatches": ["no stored reading to verify"],
+            "stored": latest or None,
+            "live": None,
+            "probe": probe,
+            "note": "verify needs a stored value/pop — run magnet adopt or magnet record first",
+        }
+
+    live = run_probe(
+        conn,
+        probe,
+        repo_root=repo_root or os.getcwd(),
+        stack_dir=stack_dir,
+    )
+    mismatches: list[str] = []
+    if live.get("value") != latest.get("value"):
+        mismatches.append(
+            f"value stored={latest.get('value')} live={live.get('value')}"
+        )
+    if live.get("population") != latest.get("population"):
+        mismatches.append(
+            f"population stored={latest.get('population')} live={live.get('population')}"
+        )
+
+    ok = not mismatches
+    live_vp = format_value_pop(live.get("value"), live.get("population"))
+    stored_vp = latest.get("value_pop") or format_value_pop(
+        latest.get("value"), latest.get("population")
+    )
+    return {
+        "ok": ok,
+        "mismatches": mismatches,
+        "stored": {
+            "value": latest.get("value"),
+            "population": latest.get("population"),
+            "value_pop": stored_vp,
+            "command": latest.get("command"),
+        },
+        "live": {
+            "value": live.get("value"),
+            "population": live.get("population"),
+            "value_pop": live_vp,
+            "command": live.get("command"),
+        },
+        "probe": probe,
+        "note": (
+            f"verify GREEN: live {live_vp} matches stored {stored_vp}"
+            if ok
+            else (
+                "verify RED: live probe disagrees with stored receipt — "
+                + "; ".join(mismatches)
+                + f" (command: {live.get('command')})"
+            )
+        ),
+    }
+
+
 def render_receipt_json(
     *,
     log_path: str | None = None,
     probe_name: str | None = None,
     adoption_id: int | None = None,
-) -> str:
+    verify: bool = False,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+) -> tuple[str, int]:
+    """Return (json_text, exit_code). exit_code 1 when --verify finds drift."""
     conn = connect(log_path or default_log_path(), announce=False)
     payload = build_receipt(conn, probe_name=probe_name, adoption_id=adoption_id)
-    # Drop null tag_vocab unless set
     if payload.get("tag_vocab_version") is None:
         payload.pop("tag_vocab_version", None)
-    return json.dumps(payload, indent=2, sort_keys=False)
+    exit_code = 0
+    if verify:
+        check = verify_receipt(
+            conn,
+            probe_name=probe_name,
+            adoption_id=adoption_id,
+            repo_root=repo_root,
+            stack_dir=stack_dir,
+            receipt=payload,
+        )
+        payload["verify"] = check
+        if not check["ok"]:
+            exit_code = 1
+    return json.dumps(payload, indent=2, sort_keys=False), exit_code
+
+
+def render_verify_human(check: dict[str, Any]) -> str:
+    lines = [
+        "MAGNET receipt verify",
+        "",
+        f"  probe      {check.get('probe')}",
+        f"  stored     {(check.get('stored') or {}).get('value_pop', '—')}",
+        f"  live       {(check.get('live') or {}).get('value_pop', '—')}",
+        f"  result     {'GREEN' if check.get('ok') else 'RED'}",
+        f"  note       {check.get('note')}",
+    ]
+    if check.get("live") and check["live"].get("command"):
+        lines.append(f"  command    {check['live']['command']}")
+    lines.append("  repro      magnet receipt --verify")
+    return "\n".join(lines)
+
+
+def run_receipt_demo(
+    *,
+    log_path: str | None = None,
+    repo_root: str | None = None,
+) -> str:
+    """Embarrassment arm: verify GREEN on live receipt, RED after planted drift."""
+    from magnet.adopt import run_adopt
+    from magnet.log import connect as log_connect
+
+    path = log_path or os.path.join(os.getcwd(), ".magnet", "receipt-demo.db")
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    lines = [
+        "MAGNET receipt-demo — Grinder bridge: re-probe vs stored receipt",
+        "",
+        "  A JSON receipt that only reads SQLite can lie after the world moves.",
+        "  --verify re-runs the probe at the object. Planted drift must go RED.",
+        "",
+    ]
+
+    run_adopt(
+        "skill",
+        "receipt-demo-skill",
+        "pass rate recovers by 1",
+        "demo-pass-rate",
+        log_path=path,
+        apply_demo_bonus=True,
+        reset=True,
+    )
+    conn = log_connect(path, announce=False)
+    green = verify_receipt(conn, repo_root=repo_root or os.getcwd())
+    lines.append(
+        f"  arm GREEN  stored={green['stored']['value_pop']}  "
+        f"live={green['live']['value_pop']}  ok={green['ok']}"
+    )
+
+    # Plant drift: corrupt the latest reading value in SQLite (not the live probe).
+    cur = conn.execute(
+        "SELECT id, value FROM probe_readings ORDER BY id DESC LIMIT 1"
+    )
+    row = cur.fetchone()
+    if row is None:
+        lines.append("  FINDING  no reading to corrupt — unexpected")
+        return "\n".join(lines)
+    rid, old_val = row[0], row[1]
+    planted = int(old_val) + 99 if old_val is not None else 99
+    conn.execute("UPDATE probe_readings SET value = ? WHERE id = ?", (planted, rid))
+    conn.commit()
+
+    red = verify_receipt(conn, repo_root=repo_root or os.getcwd())
+    lines.append(
+        f"  arm RED    stored={red['stored']['value_pop']}  "
+        f"live={red['live']['value_pop']}  ok={red['ok']}"
+    )
+    lines.append("")
+    if green["ok"] and (not red["ok"]):
+        lines.append(
+            "  FINDING  verify goes GREEN on a live receipt and RED when the "
+            "stored value is planted wrong — Grinder can refuse a stale receipt."
+        )
+    else:
+        lines.append(
+            f"  FINDING  verify arms drifted green_ok={green['ok']} red_ok={red['ok']} "
+            "— open verify_receipt / probe_readings."
+        )
+    lines += [
+        "",
+        "  repro      magnet receipt-demo",
+        "  repro      magnet receipt --verify",
+    ]
+    return "\n".join(lines)

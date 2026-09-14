@@ -18,7 +18,7 @@ from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.stack import magnet_report, render_stack, resolve_stack_dir
 from magnet.stack_demo import run_stack_demo
-from magnet.receipt import render_receipt_json
+from magnet.receipt import render_receipt_json, run_receipt_demo
 from magnet.redact import run_redact_scan
 from magnet.external import measure_external_stack, render_external
 from magnet.bind_demo import run_bind_demo
@@ -213,13 +213,19 @@ def cmd_bakeoff(args: argparse.Namespace) -> int:
 
 
 def cmd_receipt(args: argparse.Namespace) -> int:
-    print(
-        render_receipt_json(
-            log_path=args.log,
-            probe_name=args.probe,
-            adoption_id=args.id,
-        )
+    text, code = render_receipt_json(
+        log_path=args.log,
+        probe_name=args.probe,
+        adoption_id=args.id,
+        verify=bool(getattr(args, "verify", False)),
+        repo_root=args.repo,
     )
+    print(text)
+    return code
+
+
+def cmd_receipt_demo(args: argparse.Namespace) -> int:
+    print(run_receipt_demo(log_path=args.log, repo_root=args.repo))
     return 0
 
 
@@ -350,6 +356,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_vacuous.set_defaults(func=cmd_vacuous_demo)
 
+    p_receipt_demo = sub.add_parser(
+        "receipt-demo",
+        help="Grinder bridge: verify GREEN on live receipt, RED on planted drift",
+    )
+    p_receipt_demo.set_defaults(func=cmd_receipt_demo)
+
     p_adopt = sub.add_parser("adopt", help="Adopt a change, re-probe, print receipt")
     p_adopt.add_argument("change_type", choices=list(CHANGE_TYPES))
     p_adopt.add_argument("description", help="Short label for the change")
@@ -477,6 +489,16 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_receipt.add_argument("--probe", help="Filter to one probe")
     p_receipt.add_argument("--id", type=int, help="Specific adoption id")
+    p_receipt.add_argument(
+        "--verify",
+        action="store_true",
+        help="Re-run the probe at the object; exit 1 if value/pop disagree",
+    )
+    p_receipt.add_argument(
+        "--json",
+        action="store_true",
+        help="No-op (receipt always prints JSON) — kept for stranger docs",
+    )
     p_receipt.set_defaults(func=cmd_receipt)
 
     p_redact = sub.add_parser(

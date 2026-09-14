@@ -99,6 +99,10 @@ else
   echo ""
   echo "=== 7j/8 · Honesty: one-workflow (recover prediction grades, not no-direction)"
   bash scripts/one-workflow.sh
+
+  echo ""
+  echo "=== 7k/8 · Honesty: receipt-demo (verify GREEN then planted RED)"
+  magnet receipt-demo
 fi
 
 echo ""

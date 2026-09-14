@@ -46,7 +46,8 @@ def test_vocab_bump_does_not_inflate_fixture_or_agentgrinder_coverage():
 def test_receipt_json_after_demo(tmp_path):
     log = str(tmp_path / "log.db")
     run_demo(log_path=log, repo_root=str(ROOT))
-    raw = render_receipt_json(log_path=log)
+    raw, code = render_receipt_json(log_path=log)
+    assert code == 0
     data = json.loads(raw)
     assert data["schema"] == "magnet.receipt/v1"
     assert data["verdict"] == "helped"
