@@ -1,42 +1,44 @@
-# Night report · 2026-09-14 · Slices 32–33
+# Night report · 2026-09-14 · Slices 32–34
 
-**branch tip:** `cursor/rise-lexicon-recover-17b8` · re-derive hash after push
+**main tip:** `PENDING_PUSH` · **branch:** `cursor/rise-lexicon-recover-17b8`
 
 ## SHIPPED
 
 1. **Recover/restore rise lexicon** — `pass rate recovers by 1` is rise+magnitude (was `no-direction` while Δ +1). Devpost one-workflow grades its own restore prediction.
-2. **`scripts/one-workflow.sh`** — cold path runs the 6-step prompt change loop; exit 0 only when recover grades as rise. Live: `254/254 → 253/254 hurt → 254/254 helped` · prediction-held.
-3. **Honest pytest paste** — check_docs accepts `N passed, M skipped` (+ failed) as suite size so sidecars need not invent `N+M passed`.
-4. **Grinder receipt `--verify`** — re-probes at the object; exit 1 on drift. `magnet receipt-demo` GREEN then planted RED. `--json` alias restored for stranger docs.
+2. **`scripts/one-workflow.sh`** — cold path; exit 0 only when recover grades as rise. Live: `254/254 → 253/254 hurt → 254/254 helped` · prediction-held.
+3. **Honest pytest paste** — check_docs accepts `N passed, M skipped` (+ failed) as suite size.
+4. **Grinder receipt `--verify`** — re-probes; exit 1 on drift. `magnet receipt-demo` GREEN then planted RED.
+5. **Grinder evidence `--grinder`** — `magnet.grinder-evidence/v1` with verify + prediction; never invents COUNT_FIELDS; verify RED refuses export. check_docs RED without receipt-demo FINDING.
 
 ## VERIFIED
 
 | Claim | Command | Result |
 |-------|---------|--------|
-| Suite | `python3 -m pytest -q` | 261 passed, 1 skipped |
-| recover intent | `python3 -c "…prediction_intent('pass rate recovers by 1')"` | `rise` |
-| one-workflow | `bash scripts/one-workflow.sh` | ONE WORKFLOW OK · recovers prediction-held |
-| pred-demo | `magnet pred-demo` | 18/18 · embarrassed 8 · FINDING |
-| receipt-demo | `magnet receipt-demo` | GREEN 4/5 · RED 103/5 vs 4/5 · FINDING |
-| receipt verify | `magnet receipt --verify` | exit 0 on live; exit 1 on plant |
+| Suite | `python3 -m pytest -q` | 266 passed, 1 skipped |
+| recover intent | object call | `rise` |
+| one-workflow | `bash scripts/one-workflow.sh` | ONE WORKFLOW OK |
+| pred-demo | `magnet pred-demo` | 18/18 · embarrassed 8 |
+| receipt-demo | `magnet receipt-demo` | GREEN 4/5 · RED planted · FINDING |
+| receipt --grinder | `magnet receipt --grinder` | exportable True · no COUNT_FIELDS |
 | check_docs | `magnet check-docs` | 15 PASS |
-| push branch | `git push -u origin cursor/rise-lexicon-recover-17b8` | (re-derive after this commit) |
+| cold clone s33 | `/tmp/magnet-cold-s33` @ 37d3014 | 261 passed · OW OK · receipt-demo FINDING |
+| push main | `git push origin …:main` | tip was `37d3014` (re-derive after this commit) |
 
 ## WRONG
 
-- **PR create** queued for Oscar approval in this cloud environment — not auto-opened. SHIP GATE asked for `git push origin main`; this run ships on feature branch `cursor/rise-lexicon-recover-17b8` pending Oscar merge click.
-- **Bedrock** still BLOCKED on cloud VM (no AWS creds) — unchanged.
-- **Bakeoff surface 1/2** (helicon cross-surface dupe) still open — not papered over.
-- **one-workflow in judge-demo** adds ~20s pytest loops; cold CI may feel it.
-- **Oscar gates remain:** film · Devpost paste · submit Sep 14.
-- Early Slice 31 sidecar used `rises by 1` and showed Δ +9 under suite noise — tonight's live run restored ±1 and `recovers`; I initially almost trusted the papered synonym before opening the prediction object.
+- PR auto-create blocked by user settings — Oscar must open/approve the PR UI click.
+- Bedrock still BLOCKED on cloud VM.
+- Bakeoff surface 1/2 (helicon dupe) still open.
+- Grinder evidence is a sidecar, not a full grind run — by design (inventing turns_typed would be the lie).
+- Oscar gates remain: film · Devpost paste · submit Sep 14.
+- Early instinct was to trust Slice 31's `rises by 1` papering; the defect only showed when opening the DEMO prediction text itself.
 
-## Product execution checkpoint (observed)
+## Product execution checkpoint
 
 | Dimension | Status | Evidence |
 |-----------|--------|----------|
-| 1. Promised user value | **observed** | After restore, user gets `helped` + `prediction-held` on `recovers by 1` (`bash scripts/one-workflow.sh`) |
-| 2. Independent use | **observed** | `pip install -e ".[dev]"` + `bash scripts/one-workflow.sh` / `magnet receipt-demo` — no builder narration required |
-| 3. Distinctive promise | **observed** | Magnet-to-YOUR-stack: re-runs YOUR pytest; refuses no-direction on recover; verify refuses stale SQLite |
-| 4. Action and return | **partial** | Next action `magnet history` / `magnet receipt --verify` works; return loop is adopt→probe→grade (no hosted sync) |
-| 5. Access | **partial** | Branch pushed; main merge + Devpost submit are Oscar clicks; Bedrock path untested here |
+| 1. Promised user value | **observed** | helped + prediction-held on recovers; verify refuses stale receipt |
+| 2. Independent use | **observed** | one-workflow.sh · receipt-demo · receipt --grinder |
+| 3. Distinctive promise | **observed** | magnet-to-YOUR-stack + Grinder evidence without invented counts |
+| 4. Action and return | **partial** | history / receipt --verify / --grinder work; no hosted sync |
+| 5. Access | **observed** | pushed to `main` @ prior tip; re-derive after this commit |

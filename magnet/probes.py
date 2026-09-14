@@ -426,6 +426,26 @@ def check_docs(repo_root: str) -> list[dict]:
             )
         )
 
+    # Slice 34: receipt-demo sidecar must show FINDING (GREEN then planted RED).
+    rd = root / "docs" / "screenshots" / "receipt-demo.txt"
+    if rd.is_file():
+        rd_text = rd.read_text(encoding="utf-8")
+        ok = "FINDING" in rd_text and "RED" in rd_text and "GREEN" in rd_text
+        results.append(
+            _result(
+                "screenshot receipt-demo finding",
+                "docs/screenshots/receipt-demo.txt",
+                "FINDING+GREEN+RED" if ok else "incomplete",
+                "FINDING+GREEN+RED",
+                ok,
+                (
+                    "receipt-demo.txt carries FINDING with GREEN and RED arms"
+                    if ok
+                    else "receipt-demo.txt lacks FINDING/GREEN/RED — re-run magnet receipt-demo"
+                ),
+            )
+        )
+
     # Claim: probe names listed in README
     for name in ("run_probe", "record_week", "adopt_change", "check_docs"):
         ok = name in readme

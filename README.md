@@ -24,6 +24,7 @@ magnet bakeoff        # magnet vs naive_stars vs naive_name vs silent_null
 magnet stack-demo     # install → coverage delta + naive arm + real Agent Grinder object
 magnet receipt        # JSON adoption receipt (Grinder-ready)
 magnet receipt --verify  # re-probe; exit 1 on stale SQLite
+magnet receipt --grinder  # evidence for Grinder; no invented counts
 magnet receipt-demo   # verify GREEN then planted RED
 magnet redact-scan    # secret patterns — must stay GREEN here
 magnet bind-demo      # repo-blind flat; stack-bind probes move
@@ -114,6 +115,7 @@ magnet stack         # inventory YOUR surfaces + gaps
 magnet stack-demo    # closed-loop coverage adopt + naive install arm + Agent Grinder 1/12
 magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for stranger verify
 magnet receipt --verify  # re-run probe; refuse stale SQLite
+magnet receipt --grinder  # evidence export; never invents grind counts
 magnet receipt-demo  # GREEN then planted RED
 magnet redact-scan   # live secret patterns — exit 1 on plant, 0 on this repo
 magnet pred-demo     # magnitude honesty vs naive direction-only

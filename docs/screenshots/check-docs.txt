@@ -1,16 +1,18 @@
 [PASS] tool count: README claims 4 tools, source has 4
-[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 262 tests, source has 262 tests
-[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 262 tests, source has 262 tests
-[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 262 tests, source has 262 tests
-[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 262 tests, source has 262 tests
-[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 262 tests, source has 262 tests
-[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 262 tests, source has 262 tests
-[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 262 tests, source has 262 tests
+[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 267 tests, source has 267 tests
+[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 267 tests, source has 267 tests
+[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 267 tests, source has 267 tests
+[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 267 tests, source has 267 tests
+[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 267 tests, source has 267 tests
+[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 267 tests, source has 267 tests
+[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 267 tests, source has 267 tests
+[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 267 tests, source has 267 tests
 [PASS] screenshot history outcome: history.txt carries outcome + claimed
 [PASS] screenshot one-workflow outcome: one-workflow.txt history step carries outcome
+[PASS] screenshot receipt-demo finding: receipt-demo.txt carries FINDING with GREEN and RED arms
 [PASS] tool run_probe: listed
 [PASS] tool record_week: listed
 [PASS] tool adopt_change: listed
 [PASS] tool check_docs: listed
 
-14 claims checked. All match source.
+16 claims checked. All match source.

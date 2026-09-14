@@ -216,6 +216,101 @@ def render_receipt_json(
     return json.dumps(payload, indent=2, sort_keys=False), exit_code
 
 
+# Grinder COUNT_FIELDS we must NEVER invent (opened at Agent Grinder contract.py).
+_GRINDER_COUNT_FIELDS = (
+    "turns_typed",
+    "tool_calls",
+    "files_touched",
+    "commits",
+    "claims",
+    "claims_verified",
+    "artifacts_produced",
+)
+
+
+def build_grinder_evidence(
+    conn,
+    *,
+    probe_name: str | None = None,
+    adoption_id: int | None = None,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+    require_verify: bool = True,
+) -> dict[str, Any]:
+    """Evidence sidecar for Agent Grinder — magnet numbers only, no grind counts.
+
+    Opens the probe via verify. Never sets turns_typed / claims_verified / etc.
+    A prediction-held is correlation, not attribution — the note says so.
+    """
+    receipt = build_receipt(conn, probe_name=probe_name, adoption_id=adoption_id)
+    if receipt.get("tag_vocab_version") is None:
+        receipt.pop("tag_vocab_version", None)
+    check = verify_receipt(
+        conn,
+        probe_name=probe_name,
+        adoption_id=adoption_id,
+        repo_root=repo_root,
+        stack_dir=stack_dir,
+        receipt=receipt,
+    )
+    receipt["verify"] = check
+    pred = receipt.get("prediction_check") or {}
+    change = receipt.get("change") or {}
+    latest = receipt.get("latest") or {}
+    evidence = {
+        "schema": "magnet.grinder-evidence/v1",
+        "magnet_receipt": receipt,
+        "prediction": change.get("prediction"),
+        "prediction_outcome": pred.get("outcome"),
+        "prediction_intent": pred.get("intent"),
+        "verdict": receipt.get("verdict"),
+        "value_pop": latest.get("value_pop"),
+        "command": (check.get("live") or {}).get("command") or latest.get("command"),
+        "verify_ok": check.get("ok"),
+        "note": (
+            "MAGNET grades correlation, not attribution. "
+            "Do not invent Agent Grinder COUNT_FIELDS from this file. "
+            "Re-run: magnet receipt --grinder"
+        ),
+        "repro": "magnet receipt --grinder",
+    }
+    # Explicit refusal: never copy grind count keys even as null (avoids
+    # validate_run inventing a partial grind).
+    for banned in _GRINDER_COUNT_FIELDS:
+        if banned in evidence:
+            raise RuntimeError(f"grinder evidence must not carry {banned}")
+    if require_verify and not check.get("ok"):
+        evidence["exportable"] = False
+        evidence["note"] = (
+            "verify RED — refuse export to Grinder until live probe matches stored. "
+            + str(check.get("note"))
+        )
+    else:
+        evidence["exportable"] = bool(check.get("ok"))
+    return evidence
+
+
+def render_grinder_evidence_json(
+    *,
+    log_path: str | None = None,
+    probe_name: str | None = None,
+    adoption_id: int | None = None,
+    repo_root: str | None = None,
+    stack_dir: str | None = None,
+) -> tuple[str, int]:
+    conn = connect(log_path or default_log_path(), announce=False)
+    evidence = build_grinder_evidence(
+        conn,
+        probe_name=probe_name,
+        adoption_id=adoption_id,
+        repo_root=repo_root,
+        stack_dir=stack_dir,
+        require_verify=True,
+    )
+    code = 0 if evidence.get("exportable") else 1
+    return json.dumps(evidence, indent=2, sort_keys=False), code
+
+
 def render_verify_human(check: dict[str, Any]) -> str:
     lines = [
         "MAGNET receipt verify",

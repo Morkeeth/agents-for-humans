@@ -18,7 +18,7 @@ from magnet.probes import check_docs_exit_code
 from magnet.registry import list_all_probes
 from magnet.stack import magnet_report, render_stack, resolve_stack_dir
 from magnet.stack_demo import run_stack_demo
-from magnet.receipt import render_receipt_json, run_receipt_demo
+from magnet.receipt import render_grinder_evidence_json, render_receipt_json, run_receipt_demo
 from magnet.redact import run_redact_scan
 from magnet.external import measure_external_stack, render_external
 from magnet.bind_demo import run_bind_demo
@@ -213,6 +213,15 @@ def cmd_bakeoff(args: argparse.Namespace) -> int:
 
 
 def cmd_receipt(args: argparse.Namespace) -> int:
+    if getattr(args, "grinder", False):
+        text, code = render_grinder_evidence_json(
+            log_path=args.log,
+            probe_name=args.probe,
+            adoption_id=args.id,
+            repo_root=args.repo,
+        )
+        print(text)
+        return code
     text, code = render_receipt_json(
         log_path=args.log,
         probe_name=args.probe,
@@ -493,6 +502,11 @@ def main(argv: list[str] | None = None) -> int:
         "--verify",
         action="store_true",
         help="Re-run the probe at the object; exit 1 if value/pop disagree",
+    )
+    p_receipt.add_argument(
+        "--grinder",
+        action="store_true",
+        help="Export magnet.grinder-evidence/v1 (verify required; never invents grind counts)",
     )
     p_receipt.add_argument(
         "--json",

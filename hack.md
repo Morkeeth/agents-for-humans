@@ -79,15 +79,18 @@ No number without the command that produced it, the population it is out of, and
 | 31 | Stale Devpost sidecar refresh + check_docs RED on history/one-workflow | re-derive history.txt + one-workflow.txt (+ PNGs) · check_docs fails if history lacks outcome · pytest green |
 | 32 | Rise lexicon recover/restore + one-workflow grades | `pass rate recovers by 1` → rise · held on Δ+1 · `scripts/one-workflow.sh` exit 0 · pytest green |
 | 33 | Grinder receipt verify bridge | `magnet receipt --verify` re-probes · GREEN on match · RED on planted drift · pytest green |
+| 34 | Grinder evidence export (no invented counts) | `magnet receipt --grinder` writes evidence JSON · no turns_typed invent · check_docs RED without receipt-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 33 done.** Next risk: night report + cold clone verify, or Oscar gates.
+**Slice 34 done.** Next: Oscar gates (film · Devpost paste · submit) or further honesty arms.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING control · pytest green · main tip pending push.
+- 2026-09-14 · Slice 34 START · opened Agent Grinder `contract.py`: COUNT_FIELDS require real ints; inventing turns_typed would lie. Building evidence sidecar that carries magnet verify+prediction without fabricating grind counts. `git push origin main` → `37d3014`.
 - 2026-09-14 · Slice 33 SHIP · `magnet receipt --verify` re-probes · GREEN match / RED planted · `magnet receipt-demo` FINDING · `--json` alias · `python3 -m pytest -q` green · check-docs PASS.
 - 2026-09-14 · Slice 33 START · opened `magnet receipt` JSON — Grinder-ready schema exists but never re-probes. A stale log can print helped forever. Building `--verify` that opens the probe object.
 - 2026-09-14 · Slice 32 SHIP · recover/restore/regain/rebound rise · `pass rate recovers by 1` prediction-held on Δ+1 · `scripts/one-workflow.sh` · honest pytest paste N+M · `python3 -m pytest -q` → 255 passed, 1 skipped · check-docs 15 PASS · one-workflow 254/254→253/254→254/254 recovers held.

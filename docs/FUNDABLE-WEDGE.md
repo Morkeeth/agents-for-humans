@@ -40,6 +40,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Recover lexicon** | Devpost prediction `pass rate recovers by 1` grades rise+magnitude (was no-direction) | `bash scripts/one-workflow.sh` · `magnet pred-demo` |
 | **Honest pytest paste** | Screenshot `N passed, M skipped` sums to suite size — control no longer forces inventing `N+M passed` | `magnet check-docs` |
 | **Receipt verify** | `magnet receipt --verify` re-probes; planted SQLite drift goes RED (Grinder bridge) | `magnet receipt-demo` |
+| **Grinder evidence** | `magnet receipt --grinder` exports evidence without inventing COUNT_FIELDS; verify RED refuses export | `magnet receipt --grinder` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 
