@@ -1,6 +1,6 @@
 # Night report · 2026-09-14 · Slices 32–34
 
-**main tip:** `PENDING_PUSH` · **branch:** `cursor/rise-lexicon-recover-17b8`
+**main tip:** `73bcaed8fd3182e3712067d946d7526edced5ef6` · **branch:** `cursor/rise-lexicon-recover-17b8`
 
 ## SHIPPED
 
@@ -22,7 +22,7 @@
 | receipt --grinder | `magnet receipt --grinder` | exportable True · no COUNT_FIELDS |
 | check_docs | `magnet check-docs` | 15 PASS |
 | cold clone s33 | `/tmp/magnet-cold-s33` @ 37d3014 | 261 passed · OW OK · receipt-demo FINDING |
-| push main | `git push origin …:main` | tip was `37d3014` (re-derive after this commit) |
+| push main | `git push origin …:main` | tip `73bcaed8fd3182e3712067d946d7526edced5ef6` |
 
 ## WRONG
 
