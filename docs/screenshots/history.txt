@@ -1,17 +1,23 @@
-$ magnet history
-# run 2026-09-12T17:33:45Z on main-worktree @ b61775a, via: python3 -m magnet.cli history
 MAGNET history
 
-  #1  2026-09-12T17:33:45+00:00
-    change     [skill] demo-verification-skill
-    probe      demo-pass-rate
-    predict    pass rate rises by 1/5
-    latest     4/5  (magnet probe demo-pass-rate)
-    verdict    helped  (Δ 1)
-    outcome    prediction-held  (intent=rise; grade=direction+magnitude; not attribution)
-    claimed Δ  amount=1/5  expected_delta=1  measured_delta=1
+  #1  2026-09-14T00:15:43+00:00
+    change     [prompt] drop the never-invent rule from SYSTEM_PROMPT
+    probe      pytest-pass-rate
+    predict    pass rate unchanged
+    latest     253/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    verdict    hurt  (Δ -1)
+    outcome    prediction-missed  (intent=flat; grade=direction; not attribution)
     readings   2
 
-  probes     demo-pass-rate
+  #2  2026-09-14T00:15:55+00:00
+    change     [prompt] restore the never-invent rule
+    probe      pytest-pass-rate
+    predict    pass rate recovers by 1
+    latest     254/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    verdict    helped  (Δ 1)
+    outcome    prediction-held  (intent=rise; grade=direction+magnitude; not attribution)
+    claimed Δ  amount=1  expected_delta=1  measured_delta=1
+    readings   3
+
+  probes     pytest-pass-rate
   repro      magnet history
-# exit=0

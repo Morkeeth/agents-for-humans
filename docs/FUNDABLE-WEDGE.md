@@ -37,6 +37,8 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Real-week default** | Bare `magnet adopt` uses a real `read_at`; `--simulate` is the labelled demo opt-in | `magnet adopt … --demo-bonus --reset` |
 | **Vacuous RED** | Empty/missing skills → `n/a` exit 1; `allow:[]` alone ≠ hook 1/2; naive still prints 0/0 success | `magnet vacuous-demo` |
 | **Sidecar outcome** | history/one-workflow Devpost shots must carry prediction outcome or check_docs goes RED | `magnet check-docs` |
+| **Recover lexicon** | Devpost prediction `pass rate recovers by 1` grades rise+magnitude (was no-direction) | `bash scripts/one-workflow.sh` · `magnet pred-demo` |
+| **Honest pytest paste** | Screenshot `N passed, M skipped` sums to suite size — control no longer forces inventing `N+M passed` | `magnet check-docs` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

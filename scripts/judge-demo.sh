@@ -95,6 +95,10 @@ else
   echo ""
   echo "=== 7i/8 · Honesty: pred-demo (naive invents held on wrong magnitude)"
   magnet pred-demo
+
+  echo ""
+  echo "=== 7j/8 · Honesty: one-workflow (recover prediction grades, not no-direction)"
+  bash scripts/one-workflow.sh
 fi
 
 echo ""

@@ -77,15 +77,18 @@ No number without the command that produced it, the population it is out of, and
 | 29 | Adopt default real week (no fabricated SIMULATED) | bare `magnet adopt` prints no SIMULATED · `--simulate` opt-in · demo exit 0 · pytest green |
 | 30 | Vacuous probe RED control + empty-allow hook honesty | empty skills → effort n/a or fail (not 0/0 success) · empty allow alone ≠ hook signal · pytest green |
 | 31 | Stale Devpost sidecar refresh + check_docs RED on history/one-workflow | re-derive history.txt + one-workflow.txt (+ PNGs) · check_docs fails if history lacks outcome · pytest green |
+| 32 | Rise lexicon recover/restore + one-workflow grades | `pass rate recovers by 1` → rise · held on Δ+1 · `scripts/one-workflow.sh` exit 0 · pytest green |
 
 ## NOW
 
-**Slice 31 done.** Next risk (if night continues): rise lexicon for `recover`/`restore` so one-workflow prediction grades; or Grinder receipt bridge. Otherwise Oscar gates.
+**Slice 32 done.** Next risk: Grinder receipt bridge (`magnet receipt --verify` re-probes and compares to stored reading) or Oscar gates.
 
 **Oscar gates:** film video · Devpost paste · submit Sep 14.
 
 ## LOG
 
+- 2026-09-14 · Slice 32 SHIP · recover/restore/regain/rebound rise · `pass rate recovers by 1` prediction-held on Δ+1 · `scripts/one-workflow.sh` · honest pytest paste N+M · `python3 -m pytest -q` → 255 passed, 1 skipped · check-docs 15 PASS · one-workflow 254/254→253/254→254/254 recovers held.
+- 2026-09-14 · Slice 32 START · ran object: `prediction_intent("pass rate recovers by 1")` → `unknown` · adopt → `no-direction` while Δ +1 and claimed amount=1. DEMO-ONE-WORKFLOW.md still says recovers; Slice 31 sidecar papered over with `rises by 1`. Building rise lexicon + live one-workflow script.
 - 2026-09-12 · Slice 31 SHIP · history+one-workflow sidecars re-derived with outcome · check_docs RED without outcome · `python3 -m pytest -q` → 246 passed · check-docs 15 PASS · cold clone `/tmp/magnet-cold-s31` @ `1e57c56` 246 passed · check-docs 15 PASS · JUDGE DEMO OK · `git push origin main` → `c697a29`.
 - 2026-09-12 · Slice 31 START · opened `docs/screenshots/history.txt` @ f690fd0 — no `outcome`/`claimed Δ` while live `magnet history` prints both. check_docs 13 PASS while blind. Building sidecar refresh + check_docs RED control.
 - 2026-09-12 · Slice 30 SHIP · vacuous n/a+exit 1 · empty allow:[] ≠ hook 1/2 · `magnet vacuous-demo` FINDING · `python3 -m pytest -q` → 243 passed · check-docs 13 PASS · cold clone `/tmp/magnet-cold-s30` @ `7da6b5f` 243 passed · vacuous-demo FINDING · effort n/a exit 1 · JUDGE DEMO OK · `git push origin main` → `c00bd87`.

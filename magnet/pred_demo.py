@@ -7,6 +7,9 @@ That was a lie. Magnet now checks the claimed fraction; the old behaviour
 ships as the naive arm so a stranger can see us lose to honesty.
 
 Slice 28: stay-at without /pop, remain/hold lexicon, floor claims.
+
+Slice 32: recover/restore rise lexicon — Devpost one-workflow prediction
+`pass rate recovers by 1` must grade, not print no-direction.
 """
 from __future__ import annotations
 
@@ -188,6 +191,36 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="direction flat ok but latest 3 < floor 4 — naive invents held",
     ),
+    PredScenario(
+        "recover_held",
+        "pass rate recovers by 1",
+        "helped",
+        1,
+        244,
+        "prediction-held",
+        latest_value=244,
+        note="DEMO-ONE-WORKFLOW restore step — was no-direction before Slice 32",
+    ),
+    PredScenario(
+        "recover_wrong_mag",
+        "pass rate recovers by 2",
+        "helped",
+        1,
+        244,
+        "prediction-missed",
+        latest_value=244,
+        note="recover is rise; claimed Δ +2 ≠ measured +1 — magnitude still bites",
+    ),
+    PredScenario(
+        "restore_held",
+        "coverage restores by 1",
+        "helped",
+        1,
+        12,
+        "prediction-held",
+        latest_value=9,
+        note="restore lexicon grades as rise with matching magnitude",
+    ),
 )
 
 
@@ -199,6 +232,7 @@ def run_pred_demo() -> str:
         "  When a prediction names a fraction (rises by 1/5), magnet checks Δ.",
         "  When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.",
         "  When it names a floor (at least 4/5), magnet checks latest ≥ floor.",
+        "  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).",
         "  Naive grades direction only — invents held when the claim is wrong.",
         "",
         "  scenario            claim                    Δ    pop  latest magnet              naive",

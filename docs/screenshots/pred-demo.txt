@@ -1,10 +1,9 @@
-$ magnet pred-demo
-# run 2026-09-12T17:17:25Z on branch cursor/absolute-level-honesty-f22d @ 62e4dad, via: python3 -m magnet.cli pred-demo
 MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
 
   When a prediction names a fraction (rises by 1/5), magnet checks Δ.
   When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.
   When it names a floor (at least 4/5), magnet checks latest ≥ floor.
+  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).
   Naive grades direction only — invents held when the claim is wrong.
 
   scenario            claim                    Δ    pop  latest magnet              naive
@@ -24,10 +23,13 @@ MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
   hold_at_wrong       stay 190/190            +0   190  189    prediction-missed   prediction-held
   floor_holds         ≥4/5                    +0   5    4      prediction-held     prediction-held
   floor_missed        ≥4/5                    +0   5    3      prediction-missed   prediction-held
+  recover_held        1                       +1   244  244    prediction-held     prediction-held
+  recover_wrong_mag   2                       +1   244  244    prediction-missed   prediction-held
+  restore_held        1                       +1   12   9      prediction-held     prediction-held
 
-  magnet       15/15  (direction + magnitude/level/floor when claimed)
-  naive        8/15  (direction only — pre-Slice-25 behaviour)
-  embarrassed  7 scenario(s) where naive invents held on wrong claim
+  magnet       18/18  (direction + magnitude/level/floor when claimed)
+  naive        10/18  (direction only — pre-Slice-25 behaviour)
+  embarrassed  8 scenario(s) where naive invents held on wrong claim
 
   FINDING  naive direction-only invents prediction-held when the claimed fraction, stay-at level, or floor is wrong; magnet misses. Direction is not the object — open the measured Δ / latest value.
 
@@ -35,4 +37,3 @@ MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
   repro      magnet adopt skill x 'must stay at 5' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'at least 4/5' --probe demo-pass-rate --reset
-# exit=0

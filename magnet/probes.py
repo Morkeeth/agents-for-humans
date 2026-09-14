@@ -354,13 +354,18 @@ def check_docs(repo_root: str) -> list[dict]:
 
     # Screenshot sidecars — the control gap that let "113" linger after 159.
     # Skip drift-demo.txt: it intentionally embeds fabricated counts (the demo).
+    # Live pytest paste often reads "N passed, M skipped" — that IS the suite
+    # size (N+M). Forcing sidecars to print "N+M passed" was a lie the control
+    # used to demand (Slice 32 — open the pytest object, not a synonym).
     screenshot_patterns = _PYTEST_COUNT_PATTERNS + (r"(\d+)[ \t]+tests",)
     for side in sorted((root / "docs" / "screenshots").glob("*.txt")):
         rel = str(side.relative_to(root))
         text = side.read_text(encoding="utf-8")
         if "fake repo" in text.lower() or "fabricated numbers" in text.lower():
             continue
-        claimed = _first_int_any(text, screenshot_patterns)
+        claimed = _suite_size_from_pytest_paste(text)
+        if claimed is None:
+            claimed = _first_int_any(text, screenshot_patterns)
         if claimed is None:
             continue
         results.append(
@@ -455,6 +460,36 @@ def _first_int_any(text: str, patterns: tuple[str, ...]) -> int | None:
         if val is not None:
             return val
     return None
+
+
+def _suite_size_from_pytest_paste(text: str) -> int | None:
+    """Parse live pytest summary into suite size (failed+passed+skipped).
+
+    Examples:
+      '252 passed, 1 skipped'           → 253
+      '7 failed, 247 passed, 1 skipped' → 255
+      '10 passed in 0.1s'               → None (use plain N-passed claim)
+
+    check_docs compares against def test_ count. Never rewrite a paste to
+    invent 'N passed' when the object said passed+skipped.
+    """
+    m = re.search(
+        r"(?:(\d+)[ \t]+failed,[ \t]+)?"
+        r"(\d+)[ \t]+passed"
+        r"(?:,[ \t]+(\d+)[ \t]+skipped)?",
+        text,
+        re.I,
+    )
+    if not m:
+        return None
+    failed = int(m.group(1) or 0)
+    passed = int(m.group(2))
+    skipped = m.group(3)
+    # Only treat as suite-size paste when skipped (or failed) is present —
+    # a bare 'N passed' stays a plain claim via _first_int_any.
+    if skipped is None and m.group(1) is None:
+        return None
+    return failed + passed + int(skipped or 0)
 
 
 def _result(claim: str, doc: str, doc_value, source, ok: bool, why: str) -> dict:

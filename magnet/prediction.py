@@ -17,6 +17,12 @@ Slice 28: stay-at without `/pop` (`must stay at 5`), remain/hold/keep/
 unchanged-at lexicon, and floor claims (`at least 4/5`). A parsed level
 with unknown intent is treated as flat — never no-direction while a level
 sits on the table.
+
+Slice 32: recover/restore/regain/rebound are rise. DEMO-ONE-WORKFLOW's
+prediction `pass rate recovers by 1` was `no-direction` while Δ +1 and
+the claimed amount already parsed — the Devpost demo could not grade its
+own restore step. Slice 31 papered over by rewriting the sidecar to
+`rises by 1`. Open the prediction text, not the nearest synonym.
 """
 from __future__ import annotations
 
@@ -26,7 +32,11 @@ from magnet.reporter import Verdict
 
 # Lexical intent only — never ranks by the prediction's wording beauty.
 _RISE = re.compile(
-    r"\b(ris(?:e|es|ing)|up|improv|increas|higher|helped|gain|\+\s*\d|coverage rises)\b",
+    r"\b("
+    r"ris(?:e|es|ing)|up|improv|increas|higher|helped|gain|\+\s*\d|coverage rises|"
+    r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
+    r"rebound(?:s|ed|ing)?"
+    r")\b",
     re.I,
 )
 _FALL = re.compile(
