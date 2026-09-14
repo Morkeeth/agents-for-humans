@@ -89,7 +89,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING control · pytest green · main tip pending push.
+- 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING · pytest green · cold main OK · `git push origin main` → `bfcca63`.
 - 2026-09-14 · Slice 34 START · opened Agent Grinder `contract.py`: COUNT_FIELDS require real ints; inventing turns_typed would lie. Building evidence sidecar that carries magnet verify+prediction without fabricating grind counts. `git push origin main` → `37d3014`.
 - 2026-09-14 · Slice 33 SHIP · `magnet receipt --verify` re-probes · GREEN match / RED planted · `magnet receipt-demo` FINDING · `--json` alias · `python3 -m pytest -q` green · check-docs PASS.
 - 2026-09-14 · Slice 33 START · opened `magnet receipt` JSON — Grinder-ready schema exists but never re-probes. A stale log can print helped forever. Building `--verify` that opens the probe object.
