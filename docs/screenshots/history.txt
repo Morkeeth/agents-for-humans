@@ -1,19 +1,19 @@
 MAGNET history
 
-  #1  2026-09-14T00:15:43+00:00
+  #1  2026-09-14T00:35:47+00:00
     change     [prompt] drop the never-invent rule from SYSTEM_PROMPT
     probe      pytest-pass-rate
     predict    pass rate unchanged
-    latest     253/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     265/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    hurt  (Δ -1)
     outcome    prediction-missed  (intent=flat; grade=direction; not attribution)
     readings   2
 
-  #2  2026-09-14T00:15:55+00:00
+  #2  2026-09-14T00:36:00+00:00
     change     [prompt] restore the never-invent rule
     probe      pytest-pass-rate
     predict    pass rate recovers by 1
-    latest     254/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     266/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    helped  (Δ 1)
     outcome    prediction-held  (intent=rise; grade=direction+magnitude; not attribution)
     claimed Δ  amount=1  expected_delta=1  measured_delta=1

@@ -1,6 +1,6 @@
 $ bash scripts/one-workflow.sh
 
-### 0  clock 2026-09-14T00:15:31Z  git 39106f9  magnet from ./magnet (this checkout)
+### 0  clock 2026-09-14T00:35:35Z  git 36d5153  magnet from ./magnet (this checkout)
 
 ### 1  $ python3 -m magnet.cli --log .magnet/demo-one.db record pytest-pass-rate
 recorded pytest-pass-rate: verdict=baseline readings=1
@@ -19,8 +19,8 @@ MAGNET receipt
 
   change     drop the never-invent rule from SYSTEM_PROMPT
   probe      pytest-pass-rate
-  latest     253/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
-  read_at    2026-09-14T00:15:55+00:00
+  latest     265/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+  read_at    2026-09-14T00:36:00+00:00
   verdict    hurt  ↓ -1 vs prior
   repro      magnet adopt prompt 'drop the never-invent rule from SYSTEM_PROMPT' 'pass rate unchanged' --probe pytest-pass-rate
 
@@ -45,8 +45,8 @@ MAGNET receipt
 
   change     restore the never-invent rule
   probe      pytest-pass-rate
-  latest     254/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
-  read_at    2026-09-14T00:16:06+00:00
+  latest     266/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+  read_at    2026-09-14T00:36:13+00:00
   verdict    helped  ↑ +1 vs prior
   repro      magnet adopt prompt 'restore the never-invent rule' 'pass rate recovers by 1' --probe pytest-pass-rate
 
@@ -62,20 +62,20 @@ MAGNET prediction check
 ### 6  $ python3 -m magnet.cli --log .magnet/demo-one.db history
 MAGNET history
 
-  #1  2026-09-14T00:15:43+00:00
+  #1  2026-09-14T00:35:47+00:00
     change     [prompt] drop the never-invent rule from SYSTEM_PROMPT
     probe      pytest-pass-rate
     predict    pass rate unchanged
-    latest     253/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     265/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    hurt  (Δ -1)
     outcome    prediction-missed  (intent=flat; grade=direction; not attribution)
     readings   2
 
-  #2  2026-09-14T00:15:55+00:00
+  #2  2026-09-14T00:36:00+00:00
     change     [prompt] restore the never-invent rule
     probe      pytest-pass-rate
     predict    pass rate recovers by 1
-    latest     254/254  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
+    latest     266/266  (/usr/bin/python3 -m pytest -q --tb=no -m "not slow")
     verdict    helped  (Δ 1)
     outcome    prediction-held  (intent=rise; grade=direction+magnitude; not attribution)
     claimed Δ  amount=1  expected_delta=1  measured_delta=1
