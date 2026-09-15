@@ -80,15 +80,25 @@ No number without the command that produced it, the population it is out of, and
 | 32 | Rise lexicon recover/restore + one-workflow grades | `pass rate recovers by 1` → rise · held on Δ+1 · `scripts/one-workflow.sh` exit 0 · pytest green |
 | 33 | Grinder receipt verify bridge | `magnet receipt --verify` re-probes · GREEN on match · RED on planted drift · pytest green |
 | 34 | Grinder evidence export (no invented counts) | `magnet receipt --grinder` writes evidence JSON · no turns_typed invent · check_docs RED without receipt-demo FINDING · pytest green |
+| 35 | Negation + ceiling + target-level honesty | `won't fall` → flat (not fall) · `at most 3/5` ceiling · `falls to 2/5` grades latest · `magnet pred-demo` embarrasses · pytest green |
 
 ## NOW
 
-**Slice 34 done.** Next: Oscar gates (film · Devpost paste · submit) or further honesty arms.
+**Slice 35 — Negation + ceiling + target-level honesty.**
 
-**Oscar gates:** film video · Devpost paste · submit Sep 14.
+Done when:
+1. `prediction_intent("won't fall")` → `flat` (NOT `fall`) — THE LIE found by running the object
+2. `check_prediction("won't fall", "hurt", …)` → `prediction-missed`; unchanged → held
+3. `claimed_ceiling("at most 3/5")` parses; latest 4/5 → missed; latest 3/5 → held
+4. `falls to 2/5` with latest 3 → missed (direction alone is not the object)
+5. `magnet pred-demo` exit 0 with FINDING · naive invents held on negation/ceiling/target wrongs
+6. `python3 -m pytest -q` green · `magnet check-docs` PASS
+
+**Oscar gates (not this slice):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 35 START · ran objects: `won't fall`+unchanged → missed (intent=fall); `won't fall`+hurt → held — magnet invents that "won't fall" means fall. `at most 3/5` → no-direction. `falls to 2/5`+latest 3 → held on direction alone. Building negation flat + ceiling dual-of-floor + target-level grade.
 - 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING · pytest green · cold main OK · `git push origin main` → `bfcca63`.
 - 2026-09-14 · Slice 34 START · opened Agent Grinder `contract.py`: COUNT_FIELDS require real ints; inventing turns_typed would lie. Building evidence sidecar that carries magnet verify+prediction without fabricating grind counts. `git push origin main` → `37d3014`.
 - 2026-09-14 · Slice 33 SHIP · `magnet receipt --verify` re-probes · GREEN match / RED planted · `magnet receipt-demo` FINDING · `--json` alias · `python3 -m pytest -q` green · check-docs PASS.
