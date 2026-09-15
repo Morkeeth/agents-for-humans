@@ -48,6 +48,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Exactly-level honesty** | `exactly 4/5` grades latest; was no-direction | `magnet pred-demo` |
 | **Doubles/halves honesty** | `doubles`/`halves` grade prior=latest−Δ; direction invents held on non-double rise | `magnet pred-demo` |
 | **Below-bound floor honesty** | `won't fall below 3/5` opens floor; unchanged@latest=2 no longer invents held | `magnet pred-demo` |
+| **Percent syntax + triples** | `rises 20%` parses without `by`; triples/3x grade prior | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

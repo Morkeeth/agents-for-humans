@@ -88,18 +88,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 39 — Percent syntax + triples/Nx ratio.**
-
-Done when:
-1. `claimed_percent("rises 20%")` → 20 (was None — direction invented held on any rise)
-2. `rises 20%` + Δ=+1 + pop=5 → held; Δ=+20 + pop=5 → missed
-3. `triples` / `3x` / `2x` grade prior (2x ≡ double); pred-demo FINDING
-4. pytest green · check-docs PASS
+**Slice 39 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 39 SHIP · rises 20% parses · triples/3x/2x prior · pred-demo 46/46 embarrassed 19 · `python3 -m pytest -q` → 309 passed · check-docs 16 PASS · `git push` pending tip.
 - 2026-09-15 · Slice 39 START · ran object: `rises 20%` → percent=None, direction-only held on Δ=+1 and Δ=+20 alike. `triples`/`3x`/`2x` unknown. Building percent-syntax + Nx ratio.
 - 2026-09-15 · Slice 38 SHIP · below-bound floor (`won't fall below`) · stays above exclusive · no lower than flat+floor · pred-demo 41/41 embarrassed 17 · `python3 -m pytest -q` → 303 passed · check-docs 16 PASS · `git push origin main` → `d90c9b56c759054f42b6dda97a17cec7d3247b9d`
 - 2026-09-15 · Slice 38 START · ran object: `won't fall below 3/5` → floor=None, unchanged@latest=2 → prediction-held — invents held while below the named bound. `stays above`/`never below`/`no lower than` unbound (latter even intent=fall). Building below-bound floor compounds.
