@@ -1,6 +1,6 @@
 # Night report · 2026-09-15 · Slice 37
 
-**branch:** `cursor/doubles-halves-honesty-94f8` · tip stamped after push
+**branch:** `cursor/doubles-halves-honesty-94f8` · `07d2d585130aceb7b2bfd634576c242dc7cecef8` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
