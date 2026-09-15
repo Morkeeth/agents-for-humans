@@ -81,15 +81,23 @@ No number without the command that produced it, the population it is out of, and
 | 33 | Grinder receipt verify bridge | `magnet receipt --verify` re-probes · GREEN on match · RED on planted drift · pytest green |
 | 34 | Grinder evidence export (no invented counts) | `magnet receipt --grinder` writes evidence JSON · no turns_typed invent · check_docs RED without receipt-demo FINDING · pytest green |
 | 35 | Negation + ceiling + target-level honesty | `won't fall` → flat (not fall) · `at most 3/5` ceiling · `falls to 2/5` grades latest · `magnet pred-demo` embarrasses · pytest green |
+| 36 | Percent-of-pop + exactly-level honesty | `improves by 20%` ≠ absolute 20 · grades Δ vs pop·pct · `exactly 4/5` target · pred-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 35 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
+**Slice 36 — Percent-of-pop + exactly-level honesty.**
+
+Done when:
+1. `claimed_magnitude("improves by 20%")` does NOT return absolute amount 20 — percent is its own object
+2. `improves by 20%` + Δ=+1 + pop=5 → held (20% of 5 = 1); Δ=+20 + pop=5 → missed (absolute lie)
+3. `exactly 4/5` / `must be exactly 4/5` grades latest == 4
+4. `magnet pred-demo` embarrasses absolute-% · pytest green · check-docs PASS
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 36 START · ran object: `claimed_magnitude("improves by 20%")` → amount=20 (strips `%`); Δ+1/pop5 → missed; Δ+20/pop5 → held — invents that percent means absolute points. `exactly 4/5` → no-direction. Building percent-of-pop grade + exactly target.
 - 2026-09-15 · Slice 35 SHIP · won't-fall → flat · ceiling at-most · falls-to/reaches target · improves lexicon · pred-demo 28/28 embarrassed 11 · `python3 -m pytest -q` → 281 passed · check-docs 16 PASS · `git push origin main` → `7495fbadb9d8e5e333007dbc9b701da8ad36033b`
 - 2026-09-15 · Slice 35 START · ran objects: `won't fall`+unchanged → missed (intent=fall); `won't fall`+hurt → held — magnet invents that "won't fall" means fall. `at most 3/5` → no-direction. `falls to 2/5`+latest 3 → held on direction alone. Building negation flat + ceiling dual-of-floor + target-level grade.
 - 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING · pytest green · cold main OK · `git push origin main` → `bfcca63`.
