@@ -1,6 +1,6 @@
 # Night report · 2026-09-15 · Slice 38
 
-**branch:** `cursor/below-bound-floor-94f8` · tip stamped after push
+**branch:** `cursor/below-bound-floor-94f8` · `d90c9b56c759054f42b6dda97a17cec7d3247b9d` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
