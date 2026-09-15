@@ -84,7 +84,11 @@ _FLAT = re.compile(
     r"stay(?:s|ing)?\s+at|must\s+stay|"
     r"remain(?:s|ing)?\s+at|hold(?:s|ing)?\s+at|keep(?:s|ing)?\s+at|"
     r"must\s+(?:remain|hold|keep)|"
-    r"exactly|must\s+be\s+exactly\b"
+    r"exactly|must\s+be\s+exactly|"
+    # Slice 38: below/above-bound stay phrases — "no lower than" contains "lower"
+    # (fall lexicon) but is a floor claim, not a fall.
+    r"no\s+lower\s+than|no\s+less\s+than|never\s+(?:fall\s+)?below|"
+    r"stay(?:s|ing)?\s+above|remain(?:s|ing)?\s+above|keep(?:s|ing)?\s+above"
     r")\b",
     re.I,
 )
@@ -102,6 +106,28 @@ _STAY_AT = re.compile(
 # Floor claim: "at least 4/5", "no worse than 4/5". Held when latest >= value.
 _FLOOR = re.compile(
     r"(?:at\s+least|no\s+worse\s+than)\s+(\d+)(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Slice 38: below-bound compounds. THE LIE: "won't fall below 3/5" left floor=None
+# so unchanged@latest=2 invented held. Held when latest >= value.
+_FLOOR_BELOW = re.compile(
+    r"(?:"
+    r"(?:won'?t|will\s+not|does\s+not|doesn'?t|must\s+not|should\s+not)\s+"
+    r"(?:fall|drop|regress|decline|go)\s+(?:below|under)|"
+    r"never\s+(?:fall\s+)?below|"
+    r"no\s+lower\s+than|"
+    r"no\s+less\s+than|"
+    r"(?:must\s+not|should\s+not)\s+(?:drop|fall)\s+under"
+    r")\s+(\d+)(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Strict above-bound: "stays above 3/5". Held when latest > value (not ≥).
+_FLOOR_ABOVE = re.compile(
+    r"(?:must\s+)?"
+    r"(?:stay(?:s|ing)?|remain(?:s|ing)?|keep(?:s|ing)?)\s+above\s+"
+    r"(\d+)(?:\s*/\s*(\d+))?",
     re.I,
 )
 
@@ -205,19 +231,35 @@ def claimed_level(prediction: str) -> dict:
 
 
 def claimed_floor(prediction: str) -> dict:
-    """Parse floor claim value (+ optional pop). Held when latest >= value."""
+    """Parse floor claim value (+ optional pop).
+
+    Classic: `at least 4/5` — held when latest >= value.
+    Slice 38 below-bound: `won't fall below 3/5`, `never below 4/5`,
+    `no lower than 3/5` — same ≥ semantics (THE LIE was leaving these unbound).
+    Slice 38 above-bound: `stays above 3/5` — exclusive; held when latest > value.
+    """
     text = prediction or ""
     # Stay-at owns "stay at N" — floor is a different object.
     if claimed_level(text)["value"] is not None:
-        return {"value": None, "population": None, "raw": None}
-    m = _FLOOR.search(text)
+        return {"value": None, "population": None, "raw": None, "exclusive": False}
+    m = _FLOOR_ABOVE.search(text)
+    if m:
+        pop = m.group(2)
+        return {
+            "value": int(m.group(1)),
+            "population": int(pop) if pop is not None else None,
+            "raw": m.group(0).strip(),
+            "exclusive": True,
+        }
+    m = _FLOOR_BELOW.search(text) or _FLOOR.search(text)
     if not m:
-        return {"value": None, "population": None, "raw": None}
+        return {"value": None, "population": None, "raw": None, "exclusive": False}
     pop = m.group(2)
     return {
         "value": int(m.group(1)),
         "population": int(pop) if pop is not None else None,
         "raw": m.group(0).strip(),
+        "exclusive": False,
     }
 
 
@@ -506,16 +548,22 @@ def check_prediction(
             "note": "prediction has no rise/fall/flat signal MAGNET can grade",
         }
 
-    # Floor claims: held when latest >= claimed floor (pop match when both present).
+    # Floor claims: held when latest >= claimed floor (or > if exclusive).
+    # Pop match when both present. Slice 38: below-bound compounds open here.
     if floor.get("value") is not None:
+        exclusive = bool(floor.get("exclusive"))
         if latest_value is None:
             floor_ok = False
         else:
-            floor_ok = int(latest_value) >= int(floor["value"])
+            if exclusive:
+                floor_ok = int(latest_value) > int(floor["value"])
+            else:
+                floor_ok = int(latest_value) >= int(floor["value"])
             floor_ok = floor_ok and _pop_ok(floor.get("population"), population)
         outcome = "prediction-held" if floor_ok else "prediction-missed"
+        op = ">" if exclusive else "≥"
         why = (
-            f"floor claimed ≥{floor['value']}/{floor.get('population')} "
+            f"floor claimed {op}{floor['value']}/{floor.get('population')} "
             f"got {latest_value}/{population}"
         )
         return {

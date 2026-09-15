@@ -87,18 +87,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 38 — Below-bound floor compounds.**
-
-Done when:
-1. `claimed_floor("won't fall below 3/5")` → 3/5 (THE LIE: was None; unchanged@latest=2 invented held)
-2. `won't fall below 3/5` + unchanged + latest 2 → prediction-missed; latest 4 → held
-3. `stays above 3/5` / `never below 4/5` / `no lower than 3/5` grade floor (not fall/no-direction)
-4. `magnet pred-demo` FINDING · pytest green · check-docs PASS
+**Slice 38 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 38 SHIP · below-bound floor (`won't fall below`) · stays above exclusive · no lower than flat+floor · pred-demo 41/41 embarrassed 17 · `python3 -m pytest -q` → 303 passed · check-docs 16 PASS · `git push` pending tip.
 - 2026-09-15 · Slice 38 START · ran object: `won't fall below 3/5` → floor=None, unchanged@latest=2 → prediction-held — invents held while below the named bound. `stays above`/`never below`/`no lower than` unbound (latter even intent=fall). Building below-bound floor compounds.
 - 2026-09-15 · Slice 37 SHIP · doubles/halves vs prior=latest−Δ · pred-demo 36/36 embarrassed 15 · `python3 -m pytest -q` → 295 passed · check-docs 16 PASS · `git push origin main` → `07d2d585130aceb7b2bfd634576c242dc7cecef8`
 - 2026-09-15 · Slice 37 START · ran object: `doubles`/`halves` → unknown. Building prior=latest−Δ grade so direction-only cannot invent held on a non-double rise.

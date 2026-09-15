@@ -408,6 +408,56 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="prior=4 → not a half; direction fall invents held",
     ),
+    PredScenario(
+        "wont_fall_below_holds",
+        "won't fall below 3/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="below-bound floor met: latest 4 ≥ 3",
+    ),
+    PredScenario(
+        "wont_fall_below_missed",
+        "won't fall below 3/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="THE LIE: floor unbound → invented held at latest 2; now misses",
+    ),
+    PredScenario(
+        "stays_above_holds",
+        "stays above 3/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="exclusive above: latest 4 > 3",
+    ),
+    PredScenario(
+        "stays_above_missed",
+        "stays above 3/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="latest 3 is not above 3; naive flat invents held",
+    ),
+    PredScenario(
+        "no_lower_than_holds",
+        "no lower than 3/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=3,
+        note="no lower than was intent=fall; now flat+floor",
+    ),
 )
 
 
@@ -423,6 +473,7 @@ def run_pred_demo() -> str:
         "  When it names a target (falls to 2/5 / reaches 5/5 / exactly 4/5), magnet checks latest.",
         "  When it names a percent (improves by 20%), magnet checks Δ vs round(pop·pct/100).",
         "  When it names doubles/halves, magnet checks prior = latest − Δ (Slice 37).",
+        "  When it names a below-bound (`won't fall below 3/5`), magnet opens the floor (Slice 38).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
         "  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).",
         "  Naive grades direction only — invents held when the claim is wrong.",
@@ -473,8 +524,11 @@ def run_pred_demo() -> str:
             claim_txt = f"{pct['percent']}%"
         elif floor["value"] is not None:
             pop = floor["population"]
+            op = ">" if floor.get("exclusive") else "≥"
             claim_txt = (
-                f"≥{floor['value']}/{pop}" if pop is not None else f"≥{floor['value']}"
+                f"{op}{floor['value']}/{pop}"
+                if pop is not None
+                else f"{op}{floor['value']}"
             )
         elif ceiling["value"] is not None:
             pop = ceiling["population"]
@@ -522,9 +576,10 @@ def run_pred_demo() -> str:
     if embarrass >= 1 and magnet_ok == total:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
-            "claimed fraction, bound, percent, or doubles/halves ratio is wrong; "
-            "magnet misses. Open the measured Δ / latest / prior. "
-            "Percent is of population; doubles recover prior = latest − Δ."
+            "claimed fraction, bound (incl. below-bound floors), percent, or "
+            "doubles/halves ratio is wrong; magnet misses. Open the measured "
+            "Δ / latest / prior. `won't fall below N` opens the floor — "
+            "never invent held beneath the named bound (Slice 38)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -547,5 +602,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'improves by 20%' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'exactly 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'pass rate doubles' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x \"won't fall below 3/5\" --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'stays above 3/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
