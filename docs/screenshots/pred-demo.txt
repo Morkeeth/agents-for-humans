@@ -1,8 +1,12 @@
-MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
+$ python3 -m magnet.cli pred-demo
+MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
 
   When a prediction names a fraction (rises by 1/5), magnet checks Δ.
   When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.
   When it names a floor (at least 4/5), magnet checks latest ≥ floor.
+  When it names a ceiling (at most 3/5), magnet checks latest ≤ ceiling.
+  When it names a target (falls to 2/5 / reaches 5/5), magnet checks latest.
+  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).
   recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).
   Naive grades direction only — invents held when the claim is wrong.
 
@@ -26,14 +30,27 @@ MAGNET pred-demo — magnitude + stay-at + floor honesty vs naive direction-only
   recover_held        1                       +1   244  244    prediction-held     prediction-held
   recover_wrong_mag   2                       +1   244  244    prediction-missed   prediction-held
   restore_held        1                       +1   12   9      prediction-held     prediction-held
+  wont_fall_holds     flat                    +0   5    4      prediction-held     prediction-held
+  wont_fall_missed    flat                    -1   5    3      prediction-missed   prediction-missed
+  does_not_regress_holdsflat                    +0   12   9      prediction-held     prediction-held
+  ceiling_holds       ≤3/5                    +0   5    3      prediction-held     prediction-held
+  ceiling_missed      ≤3/5                    +0   5    4      prediction-missed   prediction-held
+  falls_to_holds      to 2/5                  -2   5    2      prediction-held     prediction-held
+  falls_to_missed     to 2/5                  -1   5    3      prediction-missed   prediction-held
+  reaches_holds       to 5/5                  +0   5    5      prediction-held     prediction-held
+  reaches_missed      to 5/5                  +0   5    4      prediction-missed   prediction-held
+  improves_held       1                       +1   12   9      prediction-held     prediction-held
 
-  magnet       18/18  (direction + magnitude/level/floor when claimed)
-  naive        10/18  (direction only — pre-Slice-25 behaviour)
-  embarrassed  8 scenario(s) where naive invents held on wrong claim
+  magnet       28/28  (direction + magnitude/level/floor/ceiling/target)
+  naive        17/28  (direction only — pre-Slice-25 behaviour)
+  embarrassed  11 scenario(s) where naive invents held on wrong claim
 
-  FINDING  naive direction-only invents prediction-held when the claimed fraction, stay-at level, or floor is wrong; magnet misses. Direction is not the object — open the measured Δ / latest value.
+  FINDING  naive direction-only invents prediction-held when the claimed fraction, stay-at level, floor, ceiling, or target is wrong; magnet misses. Direction is not the object — open the measured Δ / latest. Negation (`won't fall`) is flat — inventing fall was the Slice 35 lie.
 
   repro      magnet pred-demo
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
   repro      magnet adopt skill x 'must stay at 5' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'at least 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'at most 3/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x "won't fall" --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'falls to 2/5' --probe demo-pass-rate --reset

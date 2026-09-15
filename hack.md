@@ -84,20 +84,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 35 — Negation + ceiling + target-level honesty.**
+**Slice 35 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
 
-Done when:
-1. `prediction_intent("won't fall")` → `flat` (NOT `fall`) — THE LIE found by running the object
-2. `check_prediction("won't fall", "hurt", …)` → `prediction-missed`; unchanged → held
-3. `claimed_ceiling("at most 3/5")` parses; latest 4/5 → missed; latest 3/5 → held
-4. `falls to 2/5` with latest 3 → missed (direction alone is not the object)
-5. `magnet pred-demo` exit 0 with FINDING · naive invents held on negation/ceiling/target wrongs
-6. `python3 -m pytest -q` green · `magnet check-docs` PASS
-
-**Oscar gates (not this slice):** film · Devpost paste · submit.
+**Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 35 SHIP · won't-fall → flat · ceiling at-most · falls-to/reaches target · improves lexicon · pred-demo 28/28 embarrassed 11 · `python3 -m pytest -q` → 281 passed · check-docs 16 PASS · `git push` pending tip.
 - 2026-09-15 · Slice 35 START · ran objects: `won't fall`+unchanged → missed (intent=fall); `won't fall`+hurt → held — magnet invents that "won't fall" means fall. `at most 3/5` → no-direction. `falls to 2/5`+latest 3 → held on direction alone. Building negation flat + ceiling dual-of-floor + target-level grade.
 - 2026-09-14 · Slice 34 SHIP · `magnet receipt --grinder` evidence v1 · no COUNT_FIELDS · check_docs receipt-demo FINDING · pytest green · cold main OK · `git push origin main` → `bfcca63`.
 - 2026-09-14 · Slice 34 START · opened Agent Grinder `contract.py`: COUNT_FIELDS require real ints; inventing turns_typed would lie. Building evidence sidecar that carries magnet verify+prediction without fabricating grind counts. `git push origin main` → `37d3014`.
