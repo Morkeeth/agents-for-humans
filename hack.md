@@ -94,7 +94,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-15 · Slice 39 SHIP · rises 20% parses · triples/3x/2x prior · pred-demo 46/46 embarrassed 19 · `python3 -m pytest -q` → 309 passed · check-docs 16 PASS · `git push` pending tip.
+- 2026-09-15 · Slice 39 SHIP · rises 20% parses · triples/3x/2x prior · pred-demo 46/46 embarrassed 19 · `python3 -m pytest -q` → 309 passed · check-docs 16 PASS · `git push origin main` → `e215347bc645177ccc32553e63e939b068689bc8`
 - 2026-09-15 · Slice 39 START · ran object: `rises 20%` → percent=None, direction-only held on Δ=+1 and Δ=+20 alike. `triples`/`3x`/`2x` unknown. Building percent-syntax + Nx ratio.
 - 2026-09-15 · Slice 38 SHIP · below-bound floor (`won't fall below`) · stays above exclusive · no lower than flat+floor · pred-demo 41/41 embarrassed 17 · `python3 -m pytest -q` → 303 passed · check-docs 16 PASS · `git push origin main` → `d90c9b56c759054f42b6dda97a17cec7d3247b9d`
 - 2026-09-15 · Slice 38 START · ran object: `won't fall below 3/5` → floor=None, unchanged@latest=2 → prediction-held — invents held while below the named bound. `stays above`/`never below`/`no lower than` unbound (latter even intent=fall). Building below-bound floor compounds.

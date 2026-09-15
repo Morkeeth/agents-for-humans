@@ -1,6 +1,6 @@
 # Night report · 2026-09-15 · Slice 39
 
-**branch:** `cursor/percent-syntax-triples-94f8` · tip stamped after push
+**branch:** `cursor/percent-syntax-triples-94f8` · `e215347bc645177ccc32553e63e939b068689bc8` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
