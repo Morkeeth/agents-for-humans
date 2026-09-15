@@ -83,15 +83,23 @@ No number without the command that produced it, the population it is out of, and
 | 35 | Negation + ceiling + target-level honesty | `won't fall` → flat (not fall) · `at most 3/5` ceiling · `falls to 2/5` grades latest · `magnet pred-demo` embarrasses · pytest green |
 | 36 | Percent-of-pop + exactly-level honesty | `improves by 20%` ≠ absolute 20 · grades Δ vs pop·pct · `exactly 4/5` target · pred-demo FINDING · pytest green |
 | 37 | Doubles/halves vs prior honesty | `doubles`/`halves` grade prior=latest−Δ · pred-demo embarrasses direction-only · pytest green |
+| 38 | Below-bound floor compounds | `won't fall below 3/5` opens floor · held only when latest≥bound · `stays above`/`never below` · pred-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 37 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
+**Slice 38 — Below-bound floor compounds.**
+
+Done when:
+1. `claimed_floor("won't fall below 3/5")` → 3/5 (THE LIE: was None; unchanged@latest=2 invented held)
+2. `won't fall below 3/5` + unchanged + latest 2 → prediction-missed; latest 4 → held
+3. `stays above 3/5` / `never below 4/5` / `no lower than 3/5` grade floor (not fall/no-direction)
+4. `magnet pred-demo` FINDING · pytest green · check-docs PASS
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 38 START · ran object: `won't fall below 3/5` → floor=None, unchanged@latest=2 → prediction-held — invents held while below the named bound. `stays above`/`never below`/`no lower than` unbound (latter even intent=fall). Building below-bound floor compounds.
 - 2026-09-15 · Slice 37 SHIP · doubles/halves vs prior=latest−Δ · pred-demo 36/36 embarrassed 15 · `python3 -m pytest -q` → 295 passed · check-docs 16 PASS · `git push origin main` → `07d2d585130aceb7b2bfd634576c242dc7cecef8`
 - 2026-09-15 · Slice 37 START · ran object: `doubles`/`halves` → unknown. Building prior=latest−Δ grade so direction-only cannot invent held on a non-double rise.
 - 2026-09-15 · Slice 36 SHIP · percent-of-pop (20%≠absolute 20) · exactly 4/5 target · pred-demo 32/32 embarrassed 13 · `python3 -m pytest -q` → 288 passed · check-docs 16 PASS · `git push origin main` → `81198739841264f00a3e2478bf4bf0bc0a76f9a6`
