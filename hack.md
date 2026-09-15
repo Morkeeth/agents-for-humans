@@ -82,15 +82,23 @@ No number without the command that produced it, the population it is out of, and
 | 34 | Grinder evidence export (no invented counts) | `magnet receipt --grinder` writes evidence JSON · no turns_typed invent · check_docs RED without receipt-demo FINDING · pytest green |
 | 35 | Negation + ceiling + target-level honesty | `won't fall` → flat (not fall) · `at most 3/5` ceiling · `falls to 2/5` grades latest · `magnet pred-demo` embarrasses · pytest green |
 | 36 | Percent-of-pop + exactly-level honesty | `improves by 20%` ≠ absolute 20 · grades Δ vs pop·pct · `exactly 4/5` target · pred-demo FINDING · pytest green |
+| 37 | Doubles/halves vs prior honesty | `doubles`/`halves` grade prior=latest−Δ · pred-demo embarrasses direction-only · pytest green |
 
 ## NOW
 
-**Slice 36 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
+**Slice 37 — Doubles/halves vs prior honesty.**
+
+Done when:
+1. `prediction_intent("pass rate doubles")` → `rise`; `halves` → `fall`
+2. prior = latest − Δ; doubles held iff latest == 2·prior (Δ == prior)
+3. Direction-only invents held on non-double rise — pred-demo FINDING
+4. pytest green · check-docs PASS
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 37 START · ran object: `doubles`/`halves` → unknown. Building prior=latest−Δ grade so direction-only cannot invent held on a non-double rise.
 - 2026-09-15 · Slice 36 SHIP · percent-of-pop (20%≠absolute 20) · exactly 4/5 target · pred-demo 32/32 embarrassed 13 · `python3 -m pytest -q` → 288 passed · check-docs 16 PASS · `git push origin main` → `81198739841264f00a3e2478bf4bf0bc0a76f9a6`
 - 2026-09-15 · Slice 36 START · ran object: `claimed_magnitude("improves by 20%")` → amount=20 (strips `%`); Δ+1/pop5 → missed; Δ+20/pop5 → held — invents that percent means absolute points. `exactly 4/5` → no-direction. Building percent-of-pop grade + exactly target.
 - 2026-09-15 · Slice 35 SHIP · won't-fall → flat · ceiling at-most · falls-to/reaches target · improves lexicon · pred-demo 28/28 embarrassed 11 · `python3 -m pytest -q` → 281 passed · check-docs 16 PASS · `git push origin main` → `7495fbadb9d8e5e333007dbc9b701da8ad36033b`
