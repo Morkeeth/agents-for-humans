@@ -91,7 +91,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-15 · Slice 36 SHIP · percent-of-pop (20%≠absolute 20) · exactly 4/5 target · pred-demo 32/32 embarrassed 13 · `python3 -m pytest -q` → 288 passed · check-docs 16 PASS · `git push` pending tip.
+- 2026-09-15 · Slice 36 SHIP · percent-of-pop (20%≠absolute 20) · exactly 4/5 target · pred-demo 32/32 embarrassed 13 · `python3 -m pytest -q` → 288 passed · check-docs 16 PASS · `git push origin main` → `81198739841264f00a3e2478bf4bf0bc0a76f9a6`
 - 2026-09-15 · Slice 36 START · ran object: `claimed_magnitude("improves by 20%")` → amount=20 (strips `%`); Δ+1/pop5 → missed; Δ+20/pop5 → held — invents that percent means absolute points. `exactly 4/5` → no-direction. Building percent-of-pop grade + exactly target.
 - 2026-09-15 · Slice 35 SHIP · won't-fall → flat · ceiling at-most · falls-to/reaches target · improves lexicon · pred-demo 28/28 embarrassed 11 · `python3 -m pytest -q` → 281 passed · check-docs 16 PASS · `git push origin main` → `7495fbadb9d8e5e333007dbc9b701da8ad36033b`
 - 2026-09-15 · Slice 35 START · ran objects: `won't fall`+unchanged → missed (intent=fall); `won't fall`+hurt → held — magnet invents that "won't fall" means fall. `at most 3/5` → no-direction. `falls to 2/5`+latest 3 → held on direction alone. Building negation flat + ceiling dual-of-floor + target-level grade.

@@ -1,6 +1,6 @@
 # Night report · 2026-09-15 · Slice 36
 
-**branch:** `cursor/percent-exactly-honesty-94f8` · tip stamped after push
+**branch:** `cursor/percent-exactly-honesty-94f8` · `81198739841264f00a3e2478bf4bf0bc0a76f9a6` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
