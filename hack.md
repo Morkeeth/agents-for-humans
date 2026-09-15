@@ -86,18 +86,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 37 — Doubles/halves vs prior honesty.**
-
-Done when:
-1. `prediction_intent("pass rate doubles")` → `rise`; `halves` → `fall`
-2. prior = latest − Δ; doubles held iff latest == 2·prior (Δ == prior)
-3. Direction-only invents held on non-double rise — pred-demo FINDING
-4. pytest green · check-docs PASS
+**Slice 37 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-15 · Slice 37 SHIP · doubles/halves vs prior=latest−Δ · pred-demo 36/36 embarrassed 15 · `python3 -m pytest -q` → 295 passed · check-docs 16 PASS · `git push` pending tip.
 - 2026-09-15 · Slice 37 START · ran object: `doubles`/`halves` → unknown. Building prior=latest−Δ grade so direction-only cannot invent held on a non-double rise.
 - 2026-09-15 · Slice 36 SHIP · percent-of-pop (20%≠absolute 20) · exactly 4/5 target · pred-demo 32/32 embarrassed 13 · `python3 -m pytest -q` → 288 passed · check-docs 16 PASS · `git push origin main` → `81198739841264f00a3e2478bf4bf0bc0a76f9a6`
 - 2026-09-15 · Slice 36 START · ran object: `claimed_magnitude("improves by 20%")` → amount=20 (strips `%`); Δ+1/pop5 → missed; Δ+20/pop5 → held — invents that percent means absolute points. `exactly 4/5` → no-direction. Building percent-of-pop grade + exactly target.

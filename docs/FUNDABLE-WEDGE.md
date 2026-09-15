@@ -46,6 +46,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Target-level honesty** | `falls to 2/5` / `reaches 5/5` grades latest; direction alone invents held on wrong target | `magnet pred-demo` |
 | **Percent-of-pop honesty** | `improves by 20%` grades Δ vs round(pop·pct/100) — never absolute points | `magnet pred-demo` |
 | **Exactly-level honesty** | `exactly 4/5` grades latest; was no-direction | `magnet pred-demo` |
+| **Doubles/halves honesty** | `doubles`/`halves` grade prior=latest−Δ; direction invents held on non-double rise | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

@@ -47,6 +47,7 @@ _RISE = re.compile(
     r"ris(?:e|es|ing)|up|improv(?:e|es|ed|ing|ement)?|increas(?:e|es|ed|ing)?|"
     r"higher|helped|gain|\+\s*\d|coverage rises|"
     r"climb(?:s|ed|ing)?|"
+    r"doubles?|twice|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
     r"rebound(?:s|ed|ing)?"
     r")\b",
@@ -55,6 +56,7 @@ _RISE = re.compile(
 _FALL = re.compile(
     r"\b(fall|falls|falling|drop|drops|dropping|hurt|decreas(?:e|es|ed|ing)?|"
     r"declin(?:e|es|ed|ing)?|worsen(?:s|ed|ing)?|slip(?:s|ped|ping)?|"
+    r"halves?|half|"
     r"lower|down|regress|"
     r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
     re.I,
@@ -130,6 +132,12 @@ _TARGET = re.compile(
 # Percent claim: "improves by 20%", "rises by 50%", "+10%". NOT absolute points.
 _CLAIM_PCT = re.compile(
     r"(?:by\s*|[+\-]\s*)(\d+)\s*%",
+    re.I,
+)
+
+# Ratio claim vs prior: doubles / halves. Prior = latest − Δ (Slice 37).
+_RATIO = re.compile(
+    r"\b(?:doubles?|twice(?:\s+as\s+many)?|halves?|cuts?\s+in\s+half)\b",
     re.I,
 )
 
@@ -258,6 +266,24 @@ def claimed_target(prediction: str) -> dict:
     }
 
 
+def claimed_ratio(prediction: str) -> dict:
+    """Parse doubles/halves claim. Grades against prior = latest − Δ.
+
+    Slice 37: direction-only invents held on any rise when the claim said doubles.
+    """
+    text = prediction or ""
+    m = _RATIO.search(text)
+    if not m:
+        return {"kind": None, "raw": None}
+    raw = m.group(0).strip()
+    low = raw.lower()
+    if "half" in low or "halves" in low:
+        kind = "half"
+    else:
+        kind = "double"
+    return {"kind": kind, "raw": raw}
+
+
 def claimed_percent(prediction: str) -> dict:
     """Parse percent claim (`improves by 20%`). NOT an absolute point count.
 
@@ -356,6 +382,7 @@ def _bound_fields(prediction: str) -> dict:
         "claimed_ceiling": claimed_ceiling(prediction),
         "claimed_target": claimed_target(prediction),
         "claimed_percent": claimed_percent(prediction),
+        "claimed_ratio": claimed_ratio(prediction),
     }
 
 
@@ -452,6 +479,7 @@ def check_prediction(
     ceiling = bounds["claimed_ceiling"]
     target = bounds["claimed_target"]
     percent = bounds["claimed_percent"]
+    ratio = bounds["claimed_ratio"]
 
     if label == "baseline":
         return {
@@ -584,6 +612,69 @@ def check_prediction(
             "grade": "direction+percent",
             **bounds,
             "magnitude_ok": magnitude_ok,
+            "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
+        }
+
+    # Doubles/halves vs prior (Slice 37): prior = latest − Δ.
+    # Direction alone invents held on a non-double rise.
+    if ratio.get("kind") is not None:
+        expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
+        direction_ok = label == expected
+        if latest_value is None or delta is None:
+            return {
+                "outcome": "unmeasured",
+                "intent": intent,
+                "verdict": label,
+                "delta": delta,
+                "population": population,
+                "latest_value": latest_value,
+                "expected": expected,
+                "expected_delta": None,
+                "grade": "ratio",
+                **bounds,
+                "note": "unmeasured — doubles/halves need latest and Δ to recover prior",
+            }
+        prior = int(latest_value) - int(delta)
+        if ratio["kind"] == "double":
+            if prior <= 0:
+                ratio_ok = False
+                expected_delta = None
+            else:
+                expected_delta = prior  # latest should be 2·prior
+                ratio_ok = int(latest_value) == 2 * prior and int(delta) == prior
+        else:  # half
+            if prior < 0:
+                ratio_ok = False
+                expected_delta = None
+            else:
+                expected_latest = prior // 2
+                expected_delta = expected_latest - prior
+                ratio_ok = int(latest_value) == expected_latest and int(delta) == expected_delta
+        held = direction_ok and ratio_ok
+        outcome = "prediction-held" if held else "prediction-missed"
+        if not direction_ok:
+            why = f"direction expected={expected} got={label}"
+        elif not ratio_ok:
+            why = (
+                f"ratio={ratio['kind']} prior={prior} "
+                f"latest={latest_value} Δ={delta} "
+                f"expected_delta={expected_delta if expected_delta is not None else '—'}"
+            )
+        else:
+            why = f"direction+ratio ({ratio['kind']} prior={prior})"
+        return {
+            "outcome": outcome,
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "latest_value": latest_value,
+            "expected": expected,
+            "expected_delta": expected_delta,
+            "grade": "direction+ratio",
+            **bounds,
+            "prior": prior,
+            "ratio_ok": ratio_ok,
             "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
         }
 

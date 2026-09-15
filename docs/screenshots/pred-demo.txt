@@ -7,6 +7,7 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   When it names a ceiling (at most 3/5), magnet checks latest ≤ ceiling.
   When it names a target (falls to 2/5 / reaches 5/5 / exactly 4/5), magnet checks latest.
   When it names a percent (improves by 20%), magnet checks Δ vs round(pop·pct/100).
+  When it names doubles/halves, magnet checks prior = latest − Δ (Slice 37).
   won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).
   recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).
   Naive grades direction only — invents held when the claim is wrong.
@@ -45,12 +46,16 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   percent_absolute_lie     20%                     +20  5    5      prediction-missed   prediction-held
   exactly_holds            to 4/5                  +0   5    4      prediction-held     prediction-held
   exactly_missed           to 4/5                  +0   5    3      prediction-missed   prediction-held
+  doubles_holds            double                  +2   5    4      prediction-held     prediction-held
+  doubles_missed           double                  +1   5    4      prediction-missed   prediction-held
+  halves_holds             half                    -2   5    2      prediction-held     prediction-held
+  halves_missed            half                    -1   5    3      prediction-missed   prediction-held
 
-  magnet       32/32  (direction + magnitude/level/floor/ceiling/target/percent)
-  naive        19/32  (direction only — pre-Slice-25 behaviour)
-  embarrassed  13 scenario(s) where naive invents held on wrong claim
+  magnet       36/36  (bounds + percent + ratio when claimed)
+  naive        21/36  (direction only — pre-Slice-25 behaviour)
+  embarrassed  15 scenario(s) where naive invents held on wrong claim
 
-  FINDING  naive direction-only invents prediction-held when the claimed fraction, stay-at level, floor, ceiling, target, or percent is wrong; magnet misses. Direction is not the object — open the measured Δ / latest. Negation (`won't fall`) is flat. Percent is of population — never absolute points (Slice 36).
+  FINDING  naive direction-only invents prediction-held when the claimed fraction, bound, percent, or doubles/halves ratio is wrong; magnet misses. Open the measured Δ / latest / prior. Percent is of population; doubles recover prior = latest − Δ.
 
   repro      magnet pred-demo
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
@@ -61,3 +66,4 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   repro      magnet adopt skill x 'falls to 2/5' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'improves by 20%' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'exactly 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'pass rate doubles' --probe demo-pass-rate --reset

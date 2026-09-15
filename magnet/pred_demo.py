@@ -25,6 +25,7 @@ from magnet.prediction import (
     claimed_level,
     claimed_magnitude,
     claimed_percent,
+    claimed_ratio,
     claimed_target,
     naive_direction_check,
     prediction_intent,
@@ -367,6 +368,46 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="exactly 4 with latest 3 — was no-direction; naive flat invents held",
     ),
+    PredScenario(
+        "doubles_holds",
+        "pass rate doubles",
+        "helped",
+        2,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="prior=2 → doubles to 4; Δ == prior",
+    ),
+    PredScenario(
+        "doubles_missed",
+        "pass rate doubles",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="prior=3 → not a double; direction-only invents held — THE LIE",
+    ),
+    PredScenario(
+        "halves_holds",
+        "pass rate halves",
+        "hurt",
+        -2,
+        5,
+        "prediction-held",
+        latest_value=2,
+        note="prior=4 → halves to 2",
+    ),
+    PredScenario(
+        "halves_missed",
+        "pass rate halves",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="prior=4 → not a half; direction fall invents held",
+    ),
 )
 
 
@@ -381,6 +422,7 @@ def run_pred_demo() -> str:
         "  When it names a ceiling (at most 3/5), magnet checks latest ≤ ceiling.",
         "  When it names a target (falls to 2/5 / reaches 5/5 / exactly 4/5), magnet checks latest.",
         "  When it names a percent (improves by 20%), magnet checks Δ vs round(pop·pct/100).",
+        "  When it names doubles/halves, magnet checks prior = latest − Δ (Slice 37).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
         "  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).",
         "  Naive grades direction only — invents held when the claim is wrong.",
@@ -423,8 +465,11 @@ def run_pred_demo() -> str:
         ceiling = claimed_ceiling(sc.prediction)
         target = claimed_target(sc.prediction)
         pct = claimed_percent(sc.prediction)
+        ratio = claimed_ratio(sc.prediction)
         claim = claimed_magnitude(sc.prediction)
-        if pct["percent"] is not None:
+        if ratio["kind"] is not None:
+            claim_txt = ratio["kind"]
+        elif pct["percent"] is not None:
             claim_txt = f"{pct['percent']}%"
         elif floor["value"] is not None:
             pop = floor["population"]
@@ -469,7 +514,7 @@ def run_pred_demo() -> str:
     total = len(SCENARIOS)
     lines += [
         "",
-        f"  magnet       {magnet_ok}/{total}  (direction + magnitude/level/floor/ceiling/target/percent)",
+        f"  magnet       {magnet_ok}/{total}  (bounds + percent + ratio when claimed)",
         f"  naive        {naive_ok}/{total}  (direction only — pre-Slice-25 behaviour)",
         f"  embarrassed  {embarrass} scenario(s) where naive invents held on wrong claim",
         "",
@@ -477,10 +522,9 @@ def run_pred_demo() -> str:
     if embarrass >= 1 and magnet_ok == total:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
-            "claimed fraction, stay-at level, floor, ceiling, target, or percent "
-            "is wrong; magnet misses. Direction is not the object — open the "
-            "measured Δ / latest. Negation (`won't fall`) is flat. "
-            "Percent is of population — never absolute points (Slice 36)."
+            "claimed fraction, bound, percent, or doubles/halves ratio is wrong; "
+            "magnet misses. Open the measured Δ / latest / prior. "
+            "Percent is of population; doubles recover prior = latest − Δ."
         )
     elif magnet_ok < total:
         lines.append(
@@ -502,5 +546,6 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'falls to 2/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'improves by 20%' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'exactly 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'pass rate doubles' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
