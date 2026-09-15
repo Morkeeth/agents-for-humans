@@ -24,6 +24,7 @@ from magnet.prediction import (
     claimed_floor,
     claimed_level,
     claimed_magnitude,
+    claimed_percent,
     claimed_target,
     naive_direction_check,
     prediction_intent,
@@ -326,6 +327,46 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=9,
         note="improves was unknown (improv stem word-boundary fail) — now rise",
     ),
+    PredScenario(
+        "percent_of_pop_holds",
+        "coverage improves by 20%",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="20% of pop 5 = Δ+1 — THE LIE treated % as absolute 20 and missed",
+    ),
+    PredScenario(
+        "percent_absolute_lie",
+        "coverage improves by 20%",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="Δ+20 on pop 5 is not 20% — old magnet invented held by stripping %",
+    ),
+    PredScenario(
+        "exactly_holds",
+        "must be exactly 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="exactly 4/5 grades latest == 4",
+    ),
+    PredScenario(
+        "exactly_missed",
+        "exactly 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="exactly 4 with latest 3 — was no-direction; naive flat invents held",
+    ),
 )
 
 
@@ -338,7 +379,8 @@ def run_pred_demo() -> str:
         "  When it names a stay-at level (must stay at 5/5 or stay at 5), magnet checks latest.",
         "  When it names a floor (at least 4/5), magnet checks latest ≥ floor.",
         "  When it names a ceiling (at most 3/5), magnet checks latest ≤ ceiling.",
-        "  When it names a target (falls to 2/5 / reaches 5/5), magnet checks latest.",
+        "  When it names a target (falls to 2/5 / reaches 5/5 / exactly 4/5), magnet checks latest.",
+        "  When it names a percent (improves by 20%), magnet checks Δ vs round(pop·pct/100).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
         "  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).",
         "  Naive grades direction only — invents held when the claim is wrong.",
@@ -380,8 +422,11 @@ def run_pred_demo() -> str:
         floor = claimed_floor(sc.prediction)
         ceiling = claimed_ceiling(sc.prediction)
         target = claimed_target(sc.prediction)
+        pct = claimed_percent(sc.prediction)
         claim = claimed_magnitude(sc.prediction)
-        if floor["value"] is not None:
+        if pct["percent"] is not None:
+            claim_txt = f"{pct['percent']}%"
+        elif floor["value"] is not None:
             pop = floor["population"]
             claim_txt = (
                 f"≥{floor['value']}/{pop}" if pop is not None else f"≥{floor['value']}"
@@ -424,7 +469,7 @@ def run_pred_demo() -> str:
     total = len(SCENARIOS)
     lines += [
         "",
-        f"  magnet       {magnet_ok}/{total}  (direction + magnitude/level/floor/ceiling/target)",
+        f"  magnet       {magnet_ok}/{total}  (direction + magnitude/level/floor/ceiling/target/percent)",
         f"  naive        {naive_ok}/{total}  (direction only — pre-Slice-25 behaviour)",
         f"  embarrassed  {embarrass} scenario(s) where naive invents held on wrong claim",
         "",
@@ -432,9 +477,10 @@ def run_pred_demo() -> str:
     if embarrass >= 1 and magnet_ok == total:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
-            "claimed fraction, stay-at level, floor, ceiling, or target is wrong; "
-            "magnet misses. Direction is not the object — open the measured Δ / latest. "
-            "Negation (`won't fall`) is flat — inventing fall was the Slice 35 lie."
+            "claimed fraction, stay-at level, floor, ceiling, target, or percent "
+            "is wrong; magnet misses. Direction is not the object — open the "
+            "measured Δ / latest. Negation (`won't fall`) is flat. "
+            "Percent is of population — never absolute points (Slice 36)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -454,5 +500,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'at most 3/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x \"won't fall\" --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'falls to 2/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'improves by 20%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'exactly 4/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

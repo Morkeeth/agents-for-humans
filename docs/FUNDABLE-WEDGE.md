@@ -44,6 +44,8 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Negation honesty** | `won't fall` / `does not regress` are flat — NOT fall; old magnet invented held when the score dropped | `magnet pred-demo` |
 | **Ceiling honesty** | Dual of floor: `at most 3/5` held when latest ≤ ceiling; naive flat invents held above | `magnet pred-demo` |
 | **Target-level honesty** | `falls to 2/5` / `reaches 5/5` grades latest; direction alone invents held on wrong target | `magnet pred-demo` |
+| **Percent-of-pop honesty** | `improves by 20%` grades Δ vs round(pop·pct/100) — never absolute points | `magnet pred-demo` |
+| **Exactly-level honesty** | `exactly 4/5` grades latest; was no-direction | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

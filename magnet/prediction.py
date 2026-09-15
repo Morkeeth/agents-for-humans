@@ -29,6 +29,10 @@ not drop` are flat, NOT fall. Found by running the object: magnet graded
 `won't fall` as fall, inventing held when the score dropped. Ceiling
 claims (`at most 3/5`, dual of floor). Target-level (`falls to 2/5`,
 `reaches 5/5`) grades latest — direction alone is not the object.
+
+Slice 36: percent-of-pop — `improves by 20%` must NOT parse as absolute
+20 (the `%` was stripped and inventing held on Δ=+20 / pop 5). Grades
+expected Δ = round(pop · pct / 100). `exactly 4/5` is a target level.
 """
 from __future__ import annotations
 
@@ -77,7 +81,9 @@ _FLAT = re.compile(
     r"no\s+coverage\s+change|nothing\s+moves?|still\s+pass|remain(?:s|ing)?\s+green|"
     r"stay(?:s|ing)?\s+at|must\s+stay|"
     r"remain(?:s|ing)?\s+at|hold(?:s|ing)?\s+at|keep(?:s|ing)?\s+at|"
-    r"must\s+(?:remain|hold|keep))\b",
+    r"must\s+(?:remain|hold|keep)|"
+    r"exactly|must\s+be\s+exactly\b"
+    r")\b",
     re.I,
 )
 
@@ -107,15 +113,23 @@ _CEILING = re.compile(
 )
 
 # Target-level: "falls to 2/5", "reaches 5/5", "hits 5", "ends at 4/5",
-# "lands at 4/5", "returns to 4/5", "climbs to 5/5", "improves to 4/5".
+# "lands at 4/5", "returns to 4/5", "climbs to 5/5", "improves to 4/5",
+# "exactly 4/5", "must be exactly 4/5", "lands at exactly 4/5".
 # Direction alone is not the object — latest must match the named level.
 _TARGET = re.compile(
     r"(?:"
     r"(?:falls?|drops?|rises?|climbs?|improves?)\s+to|"
     r"reaches?|hits?|"
     r"(?:ends?|lands?|settles?)\s+at|"
-    r"returns?\s+to|back\s+to"
-    r")\s+(\d+)(?:\s*/\s*(\d+))?",
+    r"returns?\s+to|back\s+to|"
+    r"(?:must\s+be\s+)?exactly"
+    r")\s+(?:exactly\s+)?(\d+)(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Percent claim: "improves by 20%", "rises by 50%", "+10%". NOT absolute points.
+_CLAIM_PCT = re.compile(
+    r"(?:by\s*|[+\-]\s*)(\d+)\s*%",
     re.I,
 )
 
@@ -125,13 +139,14 @@ _CLAIM_FRAC = re.compile(
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
+# Negative lookahead refuses digits that are part of a percent (`20%`).
 _CLAIM_ABS = re.compile(
     r"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
     r"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
-    r"slips?\s+by\s+)\s*(\d+)(?!\s*/)",
+    r"slips?\s+by\s+)\s*(\d+)(?!\s*/)(?!\s*%)",
     re.I,
 )
-_CLAIM_SIGNED = re.compile(r"(?<![/\d])([+\-])(\d+)(?!\s*/)", re.I)
+_CLAIM_SIGNED = re.compile(r"(?<![/\d])([+\-])(\d+)(?!\s*/)(?!\s*%)", re.I)
 
 
 def prediction_intent(prediction: str) -> str:
@@ -160,7 +175,7 @@ def prediction_intent(prediction: str) -> str:
         or claimed_ceiling(text)["value"] is not None
     ):
         return "flat"
-    # Target-only (`reaches 5/5`) with no rise/fall word — still checkable;
+    # Target-only (`reaches 5/5` / `exactly 4/5`) with no rise/fall word —
     # treat as flat so check_prediction grades the target, not no-direction.
     if claimed_target(text)["value"] is not None:
         return "flat"
@@ -243,6 +258,28 @@ def claimed_target(prediction: str) -> dict:
     }
 
 
+def claimed_percent(prediction: str) -> dict:
+    """Parse percent claim (`improves by 20%`). NOT an absolute point count.
+
+    Slice 36: stripping `%` and treating 20 as absolute Δ was the lie —
+    Δ=+20 on pop 5 invented held; true 20% of pop 5 (Δ=+1) missed.
+    Returns percent int; expected Δ = round(pop · pct / 100) at check time.
+    """
+    text = prediction or ""
+    if claimed_level(text)["value"] is not None:
+        return {"percent": None, "raw": None}
+    if claimed_floor(text)["value"] is not None:
+        return {"percent": None, "raw": None}
+    if claimed_ceiling(text)["value"] is not None:
+        return {"percent": None, "raw": None}
+    if claimed_target(text)["value"] is not None:
+        return {"percent": None, "raw": None}
+    m = _CLAIM_PCT.search(text)
+    if not m:
+        return {"percent": None, "raw": None}
+    return {"percent": int(m.group(1)), "raw": m.group(0).strip()}
+
+
 def claimed_magnitude(prediction: str) -> dict:
     """Parse claimed delta amount + optional population from the prediction text.
 
@@ -251,7 +288,8 @@ def claimed_magnitude(prediction: str) -> dict:
       population  int | None  — denominator when written as N/P
       raw         str | None  — matched substring for the receipt
     Sign is applied later from intent (rise → +, fall → −, flat → 0).
-    Stay-at / floor / ceiling / target are NOT deltas — their parsers own those.
+    Stay-at / floor / ceiling / target / percent are NOT absolute deltas —
+    their parsers own those. Percent must not fall through to amount=N.
     """
     text = prediction or ""
     if claimed_level(text)["value"] is not None:
@@ -261,6 +299,9 @@ def claimed_magnitude(prediction: str) -> dict:
     if claimed_ceiling(text)["value"] is not None:
         return {"amount": None, "population": None, "raw": None}
     if claimed_target(text)["value"] is not None:
+        return {"amount": None, "population": None, "raw": None}
+    # Percent owns `by 20%` — never absolute 20 (Slice 36).
+    if claimed_percent(text)["percent"] is not None:
         return {"amount": None, "population": None, "raw": None}
     m = _CLAIM_FRAC.search(text)
     if m:
@@ -292,6 +333,20 @@ def expected_delta_from_claim(intent: str, claim: dict) -> int | None:
     return None
 
 
+def expected_delta_from_percent(intent: str, percent: int | None, population: int | None) -> int | None:
+    """Signed expected Δ from percent-of-population. None if pop or pct missing."""
+    if percent is None or population is None or population <= 0:
+        return None
+    amount = int(round(int(population) * int(percent) / 100.0))
+    if intent == "rise":
+        return amount
+    if intent == "fall":
+        return -amount
+    if intent == "flat":
+        return 0
+    return None
+
+
 def _bound_fields(prediction: str) -> dict:
     """Shared claimed_* bundle for naive + magnet checks."""
     return {
@@ -300,6 +355,7 @@ def _bound_fields(prediction: str) -> dict:
         "claimed_floor": claimed_floor(prediction),
         "claimed_ceiling": claimed_ceiling(prediction),
         "claimed_target": claimed_target(prediction),
+        "claimed_percent": claimed_percent(prediction),
     }
 
 
@@ -395,6 +451,7 @@ def check_prediction(
     floor = bounds["claimed_floor"]
     ceiling = bounds["claimed_ceiling"]
     target = bounds["claimed_target"]
+    percent = bounds["claimed_percent"]
 
     if label == "baseline":
         return {
@@ -472,6 +529,61 @@ def check_prediction(
             "grade": "ceiling",
             **bounds,
             "ceiling_ok": ceiling_ok,
+            "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
+        }
+
+    # Percent-of-pop (Slice 36): expected Δ = round(pop · pct / 100).
+    # Never treat `20%` as absolute 20 — that invented held on Δ=+20 / pop 5.
+    if percent.get("percent") is not None:
+        expected = {"rise": "helped", "fall": "hurt", "flat": "unchanged"}[intent]
+        direction_ok = label == expected
+        expected_delta = expected_delta_from_percent(
+            intent, percent.get("percent"), population
+        )
+        if expected_delta is None:
+            # No population → cannot convert % to Δ; refuse absolute invent.
+            return {
+                "outcome": "prediction-missed" if not direction_ok else "no-direction",
+                "intent": intent,
+                "verdict": label,
+                "delta": delta,
+                "population": population,
+                "latest_value": latest_value,
+                "expected": expected,
+                "expected_delta": None,
+                "grade": "percent",
+                **bounds,
+                "note": (
+                    f"{'prediction-missed' if not direction_ok else 'no-direction'}: "
+                    f"intent={intent} percent={percent['percent']}% needs population "
+                    "to grade — will not invent absolute points"
+                ),
+            }
+        magnitude_ok = delta is not None and int(delta) == int(expected_delta)
+        held = direction_ok and magnitude_ok
+        outcome = "prediction-held" if held else "prediction-missed"
+        if not direction_ok:
+            why = f"direction expected={expected} got={label}"
+        elif not magnitude_ok:
+            why = (
+                f"percent {percent['percent']}% of pop {population} → "
+                f"claimed Δ {expected_delta:+d} got Δ "
+                f"{delta if delta is not None else '—'}"
+            )
+        else:
+            why = f"direction+percent ({percent['percent']}% of {population})"
+        return {
+            "outcome": outcome,
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "latest_value": latest_value,
+            "expected": expected,
+            "expected_delta": expected_delta,
+            "grade": "direction+percent",
+            **bounds,
+            "magnitude_ok": magnitude_ok,
             "note": f"{outcome}: intent={intent} {why} — correlation, not attribution",
         }
 
@@ -694,6 +806,14 @@ def render_prediction_check(check: dict) -> str:
         lines.append(
             f"  claimed target {tg_txt}  "
             f"latest={check.get('latest_value')}/{check.get('population')}"
+        )
+    pct = check.get("claimed_percent") or {}
+    if pct.get("percent") is not None:
+        lines.append(
+            f"  claimed %   {pct['percent']}%  "
+            f"expected_delta={check.get('expected_delta') if check.get('expected_delta') is not None else '—'}  "
+            f"measured_delta={check.get('delta') if check.get('delta') is not None else '—'}  "
+            f"pop={check.get('population')}"
         )
     lines.append(f"  note       {check['note']}")
     return "\n".join(lines)
