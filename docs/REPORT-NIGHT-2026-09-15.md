@@ -1,6 +1,6 @@
 # Night report · 2026-09-15 · Slice 35
 
-**branch:** `cursor/negation-ceiling-target-94f8` · **tip:** re-derive with `git rev-parse HEAD`
+**branch:** `cursor/negation-ceiling-target-94f8` · **tip:** `7495fbadb9d8e5e333007dbc9b701da8ad36033b` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
