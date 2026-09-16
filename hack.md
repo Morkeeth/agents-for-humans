@@ -91,18 +91,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 42 — Percent-better/worse + gains/jumps/boosts.**
-
-Done when:
-1. `claimed_percent("50% better")` → 50; intent=rise; true 50% of pop5 (Δ=+2 or +3) held; absolute-lie missed
-2. `50% worse` → fall + percent
-3. `gains 20%` / `jumps 20%` / `boosts by 20%` → rise + percent (not no-direction)
-4. `magnet pred-demo` FINDING · pytest green · check-docs PASS
+**Slice 42 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-16 · Slice 42 SHIP · 50% better/worse · gains/jumps/boosts rise+pct · pred-demo 67/67 embarrassed 26 · `python3 -m pytest -q` → 328 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `62897ca72bae262eda5917f37e728aba68b6377a`
 - 2026-09-16 · Slice 42 START · ran objects: `50% better`/`50% worse`/`gains 20%`/`jumps 20%` → pct=None intent=unknown (no-direction). `boosts by 20%`/`gains by 20%` → pct=20 but intent=unknown → no-direction even on true 20%. Building better/worse percent + gains/jumps/boosts rise.
 - 2026-09-16 · Slice 41 SHIP · zero/perfect targets · quadrupples/N-times/Nfold · pred-demo 61/61 embarrassed 23 · `python3 -m pytest -q` → 323 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `087a110a42883c94e655cb9f038f58fc588fa2e2` · tip `a68a770`
 - 2026-09-16 · Slice 41 START · ran objects: `falls to zero` → target=None, latest=1 hurt → prediction-held (direction invents held off-zero; `falls to 0` correctly misses). `goes to zero`/`goes to 0` → no-direction. `perfect 5/5` unbound. `quadruples`/`5 times`/`fivefold` unknown while `4x` grades. Building zero/perfect targets + quadrupples/N-times.
