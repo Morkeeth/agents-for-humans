@@ -95,7 +95,7 @@ No number without the command that produced it, the population it is out of, and
 
 ## LOG
 
-- 2026-09-16 · Slice 40 SHIP · word-percent (`20 percent`/`pct`) ≠ absolute · never/cannot/won't-decrease → flat · pred-demo 52/52 embarrassed 20 · `python3 -m pytest -q` → 316 passed, 1 skipped · check-docs 16 PASS · tip pending push
+- 2026-09-16 · Slice 40 SHIP · word-percent (`20 percent`/`pct`) ≠ absolute · never/cannot/won't-decrease → flat · pred-demo 52/52 embarrassed 20 · `python3 -m pytest -q` → 316 passed, 1 skipped · check-docs 16 PASS · `git push origin cursor/percent-word-negation-ce9a` → `3df2052c23c952b6f8e97dd6aa14d9ba9041670c`
 - 2026-09-16 · Slice 40 START · ran objects: `improves by 20 percent` → pct=None mag=amount=20; Δ=+1/pop5 → missed, Δ=+20 → held — invents that the word "percent" means absolute points (Slice 36 lie with `%` still open for the word form). `never falls`/`cannot fall`/`won't decrease` → intent=fall; hurt → prediction-held — invents that negation means fall (Slice 35 gap). Building word-percent + never/cannot/decrease negation.
 - 2026-09-15 · Slice 39 SHIP · rises 20% parses · triples/3x/2x prior · pred-demo 46/46 embarrassed 19 · `python3 -m pytest -q` → 309 passed · check-docs 16 PASS · `git push origin main` → `e215347bc645177ccc32553e63e939b068689bc8`
 - 2026-09-15 · Slice 39 START · ran object: `rises 20%` → percent=None, direction-only held on Δ=+1 and Δ=+20 alike. `triples`/`3x`/`2x` unknown. Building percent-syntax + Nx ratio.

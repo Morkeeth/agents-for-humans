@@ -1,6 +1,6 @@
 # Night report · 2026-09-16 · Slice 40
 
-**branch:** `cursor/percent-word-negation-ce9a`
+**branch:** `cursor/percent-word-negation-ce9a` · `3df2052c23c952b6f8e97dd6aa14d9ba9041670c` (re-derive: `git rev-parse origin/cursor/percent-word-negation-ce9a`)
 
 ## SHIPPED
 
