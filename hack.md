@@ -90,18 +90,13 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 41 — Zero/perfect target words + quadrupples/N-times ratio.**
-
-Done when:
-1. `falls to zero` / `goes to zero` / `goes to 0` → target 0; latest=1 → prediction-missed (not direction-held)
-2. `perfect 5/5` → target 5/5; latest≠5 → missed
-3. `quadruples` / `5 times` / `fivefold` grade prior like `4x`
-4. `magnet pred-demo` FINDING · pytest green · check-docs PASS
+**Slice 41 done.** Next: further honesty arms (`50% better` / `gains 20%`) or Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
+- 2026-09-16 · Slice 41 SHIP · zero/perfect targets · quadrupples/N-times/Nfold · pred-demo 61/61 embarrassed 23 · `python3 -m pytest -q` → 323 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `087a110a42883c94e655cb9f038f58fc588fa2e2`
 - 2026-09-16 · Slice 41 START · ran objects: `falls to zero` → target=None, latest=1 hurt → prediction-held (direction invents held off-zero; `falls to 0` correctly misses). `goes to zero`/`goes to 0` → no-direction. `perfect 5/5` unbound. `quadruples`/`5 times`/`fivefold` unknown while `4x` grades. Building zero/perfect targets + quadrupples/N-times.
 - 2026-09-16 · Slice 40 SHIP · word-percent (`20 percent`/`pct`) ≠ absolute · never/cannot/won't-decrease → flat · pred-demo 52/52 embarrassed 20 · `python3 -m pytest -q` → 316 passed, 1 skipped · check-docs 16 PASS · `git push origin cursor/percent-word-negation-ce9a` → `3df2052c23c952b6f8e97dd6aa14d9ba9041670c` · main tip `692cb5b`
 - 2026-09-16 · Slice 40 START · ran objects: `improves by 20 percent` → pct=None mag=amount=20; Δ=+1/pop5 → missed, Δ=+20 → held — invents that the word "percent" means absolute points (Slice 36 lie with `%` still open for the word form). `never falls`/`cannot fall`/`won't decrease` → intent=fall; hurt → prediction-held — invents that negation means fall (Slice 35 gap). Building word-percent + never/cannot/decrease negation.
