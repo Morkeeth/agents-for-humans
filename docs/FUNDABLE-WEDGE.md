@@ -50,6 +50,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Below-bound floor honesty** | `won't fall below 3/5` opens floor; unchanged@latest=2 no longer invents held | `magnet pred-demo` |
 | **Percent syntax + triples** | `rises 20%` parses without `by`; triples/3x grade prior | `magnet pred-demo` |
 | **Word-percent + never/cannot** | `20 percent` ≠ absolute 20; `never falls`/`won't decrease` → flat (not fall) | `magnet pred-demo` |
+| **Zero/perfect + quadrupples** | `falls to zero` grades latest; `perfect N/N` target; quadrupples/`N times` prior | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

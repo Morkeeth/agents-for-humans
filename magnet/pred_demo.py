@@ -568,6 +568,96 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="cannot fall → flat",
     ),
+    PredScenario(
+        "falls_to_zero_holds",
+        "falls to zero",
+        "hurt",
+        -3,
+        5,
+        "prediction-held",
+        latest_value=0,
+        note="Slice 41: zero ≡ 0 target",
+    ),
+    PredScenario(
+        "falls_to_zero_missed",
+        "falls to zero",
+        "hurt",
+        -2,
+        5,
+        "prediction-missed",
+        latest_value=1,
+        note="THE LIE: zero unbound → direction invented held at latest=1",
+    ),
+    PredScenario(
+        "goes_to_zero_holds",
+        "goes to zero",
+        "hurt",
+        -4,
+        5,
+        "prediction-held",
+        latest_value=0,
+        note="goes to opens target; flat intent grades latest only",
+    ),
+    PredScenario(
+        "perfect_holds",
+        "perfect 5/5",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="perfect N/N is a target",
+    ),
+    PredScenario(
+        "perfect_missed",
+        "perfect 5/5",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="perfect unbound was no-direction; now misses wrong latest",
+    ),
+    PredScenario(
+        "quadruples_holds",
+        "pass rate quadruples",
+        "helped",
+        6,
+        10,
+        "prediction-held",
+        latest_value=8,
+        note="prior=2 → quadruples to 8",
+    ),
+    PredScenario(
+        "quadruples_missed",
+        "pass rate quadruples",
+        "helped",
+        1,
+        10,
+        "prediction-missed",
+        latest_value=4,
+        note="not a quadruple; direction invents held",
+    ),
+    PredScenario(
+        "five_times_holds",
+        "five times",
+        "helped",
+        4,
+        10,
+        "prediction-held",
+        latest_value=5,
+        note="prior=1 → five times = 5",
+    ),
+    PredScenario(
+        "five_times_missed",
+        "five times",
+        "helped",
+        1,
+        10,
+        "prediction-missed",
+        latest_value=3,
+        note="N times was unbound; direction invents held",
+    ),
 )
 
 
@@ -587,6 +677,8 @@ def run_pred_demo() -> str:
         "  Percent works without `by` (`rises 20%`); triples/3x grade prior (Slice 39).",
         "  Word form `20 percent` / `20 pct` is percent-of-pop — never absolute (Slice 40).",
         "  never falls / cannot fall / won't decrease are flat — NOT fall (Slice 40).",
+        "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
+        "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
         "  recover/restore/regain/rebound are rise (Slice 32 — Devpost one-workflow grades).",
         "  Naive grades direction only — invents held when the claim is wrong.",
@@ -690,11 +782,13 @@ def run_pred_demo() -> str:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
             "claimed fraction, bound (incl. below-bound floors), percent "
-            "(incl. word form `20 percent`), or doubles/halves/triples ratio "
-            "is wrong; magnet misses. Open the measured Δ / latest / prior. "
-            "`won't fall below N` opens the floor — never invent held beneath "
-            "the named bound (Slice 38). `never falls` / `won't decrease` are "
-            "flat — never invent held on a drop (Slice 40)."
+            "(incl. word form `20 percent`), or doubles/halves/triples/"
+            "quadruples/N-times ratio is wrong; magnet misses. Open the "
+            "measured Δ / latest / prior. `won't fall below N` opens the "
+            "floor — never invent held beneath the named bound (Slice 38). "
+            "`never falls` / `won't decrease` are flat — never invent held "
+            "on a drop (Slice 40). `falls to zero` grades latest=0 — never "
+            "invent held off-zero (Slice 41)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -723,5 +817,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'pass rate triples' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'improves by 20 percent' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'never falls' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'falls to zero' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'perfect 5/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'pass rate quadruples' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

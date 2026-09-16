@@ -50,7 +50,7 @@ _RISE = re.compile(
     r"ris(?:e|es|ing)|up|improv(?:e|es|ed|ing|ement)?|increas(?:e|es|ed|ing)?|"
     r"higher|helped|gain|\+\s*\d|coverage rises|"
     r"climb(?:s|ed|ing)?|"
-    r"doubles?|twice|triples?|tenfold|"
+    r"doubles?|twice|triples?|quadruples?|tenfold|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
     r"rebound(?:s|ed|ing)?"
     r")\b",
@@ -157,15 +157,18 @@ _CEILING = re.compile(
 # Target-level: "falls to 2/5", "reaches 5/5", "hits 5", "ends at 4/5",
 # "lands at 4/5", "returns to 4/5", "climbs to 5/5", "improves to 4/5",
 # "exactly 4/5", "must be exactly 4/5", "lands at exactly 4/5".
+# Slice 41: "falls to zero" / "goes to zero" / "goes to 0" / "perfect 5/5".
 # Direction alone is not the object — latest must match the named level.
+# THE LIE: "falls to zero" left target=None → hurt@latest=1 invented held.
 _TARGET = re.compile(
     r"(?:"
-    r"(?:falls?|drops?|rises?|climbs?|improves?)\s+to|"
+    r"(?:falls?|drops?|rises?|climbs?|improves?|goes?)\s+to|"
     r"reaches?|hits?|"
     r"(?:ends?|lands?|settles?)\s+at|"
     r"returns?\s+to|back\s+to|"
-    r"(?:must\s+be\s+)?exactly"
-    r")\s+(?:exactly\s+)?(\d+)(?:\s*/\s*(\d+))?",
+    r"(?:must\s+be\s+)?exactly|"
+    r"perfect|full|max(?:imum)?"
+    r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
     re.I,
 )
 
@@ -190,13 +193,30 @@ _CLAIM_PCT = re.compile(
     re.I,
 )
 
-# Ratio claim vs prior: doubles / halves / triples / Nx. Prior = latest − Δ.
+# Ratio claim vs prior: doubles / halves / triples / quadrupples / Nx / N times.
+_WORD_FACTORS = {
+    "once": 1,
+    "one": 1,
+    "two": 2,
+    "twice": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
 _RATIO = re.compile(
     r"\b(?:"
-    r"doubles?|twice(?:\s+as\s+many)?|"
+    r"doubles?|twice(?:\s+as\s+(?:many|high|good|much))?|"
     r"triples?|"
+    r"quadruples?|"
     r"halves?|cuts?\s+in\s+half|"
     r"(\d+)\s*x|"
+    r"(?:(\d+)|once|one|two|three|four|five|six|seven|eight|nine|ten)\s+times|"
+    r"(?:(\d+)|two|three|four|five|six|seven|eight|nine|ten)fold|"
     r"tenfold"
     r")\b",
     re.I,
@@ -336,6 +356,9 @@ def claimed_target(prediction: str) -> dict:
 
     Stay-at owns `stay at N`. Floor/ceiling own their phrases. Target is the
     directed end-state — direction alone invents held when latest ≠ target.
+
+    Slice 41: `zero` ≡ 0; `goes to` / `perfect` / `full` / `max` open targets.
+    THE LIE: `falls to zero` left target=None so hurt@latest=1 invented held.
     """
     text = prediction or ""
     if claimed_level(text)["value"] is not None:
@@ -347,37 +370,75 @@ def claimed_target(prediction: str) -> dict:
     m = _TARGET.search(text)
     if not m:
         return {"value": None, "population": None, "raw": None}
+    raw = m.group(0).strip()
+    if re.search(r"\bzero\b", raw, re.I):
+        value = 0
+    elif m.group(1) is not None:
+        value = int(m.group(1))
+    else:
+        return {"value": None, "population": None, "raw": None}
     pop = m.group(2)
     return {
-        "value": int(m.group(1)),
+        "value": value,
         "population": int(pop) if pop is not None else None,
-        "raw": m.group(0).strip(),
+        "raw": raw,
     }
 
 
 def claimed_ratio(prediction: str) -> dict:
-    """Parse doubles/halves/triples/Nx claim. Grades against prior = latest − Δ.
+    """Parse doubles/halves/triples/quadruples/Nx/N-times claim vs prior.
 
+    Grades against prior = latest − Δ.
     Slice 37: direction-only invents held on any rise when the claim said doubles.
     Slice 39: triples / 3x / 2x / tenfold.
+    Slice 41: quadrupples / `5 times` / `fivefold` (digit `4x` already worked).
     """
     text = prediction or ""
     m = _RATIO.search(text)
     if not m:
         return {"kind": None, "factor": None, "raw": None}
     raw = m.group(0).strip()
-    low = raw.lower().replace(" ", "")
-    if "half" in low or "halves" in low:
+    low = raw.lower()
+    compact = low.replace(" ", "")
+    if "half" in compact or "halves" in compact:
         return {"kind": "half", "factor": 0.5, "raw": raw}
-    if "triple" in low:
+    if "quadruple" in compact:
+        return {"kind": "quadruple", "factor": 4, "raw": raw}
+    if "triple" in compact:
         return {"kind": "triple", "factor": 3, "raw": raw}
-    if "tenfold" in low:
+    if compact == "tenfold":
         return {"kind": "tenfold", "factor": 10, "raw": raw}
+    # Nx digit group
     if m.group(1) is not None:
         factor = int(m.group(1))
         kind = "double" if factor == 2 else ("triple" if factor == 3 else f"{factor}x")
         return {"kind": kind, "factor": factor, "raw": raw}
-    return {"kind": "double", "factor": 2, "raw": raw}
+    # N times / word times
+    if m.group(2) is not None:
+        factor = int(m.group(2))
+    elif "times" in low:
+        word = low.split("times")[0].strip()
+        factor = _WORD_FACTORS.get(word)
+        if factor is None:
+            return {"kind": None, "factor": None, "raw": None}
+    # Nfold / wordfold
+    elif m.group(3) is not None:
+        factor = int(m.group(3))
+    elif "fold" in compact:
+        word = compact.replace("fold", "")
+        factor = _WORD_FACTORS.get(word)
+        if factor is None:
+            return {"kind": None, "factor": None, "raw": None}
+    elif "twice" in compact or compact.startswith("double"):
+        return {"kind": "double", "factor": 2, "raw": raw}
+    else:
+        return {"kind": "double", "factor": 2, "raw": raw}
+    kind = (
+        "double"
+        if factor == 2
+        else ("triple" if factor == 3 else ("quadruple" if factor == 4 else f"{factor}x"))
+    )
+    return {"kind": kind, "factor": factor, "raw": raw}
 
 
 def claimed_percent(prediction: str) -> dict:
