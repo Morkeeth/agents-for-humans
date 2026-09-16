@@ -51,6 +51,7 @@ Developers on agentic stacks (Cursor, Claude Code, Strands) adopt prompts, model
 | **Percent syntax + triples** | `rises 20%` parses without `by`; triples/3x grade prior | `magnet pred-demo` |
 | **Word-percent + never/cannot** | `20 percent` ≠ absolute 20; `never falls`/`won't decrease` → flat (not fall) | `magnet pred-demo` |
 | **Zero/perfect + quadrupples** | `falls to zero` grades latest; `perfect N/N` target; quadrupples/`N times` prior | `magnet pred-demo` |
+| **Percent-better + gains** | `50% better`/`worse`; gains/jumps/boosts rise+pct (not no-direction) | `magnet pred-demo` |
 
 **Not the wedge:** skill marketplace crawl, Helicon-only dependency, fabricated metrics.
 

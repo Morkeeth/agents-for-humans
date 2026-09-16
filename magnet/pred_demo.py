@@ -658,6 +658,66 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="N times was unbound; direction invents held",
     ),
+    PredScenario(
+        "pct_better_holds",
+        "50% better",
+        "helped",
+        2,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 42: 50% better ≡ 50% of pop (Δ=+2 on pop 5)",
+    ),
+    PredScenario(
+        "pct_better_missed",
+        "50% better",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="THE LIE risk: unbound better left no-direction; direction invents held on absolute Δ",
+    ),
+    PredScenario(
+        "pct_worse_holds",
+        "50% worse",
+        "hurt",
+        -2,
+        5,
+        "prediction-held",
+        latest_value=1,
+        note="50% worse → fall + percent",
+    ),
+    PredScenario(
+        "gains_pct_holds",
+        "gains 20%",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="gains/jumps/boosts were unknown even when % parsed",
+    ),
+    PredScenario(
+        "gains_pct_missed",
+        "gains 20%",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="direction invents held on absolute-sized gain",
+    ),
+    PredScenario(
+        "boosts_by_pct_missed",
+        "boosts by 20%",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="pct parsed but intent unknown → no-direction; now rise+percent misses abs",
+    ),
 )
 
 
@@ -782,13 +842,15 @@ def run_pred_demo() -> str:
         lines.append(
             "  FINDING  naive direction-only invents prediction-held when the "
             "claimed fraction, bound (incl. below-bound floors), percent "
-            "(incl. word form `20 percent`), or doubles/halves/triples/"
-            "quadruples/N-times ratio is wrong; magnet misses. Open the "
-            "measured Δ / latest / prior. `won't fall below N` opens the "
-            "floor — never invent held beneath the named bound (Slice 38). "
-            "`never falls` / `won't decrease` are flat — never invent held "
-            "on a drop (Slice 40). `falls to zero` grades latest=0 — never "
-            "invent held off-zero (Slice 41)."
+            "(incl. word form `20 percent` and `50% better`), or "
+            "doubles/halves/triples/quadruples/N-times ratio is wrong; "
+            "magnet misses. Open the measured Δ / latest / prior. "
+            "`won't fall below N` opens the floor — never invent held beneath "
+            "the named bound (Slice 38). `never falls` / `won't decrease` are "
+            "flat — never invent held on a drop (Slice 40). `falls to zero` "
+            "grades latest=0 — never invent held off-zero (Slice 41). "
+            "`gains 20%` / `boosts by 20%` are rise+percent — not no-direction "
+            "(Slice 42)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -820,5 +882,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'falls to zero' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'perfect 5/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'pass rate quadruples' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '50% better' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'gains 20%' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

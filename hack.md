@@ -87,16 +87,24 @@ No number without the command that produced it, the population it is out of, and
 | 39 | Percent syntax + triples/Nx ratio | `rises 20%` parses pct · triples/3x/2x grade prior · pred-demo FINDING · pytest green |
 | 40 | Word-percent + never/cannot negation | `20 percent` ≠ absolute 20 · `never falls`/`won't decrease` → flat · pred-demo FINDING · pytest green |
 | 41 | Zero/perfect targets + quadrupples/N-times | `falls to zero` grades latest=0 · `perfect 5/5` target · quadrupples/`N times` prior · pred-demo FINDING · pytest green |
+| 42 | Percent-better/worse + gains/jumps/boosts | `50% better`/`worse` parse · gains/jumps/boosts rise+pct · pred-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 41 done.** Next: further honesty arms (`50% better` / `gains 20%`) or Oscar gates (film · Devpost paste · submit).
+**Slice 42 — Percent-better/worse + gains/jumps/boosts.**
+
+Done when:
+1. `claimed_percent("50% better")` → 50; intent=rise; true 50% of pop5 (Δ=+2 or +3) held; absolute-lie missed
+2. `50% worse` → fall + percent
+3. `gains 20%` / `jumps 20%` / `boosts by 20%` → rise + percent (not no-direction)
+4. `magnet pred-demo` FINDING · pytest green · check-docs PASS
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
 
-- 2026-09-16 · Slice 41 SHIP · zero/perfect targets · quadrupples/N-times/Nfold · pred-demo 61/61 embarrassed 23 · `python3 -m pytest -q` → 323 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `087a110a42883c94e655cb9f038f58fc588fa2e2`
+- 2026-09-16 · Slice 42 START · ran objects: `50% better`/`50% worse`/`gains 20%`/`jumps 20%` → pct=None intent=unknown (no-direction). `boosts by 20%`/`gains by 20%` → pct=20 but intent=unknown → no-direction even on true 20%. Building better/worse percent + gains/jumps/boosts rise.
+- 2026-09-16 · Slice 41 SHIP · zero/perfect targets · quadrupples/N-times/Nfold · pred-demo 61/61 embarrassed 23 · `python3 -m pytest -q` → 323 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `087a110a42883c94e655cb9f038f58fc588fa2e2` · tip `a68a770`
 - 2026-09-16 · Slice 41 START · ran objects: `falls to zero` → target=None, latest=1 hurt → prediction-held (direction invents held off-zero; `falls to 0` correctly misses). `goes to zero`/`goes to 0` → no-direction. `perfect 5/5` unbound. `quadruples`/`5 times`/`fivefold` unknown while `4x` grades. Building zero/perfect targets + quadrupples/N-times.
 - 2026-09-16 · Slice 40 SHIP · word-percent (`20 percent`/`pct`) ≠ absolute · never/cannot/won't-decrease → flat · pred-demo 52/52 embarrassed 20 · `python3 -m pytest -q` → 316 passed, 1 skipped · check-docs 16 PASS · `git push origin cursor/percent-word-negation-ce9a` → `3df2052c23c952b6f8e97dd6aa14d9ba9041670c` · main tip `692cb5b`
 - 2026-09-16 · Slice 40 START · ran objects: `improves by 20 percent` → pct=None mag=amount=20; Δ=+1/pop5 → missed, Δ=+20 → held — invents that the word "percent" means absolute points (Slice 36 lie with `%` still open for the word form). `never falls`/`cannot fall`/`won't decrease` → intent=fall; hurt → prediction-held — invents that negation means fall (Slice 35 gap). Building word-percent + never/cannot/decrease negation.

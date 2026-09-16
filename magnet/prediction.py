@@ -48,11 +48,12 @@ from magnet.reporter import Verdict
 _RISE = re.compile(
     r"\b("
     r"ris(?:e|es|ing)|up|improv(?:e|es|ed|ing|ement)?|increas(?:e|es|ed|ing)?|"
-    r"higher|helped|gain|\+\s*\d|coverage rises|"
+    r"higher|helped|gain|gains|jump|jumps|boost|boosts|\+\s*\d|coverage rises|"
     r"climb(?:s|ed|ing)?|"
     r"doubles?|twice|triples?|quadruples?|tenfold|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
-    r"rebound(?:s|ed|ing)?"
+    r"rebound(?:s|ed|ing)?|"
+    r"better"
     r")\b",
     re.I,
 )
@@ -60,7 +61,7 @@ _FALL = re.compile(
     r"\b(fall|falls|falling|drop|drops|dropping|hurt|decreas(?:e|es|ed|ing)?|"
     r"declin(?:e|es|ed|ing)?|worsen(?:s|ed|ing)?|slip(?:s|ped|ping)?|"
     r"halves?|half|"
-    r"lower|down|regress|"
+    r"lower|down|regress|worse|"
     r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
     re.I,
 )
@@ -186,9 +187,11 @@ _CLAIM_PCT = re.compile(
     rf"(?:"
     rf"(?:by\s*|[+\-]\s*)(\d+)\s*{_PCT_UNIT}"  # by 20% / +20 percent
     rf"|"
-    rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
+    rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|"
+    rf"gains?|jumps?|boosts?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
     rf"|"
-    rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|gain|loss)"
+    rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|"
+    rf"gain|loss|better|worse)"
     rf")",
     re.I,
 )

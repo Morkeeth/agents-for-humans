@@ -81,12 +81,18 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   quadruples_missed        quadruple               +1   10   4      prediction-missed   prediction-held
   five_times_holds         5x                      +4   10   5      prediction-held     prediction-held
   five_times_missed        5x                      +1   10   3      prediction-missed   prediction-held
+  pct_better_holds         50%                     +2   5    4      prediction-held     prediction-held
+  pct_better_missed        50%                     +20  5    5      prediction-missed   prediction-held
+  pct_worse_holds          50%                     -2   5    1      prediction-held     prediction-held
+  gains_pct_holds          20%                     +1   5    4      prediction-held     prediction-held
+  gains_pct_missed         20%                     +20  5    5      prediction-missed   prediction-held
+  boosts_by_pct_missed     20%                     +20  5    5      prediction-missed   prediction-held
 
-  magnet       61/61  (bounds + percent + ratio when claimed)
-  naive        36/61  (direction only — pre-Slice-25 behaviour)
-  embarrassed  23 scenario(s) where naive invents held on wrong claim
+  magnet       67/67  (bounds + percent + ratio when claimed)
+  naive        39/67  (direction only — pre-Slice-25 behaviour)
+  embarrassed  26 scenario(s) where naive invents held on wrong claim
 
-  FINDING  naive direction-only invents prediction-held when the claimed fraction, bound (incl. below-bound floors), percent (incl. word form `20 percent`), or doubles/halves/triples/quadruples/N-times ratio is wrong; magnet misses. Open the measured Δ / latest / prior. `won't fall below N` opens the floor — never invent held beneath the named bound (Slice 38). `never falls` / `won't decrease` are flat — never invent held on a drop (Slice 40). `falls to zero` grades latest=0 — never invent held off-zero (Slice 41).
+  FINDING  naive direction-only invents prediction-held when the claimed fraction, bound (incl. below-bound floors), percent (incl. word form `20 percent` and `50% better`), or doubles/halves/triples/quadruples/N-times ratio is wrong; magnet misses. Open the measured Δ / latest / prior. `won't fall below N` opens the floor — never invent held beneath the named bound (Slice 38). `never falls` / `won't decrease` are flat — never invent held on a drop (Slice 40). `falls to zero` grades latest=0 — never invent held off-zero (Slice 41). `gains 20%` / `boosts by 20%` are rise+percent — not no-direction (Slice 42).
 
   repro      magnet pred-demo
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
@@ -107,3 +113,5 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   repro      magnet adopt skill x 'falls to zero' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'perfect 5/5' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'pass rate quadruples' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '50% better' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'gains 20%' --probe demo-pass-rate --reset
