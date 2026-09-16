@@ -1,6 +1,6 @@
 # Night report · 2026-09-16 · MAGNET honesty stack
 
-**main tip:** re-derive with `git rev-parse origin/main`
+**main tip:** `49094a7fc04207ab5b9555f991ce295fc73c88c5` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
