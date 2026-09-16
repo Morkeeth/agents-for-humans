@@ -30,9 +30,12 @@ not drop` are flat, NOT fall. Found by running the object: magnet graded
 claims (`at most 3/5`, dual of floor). Target-level (`falls to 2/5`,
 `reaches 5/5`) grades latest — direction alone is not the object.
 
-Slice 36: percent-of-pop — `improves by 20%` must NOT parse as absolute
-20 (the `%` was stripped and inventing held on Δ=+20 / pop 5). Grades
-expected Δ = round(pop · pct / 100). `exactly 4/5` is a target level.
+Slice 39: percent without `by` (`rises 20%`) and triples/Nx ratio vs prior.
+
+Slice 40: word form `20 percent` / `per cent` / `pct` is percent-of-pop —
+never absolute points (the `%` fix left the word form inventing held on
+Δ=+20). `never falls` / `cannot fall` / `won't decrease` are flat — the
+Slice 35 negation list missed never/cannot and the verb decrease.
 """
 from __future__ import annotations
 
@@ -63,19 +66,30 @@ _FALL = re.compile(
 )
 # Negated fall/rise MUST win before _FALL/_RISE. THE LIE Slice 35 fixed:
 # "won't fall" was fall → invents held when the score drops.
+# Slice 40: "never falls" / "cannot fall" / "won't decrease" were still fall —
+# inventing held on hurt. never/cannot/can't + decrease/worsen close the gap.
+_FALL_VERBS = (
+    r"fall|falls|falling|drop|drops|dropping|regress|regresses|regressing|"
+    r"decline|declines|declining|worsen|worsens|worsening|"
+    r"slip|slips|slipping|hurt|hurts|decrease|decreases|decreasing"
+)
 _NEGATED_MOVE = re.compile(
-    r"(?:"
-    r"won'?t\s+(?:fall|drop|regress|decline|worsen|slip|hurt)|"
-    r"will\s+not\s+(?:fall|drop|regress|decline|worsen|slip|hurt)|"
-    r"(?:must|should|does|do|did)\s+not\s+(?:fall|drop|regress|decline|worsen|slip|hurt)|"
-    r"doesn'?t\s+(?:fall|drop|regress|decline|worsen|slip|hurt)|"
-    r"don'?t\s+(?:fall|drop|regress|decline|worsen|slip|hurt)|"
-    r"no\s+regression|"
-    r"without\s+(?:falling|dropping|regressing)|"
-    r"must\s+NOT\s+rise|not\s+rise|"
-    r"won'?t\s+rise|will\s+not\s+rise|"
-    r"(?:must|should|does|do)\s+not\s+rise"
-    r")",
+    rf"(?:"
+    rf"won'?t\s+(?:{_FALL_VERBS})|"
+    rf"will\s+not\s+(?:{_FALL_VERBS})|"
+    rf"(?:must|should|does|do|did)\s+not\s+(?:{_FALL_VERBS})|"
+    rf"doesn'?t\s+(?:{_FALL_VERBS})|"
+    rf"don'?t\s+(?:{_FALL_VERBS})|"
+    rf"never\s+(?:{_FALL_VERBS})|"
+    rf"cannot\s+(?:{_FALL_VERBS})|"
+    rf"can'?t\s+(?:{_FALL_VERBS})|"
+    rf"no\s+regression|"
+    rf"no\s+decrease|"
+    rf"without\s+(?:falling|dropping|regressing|decreasing|worsening|slipping)|"
+    rf"must\s+NOT\s+rise|not\s+rise|"
+    rf"won'?t\s+rise|will\s+not\s+rise|"
+    rf"(?:must|should|does|do)\s+not\s+rise"
+    rf")",
     re.I,
 )
 _FLAT = re.compile(
@@ -155,17 +169,24 @@ _TARGET = re.compile(
     re.I,
 )
 
+# Percent unit: `%` or the words percent / per cent / pct.
+# Slice 40: "improves by 20 percent" was absolute amount=20 — THE LIE.
+# Note: do NOT put \b after `%` — `%` is non-word, so `\b` after it never
+# matches before space/end (two non-word chars). Word forms keep \b.
+_PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
+
 # Percent claim: "improves by 20%", "rises by 50%", "+10%".
 # Slice 39: also "rises 20%", "improves 20%", "up 50%", "20% improvement"
 # (without `by` — was unbound; direction invented held on any rise).
+# Slice 40: same patterns with the word "percent" / "per cent" / "pct".
 _CLAIM_PCT = re.compile(
-    r"(?:"
-    r"(?:by\s*|[+\-]\s*)(\d+)\s*%"  # by 20% / +20%
-    r"|"
-    r"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|up|down)\s+(\d+)\s*%"
-    r"|"
-    r"(\d+)\s*%\s+(?:improvement|increase|decrease|rise|fall|drop|gain|loss)"
-    r")",
+    rf"(?:"
+    rf"(?:by\s*|[+\-]\s*)(\d+)\s*{_PCT_UNIT}"  # by 20% / +20 percent
+    rf"|"
+    rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
+    rf"|"
+    rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|gain|loss)"
+    rf")",
     re.I,
 )
 
@@ -187,14 +208,17 @@ _CLAIM_FRAC = re.compile(
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
-# Negative lookahead refuses digits that are part of a percent (`20%`).
+# Negative lookahead refuses digits that are part of a percent (`20%` / `20 percent`).
 _CLAIM_ABS = re.compile(
-    r"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
-    r"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
-    r"slips?\s+by\s+)\s*(\d+)(?!\s*/)(?!\s*%)",
+    rf"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
+    rf"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
+    rf"slips?\s+by\s+)\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
-_CLAIM_SIGNED = re.compile(r"(?<![/\d])([+\-])(\d+)(?!\s*/)(?!\s*%)", re.I)
+_CLAIM_SIGNED = re.compile(
+    rf"(?<![/\d])([+\-])(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    re.I,
+)
 
 
 def prediction_intent(prediction: str) -> str:
@@ -227,9 +251,9 @@ def prediction_intent(prediction: str) -> str:
     # treat as flat so check_prediction grades the target, not no-direction.
     if claimed_target(text)["value"] is not None:
         return "flat"
-    # Signed percent alone (`+20%`) is a rise claim (Slice 39).
+    # Signed percent alone (`+20%` / `+20 percent`) is a rise claim (Slice 39/40).
     if claimed_percent(text)["percent"] is not None and re.search(
-        r"(?<![/\d])\+\s*\d+\s*%", text
+        rf"(?<![/\d])\+\s*\d+\s*{_PCT_UNIT}", text
     ):
         return "rise"
     # Triples / Nx without rise word still checkable as rise (factor ≥ 2).
@@ -362,6 +386,8 @@ def claimed_percent(prediction: str) -> dict:
     Slice 36: stripping `%` and treating 20 as absolute Δ was the lie.
     Slice 39: `rises 20%` / `improves 20%` / `20% improvement` without `by`
     were unbound — direction invented held on any rise.
+    Slice 40: `improves by 20 percent` / `20 percent improvement` — the word
+    form was still absolute amount=20 (held on Δ=+20, missed on true 20%).
     """
     text = prediction or ""
     if claimed_level(text)["value"] is not None:
