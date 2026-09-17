@@ -1,7 +1,7 @@
 # Night report · 2026-09-17 · MAGNET honesty stack (Slices 43–47)
 
 **branch:** `cursor/negated-rise-shall-b0b0`  
-**main tip (re-derive after push):** `git rev-parse origin/main`
+**main tip:** `96a3f540940833ca71fba59f406a66d2702b1e1d` (re-derive: `git rev-parse origin/main`)
 
 ## SHIPPED
 
