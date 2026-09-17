@@ -96,14 +96,17 @@ No number without the command that produced it, the population it is out of, and
 | 47 | Crash/collapse/soar to target | `crashes to 0`/`collapses to zero` target · pred-demo · pytest green |
 | 48 | Arrow glyphs + unbound perfect score | `↑1`/`↓1` magnitude · `perfect score`→pop · pred-demo · pytest green |
 | 49 | Climbs/slips · grows/shrinks · out-of/100% | `climbs 1` mag · `5 out of 5`/`100%` targets · pred-demo · pytest green |
+| 50 | Fat arrows · word magnitudes · all green | `⬆1`/`▲1` · `by one`/`one point` · `all green` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 49 done.** Next: fat arrows `⬆1`/`▲1` · word-number magnitudes · Oscar gates (film · Devpost paste · submit).
+**Slice 50 done.** Next: Oscar gates (film · Devpost paste · submit). Parser surface for tonight closed on glyph/word/perfect families found by running objects.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-17 · Slice 50 SHIP · fat arrows ⬆⬇▲▼⇈⇊ · word magnitudes by one/one point/up one · all green/passing · pred-demo 123/123 embarrassed 56 · `pytest -q` → 405 passed, 1 skipped · check-docs 16 PASS · docs 398→406 · cold clone `/tmp/magnet-cold-s50` · branch `cursor/arrow-perfect-score-aead`
+- 2026-09-17 · Slice 50 START · ran objects: `⬆1`/`⬇1`/`▲1`/`▼1` → intent=unknown amount=None. `by one`/`one point`/`rises by one`/`up one` → amount=None (word numbers unbound). `all green`/`all passing` unbound perfect-like. Building fat-arrow glyphs + word-number magnitudes.
 - 2026-09-17 · Slice 49 SHIP · climbs/slips magnitude · grows/shrinks intent · `5 out of 5`/`score of`/`full marks`/`100%`/`tops out`/`caps at` · pred-demo 113/113 embarrassed 49 · `pytest -q` → 397 passed, 1 skipped · check-docs 16 PASS · docs 386→398 · branch `cursor/arrow-perfect-score-aead`
 - 2026-09-17 · Slice 49 START · ran objects: `climbs 1`/`slips 1` → intent set amount=None → direction invents held on Δ=+20. `grows by 1`/`shrinks by 1` → amount=1 intent=unknown → no-direction. `5 out of 5`/`score of 5/5`/`full marks`/`100%` → unbound. Building climbs/slips abs + grows/shrinks intent + out-of/score-of/full-marks/100% targets.
 - 2026-09-17 · Slice 48 SHIP · `↑1`/`↓1` intent+magnitude · unbound `perfect score`→pop · pred-demo 101/101 embarrassed 40 · `pytest -q` → 385 passed, 1 skipped · check-docs 16 PASS · docs 373→386 · branch `cursor/arrow-perfect-score-aead`
