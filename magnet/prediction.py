@@ -55,6 +55,12 @@ on the table. Sign owns rise/fall intent.
 
 Slice 47: crash/collapse/soar/dive/plunge/spike `to N`; `from A to B` /
 `A → B` transitions — destination is the target. Unbound left no-direction.
+
+Slice 48: arrow glyphs `↑1` / `↓1` left intent=unknown and amount=None →
+no-direction while a claimable magnitude sat on the table (↑1/5 parsed
+amount via an old FRAC quirk but still no intent; ↓1/5 fully unbound).
+Bare `perfect score` / `perfect` / `full score` left target=None →
+no-direction; with population known, perfect means latest == pop.
 """
 from __future__ import annotations
 
@@ -283,8 +289,9 @@ _RATIO = re.compile(
 )
 
 # Claimed magnitude: "rises by 1/5", "falls by 2/7", "+1/5", "by 1/5".
+# Slice 48: `↓1/5` was unbound (FRAC only knew ↑); both glyphs own N/P now.
 _CLAIM_FRAC = re.compile(
-    r"(?:by\s*|[+\-]\s*|↑\s*\+?)(\d+)\s*/\s*(\d+)",
+    r"(?:by\s*|[+\-]\s*|[↑↓]\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
@@ -299,9 +306,26 @@ _CLAIM_ABS = re.compile(
     rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
+# Slice 48: arrow glyphs `↑1` / `↓1` / `↑ 1` / `↓+1` — absolute magnitude.
+# THE LIE: unbound left no-direction; direction-only would invent held on Δ=+20.
+_CLAIM_ARROW_ABS = re.compile(
+    rf"[↑↓]\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+)
 _CLAIM_SIGNED = re.compile(
     # (?!\d) blocks backtracking into longer numbers (`-20%` must not match `-2`).
     rf"(?<![/\d])([+\-])(\d+)(?!\d)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    re.I,
+)
+
+# Slice 48: unbound perfect / full / max score — no N/N on the table.
+# Resolves at check time to latest == population. `perfect 5/5` stays on _TARGET.
+_PERFECT_UNBOUND = re.compile(
+    r"(?:"
+    r"\b(?:(?:a|the)\s+)?(?:perfect|full|max(?:imum)?)\s+score\b|"
+    r"\bscore(?:s|d)?\s+(?:a\s+)?perfect\b|"
+    r"\b(?:reaches?|gets?|achieves?|hits?)\s+(?:a\s+)?perfect(?:\s+score)?\b|"
+    r"\bperfect\b(?!\s*(?:zero|\d))"
+    r")",
     re.I,
 )
 
@@ -343,6 +367,12 @@ def prediction_intent(prediction: str) -> str:
     signed = _CLAIM_SIGNED.search(text)
     if signed is not None:
         return "rise" if signed.group(1) == "+" else "fall"
+    # Slice 48: arrow glyphs are not word characters — lexicon `\b` misses them.
+    # THE LIE: `↑1` amount unbound + intent unknown → no-direction.
+    if "↑" in text:
+        return "rise"
+    if "↓" in text:
+        return "fall"
     # Level / floor / ceiling on the table ⇒ stay intent even if lexicon missed.
     if (
         claimed_level(text)["value"] is not None
@@ -350,9 +380,10 @@ def prediction_intent(prediction: str) -> str:
         or claimed_ceiling(text)["value"] is not None
     ):
         return "flat"
-    # Target-only (`reaches 5/5` / `exactly 4/5`) with no rise/fall word —
-    # treat as flat so check_prediction grades the target, not no-direction.
-    if claimed_target(text)["value"] is not None:
+    # Target-only (`reaches 5/5` / `exactly 4/5` / unbound `perfect score`)
+    # with no rise/fall word — flat so check_prediction grades the target.
+    tgt = claimed_target(text)
+    if tgt["value"] is not None or tgt.get("perfect"):
         return "flat"
     # Slice 44: `20% more` / `20% less` have no rise/fall lexicon word — bind
     # intent from the trailing comparator so percent grading can fire.
@@ -447,14 +478,23 @@ def claimed_target(prediction: str) -> dict:
 
     Slice 47: crash/collapse/soar/dive/plunge/spike verbs; `from A to B` /
     `A → B` transitions — destination is the target.
+
+    Slice 48: unbound `perfect score` / bare `perfect` / `full score` —
+    `perfect: True` resolves at check time to latest == population.
     """
     text = prediction or ""
+    empty = {
+        "value": None,
+        "population": None,
+        "raw": None,
+        "perfect": False,
+    }
     if claimed_level(text)["value"] is not None:
-        return {"value": None, "population": None, "raw": None}
+        return empty
     if claimed_floor(text)["value"] is not None:
-        return {"value": None, "population": None, "raw": None}
+        return empty
     if claimed_ceiling(text)["value"] is not None:
-        return {"value": None, "population": None, "raw": None}
+        return empty
     m = _TARGET.search(text)
     if m:
         raw = m.group(0).strip()
@@ -463,50 +503,61 @@ def claimed_target(prediction: str) -> dict:
         elif m.group(1) is not None:
             value = int(m.group(1))
         else:
-            return {"value": None, "population": None, "raw": None}
+            return empty
         pop = m.group(2)
         return {
             "value": value,
             "population": int(pop) if pop is not None else None,
             "raw": raw,
+            "perfect": False,
         }
     m = _FROM_TO.search(text)
-    if not m:
-        return {"value": None, "population": None, "raw": None}
-    raw = m.group(0).strip()
-    # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
-    # `zero` leaves the digit group None — detect via the raw destination text.
-    if m.group(1) is not None or m.group(3) is not None or re.search(
-        r"\bfrom\b", raw, re.I
-    ):
-        to_chunk = re.split(r"\bto\b", raw, maxsplit=1, flags=re.I)[-1].strip()
-        if re.match(r"zero\b", to_chunk, re.I):
-            value = 0
-            pop = None
+    if m:
+        raw = m.group(0).strip()
+        # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
+        # `zero` leaves the digit group None — detect via the raw destination text.
+        if m.group(1) is not None or m.group(3) is not None or re.search(
+            r"\bfrom\b", raw, re.I
+        ):
+            to_chunk = re.split(r"\bto\b", raw, maxsplit=1, flags=re.I)[-1].strip()
+            if re.match(r"zero\b", to_chunk, re.I):
+                value = 0
+                pop = None
+            else:
+                value = int(m.group(3)) if m.group(3) is not None else None
+                pop = m.group(4)
         else:
-            value = int(m.group(3)) if m.group(3) is not None else None
-            pop = m.group(4)
-    else:
-        # arrow form
-        arrow_split = re.split(r"→|->|➞", raw, maxsplit=1)
-        to_chunk = arrow_split[-1].strip() if len(arrow_split) > 1 else ""
-        if re.match(r"zero\b", to_chunk, re.I):
-            value = 0
-            pop = None
-        else:
-            value = int(m.group(7)) if m.group(7) is not None else None
-            pop = m.group(8)
-    if value is None:
-        return {"value": None, "population": None, "raw": None}
-    # Destination pop may be in to_chunk as N/P
-    pop_m = re.search(r"/\s*(\d+)", to_chunk)
-    if pop_m:
-        pop = pop_m.group(1)
-    return {
-        "value": value,
-        "population": int(pop) if pop is not None else None,
-        "raw": raw,
-    }
+            # arrow form
+            arrow_split = re.split(r"→|->|➞", raw, maxsplit=1)
+            to_chunk = arrow_split[-1].strip() if len(arrow_split) > 1 else ""
+            if re.match(r"zero\b", to_chunk, re.I):
+                value = 0
+                pop = None
+            else:
+                value = int(m.group(7)) if m.group(7) is not None else None
+                pop = m.group(8)
+        if value is None:
+            return empty
+        # Destination pop may be in to_chunk as N/P
+        pop_m = re.search(r"/\s*(\d+)", to_chunk)
+        if pop_m:
+            pop = pop_m.group(1)
+        return {
+            "value": value,
+            "population": int(pop) if pop is not None else None,
+            "raw": raw,
+            "perfect": False,
+        }
+    # Slice 48: unbound perfect / full / max score — resolve vs pop at check.
+    m = _PERFECT_UNBOUND.search(text)
+    if m:
+        return {
+            "value": None,
+            "population": None,
+            "raw": m.group(0).strip(),
+            "perfect": True,
+        }
+    return empty
 
 
 def claimed_ratio(prediction: str) -> dict:
@@ -618,6 +669,14 @@ def claimed_magnitude(prediction: str) -> dict:
         return {
             "amount": int(m.group(1)),
             "population": int(m.group(2)),
+            "raw": m.group(0).strip(),
+        }
+    # Slice 48: arrow absolute before signed — `↑1` is not `+1`.
+    m = _CLAIM_ARROW_ABS.search(text)
+    if m:
+        return {
+            "amount": int(m.group(1)),
+            "population": None,
             "raw": m.group(0).strip(),
         }
     m = _CLAIM_ABS.search(text)
@@ -777,6 +836,33 @@ def check_prediction(
             **bounds,
             "note": "unmeasured — need two readings before a prediction can be checked",
         }
+
+    # Slice 48: unbound `perfect score` resolves to latest == population.
+    # Without population, refuse to invent a target (same honesty as percent).
+    if target.get("perfect") and target.get("value") is None:
+        if population is not None:
+            target = {
+                **target,
+                "value": int(population),
+                "population": int(population),
+            }
+            bounds = {**bounds, "claimed_target": target}
+        else:
+            return {
+                "outcome": "no-direction",
+                "intent": intent,
+                "verdict": label,
+                "delta": delta,
+                "population": population,
+                "latest_value": latest_value,
+                "grade": "target",
+                **bounds,
+                "note": (
+                    "no-direction: perfect score needs population to resolve "
+                    "target — will not invent a perfect level"
+                ),
+            }
+
     if intent == "unknown":
         return {
             "outcome": "no-direction",

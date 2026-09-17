@@ -94,14 +94,17 @@ No number without the command that produced it, the population it is out of, and
 | 45 | up N / down N magnitude | `up 1` amount=1 · +1 held / +20 missed · pred-demo · pytest green |
 | 46 | Signed +N/−N intent + from-to targets | `+1` rise · `from 3/5 to 4/5` target · pred-demo · pytest green |
 | 47 | Crash/collapse/soar to target | `crashes to 0`/`collapses to zero` target · pred-demo · pytest green |
+| 48 | Arrow glyphs + unbound perfect score | `↑1`/`↓1` magnitude · `perfect score`→pop · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 47 done.** Next: arrow glyphs (`↑1`/`↓1`) · `perfect score` unbound · Oscar gates (film · Devpost paste · submit).
+**Slice 48 done.** Next: `climbs 1`/`slips 1` magnitude · `grows/shrinks by N` intent · `5 out of 5`/`full marks`/`100%` · Oscar gates.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-17 · Slice 48 SHIP · `↑1`/`↓1` intent+magnitude · unbound `perfect score`→pop · pred-demo 101/101 embarrassed 40 · `pytest -q` → 385 passed, 1 skipped · check-docs 16 PASS · docs 373→386 · branch `cursor/arrow-perfect-score-aead`
+- 2026-09-17 · Slice 48 START · ran objects: `↑1`/`↓1`/`pass rate ↑1` → intent=unknown amount=None → no-direction. `↑1/5` amount=1 but intent=unknown. `↓1/5` fully unbound. `perfect score`/`perfect`/`a perfect score` → target=None intent=unknown. Contrast: `perfect 5/5` grades; `up 1`/`+1` grade. Building arrow intent+magnitude + perfect→pop.
 - 2026-09-17 · Slice 47 SHIP · crashes/collapses/soars targets · from→to · pred-demo 95/95 embarrassed 37 · `pytest -q` → 372 passed, 1 skipped · check-docs 16 PASS · docs 362→373 · night stack S43–S47 · `git push origin main` → `574de6caf77a8bd285b2aa7651d5aa9a26d33c63`
 - 2026-09-17 · Slice 47 START · ran objects: `crashes to 0`/`collapses to zero`/`soars to 5/5` → target=None. `from 3/5 to 4/5` unbound. Building crash verbs + from-to targets.
 - 2026-09-17 · Slice 46 SHIP · signed +1/-1 intent · (?!\d) blocks -20% steal · pred-demo 89/89 embarrassed 35 · `pytest -q` → 361 passed, 1 skipped · check-docs 16 PASS · docs 354→362
