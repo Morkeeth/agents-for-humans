@@ -102,7 +102,7 @@ No number without the command that produced it, the population it is out of, and
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-17 · Slice 47 SHIP · crashes/collapses/soars targets · from→to · pred-demo 95/95 embarrassed 37 · `pytest -q` → 372 passed, 1 skipped · check-docs 16 PASS · docs 362→373 · night stack S43–S47
+- 2026-09-17 · Slice 47 SHIP · crashes/collapses/soars targets · from→to · pred-demo 95/95 embarrassed 37 · `pytest -q` → 372 passed, 1 skipped · check-docs 16 PASS · docs 362→373 · night stack S43–S47 ·  → 
 - 2026-09-17 · Slice 47 START · ran objects: `crashes to 0`/`collapses to zero`/`soars to 5/5` → target=None. `from 3/5 to 4/5` unbound. Building crash verbs + from-to targets.
 - 2026-09-17 · Slice 46 SHIP · signed +1/-1 intent · (?!\d) blocks -20% steal · pred-demo 89/89 embarrassed 35 · `pytest -q` → 361 passed, 1 skipped · check-docs 16 PASS · docs 354→362
 - 2026-09-17 · Slice 46 START · ran objects: `+1`/`-1`/`pass rate +1` → amount set, intent=unknown → no-direction. `Δ+1` already grades. Building signed intent outside word-boundary.
