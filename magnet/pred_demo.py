@@ -1064,6 +1064,127 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="THE LIE: unbound left no-direction; flat invents held off-perfect",
     ),
+    # Slice 49 — climbs/slips · grows/shrinks · out-of · full marks · 100%
+    PredScenario(
+        "climbs_holds",
+        "climbs 1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 49: climbs N owns magnitude",
+    ),
+    PredScenario(
+        "climbs_missed",
+        "climbs 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: amount=None invented held on Δ=+20",
+    ),
+    PredScenario(
+        "slips_missed",
+        "slips 1",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="slips N magnitude",
+    ),
+    PredScenario(
+        "grows_missed",
+        "grows by 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: amount on table but intent unknown → no-direction",
+    ),
+    PredScenario(
+        "shrinks_holds",
+        "shrinks by 1",
+        "hurt",
+        -1,
+        5,
+        "prediction-held",
+        latest_value=3,
+        note="shrinks is fall+magnitude",
+    ),
+    PredScenario(
+        "out_of_holds",
+        "5 out of 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="N out of P is a target",
+    ),
+    PredScenario(
+        "out_of_missed",
+        "5 out of 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: unbound left no-direction; flat invents held",
+    ),
+    PredScenario(
+        "score_of_missed",
+        "score of 5/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="score of N/N is a target",
+    ),
+    PredScenario(
+        "full_marks_missed",
+        "full marks",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="full marks resolves like perfect score",
+    ),
+    PredScenario(
+        "hundred_pct_missed",
+        "100%",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="bare 100% resolves to population",
+    ),
+    PredScenario(
+        "tops_out_missed",
+        "tops out at 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="tops/maxes out at N is a target",
+    ),
+    PredScenario(
+        "caps_at_missed",
+        "caps at 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=6,
+        note="caps at N is a ceiling",
+    ),
 )
 
 
@@ -1091,6 +1212,8 @@ def run_pred_demo() -> str:
         "  crashes/collapses/soars to N + from→to destinations are targets (Slice 47).",
         "  arrow glyphs `↑1` / `↓1` own rise/fall + magnitude (Slice 48).",
         "  unbound `perfect score` resolves to latest == population (Slice 48).",
+        "  `climbs 1` / `slips 1` grade magnitude; grows/shrinks own intent (Slice 49).",
+        "  `5 out of 5` / `score of N/N` / `full marks` / `100%` are targets (Slice 49).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1217,7 +1340,10 @@ def run_pred_demo() -> str:
             "never invent held off the named destination (Slice 47). "
             "`↑1` / `↓1` own rise/fall + magnitude — never leave a glyph "
             "claim as no-direction (Slice 48). unbound `perfect score` "
-            "resolves to population — never invent held off-perfect (Slice 48)."
+            "resolves to population — never invent held off-perfect (Slice 48). "
+            "`climbs 1` / `grows by 1` grade magnitude — never invent held on "
+            "absolute Δ (Slice 49). `5 out of 5` / `full marks` / `100%` are "
+            "targets — never invent held off the named level (Slice 49)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1265,5 +1391,10 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '↑1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '↓1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'perfect score' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'climbs 1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'grows by 1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '5 out of 5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'full marks' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '100%' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
