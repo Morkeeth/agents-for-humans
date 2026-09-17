@@ -105,7 +105,7 @@ No number without the command that produced it, the population it is out of, and
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-17 · Slice 50 SHIP · fat arrows ⬆⬇▲▼⇈⇊ · word magnitudes by one/one point/up one · all green/passing · pred-demo 123/123 embarrassed 56 · `pytest -q` → 405 passed, 1 skipped · check-docs 16 PASS · docs 398→406 · cold clone `/tmp/magnet-cold-s50` · branch `cursor/arrow-perfect-score-aead`
+- 2026-09-17 · Slice 50 SHIP · fat arrows ⬆⬇▲▼⇈⇊ · word magnitudes by one/one point/up one · all green/passing · pred-demo 123/123 embarrassed 56 · `pytest -q` → 405 passed, 1 skipped · check-docs 16 PASS · docs 398→406 · cold clone `/tmp/magnet-cold-s50b` @ `321003b154d6349d8f0540eecc8f51ee327e49ba` JUDGE DEMO OK · branch `cursor/arrow-perfect-score-aead`
 - 2026-09-17 · Slice 50 START · ran objects: `⬆1`/`⬇1`/`▲1`/`▼1` → intent=unknown amount=None. `by one`/`one point`/`rises by one`/`up one` → amount=None (word numbers unbound). `all green`/`all passing` unbound perfect-like. Building fat-arrow glyphs + word-number magnitudes.
 - 2026-09-17 · Slice 49 SHIP · climbs/slips magnitude · grows/shrinks intent · `5 out of 5`/`score of`/`full marks`/`100%`/`tops out`/`caps at` · pred-demo 113/113 embarrassed 49 · `pytest -q` → 397 passed, 1 skipped · check-docs 16 PASS · docs 386→398 · branch `cursor/arrow-perfect-score-aead`
 - 2026-09-17 · Slice 49 START · ran objects: `climbs 1`/`slips 1` → intent set amount=None → direction invents held on Δ=+20. `grows by 1`/`shrinks by 1` → amount=1 intent=unknown → no-direction. `5 out of 5`/`score of 5/5`/`full marks`/`100%` → unbound. Building climbs/slips abs + grows/shrinks intent + out-of/score-of/full-marks/100% targets.

@@ -1,43 +1,40 @@
-# Night report · 2026-09-17 · MAGNET honesty stack (Slices 43–47)
+# Night report · 2026-09-17 · Ambition wave S48–S50
 
-**branch:** `cursor/negated-rise-shall-b0b0`  
-**main tip:** `574de6caf77a8bd285b2aa7651d5aa9a26d33c63` (re-derive: `git rev-parse origin/main`)
+**branch:** `cursor/arrow-perfect-score-aead`  
+**tip:** `321003b154d6349d8f0540eecc8f51ee327e49ba`
 
 ## SHIPPED
 
-Five honesty slices found by running prediction objects (not titles):
+What exists now that did not at the start of this night wave:
 
-1. **Slice 43** — negated rise (`doesn't rise` / `never rises` / `won't improve`) + shall/ought/may not fall + bare `no worse`/`no better` → flat
-2. **Slice 44** — `20% higher`/`lower`/`more`/`less`/`up`/`down` percent-of-pop (embarrassment vs naive)
-3. **Slice 45** — bare `up N` / `down N` magnitude
-4. **Slice 46** — signed `+1`/`-1` intent; `(?!\\d)` blocks `-20%` steal
-5. **Slice 47** — `crashes to zero` / `soars to N` / `from A to B` / `A → B` targets
-
-**pred-demo:** 95/95 · embarrassed 37 · FINDING  
-**Suite:** 372 passed, 1 skipped · check-docs 16 PASS  
-**Doc claims:** 329 → 373 (re-derived from `tests/test_*.py`)
+1. **Slice 48** — arrow glyphs `↑1`/`↓1` intent+magnitude; unbound `perfect score`→population.
+2. **Slice 49** — `climbs 1`/`slips 1` magnitude; `grows`/`shrinks` intent; `5 out of 5`/`score of`/`full marks`/`100%`/`tops out`/`caps at`.
+3. **Slice 50** — fat arrows `⬆▲▼`; word magnitudes `by one`/`one point`; `all green`/`all passing`.
+4. Embarrassment arms throughout: naive invents held; magnet misses (pred-demo embarrassed 56/123).
+5. Doc claims re-derived at source: **373 → 406**.
 
 ## VERIFIED
 
 | Claim | Command | Result |
 |-------|---------|--------|
-| doesn't rise | `prediction_intent` | flat; helped→missed |
-| 20% higher | `claimed_percent` · +1 held / +20 missed | naive held on lie |
-| up 1 | `claimed_magnitude` amount=1 · +20 missed | ok |
-| +1 intent | rise + magnitude · -20% not stolen | ok |
-| crashes to zero | target=0 · latest=1 missed / naive held | ok |
-| from 3/5 to 4/5 | target=4/5 | ok |
-| Suite | `pytest -q` | 372 passed, 1 skipped |
-| pred-demo | `magnet pred-demo` | 95/95 · embarrassed 37 |
+| ↑1 / ↓1 | ran `prediction_intent` / `claimed_magnitude` | rise/fall · amount=1 |
+| perfect score@4 | `check_prediction(..., pop=5, latest=4)` | magnet missed / naive held |
+| climbs 1 @+20 | same | magnet missed / naive held |
+| 5 out of 5 | `claimed_target` | 5/5 |
+| ⬆1 / up by one | objects + pred-demo rows | missed on absolute lie |
+| Suite | `python3 -m pytest -q` | 405 passed, 1 skipped |
+| pred-demo | `magnet pred-demo` | 123/123 · embarrassed 56 · FINDING |
 | check_docs | `magnet check-docs` | 16 PASS |
-| demo | `magnet demo` | exit 0 · helped receipt |
+| demo | `magnet demo` | exit 0 |
+| judge-demo | `bash scripts/judge-demo.sh` | JUDGE DEMO OK |
 
 ## WRONG
 
-- PR auto-create blocked — Oscar UI click (branch pushed: `cursor/negated-rise-shall-b0b0`).
-- Bedrock BLOCKED on cloud VM (no AWS credentials).
-- Bakeoff surface 1/2 still open (helicon cross-surface dupe).
-- `perfect score` (no number) still unbound.
-- `↑1` / `↓1` arrows still unbound.
-- Oscar gates remain: film · Devpost paste · submit.
-- Negation rows still do not embarrass naive (shared intent parser by design since Slice 35).
+1. Assumed early that `↑1/5` already had intent — it had amount only; intent was the real gap.
+2. First check-docs sidecar write via `tee` truncated mid-scan (15 PASS vs 16) — had to lock after a completed run.
+3. Cold clone of dirty worktree showed S49 numbers before S50 commit — always push then clone the tip.
+4. Could not `git push origin main` — cloud agent ships feature branch; PR auto-create blocked for Oscar click.
+5. Bedrock still BLOCKED (no AWS creds on cloud VM).
+6. Oscar gates untouched: film · Devpost paste · submit.
+7. Fat-arrow double forms `⇈`/`⇊` shipped but less common in the wild — may be overfit.
+8. Bare `by one` still intent=unknown (amount grades only when rise/fall word present) — left as-is; not a lie inventing held.
