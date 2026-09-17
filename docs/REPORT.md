@@ -16,20 +16,20 @@
 ### Slice 31 — Stale Devpost sidecar refresh + check_docs RED
 - Re-derived `history.txt` / `one-workflow.txt` with prediction `outcome`
 - check_docs fails if history lacks outcome/claimed or one-workflow lacks outcome
-- **348** pytest tests (re-derived from `tests/test_*.py`)
+- **354** pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 348 passed |
+| Tests | `python3 -m pytest -q` → 354 passed |
 | check_docs | `magnet check-docs` → 15 PASS (incl. history + one-workflow outcome) |
 | history sidecar | `docs/screenshots/history.txt` contains `outcome` + `claimed` |
 | one-workflow | `docs/screenshots/one-workflow.txt` contains `outcome` |
 | RED control | tmp history without outcome → check_docs FAIL |
 | vacuous-demo | `magnet vacuous-demo` → FINDING |
-| Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 348 passed |
-| Cold clone s31 | `/tmp/magnet-cold-s31` @ `1e57c56` → 348 passed · check-docs 15 PASS · JUDGE DEMO OK |
+| Cold clone s30 | `/tmp/magnet-cold-s30` @ `7da6b5f` → 354 passed |
+| Cold clone s31 | `/tmp/magnet-cold-s31` @ `1e57c56` → 354 passed · check-docs 15 PASS · JUDGE DEMO OK |
 | SHIP GATE s31 | `git push origin main` → `c697a29` |
 | SHIP GATE s30 | `git push origin main` → `c00bd87` |
 

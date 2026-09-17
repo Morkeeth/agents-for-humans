@@ -870,6 +870,37 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=24,
         note="20% up had rise intent but no percent",
     ),
+    # Slice 45 — bare up N / down N magnitude
+    PredScenario(
+        "up_n_holds",
+        "up 1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 45: bare up 1 parses magnitude (up by 1 already did)",
+    ),
+    PredScenario(
+        "up_n_missed",
+        "up 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: up 1 left amount=None → direction invented held on +20",
+    ),
+    PredScenario(
+        "down_n_missed",
+        "down 1",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="down 1 unbound → direction invents held on absolute-sized fall",
+    ),
 )
 
 
@@ -892,6 +923,7 @@ def run_pred_demo() -> str:
         "  never rises / doesn't rise / won't improve are flat — NOT rise (Slice 43).",
         "  shall/ought/may not fall + bare no worse/better are flat (Slice 43).",
         "  `20% higher` / `20% more` / `20% up` are percent-of-pop (Slice 44).",
+        "  bare `up 1` / `down 1` grade magnitude (Slice 45).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1008,7 +1040,9 @@ def run_pred_demo() -> str:
             "(Slice 42). `never rises` / `doesn't rise` / `won't improve` / "
             "`shall not fall` / bare `no worse` are flat — never invent held on "
             "a negated move (Slice 43). `20% higher` / `20% more` / `20% up` are "
-            "percent-of-pop — never invent held on absolute Δ (Slice 44)."
+            "percent-of-pop — never invent held on absolute Δ (Slice 44). "
+            "bare `up 1` / `down 1` grade magnitude — never invent held on "
+            "absolute Δ (Slice 45)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1047,5 +1081,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'no worse' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '20% higher' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '20% more' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'up 1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'down 1' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

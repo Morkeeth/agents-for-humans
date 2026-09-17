@@ -45,6 +45,9 @@ Bare `no worse` / `no better` / `won't get worse` invented direction held.
 Slice 44: trailing comparator percents — `20% higher` / `20% lower` /
 `20% more` / `20% less` / `20% up` / `20% down` were unbound (pct=None) so
 direction invented held on absolute Δ=+20 while true 20% of pop 5 is +1.
+
+Slice 45: bare `up 1` / `down 1` left amount=None so direction invented held
+on Δ=+20 while the claim said magnitude 1 (`up by 1` already graded).
 """
 from __future__ import annotations
 
@@ -259,10 +262,14 @@ _CLAIM_FRAC = re.compile(
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
 # Negative lookahead refuses digits that are part of a percent (`20%` / `20 percent`).
+# Slice 45: bare `up 1` / `down 1` (without `by`) — was unbound so direction
+# invented held on Δ=+20 while the claim said +1.
 _CLAIM_ABS = re.compile(
     rf"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
     rf"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
-    rf"slips?\s+by\s+)\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    rf"slips?\s+by\s+|"
+    rf"up\s+|down\s+"
+    rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
 _CLAIM_SIGNED = re.compile(

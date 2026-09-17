@@ -92,23 +92,26 @@ No number without the command that produced it, the population it is out of, and
 | 43 | Negated-rise + shall/ought/may + no worse/better | `never rises`/`doesn't rise`/`won't improve` → flat · `shall not fall` → flat · `no worse` hurt→missed · pred-demo FINDING · pytest green |
 | 44 | Percent higher/lower/more/less/up/down | `20% higher` pct=20 · +1 held / +20 missed · naive held on lie · pred-demo · pytest green |
 | 45 | up N / down N magnitude | `up 1` amount=1 · +1 held / +20 missed · pred-demo · pytest green |
+| 46 | Signed +N/−N intent + from-to targets | `+1` rise · `from 3/5 to 4/5` target · pred-demo · pytest green |
+| 47 | Crash/collapse/soar to target | `crashes to 0`/`collapses to zero` target · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 44.** Percent higher/lower/more/less/up/down honesty.
+**Slice 45.** `up N` / `down N` magnitude honesty.
 
-Ran objects after Slice 43:
-- `20% higher` / `20% up` / `20 percent higher` → intent=rise, **pct=None** → +1 and +20 both prediction-held (THE LIE — absolute-sized rise invents held)
-- `20% lower` / `20% down` → fall, pct=None (direction-only; no magnitude check)
-- `20% more` / `20% less` → unknown, unbound
-- Contrast: `higher by 20%` / `up by 20%` already parse pct=20 and miss on +20
+Ran objects after Slice 44:
+- `up 1` → intent=rise, **amount=None** → +1 and +20 both prediction-held (THE LIE)
+- `down 1` → fall, amount=None
+- Contrast: `up by 1` already parses amount=1 and misses on +20
 
-**Done when:** `claimed_percent("20% higher")==20` · +1 held / +20 missed · naive held on +20 · pred-demo FINDING · pytest green · check-docs PASS.
+**Done when:** `claimed_magnitude("up 1").amount==1` · +1 held / +20 missed · naive held on +20 · pred-demo · pytest green.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 
 ## LOG
+- 2026-09-17 · Slice 45 SHIP · bare `up 1`/`down 1` magnitude · pred-demo 85/85 embarrassed 32 · `pytest -q` → 353 passed, 1 skipped · check-docs 16 PASS · docs 348→354
+- 2026-09-17 · Slice 45 START · ran objects: `up 1`/`down 1` → amount=None → +20 invents held. `up by 1` already grades magnitude. Building bare up/down N.
 - 2026-09-17 · Slice 44 SHIP · `20% higher`/`more`/`up` percent-of-pop · embarrassed +4 · pred-demo 82/82 · `pytest -q` → 347 passed, 1 skipped · check-docs 16 PASS · docs 340→348
 - 2026-09-17 · Slice 44 START · ran objects: `20% higher`/`20% up`/`20 percent higher` → pct=None → +20 invents held. `20% more`/`less` unbound. Building trailing higher/lower/more/less/up/down percent forms.
 
