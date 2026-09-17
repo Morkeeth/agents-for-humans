@@ -718,6 +718,97 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=5,
         note="pct parsed but intent unknown → no-direction; now rise+percent misses abs",
     ),
+    # Slice 43 — negated rise + shall/ought/may + bare no-worse/better
+    PredScenario(
+        "never_rises_flat_holds",
+        "never rises",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 43: never rises is flat, not rise",
+    ),
+    PredScenario(
+        "never_rises_helped_missed",
+        "never rises",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: never rises was rise → invented held when score rose",
+    ),
+    PredScenario(
+        "doesnt_rise_helped_missed",
+        "doesn't rise",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="doesn't rise missed the rise-negation list (only does not rise)",
+    ),
+    PredScenario(
+        "wont_improve_helped_missed",
+        "won't improve",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="won't improve / cannot improve were still rise",
+    ),
+    PredScenario(
+        "shall_not_fall_hurt_missed",
+        "shall not fall",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="THE LIE: shall/ought/may not fall were fall → invented held on hurt",
+    ),
+    PredScenario(
+        "ought_not_fall_flat_holds",
+        "ought not to fall",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="ought not to fall → flat",
+    ),
+    PredScenario(
+        "no_worse_hurt_missed",
+        "no worse",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="THE LIE: bare no worse matched worse → fall → invented held on hurt",
+    ),
+    PredScenario(
+        "no_better_helped_missed",
+        "no better",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="bare no better matched better → rise → invented held on helped",
+    ),
+    PredScenario(
+        "wont_get_worse_hurt_missed",
+        "won't get worse",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="get worse under negation was still fall",
+    ),
 )
 
 
@@ -737,6 +828,8 @@ def run_pred_demo() -> str:
         "  Percent works without `by` (`rises 20%`); triples/3x grade prior (Slice 39).",
         "  Word form `20 percent` / `20 pct` is percent-of-pop — never absolute (Slice 40).",
         "  never falls / cannot fall / won't decrease are flat — NOT fall (Slice 40).",
+        "  never rises / doesn't rise / won't improve are flat — NOT rise (Slice 43).",
+        "  shall/ought/may not fall + bare no worse/better are flat (Slice 43).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -850,7 +943,9 @@ def run_pred_demo() -> str:
             "flat — never invent held on a drop (Slice 40). `falls to zero` "
             "grades latest=0 — never invent held off-zero (Slice 41). "
             "`gains 20%` / `boosts by 20%` are rise+percent — not no-direction "
-            "(Slice 42)."
+            "(Slice 42). `never rises` / `doesn't rise` / `won't improve` / "
+            "`shall not fall` / bare `no worse` are flat — never invent held on "
+            "a negated move (Slice 43)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -884,5 +979,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'pass rate quadruples' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '50% better' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'gains 20%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'never rises' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x \"shall not fall\" --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'no worse' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

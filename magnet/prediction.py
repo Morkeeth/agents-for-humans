@@ -36,6 +36,11 @@ Slice 40: word form `20 percent` / `per cent` / `pct` is percent-of-pop —
 never absolute points (the `%` fix left the word form inventing held on
 Δ=+20). `never falls` / `cannot fall` / `won't decrease` are flat — the
 Slice 35 negation list missed never/cannot and the verb decrease.
+
+Slice 43: negated *rise* was still rise — `doesn't rise` / `never rises` /
+`won't improve` / `cannot improve` invented held on helped. Modal fall
+negation missed shall/ought/may (`shall not fall` invented held on hurt).
+Bare `no worse` / `no better` / `won't get worse` invented direction held.
 """
 from __future__ import annotations
 
@@ -69,27 +74,41 @@ _FALL = re.compile(
 # "won't fall" was fall → invents held when the score drops.
 # Slice 40: "never falls" / "cannot fall" / "won't decrease" were still fall —
 # inventing held on hurt. never/cannot/can't + decrease/worsen close the gap.
+# Slice 43: negated rise (`doesn't rise` / `never rises` / `won't improve`)
+# was still rise → inventing held on helped. shall/ought/may not fall still
+# fall. Bare `no worse` / `no better` / `get worse` under negation.
 _FALL_VERBS = (
     r"fall|falls|falling|drop|drops|dropping|regress|regresses|regressing|"
     r"decline|declines|declining|worsen|worsens|worsening|"
-    r"slip|slips|slipping|hurt|hurts|decrease|decreases|decreasing"
+    r"slip|slips|slipping|hurt|hurts|decrease|decreases|decreasing|"
+    r"get\s+worse|gets\s+worse|getting\s+worse"
+)
+_RISE_VERBS = (
+    r"rise|rises|rising|improv(?:e|es|ed|ing|ement)?|"
+    r"increas(?:e|es|ed|ing)?|gain|gains|boost|boosts|jump|jumps|"
+    r"climb(?:s|ed|ing)?|get\s+better|gets\s+better|getting\s+better"
+)
+# Modals + never/cannot — contractions and "ought not to" included.
+_NEG_MODAL = (
+    r"(?:won'?t|will\s+not|must\s+not|should\s+not|shall\s+not|"
+    r"ought\s+not(?:\s+to)?|may\s+not|does\s+not|do\s+not|did\s+not|"
+    r"doesn'?t|don'?t|never|cannot|can'?t)"
 )
 _NEGATED_MOVE = re.compile(
     rf"(?:"
-    rf"won'?t\s+(?:{_FALL_VERBS})|"
-    rf"will\s+not\s+(?:{_FALL_VERBS})|"
-    rf"(?:must|should|does|do|did)\s+not\s+(?:{_FALL_VERBS})|"
-    rf"doesn'?t\s+(?:{_FALL_VERBS})|"
-    rf"don'?t\s+(?:{_FALL_VERBS})|"
-    rf"never\s+(?:{_FALL_VERBS})|"
-    rf"cannot\s+(?:{_FALL_VERBS})|"
-    rf"can'?t\s+(?:{_FALL_VERBS})|"
+    rf"{_NEG_MODAL}\s+(?:{_FALL_VERBS})|"
+    rf"{_NEG_MODAL}\s+(?:{_RISE_VERBS})|"
     rf"no\s+regression|"
     rf"no\s+decrease|"
-    rf"without\s+(?:falling|dropping|regressing|decreasing|worsening|slipping)|"
-    rf"must\s+NOT\s+rise|not\s+rise|"
-    rf"won'?t\s+rise|will\s+not\s+rise|"
-    rf"(?:must|should|does|do)\s+not\s+rise"
+    # Bare no-worse / no-better are flat (not fall/rise). "no worse than N"
+    # and "no better than N" also match — floor/ceiling parsers still own the
+    # bound; intent must not invent direction held beneath/above the bound.
+    rf"no\s+worse|"
+    rf"no\s+better|"
+    rf"non[-\s]?regression|"
+    rf"without\s+(?:falling|dropping|regressing|decreasing|worsening|slipping|"
+    rf"rising|improving|increasing)|"
+    rf"not\s+rise"
     rf")",
     re.I,
 )
@@ -251,7 +270,8 @@ def prediction_intent(prediction: str) -> str:
     naming a required bound is itself a stay claim (Slice 28/35 — never
     no-direction while a bound sits on the table).
 
-    Negated moves (`won't fall`) are flat — checked before fall lexicon.
+    Negated moves (`won't fall`, `doesn't rise`, `shall not fall`) are flat —
+    checked before fall/rise lexicon.
     """
     text = prediction or ""
     # Negation and flat first: "won't fall" contains fall but means flat.

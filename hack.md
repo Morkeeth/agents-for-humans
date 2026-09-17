@@ -89,13 +89,31 @@ No number without the command that produced it, the population it is out of, and
 | 41 | Zero/perfect targets + quadrupples/N-times | `falls to zero` grades latest=0 · `perfect 5/5` target · quadrupples/`N times` prior · pred-demo FINDING · pytest green |
 | 42 | Percent-better/worse + gains/jumps/boosts | `50% better`/`worse` parse · gains/jumps/boosts rise+pct · pred-demo FINDING · pytest green |
 
+| 43 | Negated-rise + shall/ought/may + no worse/better | `never rises`/`doesn't rise`/`won't improve` → flat · `shall not fall` → flat · `no worse` hurt→missed · pred-demo FINDING · pytest green |
+| 44 | Percent higher/lower/more/less/up/down | `20% higher` pct=20 · +1 held / +20 missed · naive held on lie · pred-demo · pytest green |
+| 45 | up N / down N magnitude | `up 1` amount=1 · +1 held / +20 missed · pred-demo · pytest green |
+
 ## NOW
 
-**Slice 42 done.** Next: further honesty arms or Oscar gates (film · Devpost paste · submit).
+**Slice 43.** Negated-rise honesty + shall/ought/may + bare no-worse/no-better.
+
+Ran objects (not titles):
+- `doesn't rise` / `never rises` / `won't improve` / `cannot improve` → intent=**rise** → helped invents **prediction-held** (THE LIE)
+- `shall not fall` / `ought not fall` / `may not fall` → intent=**fall** → hurt invents held
+- `no worse` → fall → hurt invents held; `no better` → rise → helped invents held
+- `won't get worse` / `cannot get worse` → fall → hurt invents held
+
+`won't rise` / `must not rise` already flat (Slice 35 partial). Close the rise-negation + modal gap.
+
+**Done when:** `python3 -m pytest -q` green · `magnet pred-demo` FINDING on negated-rise · `magnet check-docs` PASS · push.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
+
 ## LOG
+
+- 2026-09-17 · Slice 43 SHIP · negated-rise flat · shall/ought/may not fall flat · bare no worse/better flat · pred-demo 76/76 · `pytest -q` → 339 passed, 1 skipped · check-docs 16 PASS · docs 329→340
+- 2026-09-17 · Slice 43 START · ran objects: `doesn't rise`/`never rises`/`won't improve`/`cannot improve` → rise → helped invents held. `shall not fall`/`ought not fall`/`may not fall` → fall → hurt invents held. `no worse` → fall; `no better` → rise. `won't get worse` → fall. Building negated-rise + shall/ought/may + bare no-worse/better.
 
 - 2026-09-16 · Slice 42 SHIP · 50% better/worse · gains/jumps/boosts rise+pct · pred-demo 67/67 embarrassed 26 · `python3 -m pytest -q` → 328 passed, 1 skipped · check-docs 16 PASS · `git push origin main` → `62897ca72bae262eda5917f37e728aba68b6377a`
 - 2026-09-16 · Slice 42 START · ran objects: `50% better`/`50% worse`/`gains 20%`/`jumps 20%` → pct=None intent=unknown (no-direction). `boosts by 20%`/`gains by 20%` → pct=20 but intent=unknown → no-direction even on true 20%. Building better/worse percent + gains/jumps/boosts rise.
