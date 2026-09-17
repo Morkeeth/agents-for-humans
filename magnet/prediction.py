@@ -48,6 +48,10 @@ direction invented held on absolute Δ=+20 while true 20% of pop 5 is +1.
 
 Slice 45: bare `up 1` / `down 1` left amount=None so direction invented held
 on Δ=+20 while the claim said magnitude 1 (`up by 1` already graded).
+
+Slice 46: bare signed `+1` / `-1` parsed amount but intent=unknown (word
+boundary before `+` fails) → no-direction while a claimable magnitude sat
+on the table. Sign owns rise/fall intent.
 """
 from __future__ import annotations
 
@@ -273,7 +277,8 @@ _CLAIM_ABS = re.compile(
     re.I,
 )
 _CLAIM_SIGNED = re.compile(
-    rf"(?<![/\d])([+\-])(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    # (?!\d) blocks backtracking into longer numbers (`-20%` must not match `-2`).
+    rf"(?<![/\d])([+\-])(\d+)(?!\d)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
 
@@ -298,6 +303,23 @@ def prediction_intent(prediction: str) -> str:
         return "fall"
     if _RISE.search(text) and _FALL.search(text):
         return "unknown"
+    # Percent owns `+20%` / `-20%` before signed-absolute intent (Slice 46 —
+    # signed backtracking used to steal `-2` from `-20%`).
+    if claimed_percent(text)["percent"] is not None and re.search(
+        rf"(?<![/\d])\+\s*\d+\s*{_PCT_UNIT}", text
+    ):
+        return "rise"
+    if claimed_percent(text)["percent"] is not None and re.search(
+        rf"(?<![/\d])\-\s*\d+\s*{_PCT_UNIT}", text
+    ):
+        return "fall"
+    # Slice 46: bare signed deltas (`+1` / `-1` / `pass rate +1`). `_RISE`
+    # puts `\+\s*\d` inside `\b(...)` so the leading boundary fails at string
+    # start or after space — amount parsed, intent unknown → no-direction.
+    # THE LIE: a claimable magnitude left ungraded. Sign owns intent here.
+    signed = _CLAIM_SIGNED.search(text)
+    if signed is not None:
+        return "rise" if signed.group(1) == "+" else "fall"
     # Level / floor / ceiling on the table ⇒ stay intent even if lexicon missed.
     if (
         claimed_level(text)["value"] is not None
@@ -309,11 +331,6 @@ def prediction_intent(prediction: str) -> str:
     # treat as flat so check_prediction grades the target, not no-direction.
     if claimed_target(text)["value"] is not None:
         return "flat"
-    # Signed percent alone (`+20%` / `+20 percent`) is a rise claim (Slice 39/40).
-    if claimed_percent(text)["percent"] is not None and re.search(
-        rf"(?<![/\d])\+\s*\d+\s*{_PCT_UNIT}", text
-    ):
-        return "rise"
     # Slice 44: `20% more` / `20% less` have no rise/fall lexicon word — bind
     # intent from the trailing comparator so percent grading can fire.
     if claimed_percent(text)["percent"] is not None:

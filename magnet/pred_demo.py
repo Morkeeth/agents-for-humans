@@ -901,6 +901,47 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=0,
         note="down 1 unbound → direction invents held on absolute-sized fall",
     ),
+    # Slice 46 — signed +N / -N intent
+    PredScenario(
+        "plus_one_holds",
+        "+1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 46: bare +1 is rise + magnitude",
+    ),
+    PredScenario(
+        "plus_one_missed",
+        "+1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: +1 had amount but intent=unknown → no-direction",
+    ),
+    PredScenario(
+        "minus_one_missed",
+        "-1",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="bare -1 was no-direction; now fall+magnitude misses abs",
+    ),
+    PredScenario(
+        "pass_rate_plus_one_missed",
+        "pass rate +1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="word-boundary before + failed after space",
+    ),
 )
 
 
@@ -924,6 +965,7 @@ def run_pred_demo() -> str:
         "  shall/ought/may not fall + bare no worse/better are flat (Slice 43).",
         "  `20% higher` / `20% more` / `20% up` are percent-of-pop (Slice 44).",
         "  bare `up 1` / `down 1` grade magnitude (Slice 45).",
+        "  bare `+1` / `-1` own rise/fall intent (Slice 46).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1042,7 +1084,8 @@ def run_pred_demo() -> str:
             "a negated move (Slice 43). `20% higher` / `20% more` / `20% up` are "
             "percent-of-pop — never invent held on absolute Δ (Slice 44). "
             "bare `up 1` / `down 1` grade magnitude — never invent held on "
-            "absolute Δ (Slice 45)."
+            "absolute Δ (Slice 45). bare `+1` / `-1` own rise/fall intent — "
+            "never leave a claimable magnitude as no-direction (Slice 46)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1083,5 +1126,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '20% more' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'up 1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'down 1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '+1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '-1' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

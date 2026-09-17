@@ -97,19 +97,21 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 45.** `up N` / `down N` magnitude honesty.
+**Slice 46.** Signed `+N`/`-N` intent honesty.
 
-Ran objects after Slice 44:
-- `up 1` → intent=rise, **amount=None** → +1 and +20 both prediction-held (THE LIE)
-- `down 1` → fall, amount=None
-- Contrast: `up by 1` already parses amount=1 and misses on +20
+Ran objects after Slice 45:
+- `+1` / `-1` / `pass rate +1` → amount parses, **intent=unknown** → no-direction (THE LIE — claimable magnitude left ungraded)
+- Contrast: `Δ+1` already rise + magnitude (word char before `+` satisfies word-boundary)
 
-**Done when:** `claimed_magnitude("up 1").amount==1` · +1 held / +20 missed · naive held on +20 · pred-demo · pytest green.
+Root cause: `_RISE` wraps signed `+N` inside a word-boundary group — boundary before `+` fails at string start / after space.
+
+**Done when:** `prediction_intent("+1")=="rise"` · `"-1"`→fall · +1 held / +20 missed · pred-demo · pytest green.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
-
 ## LOG
+- 2026-09-17 · Slice 46 SHIP · signed +1/-1 intent · (?!\d) blocks -20% steal · pred-demo 89/89 embarrassed 35 · `pytest -q` → 361 passed, 1 skipped · check-docs 16 PASS · docs 354→362
+- 2026-09-17 · Slice 46 START · ran objects: `+1`/`-1`/`pass rate +1` → amount set, intent=unknown → no-direction. `Δ+1` already grades. Building signed intent outside word-boundary.
 - 2026-09-17 · Slice 45 SHIP · bare `up 1`/`down 1` magnitude · pred-demo 85/85 embarrassed 32 · `pytest -q` → 353 passed, 1 skipped · check-docs 16 PASS · docs 348→354
 - 2026-09-17 · Slice 45 START · ran objects: `up 1`/`down 1` → amount=None → +20 invents held. `up by 1` already grades magnitude. Building bare up/down N.
 - 2026-09-17 · Slice 44 SHIP · `20% higher`/`more`/`up` percent-of-pop · embarrassed +4 · pred-demo 82/82 · `pytest -q` → 347 passed, 1 skipped · check-docs 16 PASS · docs 340→348
