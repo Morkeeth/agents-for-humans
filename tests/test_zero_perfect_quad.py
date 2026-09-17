@@ -47,11 +47,11 @@ def test_falls_to_zero_does_not_invent_held_off_zero():
 
 
 def test_perfect_is_target():
-    assert claimed_target("perfect 5/5") == {
-        "value": 5,
-        "population": 5,
-        "raw": "perfect 5/5",
-    }
+    t = claimed_target("perfect 5/5")
+    assert t["value"] == 5
+    assert t["population"] == 5
+    assert t["raw"] == "perfect 5/5"
+    assert t.get("perfect") is False
     assert prediction_intent("perfect 5/5") == "flat"
     held = check_prediction(
         "perfect 5/5", "helped", 1, population=5, latest_value=5

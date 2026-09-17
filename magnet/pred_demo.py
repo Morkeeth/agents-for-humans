@@ -1003,6 +1003,67 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="arrow transition destination grades latest",
     ),
+    # Slice 48 — arrow glyphs ↑1/↓1 + unbound perfect score
+    PredScenario(
+        "arrow_up_holds",
+        "↑1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 48: ↑1 owns rise+magnitude",
+    ),
+    PredScenario(
+        "arrow_up_missed",
+        "↑1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: unbound ↑1 left no-direction; direction invents held on +20",
+    ),
+    PredScenario(
+        "arrow_down_missed",
+        "↓1",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="↓1 magnitude — direction invents held on absolute-sized drop",
+    ),
+    PredScenario(
+        "arrow_frac_holds",
+        "↑1/5",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="↑1/5 had amount but no intent; now grades",
+    ),
+    PredScenario(
+        "perfect_score_holds",
+        "perfect score",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="unbound perfect resolves to pop",
+    ),
+    PredScenario(
+        "perfect_score_missed",
+        "perfect score",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: unbound left no-direction; flat invents held off-perfect",
+    ),
 )
 
 
@@ -1028,6 +1089,8 @@ def run_pred_demo() -> str:
         "  bare `up 1` / `down 1` grade magnitude (Slice 45).",
         "  bare `+1` / `-1` own rise/fall intent (Slice 46).",
         "  crashes/collapses/soars to N + from→to destinations are targets (Slice 47).",
+        "  arrow glyphs `↑1` / `↓1` own rise/fall + magnitude (Slice 48).",
+        "  unbound `perfect score` resolves to latest == population (Slice 48).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1100,6 +1163,8 @@ def run_pred_demo() -> str:
                 if pop is not None
                 else f"to {target['value']}"
             )
+        elif target.get("perfect"):
+            claim_txt = "perfect→pop"
         elif level["value"] is not None:
             pop = level["population"]
             claim_txt = (
@@ -1149,7 +1214,10 @@ def run_pred_demo() -> str:
             "absolute Δ (Slice 45). bare `+1` / `-1` own rise/fall intent — "
             "never leave a claimable magnitude as no-direction (Slice 46). "
             "`crashes to zero` / `soars to N` / `from A to B` are targets — "
-            "never invent held off the named destination (Slice 47)."
+            "never invent held off the named destination (Slice 47). "
+            "`↑1` / `↓1` own rise/fall + magnitude — never leave a glyph "
+            "claim as no-direction (Slice 48). unbound `perfect score` "
+            "resolves to population — never invent held off-perfect (Slice 48)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1194,5 +1262,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '-1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'crashes to zero' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'from 3/5 to 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '↑1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '↓1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'perfect score' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
