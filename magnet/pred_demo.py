@@ -1185,6 +1185,107 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=6,
         note="caps at N is a ceiling",
     ),
+    # Slice 50 — fat arrows · word magnitudes · all green
+    PredScenario(
+        "fat_arrow_holds",
+        "⬆1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 50: fat ⬆ owns rise+magnitude",
+    ),
+    PredScenario(
+        "fat_arrow_missed",
+        "⬆1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: fat arrow unbound left no-direction",
+    ),
+    PredScenario(
+        "tri_arrow_missed",
+        "▲1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="▲/▼ glyphs grade like ↑/↓",
+    ),
+    PredScenario(
+        "word_one_holds",
+        "up by one",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="word magnitude one ≡ 1",
+    ),
+    PredScenario(
+        "word_one_missed",
+        "up by one",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: amount=None invented held on Δ=+20",
+    ),
+    PredScenario(
+        "one_point_missed",
+        "rises one point",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="one point ≡ magnitude 1",
+    ),
+    PredScenario(
+        "two_points_missed",
+        "rises by two",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="two ≡ 2; Δ=+1 must miss",
+    ),
+    PredScenario(
+        "all_green_holds",
+        "all green",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="all green resolves to population",
+    ),
+    PredScenario(
+        "all_green_missed",
+        "all green",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: unbound left no-direction; flat invents held",
+    ),
+    PredScenario(
+        "all_passing_missed",
+        "all passing",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="all passing / passes all are perfect→pop",
+    ),
 )
 
 
@@ -1214,6 +1315,8 @@ def run_pred_demo() -> str:
         "  unbound `perfect score` resolves to latest == population (Slice 48).",
         "  `climbs 1` / `slips 1` grade magnitude; grows/shrinks own intent (Slice 49).",
         "  `5 out of 5` / `score of N/N` / `full marks` / `100%` are targets (Slice 49).",
+        "  fat arrows `⬆1`/`▲1` + word magnitudes `by one`/`one point` (Slice 50).",
+        "  `all green` / `all passing` / `passes all` resolve to population (Slice 50).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1343,7 +1446,10 @@ def run_pred_demo() -> str:
             "resolves to population — never invent held off-perfect (Slice 48). "
             "`climbs 1` / `grows by 1` grade magnitude — never invent held on "
             "absolute Δ (Slice 49). `5 out of 5` / `full marks` / `100%` are "
-            "targets — never invent held off the named level (Slice 49)."
+            "targets — never invent held off the named level (Slice 49). "
+            "`⬆1` / `▲1` / `up by one` / `one point` grade magnitude — never "
+            "leave a word or fat-arrow claim as no-direction (Slice 50). "
+            "`all green` / `all passing` resolve to population (Slice 50)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1396,5 +1502,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '5 out of 5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'full marks' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '100%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '⬆1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'up by one' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'all green' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

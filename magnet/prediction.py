@@ -66,12 +66,37 @@ Slice 49: `climbs 1` / `slips 1` left amount=None so direction invented
 held on Δ=+20. `grows by 1` / `shrinks by 1` parsed amount but
 intent=unknown → no-direction. `5 out of 5` / `score of 5/5` /
 `full marks` / bare `100%` left unbound targets.
+
+Slice 50: fat arrows `⬆1` / `⬇1` / `▲1` / `▼1` unbound like ↑/↓ were.
+Word magnitudes `by one` / `one point` / `up one` / `rises by two` left
+amount=None so direction invented held on Δ=+20. `all green` /
+`all passing` / `passes all` unbound perfect-like.
 """
 from __future__ import annotations
 
 import re
 
 from magnet.reporter import Verdict
+
+# Arrow glyph families — Slice 48 thin ↑↓; Slice 50 fat ⬆⬇▲▼⇈⇊.
+_ARROW_UP = "↑⬆▲⇈"
+_ARROW_DOWN = "↓⬇▼⇊"
+_ARROW_ANY = _ARROW_UP + _ARROW_DOWN
+
+# Word → int for magnitude ("by one", "two points"). Never ranks by spelling beauty.
+_WORD_AMOUNTS = {
+    "a": 1,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
 
 # Lexical intent only — never ranks by the prediction's wording beauty.
 # improv(?:e|…) — bare `improv` failed word-boundary on "improves" (Slice 35).
@@ -310,9 +335,9 @@ _RATIO = re.compile(
 )
 
 # Claimed magnitude: "rises by 1/5", "falls by 2/7", "+1/5", "by 1/5".
-# Slice 48: `↓1/5` was unbound (FRAC only knew ↑); both glyphs own N/P now.
+# Slice 48/50: arrow glyphs (thin + fat) own N/P.
 _CLAIM_FRAC = re.compile(
-    r"(?:by\s*|[+\-]\s*|[↑↓]\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
+    rf"(?:by\s*|[+\-]\s*|[{_ARROW_ANY}]\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
@@ -328,10 +353,26 @@ _CLAIM_ABS = re.compile(
     rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
-# Slice 48: arrow glyphs `↑1` / `↓1` / `↑ 1` / `↓+1` — absolute magnitude.
+# Slice 48/50: arrow glyphs `↑1` / `⬇1` / `▲1` — absolute magnitude.
 # THE LIE: unbound left no-direction; direction-only would invent held on Δ=+20.
 _CLAIM_ARROW_ABS = re.compile(
-    rf"[↑↓]\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    rf"[{_ARROW_ANY}]\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+)
+# Slice 50: word magnitudes — `by one` / `up one` / `rises by two` / `one point`.
+# THE LIE: intent set, amount=None → direction invents held on Δ=+20.
+_WORD_AMOUNT_RE = (
+    r"(?:one|two|three|four|five|six|seven|eight|nine|ten)"
+)
+_CLAIM_WORD_ABS = re.compile(
+    rf"(?:"
+    rf"by\s+a\s+point|"
+    rf"by\s+{_WORD_AMOUNT_RE}(?:\s+points?)?|"
+    rf"(?:up|down|rises?|falls?|drops?|climbs?|slips?|grows?|shrinks?|"
+    rf"improves?|declines?|worsens?)\s+(?:by\s+)?{_WORD_AMOUNT_RE}"
+    rf"(?:\s+points?)?|"
+    rf"{_WORD_AMOUNT_RE}\s+points?"
+    rf")\b",
+    re.I,
 )
 _CLAIM_SIGNED = re.compile(
     # (?!\d) blocks backtracking into longer numbers (`-20%` must not match `-2`).
@@ -342,10 +383,13 @@ _CLAIM_SIGNED = re.compile(
 # Slice 48: unbound perfect / full / max score — no N/N on the table.
 # Resolves at check time to latest == population. `perfect 5/5` stays on _TARGET.
 # Slice 49: `full marks` / bare `100%` / `one hundred percent` — same resolve.
+# Slice 50: `all green` / `all passing` / `passes all` — perfect-like.
 _PERFECT_UNBOUND = re.compile(
     r"(?:"
     r"\b(?:(?:a|the)\s+)?(?:perfect|full|max(?:imum)?)\s+score\b|"
     r"\bfull\s+marks\b|"
+    r"\ball\s+(?:green|passing|pass(?:es)?)\b|"
+    r"\bpasses\s+all\b|"
     r"\bscore(?:s|d)?\s+(?:a\s+)?perfect\b|"
     r"\b(?:reaches?|gets?|achieves?|hits?)\s+(?:a\s+)?perfect(?:\s+score)?\b|"
     r"\bperfect\b(?!\s*(?:zero|\d))|"
@@ -393,11 +437,11 @@ def prediction_intent(prediction: str) -> str:
     signed = _CLAIM_SIGNED.search(text)
     if signed is not None:
         return "rise" if signed.group(1) == "+" else "fall"
-    # Slice 48: arrow glyphs are not word characters — lexicon `\b` misses them.
-    # THE LIE: `↑1` amount unbound + intent unknown → no-direction.
-    if "↑" in text:
+    # Slice 48/50: arrow glyphs are not word characters — lexicon `\b` misses them.
+    # THE LIE: `↑1` / `⬆1` amount unbound + intent unknown → no-direction.
+    if any(ch in text for ch in _ARROW_UP):
         return "rise"
-    if "↓" in text:
+    if any(ch in text for ch in _ARROW_DOWN):
         return "fall"
     # Level / floor / ceiling on the table ⇒ stay intent even if lexicon missed.
     if (
@@ -715,7 +759,7 @@ def claimed_magnitude(prediction: str) -> dict:
             "population": int(m.group(2)),
             "raw": m.group(0).strip(),
         }
-    # Slice 48: arrow absolute before signed — `↑1` is not `+1`.
+    # Slice 48/50: arrow absolute before signed — `↑1` / `⬆1` is not `+1`.
     m = _CLAIM_ARROW_ABS.search(text)
     if m:
         return {
@@ -726,6 +770,20 @@ def claimed_magnitude(prediction: str) -> dict:
     m = _CLAIM_ABS.search(text)
     if m:
         return {"amount": int(m.group(1)), "population": None, "raw": m.group(0).strip()}
+    # Slice 50: word magnitudes after digit forms — `by one` / `up one` / `one point`.
+    m = _CLAIM_WORD_ABS.search(text)
+    if m:
+        raw = m.group(0).strip()
+        if re.search(r"\bby\s+a\s+point\b", raw, re.I):
+            return {"amount": 1, "population": None, "raw": raw}
+        words = re.findall(
+            r"\b(one|two|three|four|five|six|seven|eight|nine|ten)\b",
+            raw,
+            re.I,
+        )
+        if words:
+            amount = _WORD_AMOUNTS[words[-1].lower()]
+            return {"amount": int(amount), "population": None, "raw": raw}
     m = _CLAIM_SIGNED.search(text)
     if m:
         return {"amount": int(m.group(2)), "population": None, "raw": m.group(0).strip()}
