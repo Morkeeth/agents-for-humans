@@ -41,6 +41,10 @@ Slice 43: negated *rise* was still rise — `doesn't rise` / `never rises` /
 `won't improve` / `cannot improve` invented held on helped. Modal fall
 negation missed shall/ought/may (`shall not fall` invented held on hurt).
 Bare `no worse` / `no better` / `won't get worse` invented direction held.
+
+Slice 44: trailing comparator percents — `20% higher` / `20% lower` /
+`20% more` / `20% less` / `20% up` / `20% down` were unbound (pct=None) so
+direction invented held on absolute Δ=+20 while true 20% of pop 5 is +1.
 """
 from __future__ import annotations
 
@@ -202,6 +206,10 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # Slice 39: also "rises 20%", "improves 20%", "up 50%", "20% improvement"
 # (without `by` — was unbound; direction invented held on any rise).
 # Slice 40: same patterns with the word "percent" / "per cent" / "pct".
+# Slice 42: "50% better" / "50% worse" via better|worse in the trailing group.
+# Slice 44: "20% higher" / "20% lower" / "20% more" / "20% less" / "20% up" /
+# "20% down" — trailing comparator was unbound → direction invented held on
+# absolute-sized Δ (+20) while true 20% of pop 5 is +1.
 _CLAIM_PCT = re.compile(
     rf"(?:"
     rf"(?:by\s*|[+\-]\s*)(\d+)\s*{_PCT_UNIT}"  # by 20% / +20 percent
@@ -210,7 +218,7 @@ _CLAIM_PCT = re.compile(
     rf"gains?|jumps?|boosts?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
     rf"|"
     rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|"
-    rf"gain|loss|better|worse)"
+    rf"gain|loss|better|worse|higher|lower|more|less|up|down)"
     rf")",
     re.I,
 )
@@ -299,6 +307,13 @@ def prediction_intent(prediction: str) -> str:
         rf"(?<![/\d])\+\s*\d+\s*{_PCT_UNIT}", text
     ):
         return "rise"
+    # Slice 44: `20% more` / `20% less` have no rise/fall lexicon word — bind
+    # intent from the trailing comparator so percent grading can fire.
+    if claimed_percent(text)["percent"] is not None:
+        if re.search(rf"\d+\s*{_PCT_UNIT}\s+(?:higher|more|up)\b", text, re.I):
+            return "rise"
+        if re.search(rf"\d+\s*{_PCT_UNIT}\s+(?:lower|less|down)\b", text, re.I):
+            return "fall"
     # Triples / Nx without rise word still checkable as rise (factor ≥ 2).
     ratio = claimed_ratio(text)
     if ratio.get("factor") is not None and ratio["factor"] >= 2:

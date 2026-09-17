@@ -95,22 +95,22 @@ No number without the command that produced it, the population it is out of, and
 
 ## NOW
 
-**Slice 43.** Negated-rise honesty + shall/ought/may + bare no-worse/no-better.
+**Slice 44.** Percent higher/lower/more/less/up/down honesty.
 
-Ran objects (not titles):
-- `doesn't rise` / `never rises` / `won't improve` / `cannot improve` → intent=**rise** → helped invents **prediction-held** (THE LIE)
-- `shall not fall` / `ought not fall` / `may not fall` → intent=**fall** → hurt invents held
-- `no worse` → fall → hurt invents held; `no better` → rise → helped invents held
-- `won't get worse` / `cannot get worse` → fall → hurt invents held
+Ran objects after Slice 43:
+- `20% higher` / `20% up` / `20 percent higher` → intent=rise, **pct=None** → +1 and +20 both prediction-held (THE LIE — absolute-sized rise invents held)
+- `20% lower` / `20% down` → fall, pct=None (direction-only; no magnitude check)
+- `20% more` / `20% less` → unknown, unbound
+- Contrast: `higher by 20%` / `up by 20%` already parse pct=20 and miss on +20
 
-`won't rise` / `must not rise` already flat (Slice 35 partial). Close the rise-negation + modal gap.
-
-**Done when:** `python3 -m pytest -q` green · `magnet pred-demo` FINDING on negated-rise · `magnet check-docs` PASS · push.
+**Done when:** `claimed_percent("20% higher")==20` · +1 held / +20 missed · naive held on +20 · pred-demo FINDING · pytest green · check-docs PASS.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 
 ## LOG
+- 2026-09-17 · Slice 44 SHIP · `20% higher`/`more`/`up` percent-of-pop · embarrassed +4 · pred-demo 82/82 · `pytest -q` → 347 passed, 1 skipped · check-docs 16 PASS · docs 340→348
+- 2026-09-17 · Slice 44 START · ran objects: `20% higher`/`20% up`/`20 percent higher` → pct=None → +20 invents held. `20% more`/`less` unbound. Building trailing higher/lower/more/less/up/down percent forms.
 
 - 2026-09-17 · Slice 43 SHIP · negated-rise flat · shall/ought/may not fall flat · bare no worse/better flat · pred-demo 76/76 · `pytest -q` → 339 passed, 1 skipped · check-docs 16 PASS · docs 329→340
 - 2026-09-17 · Slice 43 START · ran objects: `doesn't rise`/`never rises`/`won't improve`/`cannot improve` → rise → helped invents held. `shall not fall`/`ought not fall`/`may not fall` → fall → hurt invents held. `no worse` → fall; `no better` → rise. `won't get worse` → fall. Building negated-rise + shall/ought/may + bare no-worse/better.

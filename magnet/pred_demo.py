@@ -809,6 +809,67 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=2,
         note="get worse under negation was still fall",
     ),
+    # Slice 44 — trailing comparator percents
+    PredScenario(
+        "pct_higher_holds",
+        "20% higher",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 44: 20% higher ≡ 20% of pop (Δ=+1 on pop 5)",
+    ),
+    PredScenario(
+        "pct_higher_missed",
+        "20% higher",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: trailing higher left pct=None → direction invented held on +20",
+    ),
+    PredScenario(
+        "pct_lower_missed",
+        "20% lower",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="20% lower unbound → direction invents held on absolute-sized fall",
+    ),
+    PredScenario(
+        "pct_more_holds",
+        "20% more",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="more/less bind intent from trailing comparator",
+    ),
+    PredScenario(
+        "pct_more_missed",
+        "20% more",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="20% more was unknown+unbound; now rise+percent misses abs",
+    ),
+    PredScenario(
+        "pct_up_missed",
+        "20% up",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="20% up had rise intent but no percent",
+    ),
 )
 
 
@@ -830,6 +891,7 @@ def run_pred_demo() -> str:
         "  never falls / cannot fall / won't decrease are flat — NOT fall (Slice 40).",
         "  never rises / doesn't rise / won't improve are flat — NOT rise (Slice 43).",
         "  shall/ought/may not fall + bare no worse/better are flat (Slice 43).",
+        "  `20% higher` / `20% more` / `20% up` are percent-of-pop (Slice 44).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -945,7 +1007,8 @@ def run_pred_demo() -> str:
             "`gains 20%` / `boosts by 20%` are rise+percent — not no-direction "
             "(Slice 42). `never rises` / `doesn't rise` / `won't improve` / "
             "`shall not fall` / bare `no worse` are flat — never invent held on "
-            "a negated move (Slice 43)."
+            "a negated move (Slice 43). `20% higher` / `20% more` / `20% up` are "
+            "percent-of-pop — never invent held on absolute Δ (Slice 44)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -982,5 +1045,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'never rises' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x \"shall not fall\" --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'no worse' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '20% higher' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '20% more' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
