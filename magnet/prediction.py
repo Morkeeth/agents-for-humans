@@ -61,6 +61,11 @@ no-direction while a claimable magnitude sat on the table (↑1/5 parsed
 amount via an old FRAC quirk but still no intent; ↓1/5 fully unbound).
 Bare `perfect score` / `perfect` / `full score` left target=None →
 no-direction; with population known, perfect means latest == pop.
+
+Slice 49: `climbs 1` / `slips 1` left amount=None so direction invented
+held on Δ=+20. `grows by 1` / `shrinks by 1` parsed amount but
+intent=unknown → no-direction. `5 out of 5` / `score of 5/5` /
+`full marks` / bare `100%` left unbound targets.
 """
 from __future__ import annotations
 
@@ -75,6 +80,7 @@ _RISE = re.compile(
     r"ris(?:e|es|ing)|up|improv(?:e|es|ed|ing|ement)?|increas(?:e|es|ed|ing)?|"
     r"higher|helped|gain|gains|jump|jumps|boost|boosts|\+\s*\d|coverage rises|"
     r"climb(?:s|ed|ing)?|"
+    r"grow(?:s|ing|th)?|"
     r"doubles?|twice|triples?|quadruples?|tenfold|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
     r"rebound(?:s|ed|ing)?|"
@@ -88,6 +94,7 @@ _FALL = re.compile(
     r"declin(?:e|es|ed|ing)?|worsen(?:s|ed|ing)?|slip(?:s|ped|ping)?|"
     r"halves?|half|"
     r"lower|down|regress|worse|"
+    r"shrink(?:s|ing)?|"
     r"crash(?:es|ed|ing)?|collaps(?:e|es|ed|ing)?|dive(?:s|d|ing)?|"
     r"plung(?:e|es|ed|ing)?|"
     r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
@@ -189,10 +196,10 @@ _FLOOR_ABOVE = re.compile(
 )
 
 # Ceiling claim (dual of floor): "at most 3/5", "no better than 3/5",
-# "no more than 4/5", "capped at 4/5", "must not exceed 4/5".
+# "no more than 4/5", "capped at 4/5", "must not exceed 4/5", "caps at 4/5".
 # Held when latest <= value.
 _CEILING = re.compile(
-    r"(?:at\s+most|no\s+better\s+than|no\s+more\s+than|capped\s+at|"
+    r"(?:at\s+most|no\s+better\s+than|no\s+more\s+than|capped\s+at|caps?\s+at|"
     r"must\s+not\s+exceed)\s+(\d+)(?:\s*/\s*(\d+))?",
     re.I,
 )
@@ -203,6 +210,7 @@ _CEILING = re.compile(
 # Slice 41: "falls to zero" / "goes to zero" / "goes to 0" / "perfect 5/5".
 # Slice 47: "crashes to 0" / "collapses to zero" / "soars to 5/5" /
 # "dives to 1/5" / "plunges to 0" / "spikes to 5".
+# Slice 49: "tops out at 5" / "maxes out at 5/5".
 # Direction alone is not the object — latest must match the named level.
 # THE LIE: "falls to zero" left target=None → hurt@latest=1 invented held.
 _TARGET = re.compile(
@@ -212,10 +220,23 @@ _TARGET = re.compile(
     r"spik(?:e|es)|balloon(?:s)?)\s+to|"
     r"reaches?|hits?|"
     r"(?:ends?|lands?|settles?)\s+at|"
+    r"(?:tops?|max(?:es)?)\s+out\s+at|"
     r"returns?\s+to|back\s+to|"
     r"(?:must\s+be\s+)?exactly|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Slice 49: "5 out of 5" / "5 out of five" — target value/pop.
+_OUT_OF = re.compile(
+    r"\b(\d+)\s+out\s+of\s+(\d+)\b",
+    re.I,
+)
+
+# Slice 49: "score of 5/5" / "score of 5" — target.
+_SCORE_OF = re.compile(
+    r"\bscore\s+of\s+(\d+)(?:\s*/\s*(\d+))?\b",
     re.I,
 )
 
@@ -298,11 +319,12 @@ _CLAIM_FRAC = re.compile(
 # Negative lookahead refuses digits that are part of a percent (`20%` / `20 percent`).
 # Slice 45: bare `up 1` / `down 1` (without `by`) — was unbound so direction
 # invented held on Δ=+20 while the claim said +1.
+# Slice 49: bare `climbs 1` / `slips 1` — same lie (intent set, amount=None).
 _CLAIM_ABS = re.compile(
     rf"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
     rf"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
-    rf"slips?\s+by\s+|"
-    rf"up\s+|down\s+"
+    rf"slips?\s+by\s+|grows?\s+by\s+|shrinks?\s+by\s+|"
+    rf"up\s+|down\s+|climbs?\s+|slips?\s+"
     rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
@@ -319,12 +341,16 @@ _CLAIM_SIGNED = re.compile(
 
 # Slice 48: unbound perfect / full / max score — no N/N on the table.
 # Resolves at check time to latest == population. `perfect 5/5` stays on _TARGET.
+# Slice 49: `full marks` / bare `100%` / `one hundred percent` — same resolve.
 _PERFECT_UNBOUND = re.compile(
     r"(?:"
     r"\b(?:(?:a|the)\s+)?(?:perfect|full|max(?:imum)?)\s+score\b|"
+    r"\bfull\s+marks\b|"
     r"\bscore(?:s|d)?\s+(?:a\s+)?perfect\b|"
     r"\b(?:reaches?|gets?|achieves?|hits?)\s+(?:a\s+)?perfect(?:\s+score)?\b|"
-    r"\bperfect\b(?!\s*(?:zero|\d))"
+    r"\bperfect\b(?!\s*(?:zero|\d))|"
+    r"(?<![/\d])100\s*%|"
+    r"\bone\s+hundred\s+percent\b"
     r")",
     re.I,
 )
@@ -548,7 +574,25 @@ def claimed_target(prediction: str) -> dict:
             "raw": raw,
             "perfect": False,
         }
-    # Slice 48: unbound perfect / full / max score — resolve vs pop at check.
+    # Slice 49: "5 out of 5" / "score of 5/5"
+    m = _OUT_OF.search(text)
+    if m:
+        return {
+            "value": int(m.group(1)),
+            "population": int(m.group(2)),
+            "raw": m.group(0).strip(),
+            "perfect": False,
+        }
+    m = _SCORE_OF.search(text)
+    if m:
+        pop = m.group(2)
+        return {
+            "value": int(m.group(1)),
+            "population": int(pop) if pop is not None else None,
+            "raw": m.group(0).strip(),
+            "perfect": False,
+        }
+    # Slice 48/49: unbound perfect / full marks / 100% — resolve vs pop at check.
     m = _PERFECT_UNBOUND.search(text)
     if m:
         return {

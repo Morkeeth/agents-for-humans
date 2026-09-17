@@ -95,14 +95,17 @@ No number without the command that produced it, the population it is out of, and
 | 46 | Signed +N/−N intent + from-to targets | `+1` rise · `from 3/5 to 4/5` target · pred-demo · pytest green |
 | 47 | Crash/collapse/soar to target | `crashes to 0`/`collapses to zero` target · pred-demo · pytest green |
 | 48 | Arrow glyphs + unbound perfect score | `↑1`/`↓1` magnitude · `perfect score`→pop · pred-demo · pytest green |
+| 49 | Climbs/slips · grows/shrinks · out-of/100% | `climbs 1` mag · `5 out of 5`/`100%` targets · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 48 done.** Next: `climbs 1`/`slips 1` magnitude · `grows/shrinks by N` intent · `5 out of 5`/`full marks`/`100%` · Oscar gates.
+**Slice 49 done.** Next: fat arrows `⬆1`/`▲1` · word-number magnitudes · Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-17 · Slice 49 SHIP · climbs/slips magnitude · grows/shrinks intent · `5 out of 5`/`score of`/`full marks`/`100%`/`tops out`/`caps at` · pred-demo 113/113 embarrassed 49 · `pytest -q` → 397 passed, 1 skipped · check-docs 16 PASS · docs 386→398 · branch `cursor/arrow-perfect-score-aead`
+- 2026-09-17 · Slice 49 START · ran objects: `climbs 1`/`slips 1` → intent set amount=None → direction invents held on Δ=+20. `grows by 1`/`shrinks by 1` → amount=1 intent=unknown → no-direction. `5 out of 5`/`score of 5/5`/`full marks`/`100%` → unbound. Building climbs/slips abs + grows/shrinks intent + out-of/score-of/full-marks/100% targets.
 - 2026-09-17 · Slice 48 SHIP · `↑1`/`↓1` intent+magnitude · unbound `perfect score`→pop · pred-demo 101/101 embarrassed 40 · `pytest -q` → 385 passed, 1 skipped · check-docs 16 PASS · docs 373→386 · branch `cursor/arrow-perfect-score-aead`
 - 2026-09-17 · Slice 48 START · ran objects: `↑1`/`↓1`/`pass rate ↑1` → intent=unknown amount=None → no-direction. `↑1/5` amount=1 but intent=unknown. `↓1/5` fully unbound. `perfect score`/`perfect`/`a perfect score` → target=None intent=unknown. Contrast: `perfect 5/5` grades; `up 1`/`+1` grade. Building arrow intent+magnitude + perfect→pop.
 - 2026-09-17 · Slice 47 SHIP · crashes/collapses/soars targets · from→to · pred-demo 95/95 embarrassed 37 · `pytest -q` → 372 passed, 1 skipped · check-docs 16 PASS · docs 362→373 · night stack S43–S47 · `git push origin main` → `574de6caf77a8bd285b2aa7651d5aa9a26d33c63`
