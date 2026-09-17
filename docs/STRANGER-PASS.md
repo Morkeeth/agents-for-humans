@@ -83,7 +83,7 @@ Exit code: **0** (verified: `python -m magnet.cli eval`)
 ## `pytest -q` output
 
 ```
-362 passed (re-derived 2026-09-12)
+373 passed (re-derived 2026-09-12)
 ```
 
 Exit code: **0** (verified: `python3 -m pytest -q` on 2026-09-12)
@@ -233,15 +233,15 @@ When README claims `99 tools` but source has 4, `check_docs` exits 1:
 pytest tests/test_check_docs_drift.py::test_check_docs_catches_wrong_tool_count -q
 ```
 
-Verified: **362 passed**
+Verified: **373 passed**
 
-When STRANGER-PASS claims `362 passed` but source has more tests than that, `check_docs` exits 1:
+When STRANGER-PASS claims `373 passed` but source has more tests than that, `check_docs` exits 1:
 
 ```
 pytest tests/test_check_docs_pytest_count.py -q
 ```
 
-Verified: **362 passed**
+Verified: **373 passed**
 
 ## `magnet stack-demo` output (Slice 15 · closed loop)
 

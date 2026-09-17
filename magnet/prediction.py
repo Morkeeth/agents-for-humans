@@ -52,6 +52,9 @@ on Δ=+20 while the claim said magnitude 1 (`up by 1` already graded).
 Slice 46: bare signed `+1` / `-1` parsed amount but intent=unknown (word
 boundary before `+` fails) → no-direction while a claimable magnitude sat
 on the table. Sign owns rise/fall intent.
+
+Slice 47: crash/collapse/soar/dive/plunge/spike `to N`; `from A to B` /
+`A → B` transitions — destination is the target. Unbound left no-direction.
 """
 from __future__ import annotations
 
@@ -69,6 +72,7 @@ _RISE = re.compile(
     r"doubles?|twice|triples?|quadruples?|tenfold|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
     r"rebound(?:s|ed|ing)?|"
+    r"soar(?:s|ed|ing)?|spik(?:e|es|ed|ing)?|balloon(?:s|ed|ing)?|"
     r"better"
     r")\b",
     re.I,
@@ -78,6 +82,8 @@ _FALL = re.compile(
     r"declin(?:e|es|ed|ing)?|worsen(?:s|ed|ing)?|slip(?:s|ped|ping)?|"
     r"halves?|half|"
     r"lower|down|regress|worse|"
+    r"crash(?:es|ed|ing)?|collaps(?:e|es|ed|ing)?|dive(?:s|d|ing)?|"
+    r"plung(?:e|es|ed|ing)?|"
     r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
     re.I,
 )
@@ -189,17 +195,34 @@ _CEILING = re.compile(
 # "lands at 4/5", "returns to 4/5", "climbs to 5/5", "improves to 4/5",
 # "exactly 4/5", "must be exactly 4/5", "lands at exactly 4/5".
 # Slice 41: "falls to zero" / "goes to zero" / "goes to 0" / "perfect 5/5".
+# Slice 47: "crashes to 0" / "collapses to zero" / "soars to 5/5" /
+# "dives to 1/5" / "plunges to 0" / "spikes to 5".
 # Direction alone is not the object — latest must match the named level.
 # THE LIE: "falls to zero" left target=None → hurt@latest=1 invented held.
 _TARGET = re.compile(
     r"(?:"
-    r"(?:falls?|drops?|rises?|climbs?|improves?|goes?)\s+to|"
+    r"(?:falls?|drops?|rises?|climbs?|improves?|goes?|"
+    r"crash(?:es)?|collaps(?:e|es)|soar(?:s)?|dive(?:s)?|plung(?:e|es)|"
+    r"spik(?:e|es)|balloon(?:s)?)\s+to|"
     r"reaches?|hits?|"
     r"(?:ends?|lands?|settles?)\s+at|"
     r"returns?\s+to|back\s+to|"
     r"(?:must\s+be\s+)?exactly|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
+    re.I,
+)
+
+# Slice 47: transition claims — destination is the target.
+# "from 3/5 to 4/5", "goes from 2 to 0", "3/5 → 4/5", "3→4".
+# THE LIE: unbound → no-direction while a named end-state sat on the table.
+_FROM_TO = re.compile(
+    r"(?:"
+    r"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
+    r"from\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    r"|"
+    r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s*(?:→|->|➞)\s*(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    r")",
     re.I,
 )
 
@@ -421,6 +444,9 @@ def claimed_target(prediction: str) -> dict:
 
     Slice 41: `zero` ≡ 0; `goes to` / `perfect` / `full` / `max` open targets.
     THE LIE: `falls to zero` left target=None so hurt@latest=1 invented held.
+
+    Slice 47: crash/collapse/soar/dive/plunge/spike verbs; `from A to B` /
+    `A → B` transitions — destination is the target.
     """
     text = prediction or ""
     if claimed_level(text)["value"] is not None:
@@ -430,16 +456,52 @@ def claimed_target(prediction: str) -> dict:
     if claimed_ceiling(text)["value"] is not None:
         return {"value": None, "population": None, "raw": None}
     m = _TARGET.search(text)
+    if m:
+        raw = m.group(0).strip()
+        if re.search(r"\bzero\b", raw, re.I):
+            value = 0
+        elif m.group(1) is not None:
+            value = int(m.group(1))
+        else:
+            return {"value": None, "population": None, "raw": None}
+        pop = m.group(2)
+        return {
+            "value": value,
+            "population": int(pop) if pop is not None else None,
+            "raw": raw,
+        }
+    m = _FROM_TO.search(text)
     if not m:
         return {"value": None, "population": None, "raw": None}
     raw = m.group(0).strip()
-    if re.search(r"\bzero\b", raw, re.I):
-        value = 0
-    elif m.group(1) is not None:
-        value = int(m.group(1))
+    # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
+    # `zero` leaves the digit group None — detect via the raw destination text.
+    if m.group(1) is not None or m.group(3) is not None or re.search(
+        r"\bfrom\b", raw, re.I
+    ):
+        to_chunk = re.split(r"\bto\b", raw, maxsplit=1, flags=re.I)[-1].strip()
+        if re.match(r"zero\b", to_chunk, re.I):
+            value = 0
+            pop = None
+        else:
+            value = int(m.group(3)) if m.group(3) is not None else None
+            pop = m.group(4)
     else:
+        # arrow form
+        arrow_split = re.split(r"→|->|➞", raw, maxsplit=1)
+        to_chunk = arrow_split[-1].strip() if len(arrow_split) > 1 else ""
+        if re.match(r"zero\b", to_chunk, re.I):
+            value = 0
+            pop = None
+        else:
+            value = int(m.group(7)) if m.group(7) is not None else None
+            pop = m.group(8)
+    if value is None:
         return {"value": None, "population": None, "raw": None}
-    pop = m.group(2)
+    # Destination pop may be in to_chunk as N/P
+    pop_m = re.search(r"/\s*(\d+)", to_chunk)
+    if pop_m:
+        pop = pop_m.group(1)
     return {
         "value": value,
         "population": int(pop) if pop is not None else None,

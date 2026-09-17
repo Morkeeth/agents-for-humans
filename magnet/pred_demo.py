@@ -942,6 +942,67 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=24,
         note="word-boundary before + failed after space",
     ),
+    # Slice 47 — crash/collapse/soar targets + from→to
+    PredScenario(
+        "crashes_to_zero_holds",
+        "crashes to zero",
+        "hurt",
+        -3,
+        5,
+        "prediction-held",
+        latest_value=0,
+        note="Slice 47: crash/collapse open targets like falls to zero",
+    ),
+    PredScenario(
+        "crashes_to_zero_missed",
+        "crashes to zero",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=1,
+        note="THE LIE: crashes unbound → no-direction; direction invents held off-zero",
+    ),
+    PredScenario(
+        "soars_to_missed",
+        "soars to 5/5",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="soar unbound → direction invents held at wrong latest",
+    ),
+    PredScenario(
+        "from_to_holds",
+        "from 3/5 to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="from→to destination is the target",
+    ),
+    PredScenario(
+        "from_to_missed",
+        "from 3/5 to 4/5",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="wrong destination latest must miss",
+    ),
+    PredScenario(
+        "arrow_to_missed",
+        "3/5 → 4/5",
+        "helped",
+        1,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="arrow transition destination grades latest",
+    ),
 )
 
 
@@ -966,6 +1027,7 @@ def run_pred_demo() -> str:
         "  `20% higher` / `20% more` / `20% up` are percent-of-pop (Slice 44).",
         "  bare `up 1` / `down 1` grade magnitude (Slice 45).",
         "  bare `+1` / `-1` own rise/fall intent (Slice 46).",
+        "  crashes/collapses/soars to N + from→to destinations are targets (Slice 47).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1085,7 +1147,9 @@ def run_pred_demo() -> str:
             "percent-of-pop — never invent held on absolute Δ (Slice 44). "
             "bare `up 1` / `down 1` grade magnitude — never invent held on "
             "absolute Δ (Slice 45). bare `+1` / `-1` own rise/fall intent — "
-            "never leave a claimable magnitude as no-direction (Slice 46)."
+            "never leave a claimable magnitude as no-direction (Slice 46). "
+            "`crashes to zero` / `soars to N` / `from A to B` are targets — "
+            "never invent held off the named destination (Slice 47)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1128,5 +1192,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'down 1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '+1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '-1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'crashes to zero' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'from 3/5 to 4/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
