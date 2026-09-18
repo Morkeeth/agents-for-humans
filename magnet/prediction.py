@@ -83,6 +83,13 @@ Slice 52: `100 percent` / `100 pct` unbound while `100%` grades.
 unbound. `stays green` / `still green` unbound perfect-like.
 THE LIE: `remains green` was flat lexicon without perfect resolve →
 invents held at latest=4. `zero failures` / `all tests pass` unbound.
+
+Slice 53: emoji presentation `⬆️1` / `⬇️1` (U+2B06/U+2B07 + FE0F)
+left amount=None while intent rose/fell → invents held on Δ=+20.
+Double-struck `⇑1` / `⇧1` / triangle emoji `🔼1` unbound.
+Word-number percents `twenty percent higher` / `improves by twenty
+percent` left pct=None → invents held on absolute Δ=+20 while true
+20% of pop 5 is +1.
 """
 from __future__ import annotations
 
@@ -90,10 +97,13 @@ import re
 
 from magnet.reporter import Verdict
 
-# Arrow glyph families — Slice 48 thin ↑↓; Slice 50 fat ⬆⬇▲▼⇈⇊.
-_ARROW_UP = "↑⬆▲⇈"
-_ARROW_DOWN = "↓⬇▼⇊"
+# Arrow glyph families — Slice 48 thin ↑↓; Slice 50 fat ⬆⬇▲▼⇈⇊;
+# Slice 53 double-struck ⇑⇓⇧⇩ + triangle emoji 🔼🔽.
+# FE0F (emoji presentation) may follow black arrows — strip before digit claim.
+_ARROW_UP = "↑⬆▲⇈⇑⇧🔼"
+_ARROW_DOWN = "↓⬇▼⇊⇓⇩🔽"
 _ARROW_ANY = _ARROW_UP + _ARROW_DOWN
+_FE0F = "\ufe0f"
 
 # Word → int for magnitude ("by one", "two points"). Never ranks by spelling beauty.
 _WORD_AMOUNTS = {
@@ -108,6 +118,21 @@ _WORD_AMOUNTS = {
     "eight": 8,
     "nine": 9,
     "ten": 10,
+}
+
+# Slice 53: word → percent ("twenty percent higher"). Distinct from magnitude
+# words — twenty is not a point-delta on a 5-pop probe.
+_WORD_PERCENTS = {
+    "ten": 10,
+    "twenty": 20,
+    "thirty": 30,
+    "forty": 40,
+    "fifty": 50,
+    "sixty": 60,
+    "seventy": 70,
+    "eighty": 80,
+    "ninety": 90,
+    "hundred": 100,
 }
 
 # Lexical intent only — never ranks by the prediction's wording beauty.
@@ -316,15 +341,28 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # Slice 44: "20% higher" / "20% lower" / "20% more" / "20% less" / "20% up" /
 # "20% down" — trailing comparator was unbound → direction invented held on
 # absolute-sized Δ (+20) while true 20% of pop 5 is +1.
+# Slice 53: word-number percents — `twenty percent higher` / `improves by
+# twenty percent` left pct=None → invents held on absolute Δ.
+_WORD_PCT_RE = (
+    r"(?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)"
+)
 _CLAIM_PCT = re.compile(
     rf"(?:"
     rf"(?:by\s*|[+\-]\s*)(\d+)\s*{_PCT_UNIT}"  # by 20% / +20 percent
     rf"|"
+    rf"(?:by\s*|[+\-]\s*)({_WORD_PCT_RE})\s*{_PCT_UNIT}"  # by twenty percent
+    rf"|"
     rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|"
     rf"gains?|jumps?|boosts?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
     rf"|"
+    rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|"
+    rf"gains?|jumps?|boosts?|up|down)\s+({_WORD_PCT_RE})\s*{_PCT_UNIT}"
+    rf"|"
     rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|"
     rf"gain|loss|better|worse|higher|lower|more|less|up|down)"
+    rf"|"
+    rf"({_WORD_PCT_RE})\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|"
+    rf"fall|drop|gain|loss|better|worse|higher|lower|more|less|up|down)"
     rf")",
     re.I,
 )
@@ -361,7 +399,7 @@ _RATIO = re.compile(
 # Claimed magnitude: "rises by 1/5", "falls by 2/7", "+1/5", "by 1/5".
 # Slice 48/50: arrow glyphs (thin + fat) own N/P.
 _CLAIM_FRAC = re.compile(
-    rf"(?:by\s*|[+\-]\s*|[{_ARROW_ANY}]\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
+    rf"(?:by\s*|[+\-]\s*|[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
@@ -382,10 +420,10 @@ _CLAIM_ABS = re.compile(
     rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
-# Slice 48/50: arrow glyphs `↑1` / `⬇1` / `▲1` — absolute magnitude.
-# THE LIE: unbound left no-direction; direction-only would invent held on Δ=+20.
+# Slice 48/50/53: arrow glyphs `↑1` / `⬇1` / `▲1` / `⬆️1` — absolute magnitude.
+# THE LIE Slice 53: FE0F between glyph and digit left amount=None → invents held.
 _CLAIM_ARROW_ABS = re.compile(
-    rf"[{_ARROW_ANY}]\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    rf"[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
 )
 # Slice 50: word magnitudes — `by one` / `up one` / `rises by two` / `one point`.
 # THE LIE: intent set, amount=None → direction invents held on Δ=+20.
@@ -788,7 +826,13 @@ def claimed_percent(prediction: str) -> dict:
     m = _CLAIM_PCT.search(text)
     if not m:
         return {"percent": None, "raw": None}
-    pct = next(g for g in m.groups() if g is not None)
+    raw_tok = next(g for g in m.groups() if g is not None)
+    if raw_tok.isdigit():
+        pct = int(raw_tok)
+    else:
+        pct = _WORD_PERCENTS.get(raw_tok.lower())
+        if pct is None:
+            return {"percent": None, "raw": None}
     return {"percent": int(pct), "raw": m.group(0).strip()}
 
 

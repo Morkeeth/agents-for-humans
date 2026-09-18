@@ -1468,6 +1468,57 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="all tests pass / everything passes",
     ),
+    # Slice 53 — emoji FE0F arrows · double-struck · word-number percent
+    PredScenario(
+        "emoji_arrow_holds",
+        "⬆️1",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 53: FE0F emoji arrow owns magnitude",
+    ),
+    PredScenario(
+        "emoji_arrow_missed",
+        "⬆️1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: FE0F blocked digit → amount=None invented held",
+    ),
+    PredScenario(
+        "double_struck_missed",
+        "⇑1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="⇑/⇧/🔼 grade like ↑/⬆",
+    ),
+    PredScenario(
+        "word_twenty_pct_missed",
+        "twenty percent higher",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: word twenty left pct=None; invents held on Δ=+20",
+    ),
+    PredScenario(
+        "word_twenty_pct_holds",
+        "improves by twenty percent",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="twenty percent of pop 5 ≡ Δ+1",
+    ),
 )
 
 
@@ -1501,6 +1552,7 @@ def run_pred_demo() -> str:
         "  `all green` / `all passing` / `passes all` resolve to population (Slice 50).",
         "  `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude (Slice 51).",
         "  `100 percent` / `5 of 5` / `scores 5/5` / `stays green` resolve (Slice 52).",
+        "  emoji `⬆️1` / `⇑1` + word `twenty percent` grade (Slice 53).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1638,7 +1690,10 @@ def run_pred_demo() -> str:
             "magnitude — never invent held on absolute Δ (Slice 51). "
             "`100 percent` / `5 of 5` / `scores 5/5` / `remains green` / "
             "`stays green` / `zero failures` resolve to population or "
-            "named level — never invent held off-perfect (Slice 52)."
+            "named level — never invent held off-perfect (Slice 52). "
+            "`⬆️1` / `⇑1` grade magnitude through FE0F; `twenty percent "
+            "higher` is percent-of-pop — never invent held on absolute Δ "
+            "(Slice 53)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1702,5 +1757,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '5 of 5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'scores 5/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'remains green' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '⬆️1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '⇑1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'twenty percent higher' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
