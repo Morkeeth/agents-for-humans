@@ -100,15 +100,17 @@ No number without the command that produced it, the population it is out of, and
 | 51 | Gains/loses/plus/minus · a-point magnitude | `gains one`/`up a point` miss Δ+20 · `plus 1`/`loses one` grade · pred-demo · pytest green |
 | 52 | Percent-word perfect · N-of-N · green/failures | `100 percent`/`5 of 5`/`scores 5/5`/`stays green` · remains-green lie · pred-demo · pytest green |
 | 53 | Emoji arrows FE0F · word-number percent | `⬆️1` miss Δ+20 · `⇑1`/`⇧1` · `twenty percent higher` · pred-demo · pytest green |
+| 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 53 done.** Next: word `from three to four` · bare `twenty percent` without comparator · Oscar gates (film · Devpost paste · submit).
+**Slice 54.** `from three to four` / `goes from three to five` / `from one to zero` unbound while `from 3 to 4` grades destination. Building word-number from→to targets.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-18 · Slice 53 SHIP · emoji FE0F `⬆️1` lie · `⇑1`/`⇧1`/`🔼1` · word `twenty percent higher` · pred-demo 146/146 embarrassed 72 · `pytest -q` → 428 passed, 1 skipped · check-docs 16 PASS · docs 422→429 · branch `cursor/arrow-perfect-night-92a3`
+- 2026-09-18 · Slice 54 START · ran objects: `from three to four`/`goes from three to five`/`from one to zero` → target=None. Contrast: `from 3 to 4` @4 held / @3 missed (naive held). tip `f68c690`.
+- 2026-09-18 · Slice 53 SHIP · emoji FE0F `⬆️1` lie · `⇑1`/`⇧1`/`🔼1` · word `twenty percent higher` · pred-demo 146/146 embarrassed 72 · `pytest -q` → 428 passed, 1 skipped · check-docs 16 PASS · docs 422→429 · cold clone `/tmp/magnet-cold-s53` @ `f68c690adc44dd308302c4e23644a65ad14b3c44` JUDGE DEMO OK · `git push origin main` → `f68c690adc44dd308302c4e23644a65ad14b3c44`
 - 2026-09-18 · Slice 53 START · ran objects: `⬆️1` codepoints U+2B06,U+FE0F,U+31 → rise+amount=None → magnet=naive=held on Δ=+20. `⇑1`/`⇧1`/`🔼1` fully unbound. `twenty percent higher`/`improves by twenty percent` → rise pct=None → held on Δ=+20 (true 20% of pop5 is +1). Contrast: `⬆1`/`20% higher`/`improves by 20 percent` grade. tip `db67cac`.
 - 2026-09-18 · Slice 52 SHIP · `100 percent`/`5 of 5`/`scores 5/5`/`remains green` lie · pred-demo 141/141 embarrassed 69 · `pytest -q` → 421 passed, 1 skipped · check-docs 16 PASS · docs 415→422 · branch `cursor/arrow-perfect-night-92a3` · `git push origin main` → `db67cacdf992ee79895ee389caeedc4f94afddee`
 - 2026-09-18 · Slice 52 START · ran objects: `100 percent`/`5 of 5`/`scores 5/5`/`stays green`/`still green`/`zero failures` → no-direction. `remains green` flat+held @4 (lie — no perfect resolve). Contrast: `100%`/`5 out of 5`/`hits 5/5`/`all green` grade. `git push origin main` → `83b958f72426fe45dfe3370d5d6566b7ee40c44a`

@@ -1519,6 +1519,47 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="twenty percent of pop 5 ≡ Δ+1",
     ),
+    # Slice 54 — word from→to
+    PredScenario(
+        "word_from_to_holds",
+        "from three to four",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 54: word destination grades latest",
+    ),
+    PredScenario(
+        "word_from_to_missed",
+        "from three to four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: word from→to unbound left no-direction",
+    ),
+    PredScenario(
+        "goes_from_word_missed",
+        "goes from three to five",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="goes from WORD to WORD destination",
+    ),
+    PredScenario(
+        "from_one_to_zero_missed",
+        "from one to zero",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=1,
+        note="word zero destination",
+    ),
 )
 
 
@@ -1553,6 +1594,7 @@ def run_pred_demo() -> str:
         "  `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude (Slice 51).",
         "  `100 percent` / `5 of 5` / `scores 5/5` / `stays green` resolve (Slice 52).",
         "  emoji `⬆️1` / `⇑1` + word `twenty percent` grade (Slice 53).",
+        "  word `from three to four` destinations are targets (Slice 54).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1693,7 +1735,8 @@ def run_pred_demo() -> str:
             "named level — never invent held off-perfect (Slice 52). "
             "`⬆️1` / `⇑1` grade magnitude through FE0F; `twenty percent "
             "higher` is percent-of-pop — never invent held on absolute Δ "
-            "(Slice 53)."
+            "(Slice 53). word `from three to four` destinations grade "
+            "latest — never invent held off the named end-state (Slice 54)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1760,5 +1803,6 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '⬆️1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '⇑1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'twenty percent higher' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'from three to four' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

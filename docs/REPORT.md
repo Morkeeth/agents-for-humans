@@ -16,13 +16,13 @@
 ### Slice 31 — Stale Devpost sidecar refresh + check_docs RED
 - Re-derived `history.txt` / `one-workflow.txt` with prediction `outcome`
 - check_docs fails if history lacks outcome/claimed or one-workflow lacks outcome
-- **429** pytest tests (re-derived from `tests/test_*.py`)
+- **435** pytest tests (re-derived from `tests/test_*.py`)
 
 ## VERIFIED
 
 | Claim | Command |
 |-------|---------|
-| Tests | `python3 -m pytest -q` → 429 passed |
+| Tests | `python3 -m pytest -q` → 435 passed |
 | check_docs | `magnet check-docs` → 15 PASS (incl. history + one-workflow outcome) |
 | history sidecar | `docs/screenshots/history.txt` contains `outcome` + `claimed` |
 | one-workflow | `docs/screenshots/one-workflow.txt` contains `outcome` |

@@ -90,6 +90,9 @@ Double-struck `⇑1` / `⇧1` / triangle emoji `🔼1` unbound.
 Word-number percents `twenty percent higher` / `improves by twenty
 percent` left pct=None → invents held on absolute Δ=+20 while true
 20% of pop 5 is +1.
+
+Slice 54: word from→to `from three to four` / `goes from three to five`
+/ `from one to zero` left target=None while digit `from 3 to 4` grades.
 """
 from __future__ import annotations
 
@@ -317,6 +320,7 @@ _SCORES_SLASH = re.compile(
 # Slice 47: transition claims — destination is the target.
 # "from 3/5 to 4/5", "goes from 2 to 0", "3/5 → 4/5", "3→4".
 # THE LIE: unbound → no-direction while a named end-state sat on the table.
+# Slice 54: word forms "from three to four" / "from one to zero".
 _FROM_TO = re.compile(
     r"(?:"
     r"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
@@ -324,6 +328,28 @@ _FROM_TO = re.compile(
     r"|"
     r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s*(?:→|->|➞)\s*(?:zero|(\d+))(?:\s*/\s*(\d+))?"
     r")",
+    re.I,
+)
+_WORD_LEVEL_RE = r"(?:zero|one|two|three|four|five|six|seven|eight|nine|ten)"
+_WORD_LEVELS = {
+    "zero": 0,
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
+_FROM_TO_WORDS = re.compile(
+    rf"(?:"
+    rf"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
+    rf"from\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"\s+to\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf")",
     re.I,
 )
 
@@ -706,6 +732,27 @@ def claimed_target(prediction: str) -> dict:
             pop = pop_m.group(1)
         return {
             "value": value,
+            "population": int(pop) if pop is not None else None,
+            "raw": raw,
+            "perfect": False,
+        }
+    # Slice 54: word from→to — destination is the target.
+    m = _FROM_TO_WORDS.search(text)
+    if m:
+        raw = m.group(0).strip()
+        dest_word = m.group(3).lower()
+        value = _WORD_LEVELS.get(dest_word)
+        if value is None:
+            return empty
+        pop_tok = m.group(4)
+        pop = None
+        if pop_tok is not None:
+            if pop_tok.isdigit():
+                pop = int(pop_tok)
+            else:
+                pop = _WORD_LEVELS.get(pop_tok.lower())
+        return {
+            "value": int(value),
             "population": int(pop) if pop is not None else None,
             "raw": raw,
             "perfect": False,
