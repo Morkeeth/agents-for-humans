@@ -77,6 +77,12 @@ amount=None with rise intent → invents held on Δ=+20 (`gains by one` /
 `up by a point` already graded). `loses one` / `plus 1` / `minus 1` /
 `adds 1` / `subtracts 1` fully unbound. `regresses by one` amount on
 table but intent unknown (`regress` missed `regresses`).
+
+Slice 52: `100 percent` / `100 pct` unbound while `100%` grades.
+`5 of 5` unbound while `5 out of 5` grades. `scores 5/5` / `still 5/5`
+unbound. `stays green` / `still green` unbound perfect-like.
+THE LIE: `remains green` was flat lexicon without perfect resolve →
+invents held at latest=4. `zero failures` / `all tests pass` unbound.
 """
 from __future__ import annotations
 
@@ -177,7 +183,9 @@ _NEGATED_MOVE = re.compile(
 )
 _FLAT = re.compile(
     r"\b(unchanged|no\s+change|same|stable|flat|"
-    r"no\s+coverage\s+change|nothing\s+moves?|still\s+pass|remain(?:s|ing)?\s+green|"
+    r"no\s+coverage\s+change|nothing\s+moves?|still\s+pass|"
+    # Slice 52: green/perfect stay phrases move to _PERFECT_UNBOUND —
+    # remain(s) green alone was flat without perfect resolve → invents held.
     r"stay(?:s|ing)?\s+at|must\s+stay|"
     r"remain(?:s|ing)?\s+at|hold(?:s|ing)?\s+at|keep(?:s|ing)?\s+at|"
     r"must\s+(?:remain|hold|keep)|"
@@ -262,14 +270,22 @@ _TARGET = re.compile(
 )
 
 # Slice 49: "5 out of 5" / "5 out of five" — target value/pop.
+# Slice 52: bare "5 of 5" (without "out") was unbound.
 _OUT_OF = re.compile(
-    r"\b(\d+)\s+out\s+of\s+(\d+)\b",
+    r"\b(\d+)\s+(?:out\s+)?of\s+(\d+)\b",
     re.I,
 )
 
 # Slice 49: "score of 5/5" / "score of 5" — target.
 _SCORE_OF = re.compile(
     r"\bscore\s+of\s+(\d+)(?:\s*/\s*(\d+))?\b",
+    re.I,
+)
+
+# Slice 52: "scores 5/5" / "gets 5/5" / "marks 5/5" / "still 5/5".
+# THE LIE: unbound → no-direction while a named level sat on the table.
+_SCORES_SLASH = re.compile(
+    r"\b(?:scores?|gets?|marks?|still)\s+(\d+)\s*/\s*(\d+)\b",
     re.I,
 )
 
@@ -403,6 +419,9 @@ _CLAIM_SIGNED = re.compile(
 # Resolves at check time to latest == population. `perfect 5/5` stays on _TARGET.
 # Slice 49: `full marks` / bare `100%` / `one hundred percent` — same resolve.
 # Slice 50: `all green` / `all passing` / `passes all` — perfect-like.
+# Slice 52: `100 percent` / `100 pct` (word form of bare 100%); stays/still/
+# remains/back-to green; zero/no failures; all-tests/everything passes;
+# flawless / clean sweep. THE LIE: `remains green` was flat without resolve.
 _PERFECT_UNBOUND = re.compile(
     r"(?:"
     r"\b(?:(?:a|the)\s+)?(?:perfect|full|max(?:imum)?)\s+score\b|"
@@ -413,7 +432,16 @@ _PERFECT_UNBOUND = re.compile(
     r"\b(?:reaches?|gets?|achieves?|hits?)\s+(?:a\s+)?perfect(?:\s+score)?\b|"
     r"\bperfect\b(?!\s*(?:zero|\d))|"
     r"(?<![/\d])100\s*%|"
-    r"\bone\s+hundred\s+percent\b"
+    r"(?<![/\d])100\s+(?:percent|per\s*cent|pct)\b|"
+    r"\bone\s+hundred\s+percent\b|"
+    r"\b(?:stay(?:s|ing)?|still|remain(?:s|ing)?|back\s+to)\s+green\b|"
+    r"\b(?:zero|no)\s+failures?\b|"
+    r"\bnothing\s+fails\b|"
+    r"\ball\s+tests?\s+pass(?:es|ing)?\b|"
+    r"\beverything\s+passes\b|"
+    r"\bpasses\s+everything\b|"
+    r"\bflawless\b|"
+    r"\bclean\s+sweep\b"
     r")",
     re.I,
 )
@@ -662,7 +690,16 @@ def claimed_target(prediction: str) -> dict:
             "raw": m.group(0).strip(),
             "perfect": False,
         }
-    # Slice 48/49: unbound perfect / full marks / 100% — resolve vs pop at check.
+    # Slice 52: scores/gets/marks/still N/N
+    m = _SCORES_SLASH.search(text)
+    if m:
+        return {
+            "value": int(m.group(1)),
+            "population": int(m.group(2)),
+            "raw": m.group(0).strip(),
+            "perfect": False,
+        }
+    # Slice 48/49/52: unbound perfect / full marks / 100% / green / failures
     m = _PERFECT_UNBOUND.search(text)
     if m:
         return {

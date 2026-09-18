@@ -98,15 +98,17 @@ No number without the command that produced it, the population it is out of, and
 | 49 | Climbs/slips · grows/shrinks · out-of/100% | `climbs 1` mag · `5 out of 5`/`100%` targets · pred-demo · pytest green |
 | 50 | Fat arrows · word magnitudes · all green | `⬆1`/`▲1` · `by one`/`one point` · `all green` · pred-demo · pytest green |
 | 51 | Gains/loses/plus/minus · a-point magnitude | `gains one`/`up a point` miss Δ+20 · `plus 1`/`loses one` grade · pred-demo · pytest green |
+| 52 | Percent-word perfect · N-of-N · green/failures | `100 percent`/`5 of 5`/`scores 5/5`/`stays green` · remains-green lie · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 51 done.** Next: `100 percent`/`100 pct` · `5 of 5` · `scores 5/5` · `stays green`/`still green` · `zero failures` (objects unbound after S51).
+**Slice 52.** `100 percent`/`100 pct` unbound (100% grades). `5 of 5` unbound (`5 out of 5` grades). `scores 5/5`/`still 5/5` unbound. `stays green`/`still green` unbound. **THE LIE:** `remains green` → flat invents held @ latest=4. `zero failures`/`all tests pass` unbound. Building percent-word perfect + N-of-N + scores/still + green/failures perfect-like.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-18 · Slice 51 SHIP · gains/loses/plus/minus · bare a-point · pred-demo 132/132 embarrassed 62 · `pytest -q` → 414 passed, 1 skipped · check-docs 16 PASS · docs 406→415 · branch `cursor/arrow-perfect-night-92a3`
+- 2026-09-18 · Slice 52 START · ran objects: `100 percent`/`5 of 5`/`scores 5/5`/`stays green`/`still green`/`zero failures` → no-direction. `remains green` flat+held @4 (lie — no perfect resolve). Contrast: `100%`/`5 out of 5`/`hits 5/5`/`all green` grade. `git push origin main` → `83b958f72426fe45dfe3370d5d6566b7ee40c44a`
+- 2026-09-18 · Slice 51 SHIP · gains/loses/plus/minus · bare a-point · pred-demo 132/132 embarrassed 62 · `pytest -q` → 414 passed, 1 skipped · check-docs 16 PASS · docs 406→415 · branch `cursor/arrow-perfect-night-92a3` · `git push origin main` → `83b958f72426fe45dfe3370d5d6566b7ee40c44a`
 - 2026-09-18 · Slice 51 START · ran objects on tip after S48–S50 land: `gains one`/`up a point`/`rises a point`/`gains 1` → rise+amount=None → magnet=naive=prediction-held on Δ=+20. `loses one`/`plus 1`/`minus 1`/`adds 1`/`subtracts 1` → fully unbound. Contrast: `gains by one`/`up by a point`/`improves one` already grade. Branch `cursor/arrow-perfect-night-92a3`.
 - 2026-09-18 · Slice 48–50 LAND · cherry-pick from `cursor/arrow-perfect-score-aead` onto main tip · `pytest -q` → 405 passed, 1 skipped · check-docs 16 PASS · objects re-derived: `↑1`/`perfect score`/`⬆1`/`climbs 1` grade.
 - 2026-09-17 · Slice 50 SHIP · fat arrows ⬆⬇▲▼⇈⇊ · word magnitudes by one/one point/up one · all green/passing · pred-demo 123/123 embarrassed 56 · `pytest -q` → 405 passed, 1 skipped · check-docs 16 PASS · docs 398→406 · cold clone `/tmp/magnet-cold-s50` · branch `cursor/arrow-perfect-score-aead`

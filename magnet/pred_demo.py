@@ -1377,6 +1377,97 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="subtracts is fall+magnitude",
     ),
+    # Slice 52 — 100 percent · N of N · scores/still · green/failures
+    PredScenario(
+        "hundred_percent_word_missed",
+        "100 percent",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: 100 percent unbound while 100% graded",
+    ),
+    PredScenario(
+        "hundred_pct_word_holds",
+        "100 pct",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="100 pct resolves to population",
+    ),
+    PredScenario(
+        "n_of_n_missed",
+        "5 of 5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: bare N of N unbound; out of graded",
+    ),
+    PredScenario(
+        "scores_slash_missed",
+        "scores 5/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="scores/gets/marks/still N/N are targets",
+    ),
+    PredScenario(
+        "still_slash_holds",
+        "still 5/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=5,
+        note="still N/N grades latest",
+    ),
+    PredScenario(
+        "remains_green_missed",
+        "remains green",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="THE LIE: flat invents held without perfect resolve",
+    ),
+    PredScenario(
+        "stays_green_missed",
+        "stays green",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="stays/still green resolve to population",
+    ),
+    PredScenario(
+        "zero_failures_missed",
+        "zero failures",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="zero/no failures are perfect→pop",
+    ),
+    PredScenario(
+        "all_tests_pass_missed",
+        "all tests pass",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=4,
+        note="all tests pass / everything passes",
+    ),
 )
 
 
@@ -1409,6 +1500,7 @@ def run_pred_demo() -> str:
         "  fat arrows `⬆1`/`▲1` + word magnitudes `by one`/`one point` (Slice 50).",
         "  `all green` / `all passing` / `passes all` resolve to population (Slice 50).",
         "  `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude (Slice 51).",
+        "  `100 percent` / `5 of 5` / `scores 5/5` / `stays green` resolve (Slice 52).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1543,7 +1635,10 @@ def run_pred_demo() -> str:
             "leave a word or fat-arrow claim as no-direction (Slice 50). "
             "`all green` / `all passing` resolve to population (Slice 50). "
             "`gains one` / `up a point` / `plus 1` / `loses one` grade "
-            "magnitude — never invent held on absolute Δ (Slice 51)."
+            "magnitude — never invent held on absolute Δ (Slice 51). "
+            "`100 percent` / `5 of 5` / `scores 5/5` / `remains green` / "
+            "`stays green` / `zero failures` resolve to population or "
+            "named level — never invent held off-perfect (Slice 52)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1603,5 +1698,9 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'up a point' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'plus 1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'loses one' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '100 percent' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '5 of 5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'scores 5/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'remains green' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
