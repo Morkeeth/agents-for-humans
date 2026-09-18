@@ -1286,6 +1286,97 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="all passing / passes all are perfect→pop",
     ),
+    # Slice 51 — gains/loses/plus/minus · bare a-point
+    PredScenario(
+        "gains_one_holds",
+        "gains one",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 51: gains one ≡ magnitude 1",
+    ),
+    PredScenario(
+        "gains_one_missed",
+        "gains one",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: amount=None invented held on Δ=+20",
+    ),
+    PredScenario(
+        "up_a_point_missed",
+        "up a point",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: a point without by left amount=None",
+    ),
+    PredScenario(
+        "gains_1_missed",
+        "gains 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="gains N digit form",
+    ),
+    PredScenario(
+        "loses_one_missed",
+        "loses one",
+        "hurt",
+        -20,
+        5,
+        "prediction-missed",
+        latest_value=0,
+        note="THE LIE: loses one was fully unbound",
+    ),
+    PredScenario(
+        "plus_1_missed",
+        "plus 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="plus N owns rise+magnitude like +N",
+    ),
+    PredScenario(
+        "minus_1_holds",
+        "minus 1",
+        "hurt",
+        -1,
+        5,
+        "prediction-held",
+        latest_value=3,
+        note="minus N owns fall+magnitude",
+    ),
+    PredScenario(
+        "adds_1_missed",
+        "adds 1",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="adds/subtracts grade magnitude",
+    ),
+    PredScenario(
+        "subtracts_1_holds",
+        "subtracts 1",
+        "hurt",
+        -1,
+        5,
+        "prediction-held",
+        latest_value=3,
+        note="subtracts is fall+magnitude",
+    ),
 )
 
 
@@ -1317,6 +1408,7 @@ def run_pred_demo() -> str:
         "  `5 out of 5` / `score of N/N` / `full marks` / `100%` are targets (Slice 49).",
         "  fat arrows `⬆1`/`▲1` + word magnitudes `by one`/`one point` (Slice 50).",
         "  `all green` / `all passing` / `passes all` resolve to population (Slice 50).",
+        "  `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude (Slice 51).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1449,7 +1541,9 @@ def run_pred_demo() -> str:
             "targets — never invent held off the named level (Slice 49). "
             "`⬆1` / `▲1` / `up by one` / `one point` grade magnitude — never "
             "leave a word or fat-arrow claim as no-direction (Slice 50). "
-            "`all green` / `all passing` resolve to population (Slice 50)."
+            "`all green` / `all passing` resolve to population (Slice 50). "
+            "`gains one` / `up a point` / `plus 1` / `loses one` grade "
+            "magnitude — never invent held on absolute Δ (Slice 51)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1505,5 +1599,9 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '⬆1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'up by one' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'all green' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'gains one' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'up a point' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'plus 1' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'loses one' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

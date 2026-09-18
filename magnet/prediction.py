@@ -71,6 +71,12 @@ Slice 50: fat arrows `⬆1` / `⬇1` / `▲1` / `▼1` unbound like ↑/↓ were
 Word magnitudes `by one` / `one point` / `up one` / `rises by two` left
 amount=None so direction invented held on Δ=+20. `all green` /
 `all passing` / `passes all` unbound perfect-like.
+
+Slice 51: `gains one` / `up a point` / `rises a point` / `gains 1` left
+amount=None with rise intent → invents held on Δ=+20 (`gains by one` /
+`up by a point` already graded). `loses one` / `plus 1` / `minus 1` /
+`adds 1` / `subtracts 1` fully unbound. `regresses by one` amount on
+table but intent unknown (`regress` missed `regresses`).
 """
 from __future__ import annotations
 
@@ -106,6 +112,7 @@ _RISE = re.compile(
     r"higher|helped|gain|gains|jump|jumps|boost|boosts|\+\s*\d|coverage rises|"
     r"climb(?:s|ed|ing)?|"
     r"grow(?:s|ing|th)?|"
+    r"add|adds|adding|"
     r"doubles?|twice|triples?|quadruples?|tenfold|"
     r"recover(?:s|ed|ing|y)?|restor(?:e|es|ed|ing)|regain(?:s|ed|ing)?|"
     r"rebound(?:s|ed|ing)?|"
@@ -118,8 +125,9 @@ _FALL = re.compile(
     r"\b(fall|falls|falling|drop|drops|dropping|hurt|decreas(?:e|es|ed|ing)?|"
     r"declin(?:e|es|ed|ing)?|worsen(?:s|ed|ing)?|slip(?:s|ped|ping)?|"
     r"halves?|half|"
-    r"lower|down|regress|worse|"
+    r"lower|down|regress(?:es|ed|ing)?|worse|"
     r"shrink(?:s|ing)?|"
+    r"lose|loses|losing|subtract(?:s|ed|ing)?|"
     r"crash(?:es|ed|ing)?|collaps(?:e|es|ed|ing)?|dive(?:s|d|ing)?|"
     r"plung(?:e|es|ed|ing)?|"
     r"simplify|simplifies|simplifying|streamline|relax|remove|strip|undo|revert|weaken)\b",
@@ -345,11 +353,16 @@ _CLAIM_FRAC = re.compile(
 # Slice 45: bare `up 1` / `down 1` (without `by`) — was unbound so direction
 # invented held on Δ=+20 while the claim said +1.
 # Slice 49: bare `climbs 1` / `slips 1` — same lie (intent set, amount=None).
+# Slice 51: `gains 1` / `loses 1` / `adds 1` / `subtracts 1` / `plus 1` /
+# `minus 1` — same lie (or fully unbound).
 _CLAIM_ABS = re.compile(
     rf"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
     rf"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
     rf"slips?\s+by\s+|grows?\s+by\s+|shrinks?\s+by\s+|"
-    rf"up\s+|down\s+|climbs?\s+|slips?\s+"
+    rf"gains?\s+by\s+|loses?\s+by\s+|adds?\s+by\s+|subtracts?\s+by\s+|"
+    rf"up\s+|down\s+|climbs?\s+|slips?\s+|"
+    rf"gains?\s+|loses?\s+|adds?\s+|subtracts?\s+|"
+    rf"plus\s+|minus\s+"
     rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
@@ -360,15 +373,21 @@ _CLAIM_ARROW_ABS = re.compile(
 )
 # Slice 50: word magnitudes — `by one` / `up one` / `rises by two` / `one point`.
 # THE LIE: intent set, amount=None → direction invents held on Δ=+20.
+# Slice 51: `gains one` / `loses one` / `plus one` / `up a point` (no `by`).
 _WORD_AMOUNT_RE = (
     r"(?:one|two|three|four|five|six|seven|eight|nine|ten)"
+)
+_MOVE_VERBS = (
+    r"up|down|rises?|falls?|drops?|climbs?|slips?|grows?|shrinks?|"
+    r"improves?|declines?|worsens?|gains?|loses?|adds?|subtracts?|"
+    r"regresses?"
 )
 _CLAIM_WORD_ABS = re.compile(
     rf"(?:"
     rf"by\s+a\s+point|"
     rf"by\s+{_WORD_AMOUNT_RE}(?:\s+points?)?|"
-    rf"(?:up|down|rises?|falls?|drops?|climbs?|slips?|grows?|shrinks?|"
-    rf"improves?|declines?|worsens?)\s+(?:by\s+)?{_WORD_AMOUNT_RE}"
+    rf"(?:{_MOVE_VERBS}|plus|minus)\s+a\s+point|"
+    rf"(?:{_MOVE_VERBS}|plus|minus)\s+(?:by\s+)?{_WORD_AMOUNT_RE}"
     rf"(?:\s+points?)?|"
     rf"{_WORD_AMOUNT_RE}\s+points?"
     rf")\b",
@@ -437,6 +456,13 @@ def prediction_intent(prediction: str) -> str:
     signed = _CLAIM_SIGNED.search(text)
     if signed is not None:
         return "rise" if signed.group(1) == "+" else "fall"
+    # Slice 51: word plus/minus (`plus 1` / `minus one`) — not in rise/fall
+    # lexicon (would collide with "plus or minus" noise), but when a magnitude
+    # sits next to them they own direction like signed +/−.
+    if re.search(rf"\bplus\s+(?:a\s+point|{_WORD_AMOUNT_RE}|\d+)\b", text, re.I):
+        return "rise"
+    if re.search(rf"\bminus\s+(?:a\s+point|{_WORD_AMOUNT_RE}|\d+)\b", text, re.I):
+        return "fall"
     # Slice 48/50: arrow glyphs are not word characters — lexicon `\b` misses them.
     # THE LIE: `↑1` / `⬆1` amount unbound + intent unknown → no-direction.
     if any(ch in text for ch in _ARROW_UP):
@@ -771,10 +797,11 @@ def claimed_magnitude(prediction: str) -> dict:
     if m:
         return {"amount": int(m.group(1)), "population": None, "raw": m.group(0).strip()}
     # Slice 50: word magnitudes after digit forms — `by one` / `up one` / `one point`.
+    # Slice 51: `gains one` / `up a point` / `plus one`.
     m = _CLAIM_WORD_ABS.search(text)
     if m:
         raw = m.group(0).strip()
-        if re.search(r"\bby\s+a\s+point\b", raw, re.I):
+        if re.search(r"\ba\s+point\b", raw, re.I):
             return {"amount": 1, "population": None, "raw": raw}
         words = re.findall(
             r"\b(one|two|three|four|five|six|seven|eight|nine|ten)\b",
