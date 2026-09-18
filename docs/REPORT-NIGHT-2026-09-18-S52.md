@@ -19,7 +19,7 @@
 | `remains green` lie | same @ latest=4 | magnet missed / naive held |
 | Suite | `python3 -m pytest -q` | **421 passed, 1 skipped** (422 collected) |
 | Docs | `magnet check-docs` | **16 PASS** |
-| Pred-demo | `magnet pred-demo` | see LOG (re-derived at ship) |
+| Pred-demo | `magnet pred-demo` | **141/141** magnet · embarrassed **69** |
 
 ## WRONG
 
