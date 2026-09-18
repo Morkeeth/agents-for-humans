@@ -109,7 +109,7 @@ No number without the command that produced it, the population it is out of, and
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-18 · Slice 54 SHIP · word `from three to four`/`goes from three to five`/`from one to zero` · pred-demo 150/150 embarrassed 74 · `pytest -q` → 434 passed, 1 skipped · check-docs 16 PASS · docs 429→435 · `git push origin main` → `9084060ec0be1066df336dbfc01ed2033be4546f`
+- 2026-09-18 · Slice 54 SHIP · word `from three to four`/`goes from three to five`/`from one to zero` · pred-demo 150/150 embarrassed 74 · `pytest -q` → 434 passed, 1 skipped · check-docs 16 PASS · docs 429→435 · `git push origin main` → `79f093625bdf9ad3e0e89a58285952b8d37e72c9`
 - 2026-09-18 · Slice 54 START · ran objects: `from three to four`/`goes from three to five`/`from one to zero` → target=None. Contrast: `from 3 to 4` @4 held / @3 missed (naive held). tip `f68c690`.
 - 2026-09-18 · Slice 53 SHIP · emoji FE0F `⬆️1` lie · `⇑1`/`⇧1`/`🔼1` · word `twenty percent higher` · pred-demo 146/146 embarrassed 72 · `pytest -q` → 428 passed, 1 skipped · check-docs 16 PASS · docs 422→429 · cold clone `/tmp/magnet-cold-s53` @ `f68c690adc44dd308302c4e23644a65ad14b3c44` JUDGE DEMO OK · `git push origin main` → `f68c690adc44dd308302c4e23644a65ad14b3c44`
 - 2026-09-18 · Slice 53 START · ran objects: `⬆️1` codepoints U+2B06,U+FE0F,U+31 → rise+amount=None → magnet=naive=held on Δ=+20. `⇑1`/`⇧1`/`🔼1` fully unbound. `twenty percent higher`/`improves by twenty percent` → rise pct=None → held on Δ=+20 (true 20% of pop5 is +1). Contrast: `⬆1`/`20% higher`/`improves by 20 percent` grade. tip `db67cac`.
