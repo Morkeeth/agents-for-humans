@@ -115,6 +115,10 @@ Slice 58: teen word-percents `fifteen percent` / `fifteen percent higher`
 left pct=None → rise invents held on absolute Δ=+20 while 15% of pop 5
 is +1. `must be four` / `must be 4` / `should be four` left target=None
 while `must be exactly 4` grades.
+
+Slice 59: compound word-percents `twenty-five percent` / `twenty five
+percent` / `seventy-five percent` left pct=None → `twenty-five percent
+higher` invents held on absolute Δ=+20 while 25% of pop 5 is +1.
 """
 from __future__ import annotations
 
@@ -148,6 +152,7 @@ _WORD_AMOUNTS = {
 # Slice 53: word → percent ("twenty percent higher"). Distinct from magnitude
 # words — twenty is not a point-delta on a 5-pop probe.
 # Slice 58: teens (`fifteen`) — were unbound while `15%` graded.
+# Slice 59: compounds (`twenty-five` / `twenty five`) — unbound while `25%`.
 _WORD_PERCENTS = {
     "ten": 10,
     "eleven": 11,
@@ -169,6 +174,33 @@ _WORD_PERCENTS = {
     "ninety": 90,
     "hundred": 100,
 }
+_TENS_WORDS = (
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+)
+_ONES_WORDS = (
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+)
+# Fill twenty-five / twenty five … ninety-nine.
+for _tens in _TENS_WORDS:
+    for _ones in _ONES_WORDS:
+        _val = _WORD_PERCENTS[_tens] + _WORD_AMOUNTS[_ones]
+        _WORD_PERCENTS[f"{_tens}-{_ones}"] = _val
+        _WORD_PERCENTS[f"{_tens} {_ones}"] = _val
 
 # Lexical intent only — never ranks by the prediction's wording beauty.
 # improv(?:e|…) — bare `improv` failed word-boundary on "improves" (Slice 35).
@@ -408,9 +440,14 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # twenty percent` left pct=None → invents held on absolute Δ.
 # Slice 55: bare `twenty percent` / `20%` (no by / verb / comparator).
 _WORD_PCT_RE = (
-    r"(?:ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|"
+    r"(?:"
+    # Slice 59 compounds before bare tens — `twenty-five` before `twenty`
+    r"(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)"
+    r"(?:[-\s](?:one|two|three|four|five|six|seven|eight|nine))|"
+    r"ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|"
     r"eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|"
-    r"ninety|hundred)"
+    r"ninety|hundred"
+    r")"
 )
 # Slice 57: word destinations for target verbs — `exactly four`, `falls to
 # four`, `reaches five`, `exactly twenty`. Tens words reuse _WORD_PCT_RE

@@ -1844,6 +1844,47 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="should/ought-to be WORD",
     ),
+    # Slice 59 — compound word-percents
+    PredScenario(
+        "twenty_five_percent_holds",
+        "twenty-five percent",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 59: 25% of pop 5 ≡ Δ+1",
+    ),
+    PredScenario(
+        "twenty_five_percent_missed",
+        "twenty-five percent higher",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: compound unbound → rise invents held on absolute Δ",
+    ),
+    PredScenario(
+        "twenty_five_spaced_missed",
+        "twenty five percent",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="spaced twenty five percent",
+    ),
+    PredScenario(
+        "seventy_five_holds",
+        "seventy-five percent",
+        "helped",
+        4,
+        5,
+        "prediction-held",
+        latest_value=8,
+        note="75% of pop 5 ≡ Δ+4",
+    ),
 )
 
 
@@ -1885,6 +1926,7 @@ def run_pred_demo() -> str:
         "  word arrows `three → four` / `three -> four` destinations (Slice 56).",
         "  `exactly four` / `falls to four` / `exactly twenty` targets (Slice 57).",
         "  `fifteen percent` teens + `must be four` targets (Slice 58).",
+        "  `twenty-five percent` / `seventy five percent` compounds (Slice 59).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -2040,7 +2082,9 @@ def run_pred_demo() -> str:
             "`fifteen percent` / teen word-percents are percent-of-pop — "
             "never invent held on absolute Δ (Slice 58). `must be four` / "
             "`must be 4` / `should be four` grade latest — never leave a "
-            "must-be claim as no-direction (Slice 58)."
+            "must-be claim as no-direction (Slice 58). `twenty-five "
+            "percent` / `seventy five percent` compounds are percent-of-pop "
+            "— never invent held on absolute Δ (Slice 59)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2125,5 +2169,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'fifteen percent higher' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'must be four' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'must be 4' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'twenty-five percent' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'twenty-five percent higher' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'seventy five percent' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
