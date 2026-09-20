@@ -101,14 +101,16 @@ No number without the command that produced it, the population it is out of, and
 | 52 | Percent-word perfect · N-of-N · green/failures | `100 percent`/`5 of 5`/`scores 5/5`/`stays green` · remains-green lie · pred-demo · pytest green |
 | 53 | Emoji arrows FE0F · word-number percent | `⬆️1` miss Δ+20 · `⇑1`/`⇧1` · `twenty percent higher` · pred-demo · pytest green |
 | 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
+| 55 | Bare to + bare percent | `three to four`/`3 to 4` · `twenty percent`/`20%` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 54 done.** Next: bare `three to four` (no from) · bare `twenty percent` without rise word · Oscar gates (film · Devpost paste · submit).
+**Slice 55 in progress.** Bare `three to four` (no from) · digit bare `3 to 4` · bare `twenty percent` / `20%` without rise word · `by twenty percent` intent.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-20 · Slice 55 START · ran objects: `three to four`/`3 to 4`/`3/5 to 4/5`/`zero to one` → target=None no-direction. `twenty percent`/`20%` → pct=None intent=unknown. `by twenty percent` → pct=20 intent=unknown → no-direction. Contrast: `from three to four` @4 held/@3 missed (naive held); `twenty percent higher` miss Δ+20 / hold Δ+1. tip `1e00f22`.
 - 2026-09-18 · Slice 54 SHIP · word `from three to four`/`goes from three to five`/`from one to zero` · pred-demo 150/150 embarrassed 74 · `pytest -q` → 434 passed, 1 skipped · check-docs 16 PASS · docs 429→435 · `git push origin main` → `79f093625bdf9ad3e0e89a58285952b8d37e72c9`
 - 2026-09-18 · Slice 54 START · ran objects: `from three to four`/`goes from three to five`/`from one to zero` → target=None. Contrast: `from 3 to 4` @4 held / @3 missed (naive held). tip `f68c690`.
 - 2026-09-18 · Slice 53 SHIP · emoji FE0F `⬆️1` lie · `⇑1`/`⇧1`/`🔼1` · word `twenty percent higher` · pred-demo 146/146 embarrassed 72 · `pytest -q` → 428 passed, 1 skipped · check-docs 16 PASS · docs 422→429 · cold clone `/tmp/magnet-cold-s53` @ `f68c690adc44dd308302c4e23644a65ad14b3c44` JUDGE DEMO OK · `git push origin main` → `f68c690adc44dd308302c4e23644a65ad14b3c44`

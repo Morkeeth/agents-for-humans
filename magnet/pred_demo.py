@@ -1560,6 +1560,87 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=1,
         note="word zero destination",
     ),
+    # Slice 55 — bare three→four (no from) + bare twenty percent
+    PredScenario(
+        "bare_three_to_four_holds",
+        "three to four",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 55: bare word destination grades latest",
+    ),
+    PredScenario(
+        "bare_three_to_four_missed",
+        "three to four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: bare three→four unbound left no-direction",
+    ),
+    PredScenario(
+        "bare_digit_to_missed",
+        "3 to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="bare digit 3 to 4 destination",
+    ),
+    PredScenario(
+        "bare_frac_to_holds",
+        "3/5 to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="bare N/P to N/P destination",
+    ),
+    PredScenario(
+        "bare_twenty_percent_missed",
+        "twenty percent",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: bare twenty percent unbound; absolute Δ invents held",
+    ),
+    PredScenario(
+        "bare_twenty_percent_holds",
+        "twenty percent",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="bare twenty percent of pop 5 ≡ Δ+1",
+    ),
+    PredScenario(
+        "bare_20pct_missed",
+        "20%",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="bare 20% same absolute-Δ lie",
+    ),
+    PredScenario(
+        "by_twenty_no_rise_missed",
+        "by twenty percent",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="pct parsed but intent unknown → no-direction; now rise",
+    ),
 )
 
 
@@ -1595,6 +1676,8 @@ def run_pred_demo() -> str:
         "  `100 percent` / `5 of 5` / `scores 5/5` / `stays green` resolve (Slice 52).",
         "  emoji `⬆️1` / `⇑1` + word `twenty percent` grade (Slice 53).",
         "  word `from three to four` destinations are targets (Slice 54).",
+        "  bare `three to four` / `3 to 4` destinations (Slice 55).",
+        "  bare `twenty percent` / `20%` are percent-of-pop rise (Slice 55).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1736,7 +1819,12 @@ def run_pred_demo() -> str:
             "`⬆️1` / `⇑1` grade magnitude through FE0F; `twenty percent "
             "higher` is percent-of-pop — never invent held on absolute Δ "
             "(Slice 53). word `from three to four` destinations grade "
-            "latest — never invent held off the named end-state (Slice 54)."
+            "latest — never invent held off the named end-state (Slice 54). "
+            "bare `three to four` / `3 to 4` destinations grade latest — "
+            "never leave a destination as no-direction (Slice 55). bare "
+            "`twenty percent` / `20%` / `by twenty percent` are "
+            "percent-of-pop rise — never invent held on absolute Δ "
+            "(Slice 55)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1804,5 +1892,10 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '⇑1' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'twenty percent higher' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'from three to four' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'three to four' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '3 to 4' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'twenty percent' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '20%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'by twenty percent' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

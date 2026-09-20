@@ -93,6 +93,13 @@ percent` left pct=None → invents held on absolute Δ=+20 while true
 
 Slice 54: word from→to `from three to four` / `goes from three to five`
 / `from one to zero` left target=None while digit `from 3 to 4` grades.
+
+Slice 55: bare `three to four` (no `from`) and digit bare `3 to 4` /
+`3/5 to 4/5` left target=None → no-direction while a destination sat on
+the table. Bare `twenty percent` / `20%` (no rise word, no comparator)
+left pct=None → no-direction; `by twenty percent` parsed pct but intent
+stayed unknown so percent grading never fired. Naming a percent-of-pop
+move without a rise word is still a rise claim (same spirit as Nx).
 """
 from __future__ import annotations
 
@@ -321,10 +328,12 @@ _SCORES_SLASH = re.compile(
 # "from 3/5 to 4/5", "goes from 2 to 0", "3/5 → 4/5", "3→4".
 # THE LIE: unbound → no-direction while a named end-state sat on the table.
 # Slice 54: word forms "from three to four" / "from one to zero".
+# Slice 55: `from` optional — bare `3 to 4` / `three to four` / `3/5 to 4/5`.
 _FROM_TO = re.compile(
     r"(?:"
     r"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
-    r"from\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    r"(?:from\s+)?"
+    r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
     r"|"
     r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s*(?:→|->|➞)\s*(?:zero|(\d+))(?:\s*/\s*(\d+))?"
     r")",
@@ -347,7 +356,8 @@ _WORD_LEVELS = {
 _FROM_TO_WORDS = re.compile(
     rf"(?:"
     rf"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
-    rf"from\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"(?:from\s+)?"
+    rf"({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
     rf"\s+to\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
     rf")",
     re.I,
@@ -369,6 +379,7 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # absolute-sized Δ (+20) while true 20% of pop 5 is +1.
 # Slice 53: word-number percents — `twenty percent higher` / `improves by
 # twenty percent` left pct=None → invents held on absolute Δ.
+# Slice 55: bare `twenty percent` / `20%` (no by / verb / comparator).
 _WORD_PCT_RE = (
     r"(?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)"
 )
@@ -389,6 +400,10 @@ _CLAIM_PCT = re.compile(
     rf"|"
     rf"({_WORD_PCT_RE})\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|"
     rf"fall|drop|gain|loss|better|worse|higher|lower|more|less|up|down)"
+    rf"|"
+    rf"({_WORD_PCT_RE})\s*{_PCT_UNIT}"  # bare twenty percent (Slice 55)
+    rf"|"
+    rf"(?<![/\d])(\d+)\s*{_PCT_UNIT}"  # bare 20% (Slice 55)
     rf")",
     re.I,
 )
@@ -575,11 +590,23 @@ def prediction_intent(prediction: str) -> str:
         return "flat"
     # Slice 44: `20% more` / `20% less` have no rise/fall lexicon word — bind
     # intent from the trailing comparator so percent grading can fire.
+    # Slice 55: bare `twenty percent` / `20%` / `by twenty percent` with no
+    # rise word — percent on the table is still a rise claim (else
+    # no-direction while pct sat unbound). Trailing lower/less/down stay fall.
     if claimed_percent(text)["percent"] is not None:
-        if re.search(rf"\d+\s*{_PCT_UNIT}\s+(?:higher|more|up)\b", text, re.I):
+        if re.search(
+            rf"(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}\s+(?:higher|more|up)\b",
+            text,
+            re.I,
+        ):
             return "rise"
-        if re.search(rf"\d+\s*{_PCT_UNIT}\s+(?:lower|less|down)\b", text, re.I):
+        if re.search(
+            rf"(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}\s+(?:lower|less|down)\b",
+            text,
+            re.I,
+        ):
             return "fall"
+        return "rise"
     # Triples / Nx without rise word still checkable as rise (factor ≥ 2).
     ratio = claimed_ratio(text)
     if ratio.get("factor") is not None and ratio["factor"] >= 2:
@@ -702,10 +729,16 @@ def claimed_target(prediction: str) -> dict:
     m = _FROM_TO.search(text)
     if m:
         raw = m.group(0).strip()
-        # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
-        # `zero` leaves the digit group None — detect via the raw destination text.
-        if m.group(1) is not None or m.group(3) is not None or re.search(
-            r"\bfrom\b", raw, re.I
+        # from/bare-to groups 1..4; arrow-form groups 5..8. Destination is
+        # groups 3/4 or 7/8. `zero` leaves the digit group None — detect via
+        # the raw destination text. Slice 55: bare `3 to 4` / `zero to 1`
+        # have no `from` and no arrow — still the to-split path.
+        has_arrow = bool(re.search(r"→|->|➞", raw))
+        if (
+            m.group(1) is not None
+            or m.group(3) is not None
+            or re.search(r"\bfrom\b", raw, re.I)
+            or (re.search(r"\bto\b", raw, re.I) and not has_arrow)
         ):
             to_chunk = re.split(r"\bto\b", raw, maxsplit=1, flags=re.I)[-1].strip()
             if re.match(r"zero\b", to_chunk, re.I):
@@ -736,7 +769,7 @@ def claimed_target(prediction: str) -> dict:
             "raw": raw,
             "perfect": False,
         }
-    # Slice 54: word from→to — destination is the target.
+    # Slice 54/55: word from→to / bare word→to — destination is the target.
     m = _FROM_TO_WORDS.search(text)
     if m:
         raw = m.group(0).strip()
@@ -868,7 +901,10 @@ def claimed_percent(prediction: str) -> dict:
         return {"percent": None, "raw": None}
     if claimed_ceiling(text)["value"] is not None:
         return {"percent": None, "raw": None}
-    if claimed_target(text)["value"] is not None:
+    # Perfect / unbound 100% owns the target — never percent-of-pop (Slice 55
+    # bare `%` must not steal `100%` → invent held on flat Δ=0).
+    tgt = claimed_target(text)
+    if tgt["value"] is not None or tgt.get("perfect"):
         return {"percent": None, "raw": None}
     m = _CLAIM_PCT.search(text)
     if not m:
