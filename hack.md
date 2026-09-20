@@ -103,14 +103,17 @@ No number without the command that produced it, the population it is out of, and
 | 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
 | 55 | Bare to + bare percent | `three to four`/`3 to 4` · `twenty percent`/`20%` · pred-demo · pytest green |
 | 56 | Signed word-percent · word arrows | `-twenty percent` fall · `three → four` · pred-demo · pytest green |
+| 57 | Word exactly/to targets | `exactly four` · `falls to four` · `exactly twenty` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 56 done.** Next: `exactly four`/`exactly twenty` word targets · `fifteen percent` · Oscar gates.
+**Slice 57 done.** Next: `fifteen percent` · `must be four` (no exactly) · Oscar gates.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-20 · Slice 57 SHIP · `exactly four`/`falls to four`/`exactly twenty`/`reaches five` · pred-demo 172/172 embarrassed 86 · `pytest -q` → 461 passed, 1 skipped · check-docs 15 PASS · docs 453→462 · branch `cursor/bare-to-percent-a57b`
+- 2026-09-20 · Slice 57 START · ran objects after S56: `exactly four`/`exactly five`/`exactly twenty` → target=None intent=flat → unchanged@3 invents held (digit `exactly 4` misses). `falls to four`/`reaches five`/`hits four` unbound. `exactly twenty percent` stays percent (not target). tip `92bd9ec`.
 - 2026-09-20 · Slice 56 SHIP · `-twenty percent`/`minus twenty percent` fall · word arrows `three → four`/`three -> four` · pred-demo 166/166 embarrassed 82 · docs 446→453 · branch `cursor/bare-to-percent-a57b`
 - 2026-09-20 · Slice 56 START · ran objects after S55: `-twenty percent`/`minus twenty percent` → intent=rise pct=20 → helped invents held (contrast `-20%`/`minus 20%` fall). `three → four`/`three -> four`/`one → zero` → target=None no-direction (digit `3→4` grades). tip `9a8655f`.
 - 2026-09-20 · Slice 55 SHIP · bare `three to four`/`3 to 4`/`3/5 to 4/5` · bare `twenty percent`/`20%`/`by twenty percent` rise · pred-demo 158/158 embarrassed 79 · `pytest -q` → 445 passed, 1 skipped · check-docs 15 PASS · docs 435→446 · branch `cursor/bare-to-percent-a57b`

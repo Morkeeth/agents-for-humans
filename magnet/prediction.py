@@ -105,6 +105,11 @@ Slice 56: signed word-percent `-twenty percent` / `minus twenty percent`
 left intent=rise (bare-percent default) while digit `-20%` / `minus 20%`
 correctly fall — invents held on helped. Word arrows `three → four` /
 `three -> four` left target=None while digit `3→4` grades.
+
+Slice 57: word targets `exactly four` / `falls to four` / `reaches five`
+/ `exactly twenty` left target=None. `exactly` alone is flat → unchanged
+invents held at any latest (digit `exactly 4` correctly misses). Do not
+steal `exactly twenty percent` into a target.
 """
 from __future__ import annotations
 
@@ -387,6 +392,26 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # Slice 55: bare `twenty percent` / `20%` (no by / verb / comparator).
 _WORD_PCT_RE = (
     r"(?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)"
+)
+# Slice 57: word destinations for target verbs — `exactly four`, `falls to
+# four`, `reaches five`, `exactly twenty`. Tens words reuse _WORD_PCT_RE
+# (twenty→20). Negative lookahead refuses `exactly twenty percent`.
+_TARGET_WORDS = re.compile(
+    rf"(?:"
+    rf"(?:falls?|drops?|rises?|climbs?|improves?|goes?|"
+    rf"crash(?:es)?|collaps(?:e|es)|soar(?:s)?|dive(?:s)?|plung(?:e|es)|"
+    rf"spik(?:e|es)|balloon(?:s)?)\s+to|"
+    rf"reaches?|hits?|"
+    rf"(?:ends?|lands?|settles?)\s+at|"
+    rf"(?:tops?|max(?:es)?)\s+out\s+at|"
+    rf"returns?\s+to|back\s+to|"
+    rf"(?:must\s+be\s+)?exactly|"
+    rf"perfect|full|max(?:imum)?"
+    rf")\s+(?:exactly\s+)?"
+    rf"({_WORD_LEVEL_RE}|{_WORD_PCT_RE})"
+    rf"(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"(?!\s*{_PCT_UNIT})",
+    re.I,
 )
 _CLAIM_PCT = re.compile(
     rf"(?:"
@@ -738,6 +763,31 @@ def claimed_target(prediction: str) -> dict:
         pop = m.group(2)
         return {
             "value": value,
+            "population": int(pop) if pop is not None else None,
+            "raw": raw,
+            "perfect": False,
+        }
+    # Slice 57: word targets — `exactly four` / `falls to four` / `exactly twenty`.
+    m = _TARGET_WORDS.search(text)
+    if m:
+        raw = m.group(0).strip()
+        word = m.group(1).lower()
+        value = _WORD_LEVELS.get(word)
+        if value is None:
+            value = _WORD_PERCENTS.get(word)
+        if value is None:
+            return empty
+        pop_tok = m.group(2)
+        pop = None
+        if pop_tok is not None:
+            if pop_tok.isdigit():
+                pop = int(pop_tok)
+            else:
+                pop = _WORD_LEVELS.get(pop_tok.lower())
+                if pop is None:
+                    pop = _WORD_PERCENTS.get(pop_tok.lower())
+        return {
+            "value": int(value),
             "population": int(pop) if pop is not None else None,
             "raw": raw,
             "perfect": False,
