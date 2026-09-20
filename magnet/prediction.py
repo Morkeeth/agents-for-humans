@@ -100,6 +100,11 @@ the table. Bare `twenty percent` / `20%` (no rise word, no comparator)
 left pct=None → no-direction; `by twenty percent` parsed pct but intent
 stayed unknown so percent grading never fired. Naming a percent-of-pop
 move without a rise word is still a rise claim (same spirit as Nx).
+
+Slice 56: signed word-percent `-twenty percent` / `minus twenty percent`
+left intent=rise (bare-percent default) while digit `-20%` / `minus 20%`
+correctly fall — invents held on helped. Word arrows `three → four` /
+`three -> four` left target=None while digit `3→4` grades.
 """
 from __future__ import annotations
 
@@ -358,7 +363,7 @@ _FROM_TO_WORDS = re.compile(
     rf"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
     rf"(?:from\s+)?"
     rf"({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
-    rf"\s+to\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"\s+(?:to|→|->|➞)\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
     rf")",
     re.I,
 )
@@ -548,12 +553,23 @@ def prediction_intent(prediction: str) -> str:
         return "unknown"
     # Percent owns `+20%` / `-20%` before signed-absolute intent (Slice 46 —
     # signed backtracking used to steal `-2` from `-20%`).
+    # Slice 56: word forms `+twenty percent` / `-twenty percent` / `plus
+    # twenty percent` / `minus twenty percent` — bare-percent defaulted to
+    # rise and invented held on helped when the claim said fall.
     if claimed_percent(text)["percent"] is not None and re.search(
-        rf"(?<![/\d])\+\s*\d+\s*{_PCT_UNIT}", text
+        rf"(?<![/\d])\+\s*(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}", text
     ):
         return "rise"
     if claimed_percent(text)["percent"] is not None and re.search(
-        rf"(?<![/\d])\-\s*\d+\s*{_PCT_UNIT}", text
+        rf"(?<![/\d])\-\s*(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}", text
+    ):
+        return "fall"
+    if claimed_percent(text)["percent"] is not None and re.search(
+        rf"\bplus\s+(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}", text, re.I
+    ):
+        return "rise"
+    if claimed_percent(text)["percent"] is not None and re.search(
+        rf"\bminus\s+(?:\d+|{_WORD_PCT_RE})\s*{_PCT_UNIT}", text, re.I
     ):
         return "fall"
     # Slice 46: bare signed deltas (`+1` / `-1` / `pass rate +1`). `_RISE`

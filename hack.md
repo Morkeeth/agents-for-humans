@@ -102,14 +102,18 @@ No number without the command that produced it, the population it is out of, and
 | 53 | Emoji arrows FE0F · word-number percent | `⬆️1` miss Δ+20 · `⇑1`/`⇧1` · `twenty percent higher` · pred-demo · pytest green |
 | 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
 | 55 | Bare to + bare percent | `three to four`/`3 to 4` · `twenty percent`/`20%` · pred-demo · pytest green |
+| 56 | Signed word-percent · word arrows | `-twenty percent` fall · `three → four` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 55 in progress.** Bare `three to four` (no from) · digit bare `3 to 4` · bare `twenty percent` / `20%` without rise word · `by twenty percent` intent.
+**Slice 56 done.** Next: `exactly four`/`exactly twenty` word targets · `fifteen percent` · Oscar gates.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-20 · Slice 56 SHIP · `-twenty percent`/`minus twenty percent` fall · word arrows `three → four`/`three -> four` · pred-demo 166/166 embarrassed 82 · docs 446→453 · branch `cursor/bare-to-percent-a57b`
+- 2026-09-20 · Slice 56 START · ran objects after S55: `-twenty percent`/`minus twenty percent` → intent=rise pct=20 → helped invents held (contrast `-20%`/`minus 20%` fall). `three → four`/`three -> four`/`one → zero` → target=None no-direction (digit `3→4` grades). tip `9a8655f`.
+- 2026-09-20 · Slice 55 SHIP · bare `three to four`/`3 to 4`/`3/5 to 4/5` · bare `twenty percent`/`20%`/`by twenty percent` rise · pred-demo 158/158 embarrassed 79 · `pytest -q` → 445 passed, 1 skipped · check-docs 15 PASS · docs 435→446 · branch `cursor/bare-to-percent-a57b`
 - 2026-09-20 · Slice 55 START · ran objects: `three to four`/`3 to 4`/`3/5 to 4/5`/`zero to one` → target=None no-direction. `twenty percent`/`20%` → pct=None intent=unknown. `by twenty percent` → pct=20 intent=unknown → no-direction. Contrast: `from three to four` @4 held/@3 missed (naive held); `twenty percent higher` miss Δ+20 / hold Δ+1. tip `1e00f22`.
 - 2026-09-18 · Slice 54 SHIP · word `from three to four`/`goes from three to five`/`from one to zero` · pred-demo 150/150 embarrassed 74 · `pytest -q` → 434 passed, 1 skipped · check-docs 16 PASS · docs 429→435 · `git push origin main` → `79f093625bdf9ad3e0e89a58285952b8d37e72c9`
 - 2026-09-18 · Slice 54 START · ran objects: `from three to four`/`goes from three to five`/`from one to zero` → target=None. Contrast: `from 3 to 4` @4 held / @3 missed (naive held). tip `f68c690`.
