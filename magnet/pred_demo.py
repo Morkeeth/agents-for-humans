@@ -1783,6 +1783,67 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="reaches WORD destination",
     ),
+    # Slice 58 — fifteen percent + must-be
+    PredScenario(
+        "fifteen_percent_holds",
+        "fifteen percent",
+        "helped",
+        1,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 58: fifteen percent of pop 5 ≡ Δ+1",
+    ),
+    PredScenario(
+        "fifteen_percent_missed",
+        "fifteen percent higher",
+        "helped",
+        20,
+        5,
+        "prediction-missed",
+        latest_value=24,
+        note="THE LIE: fifteen unbound → rise invents held on absolute Δ",
+    ),
+    PredScenario(
+        "must_be_four_holds",
+        "must be four",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 58: must be WORD destination",
+    ),
+    PredScenario(
+        "must_be_four_missed",
+        "must be four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: must be four unbound left no-direction",
+    ),
+    PredScenario(
+        "must_be_digit_missed",
+        "must be 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="must be N without exactly",
+    ),
+    PredScenario(
+        "should_be_four_missed",
+        "should be four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="should/ought-to be WORD",
+    ),
 )
 
 
@@ -1823,6 +1884,7 @@ def run_pred_demo() -> str:
         "  `-twenty percent` / `minus twenty percent` are fall (Slice 56).",
         "  word arrows `three → four` / `three -> four` destinations (Slice 56).",
         "  `exactly four` / `falls to four` / `exactly twenty` targets (Slice 57).",
+        "  `fifteen percent` teens + `must be four` targets (Slice 58).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1974,7 +2036,11 @@ def run_pred_demo() -> str:
             "arrows `three → four` destinations grade latest — never "
             "leave a destination as no-direction (Slice 56). `exactly "
             "four` / `falls to four` / `exactly twenty` grade latest — "
-            "never invent held off the named word level (Slice 57)."
+            "never invent held off the named word level (Slice 57). "
+            "`fifteen percent` / teen word-percents are percent-of-pop — "
+            "never invent held on absolute Δ (Slice 58). `must be four` / "
+            "`must be 4` / `should be four` grade latest — never leave a "
+            "must-be claim as no-direction (Slice 58)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2055,5 +2121,9 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'falls to four' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'exactly twenty' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'reaches five' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'fifteen percent' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'fifteen percent higher' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must be four' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must be 4' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

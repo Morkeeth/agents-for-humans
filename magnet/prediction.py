@@ -110,6 +110,11 @@ Slice 57: word targets `exactly four` / `falls to four` / `reaches five`
 / `exactly twenty` left target=None. `exactly` alone is flat → unchanged
 invents held at any latest (digit `exactly 4` correctly misses). Do not
 steal `exactly twenty percent` into a target.
+
+Slice 58: teen word-percents `fifteen percent` / `fifteen percent higher`
+left pct=None → rise invents held on absolute Δ=+20 while 15% of pop 5
+is +1. `must be four` / `must be 4` / `should be four` left target=None
+while `must be exactly 4` grades.
 """
 from __future__ import annotations
 
@@ -142,8 +147,18 @@ _WORD_AMOUNTS = {
 
 # Slice 53: word → percent ("twenty percent higher"). Distinct from magnitude
 # words — twenty is not a point-delta on a 5-pop probe.
+# Slice 58: teens (`fifteen`) — were unbound while `15%` graded.
 _WORD_PERCENTS = {
     "ten": 10,
+    "eleven": 11,
+    "twelve": 12,
+    "thirteen": 13,
+    "fourteen": 14,
+    "fifteen": 15,
+    "sixteen": 16,
+    "seventeen": 17,
+    "eighteen": 18,
+    "nineteen": 19,
     "twenty": 20,
     "thirty": 30,
     "forty": 40,
@@ -308,7 +323,9 @@ _TARGET = re.compile(
     r"(?:ends?|lands?|settles?)\s+at|"
     r"(?:tops?|max(?:es)?)\s+out\s+at|"
     r"returns?\s+to|back\s+to|"
-    r"(?:must\s+be\s+)?exactly|"
+    # Slice 58: must/should/ought-to be N (exactly optional) — was unbound
+    # while `must be exactly N` graded.
+    r"(?:must\s+be\s+)?exactly|must\s+be|should\s+be|ought\s+to\s+be|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
     re.I,
@@ -391,7 +408,9 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # twenty percent` left pct=None → invents held on absolute Δ.
 # Slice 55: bare `twenty percent` / `20%` (no by / verb / comparator).
 _WORD_PCT_RE = (
-    r"(?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)"
+    r"(?:ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|"
+    r"eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|"
+    r"ninety|hundred)"
 )
 # Slice 57: word destinations for target verbs — `exactly four`, `falls to
 # four`, `reaches five`, `exactly twenty`. Tens words reuse _WORD_PCT_RE
@@ -405,7 +424,7 @@ _TARGET_WORDS = re.compile(
     rf"(?:ends?|lands?|settles?)\s+at|"
     rf"(?:tops?|max(?:es)?)\s+out\s+at|"
     rf"returns?\s+to|back\s+to|"
-    rf"(?:must\s+be\s+)?exactly|"
+    rf"(?:must\s+be\s+)?exactly|must\s+be|should\s+be|ought\s+to\s+be|"
     rf"perfect|full|max(?:imum)?"
     rf")\s+(?:exactly\s+)?"
     rf"({_WORD_LEVEL_RE}|{_WORD_PCT_RE})"

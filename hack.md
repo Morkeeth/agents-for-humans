@@ -104,14 +104,17 @@ No number without the command that produced it, the population it is out of, and
 | 55 | Bare to + bare percent | `three to four`/`3 to 4` · `twenty percent`/`20%` · pred-demo · pytest green |
 | 56 | Signed word-percent · word arrows | `-twenty percent` fall · `three → four` · pred-demo · pytest green |
 | 57 | Word exactly/to targets | `exactly four` · `falls to four` · `exactly twenty` · pred-demo · pytest green |
+| 58 | Fifteen percent · must-be targets | `fifteen percent` · `must be four`/`must be 4` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 57 done.** Next: `fifteen percent` · `must be four` (no exactly) · Oscar gates.
+**Slice 58 done.** Next: `twenty-five percent` compounds · Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-20 · Slice 58 SHIP · teen `fifteen percent` · `must be four`/`must be 4`/`should be four` · pred-demo 178/178 embarrassed 90 · `pytest -q` → 469 passed, 1 skipped · check-docs 15 PASS · docs 462→470 · branch `cursor/bare-to-percent-a57b`
+- 2026-09-20 · Slice 58 START · ran objects after S57: `fifteen percent` → pct=None no-direction (`15%` grades). `fifteen percent higher` → rise pct=None → invents held on Δ=+20 (true 15% of pop5 ≈ +1). `must be four`/`must be 4` → target=None (`must be exactly 4` grades). tip `b585a60`.
 - 2026-09-20 · Slice 57 SHIP · `exactly four`/`falls to four`/`exactly twenty`/`reaches five` · pred-demo 172/172 embarrassed 86 · `pytest -q` → 461 passed, 1 skipped · check-docs 15 PASS · docs 453→462 · branch `cursor/bare-to-percent-a57b`
 - 2026-09-20 · Slice 57 START · ran objects after S56: `exactly four`/`exactly five`/`exactly twenty` → target=None intent=flat → unchanged@3 invents held (digit `exactly 4` misses). `falls to four`/`reaches five`/`hits four` unbound. `exactly twenty percent` stays percent (not target). tip `92bd9ec`.
 - 2026-09-20 · Slice 56 SHIP · `-twenty percent`/`minus twenty percent` fall · word arrows `three → four`/`three -> four` · pred-demo 166/166 embarrassed 82 · docs 446→453 · branch `cursor/bare-to-percent-a57b`
