@@ -26,5 +26,4 @@
 - Decimals are refused, not graded; a stranger claiming `improves 2.5%`
   still gets direction-only if a rise word is present — we do not yet
   parse real fractional percents.
-- Branch `cursor/bare-to-percent-4005` not yet on main; Oscar merge / push
-  main still open. Oscar gates still closed.
+- Landed on main @ `47dc268`. Oscar gates (film · Devpost · submit) still closed.
