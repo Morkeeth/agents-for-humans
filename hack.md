@@ -103,14 +103,17 @@ No number without the command that produced it, the population it is out of, and
 | 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
 | 55 | Bare word to · bare percent | `three to four` · `twenty percent`/`20%` · pred-demo · pytest green |
 | 56 | Bare digit to · mixed levels | `3 to 4`/`3/5 to 4/5`/`3 to four` · pred-demo · pytest green |
+| 57 | Decimal refuse · up to · down to | `2.5%`≠5 · `up to` ceiling · `down to` target · pytest green |
 
 ## NOW
 
-**Slice 56 done.** Next: probe remaining unbound prediction lexicon at the object · Oscar gates (film · Devpost paste · submit).
+**Slice 57 done.** Next: ordinals `3rd to 4th` / `third to fourth` · `equals 4/5` · Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-21 · Slice 57 SHIP · decimal refuse `2.5%`/`50.5%`/`by 1.5` (was inventing 5 / 1) · `up to N` ceiling · `down to N` target · pred-demo 167/167 embarrassed 85 · `pytest -q` → 460 passed, 1 skipped · check-docs 16 PASS · docs 453→461 · branch `cursor/bare-to-percent-4005`
+- 2026-09-21 · Slice 57 START · ran objects: `2.5%`→pct=5 · `50.5%`→pct=5 · `rises by 1.5`→amount=1 · `up to 4`→rise+no ceiling · `down to 2`→fall+no target. Contrast: `20%`/`rises by 1`/`at most 4`/`falls to 2` grade.
 - 2026-09-21 · Slice 56 SHIP · bare `3 to 4`/`3/5 to 4/5`/`goes 3 to 4` · mixed `three to 4`/`3 to four`/`zero to 4` · pred-demo 162/162 embarrassed 83 · `pytest -q` → 452 passed, 1 skipped · check-docs 16 PASS · docs 446→453 · branch `cursor/bare-to-percent-4005`
 - 2026-09-21 · Slice 56 START · ran objects: `3 to 4`/`3/5 to 4/5`/`goes 3 to 4`/`three to 4`/`3 to four`/`zero to 4` → target=None. Contrast: `from 3 to 4`/`three to four` grade.
 - 2026-09-21 · Slice 55 SHIP · bare `three to four`/`goes three to five`/`one to zero` · bare `twenty percent`/`20%`/`20 percent` · `by twenty percent` rise intent · `+twenty percent`/`-twenty percent` · pred-demo 157/157 embarrassed 79 · `pytest -q` → 445 passed, 1 skipped · check-docs 16 PASS · docs 435→446 · branch `cursor/bare-to-percent-4005`

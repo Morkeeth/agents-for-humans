@@ -103,6 +103,11 @@ intent=unknown → no-direction. Unsigned bare/by percent is a rise claim
 Slice 56: bare digit `3 to 4` / `3/5 to 4/5` / `goes 3 to 4` left
 target=None while `from 3 to 4` grades. Mixed `three to 4` / `3 to four`
 / `zero to 4` unbound. Destination is still the target.
+
+Slice 57: decimal truncation lie — `2.5%` / `50.5%` matched bare `5%`
+(invented pct=5); `rises by 1.5` matched `by 1` (invented amount=1).
+Integer claims must refuse digits that sit inside a decimal; leave
+unbound rather than invent a truncated figure.
 """
 from __future__ import annotations
 
@@ -276,10 +281,12 @@ _FLOOR_ABOVE = re.compile(
 
 # Ceiling claim (dual of floor): "at most 3/5", "no better than 3/5",
 # "no more than 4/5", "capped at 4/5", "must not exceed 4/5", "caps at 4/5".
+# Slice 57: "up to 4/5" — was rise lexicon (`up`) with no ceiling → invents
+# held on any helped while the named ceiling sat unbound.
 # Held when latest <= value.
 _CEILING = re.compile(
     r"(?:at\s+most|no\s+better\s+than|no\s+more\s+than|capped\s+at|caps?\s+at|"
-    r"must\s+not\s+exceed)\s+(\d+)(?:\s*/\s*(\d+))?",
+    r"must\s+not\s+exceed|up\s+to)\s+(\d+)(?:\s*/\s*(\d+))?",
     re.I,
 )
 
@@ -297,6 +304,7 @@ _TARGET = re.compile(
     r"(?:falls?|drops?|rises?|climbs?|improves?|goes?|"
     r"crash(?:es)?|collaps(?:e|es)|soar(?:s)?|dive(?:s)?|plung(?:e|es)|"
     r"spik(?:e|es)|balloon(?:s)?)\s+to|"
+    r"down\s+to|"  # Slice 57: "down to 2" was fall with no target
     r"reaches?|hits?|"
     r"(?:ends?|lands?|settles?)\s+at|"
     r"(?:tops?|max(?:es)?)\s+out\s+at|"
@@ -384,22 +392,27 @@ _PCT_UNIT = r"(?:%|percent\b|per\s*cent\b|pct\b)"
 # absolute-sized Δ (+20) while true 20% of pop 5 is +1.
 # Slice 53: word-number percents — `twenty percent higher` / `improves by
 # twenty percent` left pct=None → invents held on absolute Δ.
+# Integer token that refuses decimal fragments. THE LIE Slice 57:
+# bare `(\d+)%` matched the `5` in `2.5%` → invented pct=5; `by (\d+)`
+# matched the `1` in `by 1.5` → invented amount=1.
+_INT = r"(?<![.\d])(\d+)(?!\.\d)"
+
 _WORD_PCT_RE = (
     r"(?:ten|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)"
 )
 _CLAIM_PCT = re.compile(
     rf"(?:"
-    rf"(?:by\s*|[+\-]\s*)(\d+)\s*{_PCT_UNIT}"  # by 20% / +20 percent
+    rf"(?:by\s*|[+\-]\s*){_INT}\s*{_PCT_UNIT}"  # by 20% / +20 percent
     rf"|"
     rf"(?:by\s*|[+\-]\s*)({_WORD_PCT_RE})\s*{_PCT_UNIT}"  # by twenty percent
     rf"|"
     rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|"
-    rf"gains?|jumps?|boosts?|up|down)\s+(\d+)\s*{_PCT_UNIT}"
+    rf"gains?|jumps?|boosts?|up|down)\s+{_INT}\s*{_PCT_UNIT}"
     rf"|"
     rf"(?:rises?|falls?|drops?|improves?|increases?|decreases?|climbs?|"
     rf"gains?|jumps?|boosts?|up|down)\s+({_WORD_PCT_RE})\s*{_PCT_UNIT}"
     rf"|"
-    rf"(\d+)\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|"
+    rf"{_INT}\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|fall|drop|"
     rf"gain|loss|better|worse|higher|lower|more|less|up|down)"
     rf"|"
     rf"({_WORD_PCT_RE})\s*{_PCT_UNIT}\s+(?:improvement|increase|decrease|rise|"
@@ -408,7 +421,7 @@ _CLAIM_PCT = re.compile(
     # Must stay AFTER trailing-comparator alts so `20% higher` still binds.
     # `100%` / `100 percent` stay on _PERFECT_UNBOUND via claimed_percent guard.
     rf"|"
-    rf"(\d+)\s*{_PCT_UNIT}"
+    rf"{_INT}\s*{_PCT_UNIT}"
     rf"|"
     rf"({_WORD_PCT_RE})\s*{_PCT_UNIT}"
     rf")",
@@ -447,7 +460,8 @@ _RATIO = re.compile(
 # Claimed magnitude: "rises by 1/5", "falls by 2/7", "+1/5", "by 1/5".
 # Slice 48/50: arrow glyphs (thin + fat) own N/P.
 _CLAIM_FRAC = re.compile(
-    rf"(?:by\s*|[+\-]\s*|[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?)\s*(\d+)\s*/\s*(\d+)",
+    rf"(?:by\s*|[+\-]\s*|[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?)\s*"
+    rf"{_INT}\s*/\s*(\d+)",
     re.I,
 )
 # Claimed absolute delta without population: "rises by 1", "+1", "-2" (not a date).
@@ -457,6 +471,7 @@ _CLAIM_FRAC = re.compile(
 # Slice 49: bare `climbs 1` / `slips 1` — same lie (intent set, amount=None).
 # Slice 51: `gains 1` / `loses 1` / `adds 1` / `subtracts 1` / `plus 1` /
 # `minus 1` — same lie (or fully unbound).
+# Slice 57: `(?!\.\d)` refuses truncating `by 1.5` → amount=1.
 _CLAIM_ABS = re.compile(
     rf"(?:by\s+|rises?\s+by\s+|falls?\s+by\s+|drops?\s+by\s+|"
     rf"climbs?\s+by\s+|improves?\s+by\s+|declines?\s+by\s+|worsens?\s+by\s+|"
@@ -465,13 +480,13 @@ _CLAIM_ABS = re.compile(
     rf"up\s+|down\s+|climbs?\s+|slips?\s+|"
     rf"gains?\s+|loses?\s+|adds?\s+|subtracts?\s+|"
     rf"plus\s+|minus\s+"
-    rf")\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    rf")\s*{_INT}(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
 # Slice 48/50/53: arrow glyphs `↑1` / `⬇1` / `▲1` / `⬆️1` — absolute magnitude.
 # THE LIE Slice 53: FE0F between glyph and digit left amount=None → invents held.
 _CLAIM_ARROW_ABS = re.compile(
-    rf"[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?\s*(\d+)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    rf"[{_ARROW_ANY}]{_FE0F}?\s*[+\-]?\s*{_INT}(?!\s*/)(?!\s*{_PCT_UNIT})",
 )
 # Slice 50: word magnitudes — `by one` / `up one` / `rises by two` / `one point`.
 # THE LIE: intent set, amount=None → direction invents held on Δ=+20.
@@ -497,7 +512,8 @@ _CLAIM_WORD_ABS = re.compile(
 )
 _CLAIM_SIGNED = re.compile(
     # (?!\d) blocks backtracking into longer numbers (`-20%` must not match `-2`).
-    rf"(?<![/\d])([+\-])(\d+)(?!\d)(?!\s*/)(?!\s*{_PCT_UNIT})",
+    # Slice 57: (?!\.\d) refuses truncating `+1.5` → +1.
+    rf"(?<![/\d])([+\-])(\d+)(?!\d)(?!\.\d)(?!\s*/)(?!\s*{_PCT_UNIT})",
     re.I,
 )
 
@@ -546,6 +562,9 @@ def prediction_intent(prediction: str) -> str:
     text = prediction or ""
     # Negation and flat first: "won't fall" contains fall but means flat.
     if _NEGATED_MOVE.search(text) or _FLAT.search(text):
+        return "flat"
+    # Slice 57: "up to N" is a ceiling, not rise — `\bup\b` would steal rise.
+    if re.search(r"\bup\s+to\b", text, re.I):
         return "flat"
     if _RISE.search(text) and not _FALL.search(text):
         return "rise"

@@ -1682,6 +1682,57 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="THE LIE: mixed digit/word unbound",
     ),
+    # Slice 57 — decimal refuse · up to · down to
+    PredScenario(
+        "up_to_holds",
+        "up to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 57: up to N is a ceiling",
+    ),
+    PredScenario(
+        "up_to_missed",
+        "up to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="THE LIE: up to stole rise; ceiling unbound → invents held",
+    ),
+    PredScenario(
+        "down_to_holds",
+        "down to 2",
+        "hurt",
+        -2,
+        5,
+        "prediction-held",
+        latest_value=2,
+        note="Slice 57: down to N is a target",
+    ),
+    PredScenario(
+        "down_to_missed",
+        "down to 2",
+        "hurt",
+        -1,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: down to was fall with no target → invents held",
+    ),
+    PredScenario(
+        "decimal_pct_refused",
+        "2.5%",
+        "helped",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: 2.5% invented pct=5; now refuse rather than truncate",
+    ),
 )
 
 
@@ -1719,6 +1770,7 @@ def run_pred_demo() -> str:
         "  word `from three to four` destinations are targets (Slice 54).",
         "  bare `three to four` + bare `twenty percent` / `20%` grade (Slice 55).",
         "  bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` grade (Slice 56).",
+        "  decimal `2.5%` refused (not truncated to 5); `up to`/`down to` grade (Slice 57).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1866,7 +1918,11 @@ def run_pred_demo() -> str:
             "percent-of-pop rise — never invent held on absolute Δ "
             "(Slice 55). bare `3 to 4` / `3/5 to 4/5` / mixed "
             "`3 to four` destinations grade latest — never invent held "
-            "off the named end-state (Slice 56)."
+            "off the named end-state (Slice 56). decimal `2.5%` / "
+            "`by 1.5` refuse truncation — never invent pct=5 or "
+            "amount=1 from a fractional digit (Slice 57). `up to N` is "
+            "a ceiling; `down to N` is a target — never invent held off "
+            "the named bound (Slice 57)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1939,5 +1995,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x '20%' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '3 to 4' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '3/5 to 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'up to 4' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'down to 2' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '2.5%' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

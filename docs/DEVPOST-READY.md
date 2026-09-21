@@ -76,7 +76,7 @@ magnet agent-run
 # tools dispatched: run_probe → record_week → adopt_change → record_week → check_docs
 ```
 
-453 pytest tests · `bash scripts/stranger-pass.sh` → exit 0
+461 pytest tests · `bash scripts/stranger-pass.sh` → exit 0
 
 ---
 
