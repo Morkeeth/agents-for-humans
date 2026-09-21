@@ -26,4 +26,4 @@
 - First assumed `by twenty percent` already graded once pct parsed — wrong;
   intent stayed unknown → no-direction until Slice 55 forced unsigned percent → rise.
 - Bare digit `3 to 4` / `3/5 to 4/5` still unbound — next slice, not claimed tonight.
-- Landed on main @ `47dc268`. Oscar gates (film · Devpost paste · submit) still closed.
+- Landed on main @ `b62c259`. Oscar gates (film · Devpost paste · submit) still closed.

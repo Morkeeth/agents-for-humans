@@ -112,7 +112,7 @@ No number without the command that produced it, the population it is out of, and
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-21 · Slice 57 SHIP · decimal refuse `2.5%`/`50.5%`/`by 1.5` (was inventing 5 / 1) · `up to N` ceiling · `down to N` target · pred-demo 167/167 embarrassed 85 · `pytest -q` → 460 passed, 1 skipped · check-docs 16 PASS · docs 453→461 · branch `cursor/bare-to-percent-4005` · `git push origin main` → `47dc268dddf6e6dba375531bf01eac9bff13608d`
+- 2026-09-21 · Slice 57 SHIP · decimal refuse `2.5%`/`50.5%`/`by 1.5` (was inventing 5 / 1) · `up to N` ceiling · `down to N` target · pred-demo 167/167 embarrassed 85 · `pytest -q` → 460 passed, 1 skipped · check-docs 16 PASS · docs 453→461 · branch `cursor/bare-to-percent-4005` · `git push origin main` → `b62c25906d3d41827c76eeffbe0fc02ef51be63b`
 - 2026-09-21 · Slice 57 START · ran objects: `2.5%`→pct=5 · `50.5%`→pct=5 · `rises by 1.5`→amount=1 · `up to 4`→rise+no ceiling · `down to 2`→fall+no target. Contrast: `20%`/`rises by 1`/`at most 4`/`falls to 2` grade.
 - 2026-09-21 · Slice 56 SHIP · bare `3 to 4`/`3/5 to 4/5`/`goes 3 to 4` · mixed `three to 4`/`3 to four`/`zero to 4` · pred-demo 162/162 embarrassed 83 · `pytest -q` → 452 passed, 1 skipped · check-docs 16 PASS · docs 446→453 · branch `cursor/bare-to-percent-4005`
 - 2026-09-21 · Slice 56 START · ran objects: `3 to 4`/`3/5 to 4/5`/`goes 3 to 4`/`three to 4`/`3 to four`/`zero to 4` → target=None. Contrast: `from 3 to 4`/`three to four` grade.

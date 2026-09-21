@@ -22,4 +22,4 @@
 - Wrote a failing pytest paste into the screenshot sidecar mid-slice; check_docs
   stayed green on suite size (7+445+1=453) while judge-demo went red. Fixed by
   re-deriving a green paste before the final suite run.
-- Landed on main @ `47dc268`. Oscar gates still closed.
+- Landed on main @ `b62c259`. Oscar gates still closed.

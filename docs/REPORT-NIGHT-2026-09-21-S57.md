@@ -26,4 +26,4 @@
 - Decimals are refused, not graded; a stranger claiming `improves 2.5%`
   still gets direction-only if a rise word is present — we do not yet
   parse real fractional percents.
-- Landed on main @ `47dc268`. Oscar gates (film · Devpost · submit) still closed.
+- Landed on main @ `b62c259`. Oscar gates (film · Devpost · submit) still closed.

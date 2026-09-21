@@ -34,6 +34,6 @@ Branch: `cursor/bare-to-percent-4005` · tip below after push.
   suite-size math stayed green (7+445+1) while judge-demo went red.
 - Decimal percents are refused, not graded — `improves 2.5%` with a rise
   word is still direction-only.
-- Ship gate: `git push origin main` → `47dc268dddf6e6dba375531bf01eac9bff13608d`.
+- Ship gate: `git push origin main` → `b62c25906d3d41827c76eeffbe0fc02ef51be63b`.
 - Oscar gates (film · Devpost paste · submit) untouched.
 - Ordinals / `equals 4/5` named next — not started.
