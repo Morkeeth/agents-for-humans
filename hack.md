@@ -102,14 +102,17 @@ No number without the command that produced it, the population it is out of, and
 | 53 | Emoji arrows FE0F · word-number percent | `⬆️1` miss Δ+20 · `⇑1`/`⇧1` · `twenty percent higher` · pred-demo · pytest green |
 | 54 | Word from→to levels | `from three to four` destination · pred-demo · pytest green |
 | 55 | Bare word to · bare percent | `three to four` · `twenty percent`/`20%` · pred-demo · pytest green |
+| 56 | Bare digit to · mixed levels | `3 to 4`/`3/5 to 4/5`/`3 to four` · pred-demo · pytest green |
 
 ## NOW
 
-**Slice 55 done.** Next: bare digit `3 to 4` / `3/5 to 4/5` (no from) · Oscar gates (film · Devpost paste · submit).
+**Slice 56 done.** Next: probe remaining unbound prediction lexicon at the object · Oscar gates (film · Devpost paste · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-21 · Slice 56 SHIP · bare `3 to 4`/`3/5 to 4/5`/`goes 3 to 4` · mixed `three to 4`/`3 to four`/`zero to 4` · pred-demo 162/162 embarrassed 83 · `pytest -q` → 452 passed, 1 skipped · check-docs 16 PASS · docs 446→453 · branch `cursor/bare-to-percent-4005`
+- 2026-09-21 · Slice 56 START · ran objects: `3 to 4`/`3/5 to 4/5`/`goes 3 to 4`/`three to 4`/`3 to four`/`zero to 4` → target=None. Contrast: `from 3 to 4`/`three to four` grade.
 - 2026-09-21 · Slice 55 SHIP · bare `three to four`/`goes three to five`/`one to zero` · bare `twenty percent`/`20%`/`20 percent` · `by twenty percent` rise intent · `+twenty percent`/`-twenty percent` · pred-demo 157/157 embarrassed 79 · `pytest -q` → 445 passed, 1 skipped · check-docs 16 PASS · docs 435→446 · branch `cursor/bare-to-percent-4005`
 - 2026-09-21 · Slice 55 START · ran objects: `three to four`/`goes three to five` → target=None. `twenty percent`/`20%`/`20 percent` → pct=None. `by twenty percent` → pct=20 intent=unknown → no-direction. Contrast: `from three to four` @4 held/@3 missed; `twenty percent higher`/`+20%` grade. tip `1e00f22`.
 - 2026-09-18 · Slice 54 SHIP · word `from three to four`/`goes from three to five`/`from one to zero` · pred-demo 150/150 embarrassed 74 · `pytest -q` → 434 passed, 1 skipped · check-docs 16 PASS · docs 429→435 · `git push origin main` → `79f093625bdf9ad3e0e89a58285952b8d37e72c9`

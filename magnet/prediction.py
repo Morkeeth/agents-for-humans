@@ -99,6 +99,10 @@ Slice 55: bare word `three to four` (no `from`) left target=None while
 (no rise word) left pct=None; `by twenty percent` parsed pct but
 intent=unknown → no-direction. Unsigned bare/by percent is a rise claim
 — grade Δ vs pop·pct; never invent held on absolute Δ=+20.
+
+Slice 56: bare digit `3 to 4` / `3/5 to 4/5` / `goes 3 to 4` left
+target=None while `from 3 to 4` grades. Mixed `three to 4` / `3 to four`
+/ `zero to 4` unbound. Destination is still the target.
 """
 from __future__ import annotations
 
@@ -327,10 +331,12 @@ _SCORES_SLASH = re.compile(
 # "from 3/5 to 4/5", "goes from 2 to 0", "3/5 → 4/5", "3→4".
 # THE LIE: unbound → no-direction while a named end-state sat on the table.
 # Slice 54: word forms "from three to four" / "from one to zero".
+# Slice 56: bare digit `3 to 4` / `3/5 to 4/5` (from optional).
 _FROM_TO = re.compile(
     r"(?:"
     r"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
-    r"from\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    r"(?:from\s+)?"
+    r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
     r"|"
     r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s*(?:→|->|➞)\s*(?:zero|(\d+))(?:\s*/\s*(\d+))?"
     r")",
@@ -351,12 +357,13 @@ _WORD_LEVELS = {
     "ten": 10,
 }
 # Slice 54: `from three to four`. Slice 55: bare `three to four` (from optional).
+# Slice 56: mixed word/digit `three to 4` / `3 to four` / `zero to 4`.
 _FROM_TO_WORDS = re.compile(
     rf"(?:"
     rf"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
     rf"(?:from\s+)?"
-    rf"({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
-    rf"\s+to\s+({_WORD_LEVEL_RE})(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"({_WORD_LEVEL_RE}|\d+)(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"\s+to\s+({_WORD_LEVEL_RE}|\d+)(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
     rf")",
     re.I,
 )
@@ -742,9 +749,10 @@ def claimed_target(prediction: str) -> dict:
         raw = m.group(0).strip()
         # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
         # `zero` leaves the digit group None — detect via the raw destination text.
+        # Slice 56: bare `3 to 4` (no from) still uses groups 1..4.
         if m.group(1) is not None or m.group(3) is not None or re.search(
             r"\bfrom\b", raw, re.I
-        ):
+        ) or re.search(r"\bto\b", raw, re.I):
             to_chunk = re.split(r"\bto\b", raw, maxsplit=1, flags=re.I)[-1].strip()
             if re.match(r"zero\b", to_chunk, re.I):
                 value = 0
@@ -774,12 +782,15 @@ def claimed_target(prediction: str) -> dict:
             "raw": raw,
             "perfect": False,
         }
-    # Slice 54/55: word from→to (from optional) — destination is the target.
+    # Slice 54/55/56: word/mixed from→to (from optional) — destination is the target.
     m = _FROM_TO_WORDS.search(text)
     if m:
         raw = m.group(0).strip()
-        dest_word = m.group(3).lower()
-        value = _WORD_LEVELS.get(dest_word)
+        dest_tok = m.group(3)
+        if dest_tok.isdigit():
+            value = int(dest_tok)
+        else:
+            value = _WORD_LEVELS.get(dest_tok.lower())
         if value is None:
             return empty
         pop_tok = m.group(4)

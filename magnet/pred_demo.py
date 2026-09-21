@@ -1631,6 +1631,57 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=24,
         note="THE LIE: pct parsed, intent unknown → no-direction",
     ),
+    # Slice 56 — bare digit / slash / mixed to
+    PredScenario(
+        "bare_digit_to_holds",
+        "3 to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 56: bare digit to grades latest",
+    ),
+    PredScenario(
+        "bare_digit_to_missed",
+        "3 to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: bare 3 to 4 unbound left no-direction",
+    ),
+    PredScenario(
+        "bare_slash_to_missed",
+        "3/5 to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="THE LIE: bare 3/5 to 4/5 unbound while from 3/5 to 4/5 graded",
+    ),
+    PredScenario(
+        "goes_digit_to_missed",
+        "goes 3 to 4",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="goes N to N without from",
+    ),
+    PredScenario(
+        "mixed_to_missed",
+        "3 to four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: mixed digit/word unbound",
+    ),
 )
 
 
@@ -1667,6 +1718,7 @@ def run_pred_demo() -> str:
         "  emoji `⬆️1` / `⇑1` + word `twenty percent` grade (Slice 53).",
         "  word `from three to four` destinations are targets (Slice 54).",
         "  bare `three to four` + bare `twenty percent` / `20%` grade (Slice 55).",
+        "  bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` grade (Slice 56).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -1812,7 +1864,9 @@ def run_pred_demo() -> str:
             "bare `three to four` (no from) grades destination; bare "
             "`twenty percent` / `20%` / `by twenty percent` are "
             "percent-of-pop rise — never invent held on absolute Δ "
-            "(Slice 55)."
+            "(Slice 55). bare `3 to 4` / `3/5 to 4/5` / mixed "
+            "`3 to four` destinations grade latest — never invent held "
+            "off the named end-state (Slice 56)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1883,5 +1937,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'three to four' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'twenty percent' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '20%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '3 to 4' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '3/5 to 4/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
