@@ -114,6 +114,12 @@ target=None while digit/cardinal forms grade. `equals 4/5` /
 `equal to 4/5` / `== 4/5` unbound while `exactly 4/5` grades.
 THE LIE: `3rd/5 to 4th/5` invented raw=`5 to 4` (partial digit steal
 from ordinal-slash garbage) — destination must consume the ordinal.
+
+Slice 59: `same as 4/5` matched flat lexicon `same` with target=None
+→ invents prediction-held at any latest. `is`/`was`/`reads`/`measures`/
+`matches`/`identical to`/`lands on`/`finishes at`/`comes to`/
+`settles on` unbound. Word ordinals `eleventh`/`twelfth` unbound
+while digit `11th to 12th` grades.
 """
 from __future__ import annotations
 
@@ -304,8 +310,11 @@ _CEILING = re.compile(
 # "dives to 1/5" / "plunges to 0" / "spikes to 5".
 # Slice 49: "tops out at 5" / "maxes out at 5/5".
 # Slice 58: "equals 4/5" / "equal to 4/5" / "== 4/5" / "must equal 4".
+# Slice 59: "same as 4/5" / "is 4/5" / "reads 4/5" / "matches 4/5" /
+# "lands on 4/5" / "finishes at 4/5" / "comes to 4/5" / "identical to 4/5".
 # Direction alone is not the object — latest must match the named level.
 # THE LIE: "falls to zero" left target=None → hurt@latest=1 invented held.
+# THE LIE Slice 59: "same as 4/5" left target=None → flat invented held @3.
 _TARGET = re.compile(
     r"(?:"
     r"(?:falls?|drops?|rises?|climbs?|improves?|goes?|"
@@ -321,6 +330,13 @@ _TARGET = re.compile(
     r"(?:(?:must|should|shall)\s+)?equals?|"
     r"(?:(?:is|are|must\s+be|should\s+be)\s+)?equal\s+to|"
     r"==|"
+    # Slice 59: same-as invent-held + level copulas / readouts.
+    r"same\s+as|identical\s+to|matches|"
+    r"(?:is|was|are|were)|"
+    r"reads?(?:\s+as)?|measures?(?:\s+at)?|"
+    r"lands?\s+on|settles?\s+on|"
+    r"(?:finish(?:es)?|comes?(?:\s+out)?)\s+(?:at|to)|"
+    r"(?:stands?|sits?)\s+at|clocks?\s+in\s+at|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
     re.I,
@@ -372,10 +388,12 @@ _FROM_TO = re.compile(
 # Cardinal + ordinal word levels. Longer ordinals BEFORE their cardinal
 # prefixes (`fourth` before `four`) so `fourth` is not stolen as `four`.
 # Slice 58: `third to fourth` / `from first to second` were unbound.
+# Slice 59: `eleventh` / `twelfth` unbound while digit `11th`/`12th` grade.
+# Longer ordinals (`eleventh`) before `ten`/`tenth` so prefix steal fails.
 _WORD_LEVEL_RE = (
     r"(?:zeroth|zero|first|one|second|two|third|three|fourth|four|"
     r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
-    r"tenth|ten)"
+    r"eleventh|eleven|twelfth|twelve|twentieth|twenty|tenth|ten)"
 )
 _WORD_LEVELS = {
     "zero": 0,
@@ -400,6 +418,12 @@ _WORD_LEVELS = {
     "ninth": 9,
     "ten": 10,
     "tenth": 10,
+    "eleven": 11,
+    "eleventh": 11,
+    "twelve": 12,
+    "twelfth": 12,
+    "twenty": 20,
+    "twentieth": 20,
 }
 
 
@@ -426,13 +450,20 @@ _FROM_TO_WORDS = re.compile(
     re.I,
 )
 
-# Slice 58: equals with word/ordinal destination (`equals four` /
-# `equal to fourth` / `== three`). Digit form stays on _TARGET.
+# Slice 58/59: equals / same-as / is / reads with word/ordinal destination
+# (`equals four` / `same as four` / `is four` / `reads as three`).
+# Digit form stays on _TARGET.
 _EQUALS_WORD = re.compile(
     rf"(?:"
     rf"(?:(?:must|should|shall)\s+)?equals?|"
     rf"(?:(?:is|are|must\s+be|should\s+be)\s+)?equal\s+to|"
-    rf"=="
+    rf"==|"
+    rf"same\s+as|identical\s+to|matches|"
+    rf"(?:is|was|are|were)|"
+    rf"reads?(?:\s+as)?|measures?(?:\s+at)?|"
+    rf"lands?\s+on|settles?\s+on|"
+    rf"(?:finish(?:es)?|comes?(?:\s+out)?)\s+(?:at|to)|"
+    rf"(?:stands?|sits?)\s+at|clocks?\s+in\s+at"
     rf")\s+(?:exactly\s+)?\b({_WORD_LEVEL_RE})\b(?:\s*/\s*\b({_WORD_LEVEL_RE})\b)?",
     re.I,
 )
@@ -795,6 +826,10 @@ def claimed_target(prediction: str) -> dict:
     Slice 58: ordinal digit `3rd to 4th` / word `third to fourth` /
     `equals 4/5` / `equal to four` / `== 4/5`. THE LIE: `3rd/5 to 4th/5`
     invented raw=`5 to 4` by stealing digits around ordinal suffixes.
+
+    Slice 59: `same as 4/5` / `is 4/5` / `reads 4/5` / `matches 4/5` /
+    `lands on 4/5` / `finishes at 4/5` / `comes to 4/5` / `identical to`.
+    THE LIE: `same as 4/5` was flat with no target → invents held @ any latest.
 
     Slice 48: unbound `perfect score` / bare `perfect` / `full score` —
     `perfect: True` resolves at check time to latest == population.

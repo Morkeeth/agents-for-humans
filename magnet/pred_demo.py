@@ -1824,6 +1824,117 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="equals four word destination",
     ),
+    # Slice 59 — same-as invent-held + is/reads/matches
+    PredScenario(
+        "same_as_holds",
+        "same as 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 59: same as is a target",
+    ),
+    PredScenario(
+        "same_as_missed",
+        "same as 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: same as 4/5 was flat+no target → invents held @3",
+    ),
+    PredScenario(
+        "is_slash_missed",
+        "is 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: is 4/5 unbound left no-direction",
+    ),
+    PredScenario(
+        "reads_missed",
+        "reads 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="reads N is a target readout",
+    ),
+    PredScenario(
+        "matches_missed",
+        "matches 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="matches N like equals",
+    ),
+    PredScenario(
+        "lands_on_missed",
+        "lands on 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="lands on vs lands at (already graded)",
+    ),
+    PredScenario(
+        "finishes_at_missed",
+        "finishes at 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="finishes at end-state",
+    ),
+    PredScenario(
+        "comes_to_missed",
+        "comes to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="comes to destination",
+    ),
+    PredScenario(
+        "identical_to_missed",
+        "identical to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="identical to synonym of same as",
+    ),
+    PredScenario(
+        "eleventh_to_twelfth_missed",
+        "eleventh to twelfth",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=11,
+        note="THE LIE: eleventh/twelfth unbound while 11th to 12th graded",
+    ),
+    PredScenario(
+        "same_as_word_missed",
+        "same as four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="same as four word destination",
+    ),
 )
 
 
@@ -2018,7 +2129,12 @@ def run_pred_demo() -> str:
             "held off the named end-state or steal digits from "
             "`3rd/5 to 4th/5` (Slice 58). `equals 4/5` / `equal to` / "
             "`== 4/5` / `equals four` are targets like `exactly` — "
-            "never invent held off the named level (Slice 58)."
+            "never invent held off the named level (Slice 58). "
+            "`same as 4/5` grades latest — never invent held from bare "
+            "flat `same` with no target (Slice 59). `is` / `reads` / "
+            "`matches` / `lands on` / `finishes at` / `comes to` / "
+            "`identical to` are targets; word ordinals `eleventh` / "
+            "`twelfth` grade like digit `11th` / `12th` (Slice 59)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2099,5 +2215,11 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'equals 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '== 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'equals four' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'same as 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'is 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'reads 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'matches 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'lands on 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'eleventh to twelfth' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

@@ -105,18 +105,19 @@ No number without the command that produced it, the population it is out of, and
 | 56 | Bare digit to · mixed levels | `3 to 4`/`3/5 to 4/5`/`3 to four` · pred-demo · pytest green |
 | 57 | Decimal refuse · up to · down to | `2.5%`≠5 · `up to` ceiling · `down to` target · pytest green |
 | 58 | Ordinals + equals target | `3rd to 4th`/`third to fourth` · `equals 4/5` · pred-demo · pytest green |
+| 59 | same-as invent-held + is/reads/matches targets | `same as 4/5` @3 missed · `is`/`reads`/`matches`/`lands on` · pytest green |
 
 ## NOW
 
-**Slice 58 done.** Next candidates (re-derived at object, not guessed):
-`is 4/5` / `was 4/5` / `reads 4/5` / `measures 4/5` / `lands on 4/5` /
-`finishes at 4/5` / `matches 4/5` / `comes to 4/5` unbound;
-`same as 4/5` → intent=flat + target=None (invents held @ any latest);
-`eleventh to twelfth` unbound while `11th to 12th` grades.
+**Slice 59.** `same as 4/5` invents held at any latest (flat `same`, no target).
+Also bind `is`/`was`/`reads`/`measures`/`matches`/`identical to`/`lands on`/
+`finishes at`/`comes to`/`settles on` · word ordinals `eleventh`/`twelfth`.
+Done when: objects grade · pred-demo embarrass · pytest green · check-docs PASS.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-22 · Slice 59 START · ran objects: `same as 4/5` → intent=flat target=None → prediction-held @latest=3 (THE LIE). `is 4/5`/`was 4/5`/`reads 4/5`/`measures 4/5`/`matches 4/5`/`lands on 4/5`/`finishes at 4/5`/`comes to 4/5`/`identical to 4/5` → target=None. `eleventh to twelfth` unbound while `11th to 12th` grades. tip `2abd3c7`.
 - 2026-09-22 · Slice 58 SHIP · ordinals `3rd to 4th`/`third to fourth` · `equals 4/5`/`equal to`/`==`/`equals four` · fixed `3rd/5 to 4th/5` digit-steal lie · pred-demo 176/176 embarrassed 92 · `pytest -q` → 469 passed, 1 skipped · check-docs 16 PASS · docs 461→470 · branch `cursor/ordinal-equals-b545`
 - 2026-09-22 · Slice 58 START · ran objects: `3rd to 4th`/`from 3rd to 4th`/`third to fourth`/`from third to fourth`/`goes 3rd to 4th` → target=None. `equals 4/5`/`equal to 4/5`/`== 4/5`/`must equal 4/5` → target=None. THE LIE: `3rd/5 to 4th/5` invents raw=`5 to 4` (partial digit steal). Contrast: `3 to 4`/`from three to four`/`exactly 4/5` grade. tip `b62c259`.
 - 2026-09-21 · Slice 57 SHIP · decimal refuse `2.5%`/`50.5%`/`by 1.5` (was inventing 5 / 1) · `up to N` ceiling · `down to N` target · pred-demo 167/167 embarrassed 85 · `pytest -q` → 460 passed, 1 skipped · check-docs 16 PASS · docs 453→461 · branch `cursor/bare-to-percent-4005` · `git push origin main` → `b62c25906d3d41827c76eeffbe0fc02ef51be63b`
