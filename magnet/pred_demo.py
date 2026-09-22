@@ -2036,6 +2036,47 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=13,
         note="THE LIE: thirteenth/fourteenth unbound while 13th to 14th graded",
     ),
+    # Slice 61 — word ordinals 15–19
+    PredScenario(
+        "fifteenth_to_sixteenth_missed",
+        "fifteenth to sixteenth",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=15,
+        note="THE LIE: fifteenth/sixteenth unbound while 15th to 16th graded",
+    ),
+    PredScenario(
+        "seventeenth_to_eighteenth_missed",
+        "seventeenth to eighteenth",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=17,
+        note="seventeenth/eighteenth word ordinals",
+    ),
+    PredScenario(
+        "nineteenth_to_twentieth_missed",
+        "nineteenth to twentieth",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=19,
+        note="nineteenth→twentieth closes the teens pack",
+    ),
+    PredScenario(
+        "fifteen_to_sixteen_missed",
+        "fifteen to sixteen",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=15,
+        note="cardinal teens fifteen→sixteen",
+    ),
 )
 
 
@@ -2239,7 +2280,9 @@ def run_pred_demo() -> str:
             "`amounts to` / `evaluates to` / `works out to` / `totals` / "
             "`posts` / `yields` / `nets` / `registers` / `comes in at` "
             "are readout targets; word ordinals `thirteenth` / "
-            "`fourteenth` grade like `13th` / `14th` (Slice 60)."
+            "`fourteenth` grade like `13th` / `14th` (Slice 60). "
+            "word ordinals `fifteenth`…`nineteenth` grade like digit "
+            "`15th`…`19th` (Slice 61)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2331,5 +2374,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'posts 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'yields 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'thirteenth to fourteenth' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'fifteenth to sixteenth' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'nineteenth to twentieth' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

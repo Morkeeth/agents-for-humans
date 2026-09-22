@@ -108,16 +108,20 @@ No number without the command that produced it, the population it is out of, and
 | 59 | same-as invent-held + is/reads/matches targets | `same as 4/5` @3 missed · `is`/`reads`/`matches`/`lands on` · pytest green |
 | 60 | Readout verbs + 13th/14th word ordinals | `amounts to`/`evaluates to`/`totals`/`posts`/`yields` · thirteenth/fourteenth · pytest green |
 
+| 60 | Readout verbs + 13th/14th word ordinals | `amounts to`/`evaluates to`/`totals`/`posts`/`yields` · thirteenth/fourteenth · pytest green |
+| 61 | Word ordinals 15th–19th | `fifteenth to sixteenth` … `nineteenth to twentieth` · pytest green |
+
 ## NOW
 
-**Slice 60 done.** Next (re-derived): soft hedges `roughly`/`approximately`/
-`about`/`nearly`/`almost` 4/5 unbound (refuse vs invent exact — open);
-word ordinals beyond fourteenth unbound; Oscar gates (film · Devpost · submit).
+**Slice 61 done.** Soft hedges (`roughly`/`approximately`/`about`/`nearly`/`almost` 4/5)
+still unbound — refuse rather than invent exact held. Oscar gates (film · Devpost · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-22 · Slice 60 SHIP · readout verbs `amounts to`/`evaluates to`/`works out to`/`totals`/`posts`/`yields`/`nets`/`registers`/`comes in at`/`returns` · thirteenth/fourteenth · pred-demo 197/197 embarrassed 112 · `pytest -q` → 486 passed, 1 skipped · check-docs 16 PASS · docs 480→487 · branch `cursor/ordinal-equals-b545`
+- 2026-09-22 · Slice 61 SHIP · word ordinals fifteenth…nineteenth · fifteen…nineteen · pred-demo 201/201 embarrassed 116 · `pytest -q` → 492 passed, 1 skipped · check-docs 16 PASS · docs 487→493 · branch `cursor/ordinal-equals-b545`
+- 2026-09-22 · Slice 61 START · ran objects: `fifteenth to sixteenth`/`seventeenth to eighteenth`/`nineteenth to twentieth`/`from fifteen to sixteen` → target=None. Contrast: `15th to 16th`/`17th to 18th`/`19th to 20th` grade. tip `bb5576e`.
+- 2026-09-22 · Slice 60 SHIP · readout verbs `amounts to`/`evaluates to`/`works out to`/`totals`/`posts`/`yields`/`nets`/`registers`/`comes in at`/`returns` · thirteenth/fourteenth · pred-demo 197/197 embarrassed 112 · `pytest -q` → 486 passed, 1 skipped · check-docs 16 PASS · docs 480→487 · branch `cursor/ordinal-equals-b545` · `git push origin main` → `bb5576e09bee7d548a6d5e5b216f22b8758f8220`
 - 2026-09-22 · Slice 60 START · ran objects: `amounts to 4/5`/`works out to 4/5`/`evaluates to 4/5`/`totals 4/5`/`registers 4/5`/`comes in at 4/5`/`posts 4/5`/`yields 4/5`/`nets 4/5` → target=None. `thirteenth to fourteenth` unbound while `13th to 14th` grades. tip `1ebe5f4`.
 - 2026-09-22 · Slice 59 SHIP · `same as 4/5` invent-held fixed · `is`/`reads`/`matches`/`lands on`/`finishes at`/`comes to`/`identical to` · eleventh/twelfth · pred-demo 187/187 embarrassed 102 · `pytest -q` → 479 passed, 1 skipped · check-docs 16 PASS · docs 470→480 · branch `cursor/ordinal-equals-b545`
 - 2026-09-22 · Slice 59 START · ran objects: `same as 4/5` → intent=flat target=None → prediction-held @latest=3 (THE LIE). `is 4/5`/`was 4/5`/`reads 4/5`/`measures 4/5`/`matches 4/5`/`lands on 4/5`/`finishes at 4/5`/`comes to 4/5`/`identical to 4/5` → target=None. `eleventh to twelfth` unbound while `11th to 12th` grades. tip `2abd3c7`.

@@ -20,6 +20,9 @@ What exists now that did not at the start of this night:
      `nets`/`registers`/`comes in at`/`returns`
    - Word ordinals `thirteenth`/`fourteenth`
 
+4. **Slice 61 — word ordinals 15–19**
+   - `fifteenth`…`nineteenth` / `fifteen`…`nineteen`
+
 ## VERIFIED
 
 | Claim | Command | Result |
@@ -27,9 +30,9 @@ What exists now that did not at the start of this night:
 | S58 objects | `claimed_target` / `check_prediction` | grade; naive invents held |
 | S59 `same as 4/5` @3 | `check_prediction` | magnet missed / naive held |
 | S60 `amounts to 4/5` @3 | same | magnet missed / naive held |
-| Suite | `python3 -m pytest -q` | **486 passed, 1 skipped** (487) |
+| Suite | `python3 -m pytest -q` | **492 passed, 1 skipped** (493) |
 | Docs | `magnet check-docs` | **16 PASS** |
-| Pred-demo | `python3 -m magnet.cli pred-demo` | **197/197** · embarrassed **112** |
+| Pred-demo | `python3 -m magnet.cli pred-demo` | **201/201** · embarrassed **116** |
 | Cold scripts | `bash scripts/judge-demo.sh` | JUDGE DEMO OK |
 | Cold scripts | `bash scripts/stranger-pass.sh` | stranger pass OK |
 | Demo | `magnet demo` | exit 0 |

@@ -125,6 +125,9 @@ Slice 60: readout verbs `amounts to` / `works out to` / `evaluates to` /
 `totals` / `registers` / `comes in at` / `posts` / `yields` / `nets`
 unbound. Word ordinals `thirteenth`/`fourteenth` unbound while digit
 `13th to 14th` grades.
+
+Slice 61: word ordinals `fifteenth`…`nineteenth` (+ cardinals
+`fifteen`…`nineteen`) unbound while digit `15th to 16th` grades.
 """
 from __future__ import annotations
 
@@ -402,10 +405,13 @@ _FROM_TO = re.compile(
 # prefixes (`fourth` before `four`) so `fourth` is not stolen as `four`.
 # Slice 58: `third to fourth` / `from first to second` were unbound.
 # Slice 59: `eleventh` / `twelfth` unbound while digit `11th`/`12th` grade.
-# Longer ordinals (`fourteenth`/`eleventh`) before shorter prefixes.
+# Longer ordinals before shorter prefixes (`fourteenth` before `four`,
+# `nineteenth` before `nine`, `fifteenth` before `five`).
 _WORD_LEVEL_RE = (
     r"(?:zeroth|zero|first|one|second|two|third|three|fourth|four|"
     r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
+    r"nineteenth|nineteen|eighteenth|eighteen|seventeenth|seventeen|"
+    r"sixteenth|sixteen|fifteenth|fifteen|"
     r"fourteenth|fourteen|thirteenth|thirteen|"
     r"eleventh|eleven|twelfth|twelve|twentieth|twenty|tenth|ten)"
 )
@@ -440,6 +446,16 @@ _WORD_LEVELS = {
     "thirteenth": 13,
     "fourteen": 14,
     "fourteenth": 14,
+    "fifteen": 15,
+    "fifteenth": 15,
+    "sixteen": 16,
+    "sixteenth": 16,
+    "seventeen": 17,
+    "seventeenth": 17,
+    "eighteen": 18,
+    "eighteenth": 18,
+    "nineteen": 19,
+    "nineteenth": 19,
     "twenty": 20,
     "twentieth": 20,
 }
