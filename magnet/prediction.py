@@ -120,6 +120,11 @@ Slice 59: `same as 4/5` matched flat lexicon `same` with target=None
 `matches`/`identical to`/`lands on`/`finishes at`/`comes to`/
 `settles on` unbound. Word ordinals `eleventh`/`twelfth` unbound
 while digit `11th to 12th` grades.
+
+Slice 60: readout verbs `amounts to` / `works out to` / `evaluates to` /
+`totals` / `registers` / `comes in at` / `posts` / `yields` / `nets`
+unbound. Word ordinals `thirteenth`/`fourteenth` unbound while digit
+`13th to 14th` grades.
 """
 from __future__ import annotations
 
@@ -337,6 +342,14 @@ _TARGET = re.compile(
     r"lands?\s+on|settles?\s+on|"
     r"(?:finish(?:es)?|comes?(?:\s+out)?)\s+(?:at|to)|"
     r"(?:stands?|sits?)\s+at|clocks?\s+in\s+at|"
+    # Slice 60: more readout verbs — unbound while reads/measures graded.
+    r"amounts?\s+to|works?\s+out\s+to|evaluates?\s+to|"
+    r"turns?\s+out(?:\s+to(?:\s+be)?)?|"
+    r"totals?|total\s+of|"
+    r"registers?(?:\s+at)?|"
+    r"comes?\s+in\s+at|checks?\s+in\s+at|"
+    r"posts?(?:\s+a)?|yields?|yielding|nets?|netting|"
+    r"returns?|returning|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
     re.I,
@@ -389,10 +402,11 @@ _FROM_TO = re.compile(
 # prefixes (`fourth` before `four`) so `fourth` is not stolen as `four`.
 # Slice 58: `third to fourth` / `from first to second` were unbound.
 # Slice 59: `eleventh` / `twelfth` unbound while digit `11th`/`12th` grade.
-# Longer ordinals (`eleventh`) before `ten`/`tenth` so prefix steal fails.
+# Longer ordinals (`fourteenth`/`eleventh`) before shorter prefixes.
 _WORD_LEVEL_RE = (
     r"(?:zeroth|zero|first|one|second|two|third|three|fourth|four|"
     r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
+    r"fourteenth|fourteen|thirteenth|thirteen|"
     r"eleventh|eleven|twelfth|twelve|twentieth|twenty|tenth|ten)"
 )
 _WORD_LEVELS = {
@@ -422,6 +436,10 @@ _WORD_LEVELS = {
     "eleventh": 11,
     "twelve": 12,
     "twelfth": 12,
+    "thirteen": 13,
+    "thirteenth": 13,
+    "fourteen": 14,
+    "fourteenth": 14,
     "twenty": 20,
     "twentieth": 20,
 }
@@ -463,7 +481,14 @@ _EQUALS_WORD = re.compile(
     rf"reads?(?:\s+as)?|measures?(?:\s+at)?|"
     rf"lands?\s+on|settles?\s+on|"
     rf"(?:finish(?:es)?|comes?(?:\s+out)?)\s+(?:at|to)|"
-    rf"(?:stands?|sits?)\s+at|clocks?\s+in\s+at"
+    rf"(?:stands?|sits?)\s+at|clocks?\s+in\s+at|"
+    rf"amounts?\s+to|works?\s+out\s+to|evaluates?\s+to|"
+    rf"turns?\s+out(?:\s+to(?:\s+be)?)?|"
+    rf"totals?|total\s+of|"
+    rf"registers?(?:\s+at)?|"
+    rf"comes?\s+in\s+at|checks?\s+in\s+at|"
+    rf"posts?(?:\s+a)?|yields?|yielding|nets?|netting|"
+    rf"returns?|returning"
     rf")\s+(?:exactly\s+)?\b({_WORD_LEVEL_RE})\b(?:\s*/\s*\b({_WORD_LEVEL_RE})\b)?",
     re.I,
 )

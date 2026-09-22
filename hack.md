@@ -106,17 +106,20 @@ No number without the command that produced it, the population it is out of, and
 | 57 | Decimal refuse · up to · down to | `2.5%`≠5 · `up to` ceiling · `down to` target · pytest green |
 | 58 | Ordinals + equals target | `3rd to 4th`/`third to fourth` · `equals 4/5` · pred-demo · pytest green |
 | 59 | same-as invent-held + is/reads/matches targets | `same as 4/5` @3 missed · `is`/`reads`/`matches`/`lands on` · pytest green |
+| 60 | Readout verbs + 13th/14th word ordinals | `amounts to`/`evaluates to`/`totals`/`posts`/`yields` · thirteenth/fourteenth · pytest green |
 
 ## NOW
 
-**Slice 59.** `same as 4/5` invents held at any latest (flat `same`, no target).
-Also bind `is`/`was`/`reads`/`measures`/`matches`/`identical to`/`lands on`/
-`finishes at`/`comes to`/`settles on` · word ordinals `eleventh`/`twelfth`.
-Done when: objects grade · pred-demo embarrass · pytest green · check-docs PASS.
+**Slice 60 done.** Next (re-derived): soft hedges `roughly`/`approximately`/
+`about`/`nearly`/`almost` 4/5 unbound (refuse vs invent exact — open);
+word ordinals beyond fourteenth unbound; Oscar gates (film · Devpost · submit).
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-22 · Slice 60 SHIP · readout verbs `amounts to`/`evaluates to`/`works out to`/`totals`/`posts`/`yields`/`nets`/`registers`/`comes in at`/`returns` · thirteenth/fourteenth · pred-demo 197/197 embarrassed 112 · `pytest -q` → 486 passed, 1 skipped · check-docs 16 PASS · docs 480→487 · branch `cursor/ordinal-equals-b545`
+- 2026-09-22 · Slice 60 START · ran objects: `amounts to 4/5`/`works out to 4/5`/`evaluates to 4/5`/`totals 4/5`/`registers 4/5`/`comes in at 4/5`/`posts 4/5`/`yields 4/5`/`nets 4/5` → target=None. `thirteenth to fourteenth` unbound while `13th to 14th` grades. tip `1ebe5f4`.
+- 2026-09-22 · Slice 59 SHIP · `same as 4/5` invent-held fixed · `is`/`reads`/`matches`/`lands on`/`finishes at`/`comes to`/`identical to` · eleventh/twelfth · pred-demo 187/187 embarrassed 102 · `pytest -q` → 479 passed, 1 skipped · check-docs 16 PASS · docs 470→480 · branch `cursor/ordinal-equals-b545`
 - 2026-09-22 · Slice 59 START · ran objects: `same as 4/5` → intent=flat target=None → prediction-held @latest=3 (THE LIE). `is 4/5`/`was 4/5`/`reads 4/5`/`measures 4/5`/`matches 4/5`/`lands on 4/5`/`finishes at 4/5`/`comes to 4/5`/`identical to 4/5` → target=None. `eleventh to twelfth` unbound while `11th to 12th` grades. tip `2abd3c7`.
 - 2026-09-22 · Slice 58 SHIP · ordinals `3rd to 4th`/`third to fourth` · `equals 4/5`/`equal to`/`==`/`equals four` · fixed `3rd/5 to 4th/5` digit-steal lie · pred-demo 176/176 embarrassed 92 · `pytest -q` → 469 passed, 1 skipped · check-docs 16 PASS · docs 461→470 · branch `cursor/ordinal-equals-b545`
 - 2026-09-22 · Slice 58 START · ran objects: `3rd to 4th`/`from 3rd to 4th`/`third to fourth`/`from third to fourth`/`goes 3rd to 4th` → target=None. `equals 4/5`/`equal to 4/5`/`== 4/5`/`must equal 4/5` → target=None. THE LIE: `3rd/5 to 4th/5` invents raw=`5 to 4` (partial digit steal). Contrast: `3 to 4`/`from three to four`/`exactly 4/5` grade. tip `b62c259`.

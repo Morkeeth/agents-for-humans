@@ -1935,6 +1935,107 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="same as four word destination",
     ),
+    # Slice 60 — readout verbs + 13th/14th word ordinals
+    PredScenario(
+        "amounts_to_missed",
+        "amounts to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: amounts to unbound left no-direction",
+    ),
+    PredScenario(
+        "evaluates_to_missed",
+        "evaluates to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="evaluates to readout",
+    ),
+    PredScenario(
+        "works_out_to_missed",
+        "works out to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="works out to readout",
+    ),
+    PredScenario(
+        "totals_missed",
+        "totals 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="totals N readout",
+    ),
+    PredScenario(
+        "posts_missed",
+        "posts 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="posts N score readout",
+    ),
+    PredScenario(
+        "yields_missed",
+        "yields 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="yields N readout",
+    ),
+    PredScenario(
+        "nets_missed",
+        "nets 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="nets N readout",
+    ),
+    PredScenario(
+        "registers_missed",
+        "registers at 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="registers at readout",
+    ),
+    PredScenario(
+        "comes_in_at_missed",
+        "comes in at 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="comes in at vs comes to",
+    ),
+    PredScenario(
+        "thirteenth_to_fourteenth_missed",
+        "thirteenth to fourteenth",
+        "unchanged",
+        0,
+        20,
+        "prediction-missed",
+        latest_value=13,
+        note="THE LIE: thirteenth/fourteenth unbound while 13th to 14th graded",
+    ),
 )
 
 
@@ -2134,7 +2235,11 @@ def run_pred_demo() -> str:
             "flat `same` with no target (Slice 59). `is` / `reads` / "
             "`matches` / `lands on` / `finishes at` / `comes to` / "
             "`identical to` are targets; word ordinals `eleventh` / "
-            "`twelfth` grade like digit `11th` / `12th` (Slice 59)."
+            "`twelfth` grade like digit `11th` / `12th` (Slice 59). "
+            "`amounts to` / `evaluates to` / `works out to` / `totals` / "
+            "`posts` / `yields` / `nets` / `registers` / `comes in at` "
+            "are readout targets; word ordinals `thirteenth` / "
+            "`fourteenth` grade like `13th` / `14th` (Slice 60)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2221,5 +2326,10 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'matches 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'lands on 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'eleventh to twelfth' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'amounts to 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'evaluates to 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'posts 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'yields 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'thirteenth to fourteenth' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
