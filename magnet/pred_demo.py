@@ -1733,6 +1733,97 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=3,
         note="THE LIE: 2.5% invented pct=5; now refuse rather than truncate",
     ),
+    # Slice 58 — ordinals + equals
+    PredScenario(
+        "ordinal_digit_to_holds",
+        "3rd to 4th",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 58: ordinal digit destination",
+    ),
+    PredScenario(
+        "ordinal_digit_to_missed",
+        "3rd to 4th",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: 3rd to 4th unbound left no-direction",
+    ),
+    PredScenario(
+        "ordinal_word_to_missed",
+        "third to fourth",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: third to fourth unbound while three to four graded",
+    ),
+    PredScenario(
+        "ordinal_slash_to_missed",
+        "3rd/5 to 4th/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="THE LIE: 3rd/5 to 4th/5 invented raw=5 to 4 (digit steal)",
+    ),
+    PredScenario(
+        "equals_slash_holds",
+        "equals 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-held",
+        latest_value=4,
+        note="Slice 58: equals is a target like exactly",
+    ),
+    PredScenario(
+        "equals_slash_missed",
+        "equals 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="THE LIE: equals unbound while exactly graded — invents held",
+    ),
+    PredScenario(
+        "equal_to_missed",
+        "equal to 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=5,
+        note="equal to synonym of equals",
+    ),
+    PredScenario(
+        "eq_eq_missed",
+        "== 4/5",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=2,
+        note="== glyph equals target",
+    ),
+    PredScenario(
+        "equals_word_missed",
+        "equals four",
+        "unchanged",
+        0,
+        5,
+        "prediction-missed",
+        latest_value=3,
+        note="equals four word destination",
+    ),
 )
 
 
@@ -1922,7 +2013,12 @@ def run_pred_demo() -> str:
             "`by 1.5` refuse truncation — never invent pct=5 or "
             "amount=1 from a fractional digit (Slice 57). `up to N` is "
             "a ceiling; `down to N` is a target — never invent held off "
-            "the named bound (Slice 57)."
+            "the named bound (Slice 57). ordinal `3rd to 4th` / "
+            "`third to fourth` destinations grade latest — never invent "
+            "held off the named end-state or steal digits from "
+            "`3rd/5 to 4th/5` (Slice 58). `equals 4/5` / `equal to` / "
+            "`== 4/5` / `equals four` are targets like `exactly` — "
+            "never invent held off the named level (Slice 58)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -1998,5 +2094,10 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'up to 4' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'down to 2' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x '2.5%' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '3rd to 4th' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'third to fourth' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'equals 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x '== 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'equals four' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

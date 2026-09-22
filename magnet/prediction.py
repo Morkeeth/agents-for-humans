@@ -108,6 +108,12 @@ Slice 57: decimal truncation lie — `2.5%` / `50.5%` matched bare `5%`
 (invented pct=5); `rises by 1.5` matched `by 1` (invented amount=1).
 Integer claims must refuse digits that sit inside a decimal; leave
 unbound rather than invent a truncated figure.
+
+Slice 58: ordinal from→to `3rd to 4th` / `third to fourth` left
+target=None while digit/cardinal forms grade. `equals 4/5` /
+`equal to 4/5` / `== 4/5` unbound while `exactly 4/5` grades.
+THE LIE: `3rd/5 to 4th/5` invented raw=`5 to 4` (partial digit steal
+from ordinal-slash garbage) — destination must consume the ordinal.
 """
 from __future__ import annotations
 
@@ -297,6 +303,7 @@ _CEILING = re.compile(
 # Slice 47: "crashes to 0" / "collapses to zero" / "soars to 5/5" /
 # "dives to 1/5" / "plunges to 0" / "spikes to 5".
 # Slice 49: "tops out at 5" / "maxes out at 5/5".
+# Slice 58: "equals 4/5" / "equal to 4/5" / "== 4/5" / "must equal 4".
 # Direction alone is not the object — latest must match the named level.
 # THE LIE: "falls to zero" left target=None → hurt@latest=1 invented held.
 _TARGET = re.compile(
@@ -310,6 +317,10 @@ _TARGET = re.compile(
     r"(?:tops?|max(?:es)?)\s+out\s+at|"
     r"returns?\s+to|back\s+to|"
     r"(?:must\s+be\s+)?exactly|"
+    # Slice 58: equals / equal to / == — unbound while exactly graded.
+    r"(?:(?:must|should|shall)\s+)?equals?|"
+    r"(?:(?:is|are|must\s+be|should\s+be)\s+)?equal\s+to|"
+    r"==|"
     r"perfect|full|max(?:imum)?"
     r")\s+(?:exactly\s+)?(?:zero|(\d+))(?:\s*/\s*(\d+))?",
     re.I,
@@ -335,44 +346,94 @@ _SCORES_SLASH = re.compile(
     re.I,
 )
 
+# Ordinal digit suffix — Slice 58. Optional so bare `3 to 4` still grades.
+# THE LIE: `3rd/5 to 4th/5` matched raw=`5 to 4` (stole pop digit + dest
+# digit from `4th`) because ordinal suffix was not consumed.
+_ORD_SFX = r"(?:st|nd|rd|th)?"
+
 # Slice 47: transition claims — destination is the target.
 # "from 3/5 to 4/5", "goes from 2 to 0", "3/5 → 4/5", "3→4".
 # THE LIE: unbound → no-direction while a named end-state sat on the table.
 # Slice 54: word forms "from three to four" / "from one to zero".
 # Slice 56: bare digit `3 to 4` / `3/5 to 4/5` (from optional).
+# Slice 58: ordinal digit `3rd to 4th` / `from 3rd/5 to 4th/5`.
 _FROM_TO = re.compile(
     r"(?:"
     r"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
     r"(?:from\s+)?"
-    r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s+to\s+(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    rf"(?:zero|(\d+){_ORD_SFX})(?:\s*/\s*(?:zero|(\d+){_ORD_SFX}))?"
+    rf"\s+to\s+(?:zero|(\d+){_ORD_SFX})(?:\s*/\s*(?:zero|(\d+){_ORD_SFX}))?"
     r"|"
-    r"(?:zero|(\d+))(?:\s*/\s*(\d+))?\s*(?:→|->|➞)\s*(?:zero|(\d+))(?:\s*/\s*(\d+))?"
+    rf"(?:zero|(\d+){_ORD_SFX})(?:\s*/\s*(?:zero|(\d+){_ORD_SFX}))?"
+    rf"\s*(?:→|->|➞)\s*(?:zero|(\d+){_ORD_SFX})(?:\s*/\s*(?:zero|(\d+){_ORD_SFX}))?"
     r")",
     re.I,
 )
-_WORD_LEVEL_RE = r"(?:zero|one|two|three|four|five|six|seven|eight|nine|ten)"
+# Cardinal + ordinal word levels. Longer ordinals BEFORE their cardinal
+# prefixes (`fourth` before `four`) so `fourth` is not stolen as `four`.
+# Slice 58: `third to fourth` / `from first to second` were unbound.
+_WORD_LEVEL_RE = (
+    r"(?:zeroth|zero|first|one|second|two|third|three|fourth|four|"
+    r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
+    r"tenth|ten)"
+)
 _WORD_LEVELS = {
     "zero": 0,
+    "zeroth": 0,
     "one": 1,
+    "first": 1,
     "two": 2,
+    "second": 2,
     "three": 3,
+    "third": 3,
     "four": 4,
+    "fourth": 4,
     "five": 5,
+    "fifth": 5,
     "six": 6,
+    "sixth": 6,
     "seven": 7,
+    "seventh": 7,
     "eight": 8,
+    "eighth": 8,
     "nine": 9,
+    "ninth": 9,
     "ten": 10,
+    "tenth": 10,
 }
+
+
+def _word_level_value(tok: str | None) -> int | None:
+    """Map a digit or cardinal/ordinal word token to an int. None if unbound."""
+    if tok is None:
+        return None
+    if tok.isdigit():
+        return int(tok)
+    return _WORD_LEVELS.get(tok.lower())
+
+
 # Slice 54: `from three to four`. Slice 55: bare `three to four` (from optional).
 # Slice 56: mixed word/digit `three to 4` / `3 to four` / `zero to 4`.
+# Slice 58: ordinal words `third to fourth` / mixed `3rd` via digit path.
+# `\b` stops `four` matching inside `fourth` when ordinals are absent.
 _FROM_TO_WORDS = re.compile(
     rf"(?:"
     rf"(?:(?:goes?|moves?|climbs?|falls?|drops?|rises?)\s+)?"
     rf"(?:from\s+)?"
-    rf"({_WORD_LEVEL_RE}|\d+)(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
-    rf"\s+to\s+({_WORD_LEVEL_RE}|\d+)(?:\s*/\s*({_WORD_LEVEL_RE}|\d+))?"
+    rf"\b({_WORD_LEVEL_RE}|\d+)\b(?:\s*/\s*\b({_WORD_LEVEL_RE}|\d+)\b)?"
+    rf"\s+to\s+\b({_WORD_LEVEL_RE}|\d+)\b(?:\s*/\s*\b({_WORD_LEVEL_RE}|\d+)\b)?"
     rf")",
+    re.I,
+)
+
+# Slice 58: equals with word/ordinal destination (`equals four` /
+# `equal to fourth` / `== three`). Digit form stays on _TARGET.
+_EQUALS_WORD = re.compile(
+    rf"(?:"
+    rf"(?:(?:must|should|shall)\s+)?equals?|"
+    rf"(?:(?:is|are|must\s+be|should\s+be)\s+)?equal\s+to|"
+    rf"=="
+    rf")\s+(?:exactly\s+)?\b({_WORD_LEVEL_RE})\b(?:\s*/\s*\b({_WORD_LEVEL_RE})\b)?",
     re.I,
 )
 
@@ -731,6 +792,10 @@ def claimed_target(prediction: str) -> dict:
     Slice 54: word `from three to four`. Slice 55: bare `three to four`
     (no `from`) — destination is still the target.
 
+    Slice 58: ordinal digit `3rd to 4th` / word `third to fourth` /
+    `equals 4/5` / `equal to four` / `== 4/5`. THE LIE: `3rd/5 to 4th/5`
+    invented raw=`5 to 4` by stealing digits around ordinal suffixes.
+
     Slice 48: unbound `perfect score` / bare `perfect` / `full score` —
     `perfect: True` resolves at check time to latest == population.
     """
@@ -763,12 +828,26 @@ def claimed_target(prediction: str) -> dict:
             "raw": raw,
             "perfect": False,
         }
+    # Slice 58: equals four / equal to fourth / == three
+    m = _EQUALS_WORD.search(text)
+    if m:
+        value = _word_level_value(m.group(1))
+        if value is None:
+            return empty
+        pop = _word_level_value(m.group(2)) if m.group(2) is not None else None
+        return {
+            "value": int(value),
+            "population": int(pop) if pop is not None else None,
+            "raw": m.group(0).strip(),
+            "perfect": False,
+        }
     m = _FROM_TO.search(text)
     if m:
         raw = m.group(0).strip()
         # from-form groups 1..4; arrow-form groups 5..8. Destination is groups 3/4 or 7/8.
         # `zero` leaves the digit group None — detect via the raw destination text.
         # Slice 56: bare `3 to 4` (no from) still uses groups 1..4.
+        # Slice 58: ordinal suffixes consumed so `3rd/5 to 4th/5` is not `5 to 4`.
         if m.group(1) is not None or m.group(3) is not None or re.search(
             r"\bfrom\b", raw, re.I
         ) or re.search(r"\bto\b", raw, re.I):
@@ -791,8 +870,8 @@ def claimed_target(prediction: str) -> dict:
                 pop = m.group(8)
         if value is None:
             return empty
-        # Destination pop may be in to_chunk as N/P
-        pop_m = re.search(r"/\s*(\d+)", to_chunk)
+        # Destination pop may be in to_chunk as N/P (ordinal suffix stripped by group).
+        pop_m = re.search(rf"/\s*(\d+){_ORD_SFX}\b", to_chunk, re.I)
         if pop_m:
             pop = pop_m.group(1)
         return {
@@ -801,24 +880,14 @@ def claimed_target(prediction: str) -> dict:
             "raw": raw,
             "perfect": False,
         }
-    # Slice 54/55/56: word/mixed from→to (from optional) — destination is the target.
+    # Slice 54/55/56/58: word/ordinal/mixed from→to (from optional) — destination is the target.
     m = _FROM_TO_WORDS.search(text)
     if m:
         raw = m.group(0).strip()
-        dest_tok = m.group(3)
-        if dest_tok.isdigit():
-            value = int(dest_tok)
-        else:
-            value = _WORD_LEVELS.get(dest_tok.lower())
+        value = _word_level_value(m.group(3))
         if value is None:
             return empty
-        pop_tok = m.group(4)
-        pop = None
-        if pop_tok is not None:
-            if pop_tok.isdigit():
-                pop = int(pop_tok)
-            else:
-                pop = _WORD_LEVELS.get(pop_tok.lower())
+        pop = _word_level_value(m.group(4)) if m.group(4) is not None else None
         return {
             "value": int(value),
             "population": int(pop) if pop is not None else None,
