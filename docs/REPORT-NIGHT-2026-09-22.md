@@ -46,3 +46,6 @@ What exists now that did not at the start of this night:
 - Bedrock live agent not run tonight (no AWS credentials — Oscar gate).
 - Soft-hedge refusal is honesty, but a stranger claiming `approximately 4/5`
   still gets no-direction rather than a graded miss — left open.
+
+
+Final main tip: `618ec387040de14c788f1c50518cb2989e314e8f`
