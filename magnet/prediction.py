@@ -532,7 +532,12 @@ def _word_level_value(tok: str | None) -> int | None:
 # percent/ratio. Non-hedge `about` (`about to rise`, `talk about skills`)
 # must not match — claimable object after the hedge is a number/level/ratio,
 # never a bare verb.
-_SOFT_HEDGE_WORD = r"(?:roughly|approximately|about|nearly|almost)"
+# Slice 64: `around` / `close to` / `~` / `≈` were still inventing held —
+# `must stay at around 4/5` @3 held; `around equals 4/5` bound target=4;
+# `must stay at ~4/5` held. Extend the refuse pack.
+_SOFT_HEDGE_WORD = (
+    r"(?:roughly|approximately|about|nearly|almost|around|circa|close\s+to)"
+)
 _SOFT_CLAIMABLE = (
     rf"(?:zero|\d+|{_WORD_LEVEL_RE}|"
     rf"doubles?|halves?|triples?|quadruples?|"
@@ -571,6 +576,11 @@ _SOFT_HEDGE_INFIX = re.compile(
     rf")\s+{_SOFT_HEDGE_WORD}\s+{_SOFT_CLAIMABLE}\b",
     re.I,
 )
+# Slice 64: tilde / approx-eq before a claimable number (`~4/5`, `must stay at ≈4`).
+_SOFT_HEDGE_TILDE = re.compile(
+    rf"(?:~|≈)\s*{_SOFT_CLAIMABLE}\b",
+    re.I,
+)
 
 
 def is_soft_hedged(prediction: str) -> bool:
@@ -579,9 +589,14 @@ def is_soft_hedged(prediction: str) -> bool:
     Soft hedges refuse exact held — MAGNET will not invent that
     `roughly 4/5` means latest==4. Returns False for non-hedge `about`
     (`about to rise`, `talk about skills`, `bring about a rise`).
+    Slice 64: also `around` / `close to` / `~` / `≈`.
     """
     text = prediction or ""
-    return bool(_SOFT_HEDGE_PREFIX.search(text) or _SOFT_HEDGE_INFIX.search(text))
+    return bool(
+        _SOFT_HEDGE_PREFIX.search(text)
+        or _SOFT_HEDGE_INFIX.search(text)
+        or _SOFT_HEDGE_TILDE.search(text)
+    )
 
 
 # Slice 54: `from three to four`. Slice 55: bare `three to four` (from optional).
@@ -1462,8 +1477,9 @@ def check_prediction(
             "grade": "soft-hedge",
             **bounds,
             "note": (
-                "no-direction: soft hedge (roughly/approximately/about/nearly/almost) "
-                "refuses exact held — will not invent that a soft claim means an exact level"
+                "no-direction: soft hedge (roughly/approximately/about/nearly/almost/"
+                "around/close-to/~) refuses exact held — will not invent that a soft "
+                "claim means an exact level"
             ),
         }
 

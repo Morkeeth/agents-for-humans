@@ -2229,6 +2229,47 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=28,
         note="twenty-eight/nine compounds close the 20s pack",
     ),
+    # Slice 64 — around / close-to / ~ soft-hedge refuse
+    PredScenario(
+        "soft_around_stay_refused",
+        "must stay at around 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: around left unbound → flat invented held @3",
+    ),
+    PredScenario(
+        "soft_around_equals_refused",
+        "around equals 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: around equals bound target=4 → invents exact held",
+    ),
+    PredScenario(
+        "soft_close_to_stay_refused",
+        "must stay at close to 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: close to left unbound → flat invented held @3",
+    ),
+    PredScenario(
+        "soft_tilde_stay_refused",
+        "must stay at ~4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: ~ left unbound → flat invented held @3",
+    ),
 )
 
 
@@ -2269,6 +2310,7 @@ def run_pred_demo() -> str:
         "  decimal `2.5%` refused (not truncated to 5); `up to`/`down to` grade (Slice 57).",
         "  soft hedges `roughly`/`about`/`nearly`/`almost` refuse exact held (Slice 62).",
         "  `twenty-one to twenty-two` grades dest=22 — never steal one→twenty (Slice 63).",
+        "  `around` / `close to` / `~` refuse exact held (Slice 64).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -2441,7 +2483,9 @@ def run_pred_demo() -> str:
             "exact held — never invent that a soft claim means an "
             "exact level, percent, or ratio (Slice 62). "
             "`twenty-one to twenty-two` grades dest=22 — never steal "
-            "`one to twenty` and invent held @20 (Slice 63)."
+            "`one to twenty` and invent held @20 (Slice 63). "
+            "`around` / `close to` / `~` refuse exact held like "
+            "`roughly` (Slice 64)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2540,5 +2584,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'roughly doubles' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'twenty-one to twenty-two' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'from twenty to twenty-one' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must stay at around 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must stay at ~4/5' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
