@@ -12,6 +12,26 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   Percent works without `by` (`rises 20%`); triples/3x grade prior (Slice 39).
   Word form `20 percent` / `20 pct` is percent-of-pop — never absolute (Slice 40).
   never falls / cannot fall / won't decrease are flat — NOT fall (Slice 40).
+  never rises / doesn't rise / won't improve are flat — NOT rise (Slice 43).
+  shall/ought/may not fall + bare no worse/better are flat (Slice 43).
+  `20% higher` / `20% more` / `20% up` are percent-of-pop (Slice 44).
+  bare `up 1` / `down 1` grade magnitude (Slice 45).
+  bare `+1` / `-1` own rise/fall intent (Slice 46).
+  crashes/collapses/soars to N + from→to destinations are targets (Slice 47).
+  arrow glyphs `↑1` / `↓1` own rise/fall + magnitude (Slice 48).
+  unbound `perfect score` resolves to latest == population (Slice 48).
+  `climbs 1` / `slips 1` grade magnitude; grows/shrinks own intent (Slice 49).
+  `5 out of 5` / `score of N/N` / `full marks` / `100%` are targets (Slice 49).
+  fat arrows `⬆1`/`▲1` + word magnitudes `by one`/`one point` (Slice 50).
+  `all green` / `all passing` / `passes all` resolve to population (Slice 50).
+  `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude (Slice 51).
+  `100 percent` / `5 of 5` / `scores 5/5` / `stays green` resolve (Slice 52).
+  emoji `⬆️1` / `⇑1` + word `twenty percent` grade (Slice 53).
+  word `from three to four` destinations are targets (Slice 54).
+  bare `three to four` + bare `twenty percent` / `20%` grade (Slice 55).
+  bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` grade (Slice 56).
+  decimal `2.5%` refused (not truncated to 5); `up to`/`down to` grade (Slice 57).
+  soft hedges `roughly`/`about`/`nearly`/`almost` refuse exact held (Slice 62).
   `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).
   quadrupples / N times / Nfold grade prior like Nx (Slice 41).
   won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).
@@ -87,12 +107,156 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   gains_pct_holds          20%                     +1   5    4      prediction-held     prediction-held
   gains_pct_missed         20%                     +20  5    5      prediction-missed   prediction-held
   boosts_by_pct_missed     20%                     +20  5    5      prediction-missed   prediction-held
+  never_rises_flat_holds   flat                    +0   5    4      prediction-held     prediction-held
+  never_rises_helped_missedflat                    +1   5    4      prediction-missed   prediction-missed
+  doesnt_rise_helped_missedflat                    +1   5    4      prediction-missed   prediction-missed
+  wont_improve_helped_missedflat                    +1   5    4      prediction-missed   prediction-missed
+  shall_not_fall_hurt_missedflat                    -1   5    2      prediction-missed   prediction-missed
+  ought_not_fall_flat_holdsflat                    +0   5    4      prediction-held     prediction-held
+  no_worse_hurt_missed     flat                    -1   5    2      prediction-missed   prediction-missed
+  no_better_helped_missed  flat                    +1   5    4      prediction-missed   prediction-missed
+  wont_get_worse_hurt_missedflat                    -1   5    2      prediction-missed   prediction-missed
+  pct_higher_holds         20%                     +1   5    4      prediction-held     prediction-held
+  pct_higher_missed        20%                     +20  5    24     prediction-missed   prediction-held
+  pct_lower_missed         20%                     -20  5    0      prediction-missed   prediction-held
+  pct_more_holds           20%                     +1   5    4      prediction-held     prediction-held
+  pct_more_missed          20%                     +20  5    24     prediction-missed   prediction-held
+  pct_up_missed            20%                     +20  5    24     prediction-missed   prediction-held
+  up_n_holds               1                       +1   5    4      prediction-held     prediction-held
+  up_n_missed              1                       +20  5    24     prediction-missed   prediction-held
+  down_n_missed            1                       -20  5    0      prediction-missed   prediction-held
+  plus_one_holds           1                       +1   5    4      prediction-held     prediction-held
+  plus_one_missed          1                       +20  5    24     prediction-missed   prediction-held
+  minus_one_missed         1                       -20  5    0      prediction-missed   prediction-held
+  pass_rate_plus_one_missed1                       +20  5    24     prediction-missed   prediction-held
+  crashes_to_zero_holds    to 0                    -3   5    0      prediction-held     prediction-held
+  crashes_to_zero_missed   to 0                    -1   5    1      prediction-missed   prediction-held
+  soars_to_missed          to 5/5                  +1   5    4      prediction-missed   prediction-held
+  from_to_holds            to 4/5                  +0   5    4      prediction-held     prediction-held
+  from_to_missed           to 4/5                  +1   5    5      prediction-missed   prediction-missed
+  arrow_to_missed          to 4/5                  +1   5    3      prediction-missed   prediction-missed
+  arrow_up_holds           1                       +1   5    4      prediction-held     prediction-held
+  arrow_up_missed          1                       +20  5    24     prediction-missed   prediction-held
+  arrow_down_missed        1                       -20  5    0      prediction-missed   prediction-held
+  arrow_frac_holds         1/5                     +1   5    4      prediction-held     prediction-held
+  perfect_score_holds      perfect→pop             +0   5    5      prediction-held     prediction-held
+  perfect_score_missed     perfect→pop             +0   5    4      prediction-missed   prediction-held
+  climbs_holds             1                       +1   5    4      prediction-held     prediction-held
+  climbs_missed            1                       +20  5    24     prediction-missed   prediction-held
+  slips_missed             1                       -20  5    0      prediction-missed   prediction-held
+  grows_missed             1                       +20  5    24     prediction-missed   prediction-held
+  shrinks_holds            1                       -1   5    3      prediction-held     prediction-held
+  out_of_holds             to 5/5                  +0   5    5      prediction-held     prediction-held
+  out_of_missed            to 5/5                  +0   5    4      prediction-missed   prediction-held
+  score_of_missed          to 5/5                  +0   5    4      prediction-missed   prediction-held
+  full_marks_missed        perfect→pop             +0   5    4      prediction-missed   prediction-held
+  hundred_pct_missed       perfect→pop             +0   5    4      prediction-missed   prediction-held
+  tops_out_missed          to 5                    +0   5    4      prediction-missed   prediction-held
+  caps_at_missed           ≤5                      +0   5    6      prediction-missed   prediction-held
+  fat_arrow_holds          1                       +1   5    4      prediction-held     prediction-held
+  fat_arrow_missed         1                       +20  5    24     prediction-missed   prediction-held
+  tri_arrow_missed         1                       +20  5    24     prediction-missed   prediction-held
+  word_one_holds           1                       +1   5    4      prediction-held     prediction-held
+  word_one_missed          1                       +20  5    24     prediction-missed   prediction-held
+  one_point_missed         1                       +20  5    24     prediction-missed   prediction-held
+  two_points_missed        2                       +1   5    4      prediction-missed   prediction-held
+  all_green_holds          perfect→pop             +0   5    5      prediction-held     prediction-held
+  all_green_missed         perfect→pop             +0   5    4      prediction-missed   prediction-held
+  all_passing_missed       perfect→pop             +0   5    4      prediction-missed   prediction-held
+  gains_one_holds          1                       +1   5    4      prediction-held     prediction-held
+  gains_one_missed         1                       +20  5    24     prediction-missed   prediction-held
+  up_a_point_missed        1                       +20  5    24     prediction-missed   prediction-held
+  gains_1_missed           1                       +20  5    24     prediction-missed   prediction-held
+  loses_one_missed         1                       -20  5    0      prediction-missed   prediction-held
+  plus_1_missed            1                       +20  5    24     prediction-missed   prediction-held
+  minus_1_holds            1                       -1   5    3      prediction-held     prediction-held
+  adds_1_missed            1                       +20  5    24     prediction-missed   prediction-held
+  subtracts_1_holds        1                       -1   5    3      prediction-held     prediction-held
+  hundred_percent_word_missedperfect→pop             +0   5    4      prediction-missed   prediction-held
+  hundred_pct_word_holds   perfect→pop             +0   5    5      prediction-held     prediction-held
+  n_of_n_missed            to 5/5                  +0   5    4      prediction-missed   prediction-held
+  scores_slash_missed      to 5/5                  +0   5    4      prediction-missed   prediction-held
+  still_slash_holds        to 5/5                  +0   5    5      prediction-held     prediction-held
+  remains_green_missed     perfect→pop             +0   5    4      prediction-missed   prediction-held
+  stays_green_missed       perfect→pop             +0   5    4      prediction-missed   prediction-held
+  zero_failures_missed     perfect→pop             +0   5    4      prediction-missed   prediction-held
+  all_tests_pass_missed    perfect→pop             +0   5    4      prediction-missed   prediction-held
+  emoji_arrow_holds        1                       +1   5    4      prediction-held     prediction-held
+  emoji_arrow_missed       1                       +20  5    24     prediction-missed   prediction-held
+  double_struck_missed     1                       +20  5    24     prediction-missed   prediction-held
+  word_twenty_pct_missed   20%                     +20  5    24     prediction-missed   prediction-held
+  word_twenty_pct_holds    20%                     +1   5    4      prediction-held     prediction-held
+  word_from_to_holds       to 4                    +0   5    4      prediction-held     prediction-held
+  word_from_to_missed      to 4                    +0   5    3      prediction-missed   prediction-held
+  goes_from_word_missed    to 5                    +0   5    4      prediction-missed   prediction-held
+  from_one_to_zero_missed  to 0                    -1   5    1      prediction-missed   prediction-missed
+  bare_word_to_holds       to 4                    +0   5    4      prediction-held     prediction-held
+  bare_word_to_missed      to 4                    +0   5    3      prediction-missed   prediction-held
+  goes_word_to_missed      to 5                    +0   5    4      prediction-missed   prediction-held
+  bare_twenty_pct_holds    20%                     +1   5    4      prediction-held     prediction-held
+  bare_twenty_pct_missed   20%                     +20  5    24     prediction-missed   prediction-held
+  bare_digit_pct_missed    20%                     +20  5    24     prediction-missed   prediction-held
+  by_twenty_pct_missed     20%                     +20  5    24     prediction-missed   prediction-held
+  bare_digit_to_holds      to 4                    +0   5    4      prediction-held     prediction-held
+  bare_digit_to_missed     to 4                    +0   5    3      prediction-missed   prediction-held
+  bare_slash_to_missed     to 4/5                  +0   5    5      prediction-missed   prediction-held
+  goes_digit_to_missed     to 4                    +0   5    2      prediction-missed   prediction-held
+  mixed_to_missed          to 4                    +0   5    3      prediction-missed   prediction-held
+  up_to_holds              ≤4                      +0   5    4      prediction-held     prediction-held
+  up_to_missed             ≤4                      +0   5    5      prediction-missed   prediction-held
+  down_to_holds            to 2                    -2   5    2      prediction-held     prediction-held
+  down_to_missed           to 2                    -1   5    3      prediction-missed   prediction-held
+  decimal_pct_refused      unknown                 +0   5    3      no-direction        no-direction
+  ordinal_digit_to_holds   to 4                    +0   5    4      prediction-held     prediction-held
+  ordinal_digit_to_missed  to 4                    +0   5    3      prediction-missed   prediction-held
+  ordinal_word_to_missed   to 4                    +0   5    3      prediction-missed   prediction-held
+  ordinal_slash_to_missed  to 4/5                  +0   5    5      prediction-missed   prediction-held
+  equals_slash_holds       to 4/5                  +0   5    4      prediction-held     prediction-held
+  equals_slash_missed      to 4/5                  +0   5    3      prediction-missed   prediction-held
+  equal_to_missed          to 4/5                  +0   5    5      prediction-missed   prediction-held
+  eq_eq_missed             to 4/5                  +0   5    2      prediction-missed   prediction-held
+  equals_word_missed       to 4                    +0   5    3      prediction-missed   prediction-held
+  same_as_holds            to 4/5                  +0   5    4      prediction-held     prediction-held
+  same_as_missed           to 4/5                  +0   5    3      prediction-missed   prediction-held
+  is_slash_missed          to 4/5                  +0   5    3      prediction-missed   prediction-held
+  reads_missed             to 4/5                  +0   5    2      prediction-missed   prediction-held
+  matches_missed           to 4/5                  +0   5    5      prediction-missed   prediction-held
+  lands_on_missed          to 4/5                  +0   5    3      prediction-missed   prediction-held
+  finishes_at_missed       to 4/5                  +0   5    3      prediction-missed   prediction-held
+  comes_to_missed          to 4/5                  +0   5    3      prediction-missed   prediction-held
+  identical_to_missed      to 4/5                  +0   5    3      prediction-missed   prediction-held
+  eleventh_to_twelfth_missedto 12                   +0   20   11     prediction-missed   prediction-held
+  same_as_word_missed      to 4                    +0   5    3      prediction-missed   prediction-held
+  amounts_to_missed        to 4/5                  +0   5    3      prediction-missed   prediction-held
+  evaluates_to_missed      to 4/5                  +0   5    3      prediction-missed   prediction-held
+  works_out_to_missed      to 4/5                  +0   5    2      prediction-missed   prediction-held
+  totals_missed            to 4/5                  +0   5    3      prediction-missed   prediction-held
+  posts_missed             to 4/5                  +0   5    3      prediction-missed   prediction-held
+  yields_missed            to 4/5                  +0   5    3      prediction-missed   prediction-held
+  nets_missed              to 4/5                  +0   5    3      prediction-missed   prediction-held
+  registers_missed         to 4/5                  +0   5    3      prediction-missed   prediction-held
+  comes_in_at_missed       to 4/5                  +0   5    3      prediction-missed   prediction-held
+  thirteenth_to_fourteenth_missedto 14                   +0   20   13     prediction-missed   prediction-held
+  fifteenth_to_sixteenth_missedto 16                   +0   20   15     prediction-missed   prediction-held
+  seventeenth_to_eighteenth_missedto 18                   +0   20   17     prediction-missed   prediction-held
+  nineteenth_to_twentieth_missedto 20                   +0   20   19     prediction-missed   prediction-held
+  fifteen_to_sixteen_missedto 16                   +0   20   15     prediction-missed   prediction-held
+  soft_stay_roughly_refusedflat                    +0   5    3      no-direction        prediction-held
+  soft_almost_exactly_refusedflat                    +0   5    4      no-direction        prediction-held
+  soft_same_as_about_refusedflat                    +0   5    3      no-direction        prediction-held
+  soft_roughly_stay_refusedflat                    +0   5    4      no-direction        prediction-held
+  soft_below_about_refused flat                    +0   5    2      no-direction        prediction-held
+  soft_roughly_percent_refusedrise                    +1   5    4      no-direction        prediction-held
+  soft_roughly_doubles_refusedrise                    +2   5    4      no-direction        prediction-held
+  soft_almost_doubles_refusedrise                    +2   5    4      no-direction        prediction-held
+  soft_roughly_equals_refusedunknown                 +0   5    4      no-direction        no-direction
+  soft_nearly_exactly_refusedflat                    +0   5    4      no-direction        prediction-held
 
-  magnet       67/67  (bounds + percent + ratio when claimed)
-  naive        39/67  (direction only — pre-Slice-25 behaviour)
-  embarrassed  26 scenario(s) where naive invents held on wrong claim
+  magnet       211/211  (bounds + percent + ratio when claimed)
+  naive        84/211  (direction only — pre-Slice-25 behaviour)
+  embarrassed  125 scenario(s) where naive invents held on wrong claim
 
-  FINDING  naive direction-only invents prediction-held when the claimed fraction, bound (incl. below-bound floors), percent (incl. word form `20 percent` and `50% better`), or doubles/halves/triples/quadruples/N-times ratio is wrong; magnet misses. Open the measured Δ / latest / prior. `won't fall below N` opens the floor — never invent held beneath the named bound (Slice 38). `never falls` / `won't decrease` are flat — never invent held on a drop (Slice 40). `falls to zero` grades latest=0 — never invent held off-zero (Slice 41). `gains 20%` / `boosts by 20%` are rise+percent — not no-direction (Slice 42).
+  FINDING  naive direction-only invents prediction-held when the claimed fraction, bound (incl. below-bound floors), percent (incl. word form `20 percent` and `50% better`), or doubles/halves/triples/quadruples/N-times ratio is wrong; magnet misses. Open the measured Δ / latest / prior. `won't fall below N` opens the floor — never invent held beneath the named bound (Slice 38). `never falls` / `won't decrease` are flat — never invent held on a drop (Slice 40). `falls to zero` grades latest=0 — never invent held off-zero (Slice 41). `gains 20%` / `boosts by 20%` are rise+percent — not no-direction (Slice 42). `never rises` / `doesn't rise` / `won't improve` / `shall not fall` / bare `no worse` are flat — never invent held on a negated move (Slice 43). `20% higher` / `20% more` / `20% up` are percent-of-pop — never invent held on absolute Δ (Slice 44). bare `up 1` / `down 1` grade magnitude — never invent held on absolute Δ (Slice 45). bare `+1` / `-1` own rise/fall intent — never leave a claimable magnitude as no-direction (Slice 46). `crashes to zero` / `soars to N` / `from A to B` are targets — never invent held off the named destination (Slice 47). `↑1` / `↓1` own rise/fall + magnitude — never leave a glyph claim as no-direction (Slice 48). unbound `perfect score` resolves to population — never invent held off-perfect (Slice 48). `climbs 1` / `grows by 1` grade magnitude — never invent held on absolute Δ (Slice 49). `5 out of 5` / `full marks` / `100%` are targets — never invent held off the named level (Slice 49). `⬆1` / `▲1` / `up by one` / `one point` grade magnitude — never leave a word or fat-arrow claim as no-direction (Slice 50). `all green` / `all passing` resolve to population (Slice 50). `gains one` / `up a point` / `plus 1` / `loses one` grade magnitude — never invent held on absolute Δ (Slice 51). `100 percent` / `5 of 5` / `scores 5/5` / `remains green` / `stays green` / `zero failures` resolve to population or named level — never invent held off-perfect (Slice 52). `⬆️1` / `⇑1` grade magnitude through FE0F; `twenty percent higher` is percent-of-pop — never invent held on absolute Δ (Slice 53). word `from three to four` destinations grade latest — never invent held off the named end-state (Slice 54). bare `three to four` (no from) grades destination; bare `twenty percent` / `20%` / `by twenty percent` are percent-of-pop rise — never invent held on absolute Δ (Slice 55). bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` destinations grade latest — never invent held off the named end-state (Slice 56). decimal `2.5%` / `by 1.5` refuse truncation — never invent pct=5 or amount=1 from a fractional digit (Slice 57). `up to N` is a ceiling; `down to N` is a target — never invent held off the named bound (Slice 57). ordinal `3rd to 4th` / `third to fourth` destinations grade latest — never invent held off the named end-state or steal digits from `3rd/5 to 4th/5` (Slice 58). `equals 4/5` / `equal to` / `== 4/5` / `equals four` are targets like `exactly` — never invent held off the named level (Slice 58). `same as 4/5` grades latest — never invent held from bare flat `same` with no target (Slice 59). `is` / `reads` / `matches` / `lands on` / `finishes at` / `comes to` / `identical to` are targets; word ordinals `eleventh` / `twelfth` grade like digit `11th` / `12th` (Slice 59). `amounts to` / `evaluates to` / `works out to` / `totals` / `posts` / `yields` / `nets` / `registers` / `comes in at` are readout targets; word ordinals `thirteenth` / `fourteenth` grade like `13th` / `14th` (Slice 60). word ordinals `fifteenth`…`nineteenth` grade like digit `15th`…`19th` (Slice 61). soft hedges `roughly` / `approximately` / `about` / `nearly` / `almost` refuse exact held — never invent that a soft claim means an exact level, percent, or ratio (Slice 62).
 
   repro      magnet pred-demo
   repro      magnet adopt skill x 'pass rate rises by 2/5' --probe demo-pass-rate --demo-bonus --reset
@@ -115,3 +279,66 @@ MAGNET pred-demo — magnitude + stay-at + floor/ceiling/target honesty vs naive
   repro      magnet adopt skill x 'pass rate quadruples' --probe demo-pass-rate --reset
   repro      magnet adopt skill x '50% better' --probe demo-pass-rate --reset
   repro      magnet adopt skill x 'gains 20%' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'never rises' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x "shall not fall" --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'no worse' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '20% higher' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '20% more' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'up 1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'down 1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '+1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '-1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'crashes to zero' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'from 3/5 to 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '↑1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '↓1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'perfect score' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'climbs 1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'grows by 1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '5 out of 5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'full marks' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '100%' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '⬆1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'up by one' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'all green' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'gains one' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'up a point' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'plus 1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'loses one' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '100 percent' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '5 of 5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'scores 5/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'remains green' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '⬆️1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '⇑1' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'twenty percent higher' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'from three to four' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'three to four' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'twenty percent' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '20%' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '3 to 4' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '3/5 to 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'up to 4' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'down to 2' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '2.5%' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '3rd to 4th' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'third to fourth' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'equals 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x '== 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'equals four' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'same as 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'is 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'reads 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'matches 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'lands on 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'eleventh to twelfth' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'amounts to 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'evaluates to 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'posts 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'yields 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'thirteenth to fourteenth' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'fifteenth to sixteenth' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'nineteenth to twentieth' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'must stay at roughly 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'almost exactly 4/5' --probe demo-pass-rate --reset
+  repro      magnet adopt skill x 'roughly doubles' --probe demo-pass-rate --reset

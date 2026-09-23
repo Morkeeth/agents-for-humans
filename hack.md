@@ -110,15 +110,18 @@ No number without the command that produced it, the population it is out of, and
 
 | 60 | Readout verbs + 13th/14th word ordinals | `amounts to`/`evaluates to`/`totals`/`posts`/`yields` · thirteenth/fourteenth · pytest green |
 | 61 | Word ordinals 15th–19th | `fifteenth to sixteenth` … `nineteenth to twentieth` · pytest green |
+| 62 | Soft-hedge refuse | `roughly`/`approximately`/`about`/`nearly`/`almost` → no-direction · never invent exact held · pred-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 61 done.** Soft hedges (`roughly`/`approximately`/`about`/`nearly`/`almost` 4/5)
-still unbound — refuse rather than invent exact held. Oscar gates (film · Devpost · submit).
+**Slice 62 done.** Soft hedges refuse exact held. Next unbound (not this box):
+`around`/`circa`/`close to` hedges · word ordinals past twentieth · Oscar gates.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
+- 2026-09-23 · Slice 62 SHIP · soft-hedge refuse roughly/approximately/about/nearly/almost · stay/equals/same-as/floor/percent/ratio · non-hedge `about to` preserved · pred-demo 211/211 embarrassed 125 · `pytest -q` → 506 passed, 1 skipped · check-docs 16 PASS · docs 493→507 · branch `cursor/soft-hedge-refuse-157c`
+- 2026-09-23 · Slice 62 START · ran objects: `must stay at roughly 4/5`@latest=3 → prediction-held direction (THE LIE — soft level unbound, flat invents held). `roughly equals 4/5` / `almost exactly 4/5` → target=4 invents exact held. `same as about 4/5` → flat invents held. `roughly stay at 4/5` → level=4 invents exact. `roughly at least 4/5` → floor=4 invents exact. `won't fall below about 3/5`@2 → direction invents held. `improves by roughly 20%` / `roughly doubles` / `almost doubles` invent exact percent/ratio held. Contrast: `must stay at 4/5` / `exactly 4/5` / `same as 4/5` grade. tip `ea15a3b`.
 - 2026-09-22 · Slice 61 SHIP · word ordinals fifteenth…nineteenth · fifteen…nineteen · pred-demo 201/201 embarrassed 116 · `pytest -q` → 492 passed, 1 skipped · check-docs 16 PASS · docs 487→493 · branch `cursor/ordinal-equals-b545` · `git push origin main` → `618ec387040de14c788f1c50518cb2989e314e8f`
 - 2026-09-22 · Slice 61 START · ran objects: `fifteenth to sixteenth`/`seventeenth to eighteenth`/`nineteenth to twentieth`/`from fifteen to sixteen` → target=None. Contrast: `15th to 16th`/`17th to 18th`/`19th to 20th` grade. tip `bb5576e`.
 - 2026-09-22 · Slice 60 SHIP · readout verbs `amounts to`/`evaluates to`/`works out to`/`totals`/`posts`/`yields`/`nets`/`registers`/`comes in at`/`returns` · thirteenth/fourteenth · pred-demo 197/197 embarrassed 112 · `pytest -q` → 486 passed, 1 skipped · check-docs 16 PASS · docs 480→487 · branch `cursor/ordinal-equals-b545` · `git push origin main` → `bb5576e09bee7d548a6d5e5b216f22b8758f8220`

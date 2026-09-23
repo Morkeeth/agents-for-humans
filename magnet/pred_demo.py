@@ -2077,6 +2077,107 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=15,
         note="cardinal teens fifteen→sixteen",
     ),
+    # Slice 62 — soft-hedge refuse (never invent exact held)
+    PredScenario(
+        "soft_stay_roughly_refused",
+        "must stay at roughly 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: soft stay left level=None → flat invented held @3",
+    ),
+    PredScenario(
+        "soft_almost_exactly_refused",
+        "almost exactly 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: almost exactly bound target=4 → invents exact held",
+    ),
+    PredScenario(
+        "soft_same_as_about_refused",
+        "same as about 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=3,
+        note="THE LIE: same as about left target=None → flat invented held",
+    ),
+    PredScenario(
+        "soft_roughly_stay_refused",
+        "roughly stay at 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: roughly stay at bound level=4 → invents exact held",
+    ),
+    PredScenario(
+        "soft_below_about_refused",
+        "won't fall below about 3/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=2,
+        note="THE LIE: below about left floor=None → flat invented held @2",
+    ),
+    PredScenario(
+        "soft_roughly_percent_refused",
+        "improves by roughly 20%",
+        "helped",
+        1,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: roughly 20% bound pct=20 → invents exact percent held",
+    ),
+    PredScenario(
+        "soft_roughly_doubles_refused",
+        "roughly doubles",
+        "helped",
+        2,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: roughly doubles bound ratio → invents exact ratio held",
+    ),
+    PredScenario(
+        "soft_almost_doubles_refused",
+        "almost doubles",
+        "helped",
+        2,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: almost doubles invented exact ratio held",
+    ),
+    PredScenario(
+        "soft_roughly_equals_refused",
+        "roughly equals 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: roughly equals bound target=4 → invents exact held",
+    ),
+    PredScenario(
+        "soft_nearly_exactly_refused",
+        "nearly exactly 4/5",
+        "unchanged",
+        0,
+        5,
+        "no-direction",
+        latest_value=4,
+        note="THE LIE: nearly exactly bound target=4 → invents exact held",
+    ),
 )
 
 
@@ -2115,6 +2216,7 @@ def run_pred_demo() -> str:
         "  bare `three to four` + bare `twenty percent` / `20%` grade (Slice 55).",
         "  bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` grade (Slice 56).",
         "  decimal `2.5%` refused (not truncated to 5); `up to`/`down to` grade (Slice 57).",
+        "  soft hedges `roughly`/`about`/`nearly`/`almost` refuse exact held (Slice 62).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -2149,9 +2251,9 @@ def run_pred_demo() -> str:
         if n_out == sc.magnet_truth:
             naive_ok += 1
         if (
-            sc.magnet_truth == "prediction-missed"
-            and m_out == "prediction-missed"
+            m_out == sc.magnet_truth
             and n_out == "prediction-held"
+            and sc.magnet_truth in ("prediction-missed", "no-direction")
         ):
             embarrass += 1
         level = claimed_level(sc.prediction)
@@ -2282,7 +2384,10 @@ def run_pred_demo() -> str:
             "are readout targets; word ordinals `thirteenth` / "
             "`fourteenth` grade like `13th` / `14th` (Slice 60). "
             "word ordinals `fifteenth`…`nineteenth` grade like digit "
-            "`15th`…`19th` (Slice 61)."
+            "`15th`…`19th` (Slice 61). soft hedges `roughly` / "
+            "`approximately` / `about` / `nearly` / `almost` refuse "
+            "exact held — never invent that a soft claim means an "
+            "exact level, percent, or ratio (Slice 62)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2376,5 +2481,8 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'thirteenth to fourteenth' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'fifteenth to sixteenth' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'nineteenth to twentieth' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'must stay at roughly 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'almost exactly 4/5' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'roughly doubles' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)

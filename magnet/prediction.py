@@ -128,6 +128,14 @@ unbound. Word ordinals `thirteenth`/`fourteenth` unbound while digit
 
 Slice 61: word ordinals `fifteenth`…`nineteenth` (+ cardinals
 `fifteen`…`nineteen`) unbound while digit `15th to 16th` grades.
+
+Slice 62: soft hedges `roughly` / `approximately` / `about` / `nearly` /
+`almost` invent exact held — `must stay at roughly 4/5` left level=None so
+flat invented held @latest=3; `roughly equals 4/5` / `almost exactly 4/5`
+bound target=4 and invented exact held; `roughly at least 4/5` bound floor;
+`improves by roughly 20%` / `roughly doubles` invented exact percent/ratio.
+Refuse (`no-direction`) rather than invent exact held under soft language.
+Non-hedge `about` (`about to rise`, `talk about`) must not match.
 """
 from __future__ import annotations
 
@@ -470,6 +478,64 @@ def _word_level_value(tok: str | None) -> int | None:
     return _WORD_LEVELS.get(tok.lower())
 
 
+# Slice 62: soft hedges refuse exact held. THE LIE: `roughly equals 4/5`
+# bound target=4; `must stay at roughly 4/5` left level=None so flat invented
+# held @latest=3; `improves by roughly 20%` / `roughly doubles` invented exact
+# percent/ratio. Non-hedge `about` (`about to rise`, `talk about skills`)
+# must not match — claimable object after the hedge is a number/level/ratio,
+# never a bare verb.
+_SOFT_HEDGE_WORD = r"(?:roughly|approximately|about|nearly|almost)"
+_SOFT_CLAIMABLE = (
+    rf"(?:zero|\d+|{_WORD_LEVEL_RE}|"
+    rf"doubles?|halves?|triples?|quadruples?|"
+    rf"percent|pct|per\s+cent)"
+)
+_SOFT_CONNECTOR = (
+    r"(?:"
+    r"exactly|equals?|equal\s+to|same\s+as|identical\s+to|"
+    r"stay(?:s|ing)?\s+at|remain(?:s|ing)?\s+at|hold(?:s|ing)?\s+at|"
+    r"keep(?:s|ing)?\s+at|unchanged\s+at|"
+    r"at\s+least|at\s+most|no\s+worse\s+than|no\s+better\s+than|"
+    r"no\s+lower\s+than|no\s+less\s+than|no\s+more\s+than|"
+    r"falls?\s+to|drops?\s+to|rises?\s+to|goes?\s+to|reaches?|hits?|"
+    r"below|above|under|"
+    r"by|to"
+    r")\s+"
+)
+_SOFT_HEDGE_PREFIX = re.compile(
+    rf"\b{_SOFT_HEDGE_WORD}\s+(?:{_SOFT_CONNECTOR})?{_SOFT_CLAIMABLE}\b",
+    re.I,
+)
+_SOFT_HEDGE_INFIX = re.compile(
+    rf"(?:"
+    rf"(?:stay(?:s|ing)?|remain(?:s|ing)?|hold(?:s|ing)?|keep(?:s|ing)?|unchanged)"
+    rf"\s+at|"
+    rf"at\s+least|at\s+most|no\s+worse\s+than|no\s+better\s+than|"
+    rf"no\s+lower\s+than|no\s+less\s+than|no\s+more\s+than|"
+    rf"capped\s+at|caps?\s+at|up\s+to|down\s+to|"
+    rf"falls?\s+to|drops?\s+to|rises?\s+to|goes?\s+to|reaches?|hits?|"
+    rf"below|above|under|"
+    rf"same\s+as|identical\s+to|equals?|equal\s+to|==|exactly|"
+    rf"(?:is|was|are|were)|reads?(?:\s+as)?|measures?(?:\s+at)?|"
+    rf"matches|lands?\s+on|amounts?\s+to|works?\s+out\s+to|evaluates?\s+to|"
+    rf"totals?|registers?(?:\s+at)?|posts?|yields?|nets?|"
+    rf"by"
+    rf")\s+{_SOFT_HEDGE_WORD}\s+{_SOFT_CLAIMABLE}\b",
+    re.I,
+)
+
+
+def is_soft_hedged(prediction: str) -> bool:
+    """True when a soft hedge modifies a claimable numeric/ratio object.
+
+    Soft hedges refuse exact held — MAGNET will not invent that
+    `roughly 4/5` means latest==4. Returns False for non-hedge `about`
+    (`about to rise`, `talk about skills`, `bring about a rise`).
+    """
+    text = prediction or ""
+    return bool(_SOFT_HEDGE_PREFIX.search(text) or _SOFT_HEDGE_INFIX.search(text))
+
+
 # Slice 54: `from three to four`. Slice 55: bare `three to four` (from optional).
 # Slice 56: mixed word/digit `three to 4` / `3 to four` / `zero to 4`.
 # Slice 58: ordinal words `third to fourth` / mixed `3rd` via digit path.
@@ -784,6 +850,9 @@ def prediction_intent(prediction: str) -> str:
 def claimed_level(prediction: str) -> dict:
     """Parse stay-at absolute value (+ optional pop). Not a delta — a required latest."""
     text = prediction or ""
+    # Slice 62: soft hedge refuses exact level (`roughly stay at 4/5`).
+    if is_soft_hedged(text):
+        return {"value": None, "population": None, "raw": None}
     m = _STAY_AT.search(text)
     if not m:
         return {"value": None, "population": None, "raw": None}
@@ -804,6 +873,9 @@ def claimed_floor(prediction: str) -> dict:
     Slice 38 above-bound: `stays above 3/5` — exclusive; held when latest > value.
     """
     text = prediction or ""
+    # Slice 62: soft hedge refuses exact floor (`roughly at least 4/5`).
+    if is_soft_hedged(text):
+        return {"value": None, "population": None, "raw": None, "exclusive": False}
     # Stay-at owns "stay at N" — floor is a different object.
     if claimed_level(text)["value"] is not None:
         return {"value": None, "population": None, "raw": None, "exclusive": False}
@@ -834,6 +906,9 @@ def claimed_ceiling(prediction: str) -> dict:
     Dual of floor (Slice 35). Stay-at / floor own their phrases first.
     """
     text = prediction or ""
+    # Slice 62: soft hedge refuses exact ceiling (`at most about 3/5`).
+    if is_soft_hedged(text):
+        return {"value": None, "population": None, "raw": None}
     if claimed_level(text)["value"] is not None:
         return {"value": None, "population": None, "raw": None}
     if claimed_floor(text)["value"] is not None:
@@ -882,6 +957,10 @@ def claimed_target(prediction: str) -> dict:
         "raw": None,
         "perfect": False,
     }
+    # Slice 62: soft hedge refuses exact target (`roughly equals 4/5`,
+    # `almost exactly 4/5`). Inventing target=4 under soft language is the lie.
+    if is_soft_hedged(text):
+        return empty
     if claimed_level(text)["value"] is not None:
         return empty
     if claimed_floor(text)["value"] is not None:
@@ -1016,8 +1095,11 @@ def claimed_ratio(prediction: str) -> dict:
     Slice 37: direction-only invents held on any rise when the claim said doubles.
     Slice 39: triples / 3x / 2x / tenfold.
     Slice 41: quadrupples / `5 times` / `fivefold` (digit `4x` already worked).
+    Slice 62: soft hedge refuses exact ratio (`roughly doubles` / `almost doubles`).
     """
     text = prediction or ""
+    if is_soft_hedged(text):
+        return {"kind": None, "factor": None, "raw": None}
     m = _RATIO.search(text)
     if not m:
         return {"kind": None, "factor": None, "raw": None}
@@ -1076,8 +1158,12 @@ def claimed_percent(prediction: str) -> dict:
     Slice 55: bare `20%` / `20 percent` / `twenty percent` (no rise word).
     Perfect unbound (`100%` / `100 percent`) stays on claimed_target — never
     steal those as percent-of-pop.
+    Slice 62: soft hedge refuses exact percent (`improves by roughly 20%`,
+    `about 20 percent`) — never invent held under soft language.
     """
     text = prediction or ""
+    if is_soft_hedged(text):
+        return {"percent": None, "raw": None}
     if claimed_level(text)["value"] is not None:
         return {"percent": None, "raw": None}
     if claimed_floor(text)["value"] is not None:
@@ -1110,8 +1196,11 @@ def claimed_magnitude(prediction: str) -> dict:
     Sign is applied later from intent (rise → +, fall → −, flat → 0).
     Stay-at / floor / ceiling / target / percent are NOT absolute deltas —
     their parsers own those. Percent must not fall through to amount=N.
+    Slice 62: soft hedge refuses exact magnitude (`rises by about 1`).
     """
     text = prediction or ""
+    if is_soft_hedged(text):
+        return {"amount": None, "population": None, "raw": None}
     if claimed_level(text)["value"] is not None:
         return {"amount": None, "population": None, "raw": None}
     if claimed_floor(text)["value"] is not None:
@@ -1309,6 +1398,25 @@ def check_prediction(
             "grade": "direction",
             **bounds,
             "note": "unmeasured — need two readings before a prediction can be checked",
+        }
+
+    # Slice 62: soft hedges refuse exact held. THE LIE: `must stay at roughly 4/5`
+    # left level=None so flat invented held @latest=3; `roughly equals 4/5`
+    # bound target=4 and invented exact held. Refuse rather than invent.
+    if is_soft_hedged(prediction):
+        return {
+            "outcome": "no-direction",
+            "intent": intent,
+            "verdict": label,
+            "delta": delta,
+            "population": population,
+            "latest_value": latest_value,
+            "grade": "soft-hedge",
+            **bounds,
+            "note": (
+                "no-direction: soft hedge (roughly/approximately/about/nearly/almost) "
+                "refuses exact held — will not invent that a soft claim means an exact level"
+            ),
         }
 
     # Slice 48: unbound `perfect score` resolves to latest == population.
