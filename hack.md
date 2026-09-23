@@ -123,7 +123,7 @@ No number without the command that produced it, the population it is out of, and
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-23 · Slice 65 SHIP · thirty…ninety-nine + hundred · never steal nine→one · pred-demo 225/225 embarrassed 136 · `pytest -q` → 529 passed, 1 skipped · check-docs 16 PASS · docs 522→530 · branch `cursor/soft-hedge-refuse-157c`
+- 2026-09-23 · Slice 65 SHIP · thirty…ninety-nine + hundred · never steal nine→one · pred-demo 225/225 embarrassed 136 · `pytest -q` → 529 passed, 1 skipped · check-docs 16 PASS · docs 522→530 · branch `cursor/soft-hedge-refuse-157c` · push `19bfc7f3254d51bf2c04b6fcf7ba8a870caa5aef`
 - 2026-09-23 · Slice 65 START · ran objects: `ninety-nine to one hundred` → raw=`nine to one` value=1 → prediction-held @latest=1 (THE LIE — true dest 100). `thirty-one to thirty-two` unbound while `31st to 32nd` grades. tip `e294dcb`.
 - 2026-09-23 · Slice 64 SHIP · around/circa/close-to/~/≈ refuse · pred-demo 220/220 embarrassed 132 · `pytest -q` → 521 passed, 1 skipped · check-docs 16 PASS · docs 514→522 · branch `cursor/soft-hedge-refuse-157c` · push `e294dcb90b2be622ed7595e118139345319d6d59`
 - 2026-09-23 · Slice 64 START · ran objects: `must stay at around 4/5`@3 → prediction-held; `around equals 4/5`@4 → target=4 invents exact held; `must stay at close to 4/5`@3 → held; `must stay at ~4/5`@3 → held. Contrast: `roughly`/`about` (S62) refuse. tip `29d3b92`.
