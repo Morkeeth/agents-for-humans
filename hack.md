@@ -113,16 +113,19 @@ No number without the command that produced it, the population it is out of, and
 | 62 | Soft-hedge refuse | `roughly`/`approximately`/`about`/`nearly`/`almost` → no-direction · never invent exact held · pred-demo FINDING · pytest green |
 | 63 | Twenty-compound word levels | `twenty-one to twenty-two` grades dest=22 · never steal `one to twenty` · pred-demo FINDING · pytest green |
 | 64 | around/close-to/~ soft-hedge refuse | `around`/`close to`/`~` → no-direction · pred-demo FINDING · pytest green |
+| 65 | Decade compounds + hundred | `ninety-nine to one hundred` dest=100 · never steal `nine to one` · thirty…ninety · pytest green |
 
 ## NOW
 
-**Slice 64 done.** Around/close-to/~ refuse. Next unbound (not this box):
-thirty-compounds · `more or less`/`or so`/`-ish` · Oscar gates.
+**Slice 65 done.** Decade compounds + hundred grade. Next unbound (not this box):
+`more or less`/`or so`/`-ish` · hundred-and-N · Oscar gates.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-23 · Slice 64 SHIP · around/circa/close-to/~/≈ refuse · pred-demo 220/220 embarrassed 132 · `pytest -q` → 521 passed, 1 skipped · check-docs 16 PASS · docs 514→522 · branch `cursor/soft-hedge-refuse-157c`
+- 2026-09-23 · Slice 65 SHIP · thirty…ninety-nine + hundred · never steal nine→one · pred-demo 225/225 embarrassed 136 · `pytest -q` → 529 passed, 1 skipped · check-docs 16 PASS · docs 522→530 · branch `cursor/soft-hedge-refuse-157c`
+- 2026-09-23 · Slice 65 START · ran objects: `ninety-nine to one hundred` → raw=`nine to one` value=1 → prediction-held @latest=1 (THE LIE — true dest 100). `thirty-one to thirty-two` unbound while `31st to 32nd` grades. tip `e294dcb`.
+- 2026-09-23 · Slice 64 SHIP · around/circa/close-to/~/≈ refuse · pred-demo 220/220 embarrassed 132 · `pytest -q` → 521 passed, 1 skipped · check-docs 16 PASS · docs 514→522 · branch `cursor/soft-hedge-refuse-157c` · push `e294dcb90b2be622ed7595e118139345319d6d59`
 - 2026-09-23 · Slice 64 START · ran objects: `must stay at around 4/5`@3 → prediction-held; `around equals 4/5`@4 → target=4 invents exact held; `must stay at close to 4/5`@3 → held; `must stay at ~4/5`@3 → held. Contrast: `roughly`/`about` (S62) refuse. tip `29d3b92`.
 - 2026-09-23 · Slice 63 SHIP · twenty-one…twenty-nine (+ ordinals) · never steal one→twenty · pred-demo 216/216 embarrassed 129 · `pytest -q` → 513 passed, 1 skipped · check-docs 16 PASS · docs 507→514 · branch `cursor/soft-hedge-refuse-157c` · push `29d3b92`
 - 2026-09-23 · Slice 63 START · ran objects: `twenty-one to twenty-two` → raw=`one to twenty` value=20 → prediction-held @latest=20 (THE LIE — true dest 22). `twenty-first to twenty-second` → raw=`first to twenty` value=20 held @20. `from twenty to twenty-one` → raw=`from twenty to twenty` value=20 held @20 (true dest 21). Contrast: `21st to 22nd` / `from 21 to 22` dest=22 miss @20 hold @22. tip `b5bb0fc`.

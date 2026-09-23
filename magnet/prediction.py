@@ -140,6 +140,10 @@ Non-hedge `about` (`about to rise`, `talk about`) must not match.
 Slice 63: twenty-compounds `twenty-one to twenty-two` matched
 `one to twenty` → dest=20 invented held @latest=20 while true dest is 22.
 Digit `21st to 22nd` grades. Compounds before bare `twenty`/`one`/`first`.
+
+Slice 65: decade compounds thirty…ninety + hundred —
+`ninety-nine to one hundred` matched `nine to one` → dest=1 invented
+held @latest=1 while true dest is 100.
 """
 from __future__ import annotations
 
@@ -415,105 +419,117 @@ _FROM_TO = re.compile(
 )
 # Cardinal + ordinal word levels. Longer ordinals BEFORE their cardinal
 # prefixes (`fourth` before `four`) so `fourth` is not stolen as `four`.
-# Slice 58: `third to fourth` / `from first to second` were unbound.
-# Slice 59: `eleventh` / `twelfth` unbound while digit `11th`/`12th` grade.
-# Longer ordinals before shorter prefixes (`fourteenth` before `four`,
-# `nineteenth` before `nine`, `fifteenth` before `five`).
-# Slice 63: twenty-compounds BEFORE bare `twenty`/`one`/`first` —
-# THE LIE: `twenty-one to twenty-two` matched `one to twenty` → dest=20
-# invented held @latest=20 while true dest is 22. Digit `21st to 22nd` grades.
+# Slice 58–61: teens. Slice 63: twenty-compounds before bare twenty/one.
+# Slice 65: decade compounds thirty…ninety + hundred —
+# THE LIE: `ninety-nine to one hundred` matched `nine to one` → dest=1
+# invented held @latest=1 while true dest is 100. Digit forms grade.
+_ONES_CARD_ORD = (
+    ("one", "first", 1),
+    ("two", "second", 2),
+    ("three", "third", 3),
+    ("four", "fourth", 4),
+    ("five", "fifth", 5),
+    ("six", "sixth", 6),
+    ("seven", "seventh", 7),
+    ("eight", "eighth", 8),
+    ("nine", "ninth", 9),
+)
+_DECADE_BASES = (
+    ("twenty", "twentieth", 20),
+    ("thirty", "thirtieth", 30),
+    ("forty", "fortieth", 40),
+    ("fifty", "fiftieth", 50),
+    ("sixty", "sixtieth", 60),
+    ("seventy", "seventieth", 70),
+    ("eighty", "eightieth", 80),
+    ("ninety", "ninetieth", 90),
+)
+# Longer ones first so `ninth` is not stolen as `nine` inside compounds.
+_ONES_RE = (
+    r"(?:ninth|nine|eighth|eight|seventh|seven|sixth|six|"
+    r"fifth|five|fourth|four|third|three|second|two|first|one)"
+)
+_DECADE_RE = r"(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)"
 _WORD_LEVEL_RE = (
     r"(?:"
-    r"twenty[\s-]+(?:ninth|nine|eighth|eight|seventh|seven|sixth|six|"
-    r"fifth|five|fourth|four|third|three|second|two|first|one)|"
+    # Slice 65: hundred before decade/ones so `one hundred` is not `one`.
+    r"(?:one|a)[\s-]+hundred|hundred|"
+    # Decade compounds before bare decade/one (Slice 63/65).
+    rf"{_DECADE_RE}[\s-]+{_ONES_RE}|"
     r"zeroth|zero|first|one|second|two|third|three|fourth|four|"
     r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
     r"nineteenth|nineteen|eighteenth|eighteen|seventeenth|seventeen|"
     r"sixteenth|sixteen|fifteenth|fifteen|"
     r"fourteenth|fourteen|thirteenth|thirteen|"
-    r"eleventh|eleven|twelfth|twelve|twentieth|twenty|tenth|ten)"
+    r"eleventh|eleven|twelfth|twelve|"
+    # Bare decades: ordinal before cardinal; ninety before eighty …
+    r"ninetieth|ninety|eightieth|eighty|seventieth|seventy|"
+    r"sixtieth|sixty|fiftieth|fifty|fortieth|forty|thirtieth|thirty|"
+    r"twentieth|twenty|tenth|ten)"
 )
-_WORD_LEVELS = {
-    "zero": 0,
-    "zeroth": 0,
-    "one": 1,
-    "first": 1,
-    "two": 2,
-    "second": 2,
-    "three": 3,
-    "third": 3,
-    "four": 4,
-    "fourth": 4,
-    "five": 5,
-    "fifth": 5,
-    "six": 6,
-    "sixth": 6,
-    "seven": 7,
-    "seventh": 7,
-    "eight": 8,
-    "eighth": 8,
-    "nine": 9,
-    "ninth": 9,
-    "ten": 10,
-    "tenth": 10,
-    "eleven": 11,
-    "eleventh": 11,
-    "twelve": 12,
-    "twelfth": 12,
-    "thirteen": 13,
-    "thirteenth": 13,
-    "fourteen": 14,
-    "fourteenth": 14,
-    "fifteen": 15,
-    "fifteenth": 15,
-    "sixteen": 16,
-    "sixteenth": 16,
-    "seventeen": 17,
-    "seventeenth": 17,
-    "eighteen": 18,
-    "eighteenth": 18,
-    "nineteen": 19,
-    "nineteenth": 19,
-    "twenty": 20,
-    "twentieth": 20,
-    # Slice 63: twenty-compounds (hyphen or space)
-    "twenty-one": 21,
-    "twenty one": 21,
-    "twenty-first": 21,
-    "twenty first": 21,
-    "twenty-two": 22,
-    "twenty two": 22,
-    "twenty-second": 22,
-    "twenty second": 22,
-    "twenty-three": 23,
-    "twenty three": 23,
-    "twenty-third": 23,
-    "twenty third": 23,
-    "twenty-four": 24,
-    "twenty four": 24,
-    "twenty-fourth": 24,
-    "twenty fourth": 24,
-    "twenty-five": 25,
-    "twenty five": 25,
-    "twenty-fifth": 25,
-    "twenty fifth": 25,
-    "twenty-six": 26,
-    "twenty six": 26,
-    "twenty-sixth": 26,
-    "twenty sixth": 26,
-    "twenty-seven": 27,
-    "twenty seven": 27,
-    "twenty-seventh": 27,
-    "twenty seventh": 27,
-    "twenty-eight": 28,
-    "twenty eight": 28,
-    "twenty-eighth": 28,
-    "twenty eighth": 28,
-    "twenty-nine": 29,
-    "twenty nine": 29,
-    "twenty-ninth": 29,
-    "twenty ninth": 29,
-}
+
+
+def _build_word_levels() -> dict[str, int]:
+    """Word → int table. Decade compounds generated so we never hardcode drift."""
+    levels: dict[str, int] = {
+        "zero": 0,
+        "zeroth": 0,
+        "one": 1,
+        "first": 1,
+        "two": 2,
+        "second": 2,
+        "three": 3,
+        "third": 3,
+        "four": 4,
+        "fourth": 4,
+        "five": 5,
+        "fifth": 5,
+        "six": 6,
+        "sixth": 6,
+        "seven": 7,
+        "seventh": 7,
+        "eight": 8,
+        "eighth": 8,
+        "nine": 9,
+        "ninth": 9,
+        "ten": 10,
+        "tenth": 10,
+        "eleven": 11,
+        "eleventh": 11,
+        "twelve": 12,
+        "twelfth": 12,
+        "thirteen": 13,
+        "thirteenth": 13,
+        "fourteen": 14,
+        "fourteenth": 14,
+        "fifteen": 15,
+        "fifteenth": 15,
+        "sixteen": 16,
+        "sixteenth": 16,
+        "seventeen": 17,
+        "seventeenth": 17,
+        "eighteen": 18,
+        "eighteenth": 18,
+        "nineteen": 19,
+        "nineteenth": 19,
+        "hundred": 100,
+        "one hundred": 100,
+        "one-hundred": 100,
+        "a hundred": 100,
+        "a-hundred": 100,
+    }
+    for decade, dec_ord, base in _DECADE_BASES:
+        levels[decade] = base
+        levels[dec_ord] = base
+        for card, ord_, n in _ONES_CARD_ORD:
+            levels[f"{decade}-{card}"] = base + n
+            levels[f"{decade} {card}"] = base + n
+            levels[f"{decade}-{ord_}"] = base + n
+            levels[f"{decade} {ord_}"] = base + n
+    return levels
+
+
+_WORD_LEVELS = _build_word_levels()
 
 
 def _word_level_value(tok: str | None) -> int | None:
