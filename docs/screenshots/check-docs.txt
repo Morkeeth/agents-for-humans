@@ -1,13 +1,13 @@
 $ magnet check-docs
 [PASS] tool count: README claims 4 tools, source has 4
-[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 507 tests, source has 507 tests
-[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 507 tests, source has 507 tests
-[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 507 tests, source has 507 tests
-[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 507 tests, source has 507 tests
-[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 507 tests, source has 507 tests
-[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 507 tests, source has 507 tests
-[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 507 tests, source has 507 tests
-[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 507 tests, source has 507 tests
+[PASS] pytest count (docs/STRANGER-PASS.md): docs/STRANGER-PASS.md claims 514 tests, source has 514 tests
+[PASS] pytest count (docs/REPORT.md): docs/REPORT.md claims 514 tests, source has 514 tests
+[PASS] pytest count (docs/JUDGE-SCORECARD-2026-09-02.md): docs/JUDGE-SCORECARD-2026-09-02.md claims 514 tests, source has 514 tests
+[PASS] pytest count (docs/DEVPOST-READY.md): docs/DEVPOST-READY.md claims 514 tests, source has 514 tests
+[PASS] pytest count (docs/DEVPOST-DESCRIPTION.md): docs/DEVPOST-DESCRIPTION.md claims 514 tests, source has 514 tests
+[PASS] pytest count (docs/FILM-SCOUT-COMMANDS.md): docs/FILM-SCOUT-COMMANDS.md claims 514 tests, source has 514 tests
+[PASS] screenshot pytest (docs/screenshots/check-docs.txt): docs/screenshots/check-docs.txt claims 514 tests, source has 514 tests
+[PASS] screenshot pytest (docs/screenshots/pytest.txt): docs/screenshots/pytest.txt claims 514 tests, source has 514 tests
 [PASS] screenshot history outcome: history.txt carries outcome + claimed
 [PASS] screenshot one-workflow outcome: one-workflow.txt history step carries outcome
 [PASS] screenshot receipt-demo finding: receipt-demo.txt carries FINDING with GREEN and RED arms

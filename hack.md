@@ -111,16 +111,19 @@ No number without the command that produced it, the population it is out of, and
 | 60 | Readout verbs + 13th/14th word ordinals | `amounts to`/`evaluates to`/`totals`/`posts`/`yields` · thirteenth/fourteenth · pytest green |
 | 61 | Word ordinals 15th–19th | `fifteenth to sixteenth` … `nineteenth to twentieth` · pytest green |
 | 62 | Soft-hedge refuse | `roughly`/`approximately`/`about`/`nearly`/`almost` → no-direction · never invent exact held · pred-demo FINDING · pytest green |
+| 63 | Twenty-compound word levels | `twenty-one to twenty-two` grades dest=22 · never steal `one to twenty` · pred-demo FINDING · pytest green |
 
 ## NOW
 
-**Slice 62 done.** Soft hedges refuse exact held. Next unbound (not this box):
-`around`/`circa`/`close to` hedges · word ordinals past twentieth · Oscar gates.
+**Slice 63.** `twenty-one to twenty-two` steals `one to twenty` → invents dest=20
+held @latest=20 (true dest=22). Digit `21st to 22nd` grades. Done when: hyphenated
+`twenty-one`…`twenty-nine` (+ ordinals) grade like digits; pred-demo FINDING; pytest green.
 
 **Oscar gates (not this agent):** film · Devpost paste · submit.
 
 ## LOG
-- 2026-09-23 · Slice 62 SHIP · soft-hedge refuse roughly/approximately/about/nearly/almost · stay/equals/same-as/floor/percent/ratio · non-hedge `about to` preserved · pred-demo 211/211 embarrassed 125 · `pytest -q` → 506 passed, 1 skipped · check-docs 16 PASS · docs 493→507 · branch `cursor/soft-hedge-refuse-157c`
+- 2026-09-23 · Slice 63 START · ran objects: `twenty-one to twenty-two` → raw=`one to twenty` value=20 → prediction-held @latest=20 (THE LIE — true dest 22). `twenty-first to twenty-second` → raw=`first to twenty` value=20 held @20. `from twenty to twenty-one` → raw=`from twenty to twenty` value=20 held @20 (true dest 21). Contrast: `21st to 22nd` / `from 21 to 22` dest=22 miss @20 hold @22. tip `b5bb0fc`.
+- 2026-09-23 · Slice 62 SHIP · soft-hedge refuse roughly/approximately/about/nearly/almost · stay/equals/same-as/floor/percent/ratio · non-hedge `about to` preserved · pred-demo 211/211 embarrassed 125 · `pytest -q` → 506 passed, 1 skipped · check-docs 16 PASS · docs 493→507 · branch `cursor/soft-hedge-refuse-157c` · push `b5bb0fc`
 - 2026-09-23 · Slice 62 START · ran objects: `must stay at roughly 4/5`@latest=3 → prediction-held direction (THE LIE — soft level unbound, flat invents held). `roughly equals 4/5` / `almost exactly 4/5` → target=4 invents exact held. `same as about 4/5` → flat invents held. `roughly stay at 4/5` → level=4 invents exact. `roughly at least 4/5` → floor=4 invents exact. `won't fall below about 3/5`@2 → direction invents held. `improves by roughly 20%` / `roughly doubles` / `almost doubles` invent exact percent/ratio held. Contrast: `must stay at 4/5` / `exactly 4/5` / `same as 4/5` grade. tip `ea15a3b`.
 - 2026-09-22 · Slice 61 SHIP · word ordinals fifteenth…nineteenth · fifteen…nineteen · pred-demo 201/201 embarrassed 116 · `pytest -q` → 492 passed, 1 skipped · check-docs 16 PASS · docs 487→493 · branch `cursor/ordinal-equals-b545` · `git push origin main` → `618ec387040de14c788f1c50518cb2989e314e8f`
 - 2026-09-22 · Slice 61 START · ran objects: `fifteenth to sixteenth`/`seventeenth to eighteenth`/`nineteenth to twentieth`/`from fifteen to sixteen` → target=None. Contrast: `15th to 16th`/`17th to 18th`/`19th to 20th` grade. tip `bb5576e`.

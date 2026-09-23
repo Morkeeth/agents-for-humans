@@ -136,6 +136,10 @@ bound target=4 and invented exact held; `roughly at least 4/5` bound floor;
 `improves by roughly 20%` / `roughly doubles` invented exact percent/ratio.
 Refuse (`no-direction`) rather than invent exact held under soft language.
 Non-hedge `about` (`about to rise`, `talk about`) must not match.
+
+Slice 63: twenty-compounds `twenty-one to twenty-two` matched
+`one to twenty` → dest=20 invented held @latest=20 while true dest is 22.
+Digit `21st to 22nd` grades. Compounds before bare `twenty`/`one`/`first`.
 """
 from __future__ import annotations
 
@@ -415,8 +419,14 @@ _FROM_TO = re.compile(
 # Slice 59: `eleventh` / `twelfth` unbound while digit `11th`/`12th` grade.
 # Longer ordinals before shorter prefixes (`fourteenth` before `four`,
 # `nineteenth` before `nine`, `fifteenth` before `five`).
+# Slice 63: twenty-compounds BEFORE bare `twenty`/`one`/`first` —
+# THE LIE: `twenty-one to twenty-two` matched `one to twenty` → dest=20
+# invented held @latest=20 while true dest is 22. Digit `21st to 22nd` grades.
 _WORD_LEVEL_RE = (
-    r"(?:zeroth|zero|first|one|second|two|third|three|fourth|four|"
+    r"(?:"
+    r"twenty[\s-]+(?:ninth|nine|eighth|eight|seventh|seven|sixth|six|"
+    r"fifth|five|fourth|four|third|three|second|two|first|one)|"
+    r"zeroth|zero|first|one|second|two|third|three|fourth|four|"
     r"fifth|five|sixth|six|seventh|seven|eighth|eight|ninth|nine|"
     r"nineteenth|nineteen|eighteenth|eighteen|seventeenth|seventeen|"
     r"sixteenth|sixteen|fifteenth|fifteen|"
@@ -466,6 +476,43 @@ _WORD_LEVELS = {
     "nineteenth": 19,
     "twenty": 20,
     "twentieth": 20,
+    # Slice 63: twenty-compounds (hyphen or space)
+    "twenty-one": 21,
+    "twenty one": 21,
+    "twenty-first": 21,
+    "twenty first": 21,
+    "twenty-two": 22,
+    "twenty two": 22,
+    "twenty-second": 22,
+    "twenty second": 22,
+    "twenty-three": 23,
+    "twenty three": 23,
+    "twenty-third": 23,
+    "twenty third": 23,
+    "twenty-four": 24,
+    "twenty four": 24,
+    "twenty-fourth": 24,
+    "twenty fourth": 24,
+    "twenty-five": 25,
+    "twenty five": 25,
+    "twenty-fifth": 25,
+    "twenty fifth": 25,
+    "twenty-six": 26,
+    "twenty six": 26,
+    "twenty-sixth": 26,
+    "twenty sixth": 26,
+    "twenty-seven": 27,
+    "twenty seven": 27,
+    "twenty-seventh": 27,
+    "twenty seventh": 27,
+    "twenty-eight": 28,
+    "twenty eight": 28,
+    "twenty-eighth": 28,
+    "twenty eighth": 28,
+    "twenty-nine": 29,
+    "twenty nine": 29,
+    "twenty-ninth": 29,
+    "twenty ninth": 29,
 }
 
 
@@ -475,7 +522,8 @@ def _word_level_value(tok: str | None) -> int | None:
         return None
     if tok.isdigit():
         return int(tok)
-    return _WORD_LEVELS.get(tok.lower())
+    key = re.sub(r"\s+", " ", tok.lower().strip())
+    return _WORD_LEVELS.get(key)
 
 
 # Slice 62: soft hedges refuse exact held. THE LIE: `roughly equals 4/5`

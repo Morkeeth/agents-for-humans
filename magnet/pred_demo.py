@@ -2178,6 +2178,57 @@ SCENARIOS: tuple[PredScenario, ...] = (
         latest_value=4,
         note="THE LIE: nearly exactly bound target=4 → invents exact held",
     ),
+    # Slice 63 — twenty-compound word levels (never steal one→twenty)
+    PredScenario(
+        "twenty_one_to_twenty_two_holds",
+        "twenty-one to twenty-two",
+        "unchanged",
+        0,
+        30,
+        "prediction-held",
+        latest_value=22,
+        note="Slice 63: twenty-compound destination",
+    ),
+    PredScenario(
+        "twenty_one_to_twenty_two_missed",
+        "twenty-one to twenty-two",
+        "unchanged",
+        0,
+        30,
+        "prediction-missed",
+        latest_value=20,
+        note="THE LIE: stole one→twenty dest=20 invented held @20",
+    ),
+    PredScenario(
+        "twenty_first_to_twenty_second_missed",
+        "twenty-first to twenty-second",
+        "unchanged",
+        0,
+        30,
+        "prediction-missed",
+        latest_value=20,
+        note="THE LIE: stole first→twenty dest=20 invented held @20",
+    ),
+    PredScenario(
+        "from_twenty_to_twenty_one_missed",
+        "from twenty to twenty-one",
+        "unchanged",
+        0,
+        30,
+        "prediction-missed",
+        latest_value=20,
+        note="THE LIE: stole from twenty to twenty (prefix of twenty-one)",
+    ),
+    PredScenario(
+        "twenty_eight_to_twenty_nine_missed",
+        "twenty-eight to twenty-nine",
+        "unchanged",
+        0,
+        30,
+        "prediction-missed",
+        latest_value=28,
+        note="twenty-eight/nine compounds close the 20s pack",
+    ),
 )
 
 
@@ -2217,6 +2268,7 @@ def run_pred_demo() -> str:
         "  bare `3 to 4` / `3/5 to 4/5` / mixed `3 to four` grade (Slice 56).",
         "  decimal `2.5%` refused (not truncated to 5); `up to`/`down to` grade (Slice 57).",
         "  soft hedges `roughly`/`about`/`nearly`/`almost` refuse exact held (Slice 62).",
+        "  `twenty-one to twenty-two` grades dest=22 — never steal one→twenty (Slice 63).",
         "  `falls to zero` / `goes to zero` / `perfect N/N` are targets (Slice 41).",
         "  quadrupples / N times / Nfold grade prior like Nx (Slice 41).",
         "  won't fall / does not regress are flat — NOT fall (Slice 35 negation honesty).",
@@ -2387,7 +2439,9 @@ def run_pred_demo() -> str:
             "`15th`…`19th` (Slice 61). soft hedges `roughly` / "
             "`approximately` / `about` / `nearly` / `almost` refuse "
             "exact held — never invent that a soft claim means an "
-            "exact level, percent, or ratio (Slice 62)."
+            "exact level, percent, or ratio (Slice 62). "
+            "`twenty-one to twenty-two` grades dest=22 — never steal "
+            "`one to twenty` and invent held @20 (Slice 63)."
         )
     elif magnet_ok < total:
         lines.append(
@@ -2484,5 +2538,7 @@ def run_pred_demo() -> str:
         "  repro      magnet adopt skill x 'must stay at roughly 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'almost exactly 4/5' --probe demo-pass-rate --reset",
         "  repro      magnet adopt skill x 'roughly doubles' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'twenty-one to twenty-two' --probe demo-pass-rate --reset",
+        "  repro      magnet adopt skill x 'from twenty to twenty-one' --probe demo-pass-rate --reset",
     ]
     return "\n".join(lines)
