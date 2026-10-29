@@ -1,23 +1,41 @@
 # MAGNET · Agents for Humans
 
-**MAGNET records every change you make to your coding-agent setup (a prompt, model, skill, hook or setting) and re-runs your eval afterwards, so you know whether the change helped instead of guessing.**
+## TLDR
+
+Record a coding-agent setup change and compare the subsequent evaluation with its baseline.<br>
+For builders who want to test whether a prompt, skill, hook or model change helped.<br>
+MAGNET is the engine library used by Agent Grinder; it is not a separate hackathon submission.
+
+## The problem and approach
 
 The problem: you tune an agent stack all week and nothing measures whether any single change moved the number.
-
-For developers who run coding agents and keep their rules, skills and evals in a repo.
 
 It logs each change with a prediction in a SQLite file inside your repo, runs probes (pytest pass rate, README claims against source, coverage of your own stack), and prints `baseline` when it has only one reading rather than inventing a trend.
 
 Built on the AWS Strands agent SDK for the Agents for Humans hackathon. Try it with no keys: `git clone https://github.com/Morkeeth/agents-for-humans.git && cd agents-for-humans && pip install -e . && magnet demo`
 
+## Review and pick up the work
+
+[Agent guide](AGENTS.md)
+
+Start with the linked source, setup and evidence. Recorded demos and sample data keep their original scope; use the repository instructions for a fresh run.
+
+## Recorded views
+
+These are retained repository captures, not a new live verification. Unless a date is given in the caption, the capture date is not documented. The interface may have changed since capture.
+
+![Evaluation output captured in the repository](docs/screenshots/eval.png)
+
+*Evaluation output captured in the repository.*
+
 **Professional Agents track · AWS Strands · Devpost Sep 14 2026**
 
 > **Role in the hackathon:** MAGNET is the engine library for [Agent Grinder](https://github.com/Morkeeth/agentgrinder), the Agents for Humans entry; its Strands agent and four tools run inside that product. This repo is public as the disclosed library and is not itself the submission.
 
-> **Judges — start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
+> **Judges ;  start here:** `bash scripts/judge-demo.sh` (60s, no keys) · scorecard: `docs/JUDGE-SCORECARD-2026-09-02.md` · Bedrock receipt: `docs/BEDROCK-LIVE-RECEIPT-2026-09-02.md`
 
 > After you change a prompt, model, skill, hook, or setting, a background agent re-runs your eval and tells you
-> whether it helped — or prints **`baseline`** instead of inventing a trend.
+> whether it helped ;  or prints **`baseline`** instead of inventing a trend.
 
 **Constraint:** No number without the command, population, and timestamp (`3/5`, never `3`).
 
@@ -36,7 +54,7 @@ magnet receipt        # JSON adoption receipt (Grinder-ready)
 magnet receipt --verify  # re-probe; exit 1 on stale SQLite
 magnet receipt --grinder  # evidence for Grinder; no invented counts
 magnet receipt-demo   # verify GREEN then planted RED
-magnet redact-scan    # secret patterns — must stay GREEN here
+magnet redact-scan    # secret patterns ;  must stay GREEN here
 magnet bind-demo      # repo-blind flat; stack-bind probes move
 magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet foreign-bind   # bind probes on stacks we did not build
@@ -46,7 +64,7 @@ magnet pred-demo      # magnitude honesty: rises-by-2/5 with +1 → magnet misse
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 ```
 
-Cold path — no keys, no network:
+Cold path ;  no keys, no network:
 
 ```bash
 git clone https://github.com/Morkeeth/agents-for-humans.git
@@ -69,10 +87,10 @@ magnet history
 |-------|------------------|
 | `demo-pass-rate` | Synthetic 3/5→4/5 demo (skill_bonus in SQLite) |
 | `check-docs` | README claims vs source (re-derived at read time) |
-| `pytest-pass-rate` | **Real eval** — runs `pytest -q`, counts passed/total |
+| `pytest-pass-rate` | **Real eval** ;  runs `pytest -q`, counts passed/total |
 | `stack-coverage` | YOUR stack: covered/total capability vocabulary (`--stack` selects which) |
 
-Close the loop — install a local skill into a working copy, then re-measure:
+Close the loop ;  install a local skill into a working copy, then re-measure:
 
 ```bash
 magnet adopt skill pdb-navigator "coverage rises" \
@@ -100,7 +118,7 @@ feeds the results back until the turn ends.
 | `adopt_change` | Record a prompt/model/skill/hook/setting change + prediction |
 | `check_docs` | Re-derive README numbers; exit non-zero on drift |
 
-The log lives in-repo at `.magnet/log.db` — not Helicon-only.
+The log lives in-repo at `.magnet/log.db` ;  not Helicon-only.
 (A `.magnet/ledger.db` file from an earlier build is renamed to `log.db` in place on first run.)
 
 ## Pre-existing code, disclosed
@@ -127,7 +145,7 @@ magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for str
 magnet receipt --verify  # re-run probe; refuse stale SQLite
 magnet receipt --grinder  # evidence export; never invents grind counts
 magnet receipt-demo  # GREEN then planted RED
-magnet redact-scan   # live secret patterns — exit 1 on plant, 0 on this repo
+magnet redact-scan   # live secret patterns ;  exit 1 on plant, 0 on this repo
 magnet pred-demo     # magnitude honesty vs naive direction-only
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
@@ -140,9 +158,9 @@ magnet probe pytest-pass-rate   # real eval (run from CLI, not inside pytest)
 
 | `--model` | What runs | Needs credentials | Costs money |
 |---|---|---|---|
-| `local` *(default)* | Real Strands agent loop; the model is a **local scripted provider**, not an LLM — it replays a fixed plan | no | no |
-| `bedrock` | Real Strands agent loop with **Amazon Bedrock** — a language model genuinely choosing the tools | **yes** (AWS creds + region + Bedrock model access) | **yes** |
-| `none` | Deterministic chain, no agent at all — the fallback when no model is reachable | no | no |
+| `local` *(default)* | Real Strands agent loop; the model is a **local scripted provider**, not an LLM ;  it replays a fixed plan | no | no |
+| `bedrock` | Real Strands agent loop with **Amazon Bedrock** ;  a language model genuinely choosing the tools | **yes** (AWS creds + region + Bedrock model access) | **yes** |
+| `none` | Deterministic chain, no agent at all ;  the fallback when no model is reachable | no | no |
 
 The mode is printed at the top of every run, and a failed agent mode prints a loud
 banner and marks the result `DEGRADED`. It never swaps silently.
@@ -153,3 +171,7 @@ that, run `magnet agent-run --model bedrock` with your own AWS credentials. That
 has never been run in this repo's CI.
 
 See `hack.md` for the build contract and `docs/architecture.md` for the flow diagram.
+
+## License and data boundaries
+
+Code terms: [LICENSE](LICENSE). Data, provider responses, media, fonts and other third-party assets may have separate terms. Repository access alone does not grant rights to those materials. 
