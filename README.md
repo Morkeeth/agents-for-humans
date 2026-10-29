@@ -1,5 +1,15 @@
 # MAGNET · Agents for Humans
 
+**MAGNET records every change you make to your coding-agent setup (a prompt, model, skill, hook or setting) and re-runs your eval afterwards, so you know whether the change helped instead of guessing.**
+
+The problem: you tune an agent stack all week and nothing measures whether any single change moved the number.
+
+For developers who run coding agents and keep their rules, skills and evals in a repo.
+
+It logs each change with a prediction in a SQLite file inside your repo, runs probes (pytest pass rate, README claims against source, coverage of your own stack), and prints `baseline` when it has only one reading rather than inventing a trend.
+
+Built on the AWS Strands agent SDK for the Agents for Humans hackathon. Try it with no keys: `git clone https://github.com/Morkeeth/agents-for-humans.git && cd agents-for-humans && pip install -e . && magnet demo`
+
 **Professional Agents track · AWS Strands · Devpost Sep 14 2026**
 
 > **Role in the hackathon:** MAGNET is the engine library for [Agent Grinder](https://github.com/Morkeeth/agentgrinder), the Agents for Humans entry; its Strands agent and four tools run inside that product. This repo is public as the disclosed library and is not itself the submission.
