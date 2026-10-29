@@ -54,7 +54,7 @@ magnet receipt        # JSON adoption receipt (Grinder-ready)
 magnet receipt --verify  # re-probe; exit 1 on stale SQLite
 magnet receipt --grinder  # evidence for Grinder; no invented counts
 magnet receipt-demo   # verify GREEN then planted RED
-magnet redact-scan    # secret patterns ;  must stay GREEN here
+magnet redact-scan    # secret patterns — must stay GREEN here
 magnet bind-demo      # repo-blind flat; stack-bind probes move
 magnet guide-demo     # Ultimate Guide 5-row table vs naive title
 magnet foreign-bind   # bind probes on stacks we did not build
@@ -145,7 +145,7 @@ magnet receipt       # JSON adoption receipt (value/pop/command/verdict) for str
 magnet receipt --verify  # re-run probe; refuse stale SQLite
 magnet receipt --grinder  # evidence export; never invents grind counts
 magnet receipt-demo  # GREEN then planted RED
-magnet redact-scan   # live secret patterns ;  exit 1 on plant, 0 on this repo
+magnet redact-scan   # live secret patterns — exit 1 on plant, 0 on this repo
 magnet pred-demo     # magnitude honesty vs naive direction-only
 magnet external-stack --stack fixtures/real-stacks/agentgrinder
 magnet agent-run     # real Strands agent loop, local model, no network, no spend
